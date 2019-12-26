@@ -1,0 +1,67 @@
+#!/bin/bash
+echo -e "\e[1;33mInitializing...\e[0m"
+DN=`dirname $0`
+if [ ! -e $DN/livechat ];then
+    echo -e "\e[31mERROR: livechat not exist.\e[0m"
+    exit 1
+fi
+if [ -e $DN/livechat.d ];then
+    if [ -f $DN/livechat.d ];then
+        echo -e "\e[31mERROR: \"$DN/livechat.d\" is a file rather than a directory.\e[0m"
+        exit 1
+    fi
+    if [ ! -e $DN/livechat.d/MESSAGES ];then
+        echo -e "\e[31mERROR: livechat.d/MESSAGES not exist.\e[0m"
+        exit 1
+    fi
+else
+    echo -e "\e[31mERROR: livechat.d not exist.\e[0m"
+    exit 1
+fi
+OLD_IFS="$IFS"
+IFS=";"
+case $1 in
+    "-s")
+        i=0
+        while read line;do
+            msg_tmp=($line)
+            t[$i]=${msg_tmp[0]}
+            f[$i]=${msg_tmp[1]}
+            m[$i]=${msg_tmp[2]}
+            unset msg_tmp
+            i=$[$i+1]
+        done <$DN/livechat.d/MESSAGES
+        case $2 in
+            "from")
+                for ((n=0;n<=i;n++));do
+                    if [[ ${f[$n]} = *$3* ]];then
+                        echo -e "\e[31m[${t[$n]}]\e[0m \e[36m[${f[$n]}]\e[0m ${m[$n]}"
+                    fi
+                done
+            ;;
+            "message")
+                for ((n=0;n<=i;n++));do
+                    if [[ ${m[$n]} = *"$3"* ]];then
+                        echo -e "\e[31m[${t[$n]}]\e[0m \e[36m[${f[$n]}]\e[0m ${m[$n]}"
+                    fi
+                done
+            ;;
+            *)
+                echo -e "\e[31mERROR: Cannot understand \"-s $2\".\e[0m"
+                echo -e "\e[31mERROR: Available arguments: from, message.\e[0m"
+                exit 1
+        esac
+        unset i
+    ;;
+    "-l")
+        while read line;do
+            msg_tmp=($line)
+            echo -e "\e[31m[${msg_tmp[0]}]\e[0m \e[36m[${msg_tmp[1]}]\e[0m ${msg_tmp[2]}"
+        done <$DN/livechat.d/MESSAGES
+    ;;
+    *)
+        echo -e "\e[31mERROR: Cannot understand \"$1\".\e[0m"
+        echo -e "\e[31mERROR: Available arguments: -s, -l.\e[0m"
+esac
+IFS=$OLD_IFS
+exit 0

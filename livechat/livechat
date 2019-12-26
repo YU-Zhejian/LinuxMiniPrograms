@@ -12,8 +12,9 @@ function F_REC(){
             tail -n $((${arr[0]}-$M_R)) MESSAGES>"URM_$LCUN"
             M_R=${arr[0]}
             unset arr
+            IFS=";"
             while read line;do
-                IFS=";"
+                
                 M_A=($line)
                 echo -e "\e[31m[${M_A[0]}]\e[0m \e[36m[${M_A[1]}]\e[0m ${M_A[2]}"
             done <"URM_$LCUN"
@@ -61,10 +62,8 @@ export M_R=0
 (F_REC)&
 pid_rec=$!
 echo -e "\e[1;33mPID of reciever: ${pid_rec}.\e[0m"
-while [ true ]
-do
+while [ true ];do
     read MESS_SD
-    echo -ne ""
     if [ "$MESS_SD" != "logout" ]; then
         sdmess $LCUN
         printf "\e[1A"
@@ -77,7 +76,7 @@ do
         rm tmp
         rm URM_$LCUN
         echo -e "\e[1;33mThanks for using this system.\e[0m"
+        IFS=$OLD_IFS
         exit 0
     fi
 done
-IFS=$OLD_IFS
