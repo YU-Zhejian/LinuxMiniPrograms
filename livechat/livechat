@@ -9,12 +9,12 @@ function F_REC(){
         arr=(`wc -l MESSAGES`)
         en=$((${arr[0]}-$M_R))
         if [ $en -ne 0 ]; then
+            echo -ne "\007"
             tail -n $((${arr[0]}-$M_R)) MESSAGES>"URM_$LCUN"
             M_R=${arr[0]}
             unset arr
             IFS=";"
             while read line;do
-                
                 M_A=($line)
                 echo -e "\e[31m[${M_A[0]}]\e[0m \e[36m[${M_A[1]}]\e[0m ${M_A[2]}"
             done <"URM_$LCUN"
