@@ -1,5 +1,5 @@
 #!/bin/bash
-echo -e "\e[1;33mInitializing...\e[0m"
+echo -e "\e[33mInitializing...\e[0m"
 DN=`dirname $0`
 if [ ! -e $DN/livechat ];then
     echo -e "\e[31mERROR: livechat not exist.\e[0m"
