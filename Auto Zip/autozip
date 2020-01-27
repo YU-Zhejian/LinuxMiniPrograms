@@ -16,7 +16,7 @@ USEPARALLEL=false
 CONF=1
 if ! [ -f $CONFN ];then
     echo -e "\e[31mWARNING: Configure file \e[31mNO\e[33mt exist. Will generate one by default value.\e[0m"
-    echo "\e[31mNO\e[33mPARALLEL">$CONFN
+    echo "NOPARALLEL">$CONFN
     elif [ -d $CONFN ];then
     echo -e "\e[31mERROR: Configure file is a directory.\e[0m"
     exit 1
@@ -40,64 +40,64 @@ else
 fi
 if [ -z $1 ];then
     echo -e "\e[33mStart checking all compoments..."
-    if [ $TAR ];then
+    if [ $TAR -eq 0 ];then
         echo -e "\e[33mChecking for 'tar'...\e[32mOK\e[33m"
         availext="tar"
     else
         echo -e "\e[33mChecking for 'tar'...\e[31mNO\e[33m"
     fi
-    if [ $GZIP ];then
+    if [ $GZIP -eq 0 ];then
         echo -e "Checking for 'gzip'...\e[32mOK\e[33m"
         availext="$availext, gz, GZ"
-        if [ $TAR ];then availext="$availext, tar.gz, tar.GZ, tgz";fi
+        if [ $TAR -eq 0 ];then availext="$availext, tar.gz, tar.GZ, tgz";fi
     else
         echo -e "Checking for 'gzip'...\e[31mNO\e[33m"
     fi
-    if [ $XZIP ];then
+    if [ $XZIP -eq 0 ];then
         echo -e "Checking for 'xz'...\e[32mOK\e[33m"
         availext="$availext, xz"
-        if [ $TAR ];then availext="$availext, tar.xz, txz";fi
+        if [ $TAR -eq 0 ];then availext="$availext, tar.xz, txz";fi
     else
         echo -e "Checking for 'xz'...\e[31mNO\e[33m"
     fi
-    if [ $BZIP2 ];then
+    if [ $BZIP2 -eq 0 ];then
         echo -e "Checking for 'bzip2'...\e[32mOK\e[33m"
         availext="$availext, bz2"
-        if [ $TAR ];then availext="$availext, tar.bz2, tbz";fi
+        if [ $TAR -eq 0 ];then availext="$availext, tar.bz2, tbz";fi
     else
         echo -e "Checking for 'bzip2'...\e[31mNO\e[33m"
     fi
-    if [ $LZMA ];then
+    if [ $LZMA -eq 0 ];then
         echo -e "Checking for 'lzma'...\e[32mOK\e[33m"
         availext="$availext, lz, lzma"
-        if [ $TAR ];then availext="$availext, tar.lz, tar.lzma, tlz";fi
+        if [ $TAR -eq 0 ];then availext="$availext, tar.lz, tar.lzma, tlz";fi
     else
         echo -e "Checking for 'lzma'...\e[31mNO\e[33m"
     fi
-    if [ $Z7 ]
+    if [ $Z7 -eq 0 ]
     then echo -e "Checking for '7z'...\e[32mOK\e[33m"
         availext="$availext, 7z"
     else
         echo -e "Checking for '7z'...\e[31mNO\e[33m"
     fi
-    if [ $ZIP ];then
+    if [ $ZIP -eq 0 ];then
         echo -e "Checking for 'zip'...\e[32mOK\e[33m"
         availext="$availext, zip"
     else
         echo -e "Checking for 'zip'...\e[31mNO\e[33m"
     fi
-    if [ $RAR ];then
+    if [ $RAR -eq 0 ];then
         echo -e "Checking for 'rar'...\e[32mOK\e[33m"
         availext="$availext, rar"
     else
         echo -e "Checking for 'rar'...\e[31mNO\e[33m"
     fi
-    if [ $PARALLEL ];then
+    if [ $PARALLEL -eq 0 ];then
         echo -e "Checking for 'parallel' in /usr/bin...\e[32mOK\e[33m"
     else
         echo -e "Checking for 'parallel' in /usr/bin...\e[31mNO\e[33m"
     fi
-    if [ $CONF ];then
+    if [ $CONF -eq 0 ];then
         echo -e "Checking for $CONFN...\e[32mOK\e[33m"
     else
         echo -e "Checking for $CONFN...\e[31mNO\e[33m"
@@ -126,7 +126,7 @@ case $ext in
         if [ -f $1 ];then
             echo -e "\e[31mERROR: You're about to compress FILE '$1' with extension '$ext', which is designed for compressing FOLDERs.\e[0m"
             exit 1
-            elif ! [ $TAR ]; then echo -e "\e[31mERROR: Command TAR \e[31mNO\e[33mt exist!\e[0m";exit 1
+            elif ! [ $TAR -eq 0 ]; then echo -e "\e[31mERROR: Command TAR \e[31mNO\e[33mt exist!\e[0m";exit 1
         fi
         
     ;;
@@ -134,7 +134,7 @@ case $ext in
         if [ -f $1 ];then
             echo -e "\e[31mERROR: You're about to compress FILE '$1' with extension '$ext', which is designed for compressing FOLDERs.\e[0m"
             exit 1
-            elif ! [ $TAR ]; then echo -e "\e[31mERROR: Command TAR \e[31mNO\e[33mt exist!\e[0m";exit 1
+            elif ! [ $TAR -eq 0 ]; then echo -e "\e[31mERROR: Command TAR \e[31mNO\e[33mt exist!\e[0m";exit 1
         fi
     ;;
     "gz"|"GZ"|"xz"|"bz"|"lzma"|"lz")
@@ -173,7 +173,7 @@ case $ext in
         tar uvf $1.$ext $1
     ;;
     "tar.gz"|"tgz"|"tar.GZ")
-        if ! [ $GZIP ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
+        if ! [ $GZIP -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then
             echo -e "\e[33mWill execute: tar cv $1|/usr/bin/parallel --pipe --recend '' -k gzip $LVL>$1.$ext\e[0m"
             tar cv $1|/usr/bin/parallel --pipe --recend '' -k gzip $LVL>$1.$ext
@@ -183,7 +183,7 @@ case $ext in
         fi
     ;;
     "tar.xz"|"txz")
-        if ! [ $XZIP ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then
             echo -e "\e[33mWill execute: tar cv $1|xz -T 0>$1.$ext\e[0m"
             tar cv $1|xz -T 0>$1.$ext
@@ -193,7 +193,7 @@ case $ext in
         fi
     ;;
     "tar.bz2"|"tbz")
-        if ! [ $BZIP2 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
+        if ! [ $BZIP2 -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then
             echo -e "\e[33mWill execute: tar cv $1|/usr/bin/parallel --pipe --recend '' -k bzip2 $LVL>$1.$ext\e[0m"
             tar cv $1|/usr/bin/parallel --pipe --recend '' -k bzip2 $LVL>$1.$ext
@@ -203,7 +203,7 @@ case $ext in
         fi
     ;;
     "tar.lzma"|"tar.lz"|"tlz")
-        if ! [ $LZMA ]; then echo -e "\e[31mERROR: LZMA SDK NO exist!\e[0m";exit 1;fi
+        if ! [ $LZMA -eq 0 ]; then echo -e "\e[31mERROR: LZMA SDK NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then
             echo -e "\e[33mWill execute: tar cv $1|/usr/bin/parallel --pipe --recend '' -k lzma $LVL>$1.$ext\e[0m"
             tar cv $1|/usr/bin/parallel --pipe --recend '' -k lzma $LVL>$1.$ext
@@ -213,7 +213,7 @@ case $ext in
         fi
     ;;
     "gz"|"GZ")
-        if ! [ $GZIP ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
+        if ! [ $GZIP -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then
             echo -e "\e[33mWill execute: cat $1|/usr/bin/parallel --pipe --recend '' -k gzip $LVL>$1.$ext\e[0m"
             cat $1|/usr/bin/parallel --pipe --recend '' -k gzip $LVL>$1.$ext
@@ -223,7 +223,7 @@ case $ext in
         fi
     ;;
     "xz")
-        if ! [ $XZIP ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then
             echo -e "\e[33mWill execute: cat $1|xz -T 0>$1.$ext\e[0m"
             cat $1|xz -T 0>$1.$ext
@@ -233,7 +233,7 @@ case $ext in
         fi
     ;;
     "bz2")
-        if ! [ $BZIP2 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
+        if ! [ $BZIP2 -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then
             echo -e "\e[33mWill execute: cat $1|/usr/bin/parallel --pipe --recend '' -k bzip2 $LVL>$1.$ext\e[0m"
             cat $1|/usr/bin/parallel --pipe --recend '' -k bzip2 $LVL>$1.$ext
@@ -243,7 +243,7 @@ case $ext in
         fi
     ;;
     "lz"|"lzma")
-        if ! [ $LZMA ]; then echo -e "\e[31mERROR: LZMA SDK NO exist!\e[0m";exit 1;fi
+        if ! [ $LZMA -eq 0 ]; then echo -e "\e[31mERROR: LZMA SDK NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then
             echo -e "\e[33mWill execute: cat $1|/usr/bin/parallel --pipe --recend '' -k lzma $LVL>$1.$ext\e[0m"
             cat $1|/usr/bin/parallel --pipe --recend '' -k lzma $LVL>$1.$ext
@@ -253,16 +253,16 @@ case $ext in
         fi
     ;;
     "7z")
-        if ! [ $Z7 ]; then echo -e "\e[31mERROR: p7zip NO exist!\e[0m";exit 1;fi
+        if ! [ $Z7 -eq 0 ]; then echo -e "\e[31mERROR: p7zip NO exist!\e[0m";exit 1;fi
         echo -e "\e[33mWill execute: 7za u $1.7z $1\e[0m"
         7za u $1.$ext $1 $LVL
     ;;
     "zip")
-        if ! [ $ZIP ]; then echo -e "\e[31mERROR: zip NO exist!\e[0m";exit 1;fi
+        if ! [ $ZIP -eq 0 ]; then echo -e "\e[31mERROR: zip NO exist!\e[0m";exit 1;fi
         echo -e "\e[33mWill execute: zip -r $1.zip $1\e[0m"
         zip -r $1.$ext $1 $LVL
     ;;
     "rar")
-        if ! [ $RAR ]; then echo -e "\e[31mERROR: rar NO exist!\e[0m";exit 1;fi
+        if ! [ $RAR -eq 0 ]; then echo -e "\e[31mERROR: rar NO exist!\e[0m";exit 1;fi
         rar a $1.$ext $1
 esac
