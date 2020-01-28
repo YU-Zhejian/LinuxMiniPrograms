@@ -6,7 +6,7 @@ function preck(){
     GZIP=`gzip -h&>>/dev/null;echo $?`
     XZIP=`xz -h&>>/dev/null;echo $?`
     BZIP2=`bzip2 -h&>>/dev/null;echo $?`
-    Z7=`7z -h&>>/dev/null;echo $?`
+    Z7=`7za -h&>>/dev/null;echo $?`
     ZIP=`zip -h&>>/dev/null;echo $?`
     RAR=`rar -\?&>>/dev/null;echo $?`
     LVL=""
