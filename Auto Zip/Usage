@@ -1,6 +1,7 @@
-YuZJLab                    Auto Zip                      Manual 
+YuZJLab              AutoZip & AutoUnZip                 Manual
 NAME
-    autozip - An automatic file compression tool
+    autozip - An automatic file compression tool.
+    autounzip - An automatic file decompression tool.
 DESCRIPTION
     1. autozip
         The first thing to do after installation. This will 
@@ -17,14 +18,22 @@ DESCRIPTION
         [ext] to [level]. You can make it 1 (fastest) - 9 
         (best). Some algorithms (e.g. xzip, zip) may support 0 
         (store only; no compression).
+    5. autounzip 
+        Almost equal to autozip.
+    6. autounzip [source]
+        Extract [source].
 USE OF GNU PARALLEL (REQUIRE ROOT PREVILEDGE)
     It is recommended to use GNU Parallel to accelerate the 
     speed of compression. You can change the first line of
-    autoxip.conf to "PARALLEL" to enable this feature.
+    autoxip.conf to "PARALLEL" to enable this feature. GNU
+    Parallel is not available on autounzip.
+
+    When using XZ Utils, we will use argument "-T0" instead of
+    GNN Parallel.
     
     WARNING! GNU Parallel consumes lots of memory & CPU 
     resources.
-USE OF LZMA AND XZIP
+USE OF LZMA SDK AND XZ UTILS
     The core of the XZ Utils compression code is based on LZMA 
     SDK. So when you're about to compress & decompress files 
     with lz, lzma, tar.lzma, tlz extensions, we'll use XZIP.
@@ -33,7 +42,7 @@ USE OF 7ZIP
     Linux/Unix because 7-zip does not store the owner/group of 
     the file.
 USE OF RAR
-    WARNING: 1. RAR is a property software. 2. Use ABSOLUTE PATH.
+    WARNING: 1. RAR is a PROPERTY software. 2. Use ABSOLUTE PATH.
 CODE EXAMPLE
     autozip
         YuZJLab AutoZip.
@@ -100,3 +109,4 @@ COPYRIGHT
     This is free software: you are free to change and 
     redistribute it. There is NO WARRANTY, to the extent 
     permitted by law.
+    

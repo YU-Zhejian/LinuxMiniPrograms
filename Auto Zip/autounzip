@@ -1,73 +1,5 @@
 #!/bin/bash
-echo -e "\e[33mYuZJLab AutoUnZip.\e[0m"
-echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
-preck
-if [ -z $1 ];then
-    autozipck
-    elif ! [ -e $1 ];then
-    echo -e "\e[31mERROR: Filename '$1' invalid.\e[0m"
-    exit 1
-fi
-getext
-case $ext in
-    "tar")
-        echo -e "\e[33mWill execute: tar xvf $1\e[0m"
-        tar xvf $1
-    ;;
-    "tar.gz"|"tgz"|"tar.GZ")
-        if ! [ $GZIP -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: tar xzvf $1\e[0m"
-        tar xzvf $1
-    ;;
-    "tar.xz"|"txz")
-        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: tar xJvf $1\e[0m"
-        tar xJvf $1
-    ;;
-    "tar.bz2"|"tbz")
-        if ! [ $BZIP2 -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: tar xjvf $1\e[0m"
-        tar xjvf $1
-    ;;
-    "tar.lzma"|"tar.lz"|"tlz")
-        if ! [ $LZMA -eq 0 ]; then echo -e "\e[31mERROR: LZMA SDK NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: tar xvf --lzma $1\e[0m"
-        tar xvf --lzma $1
-    ;;
-    "gz"|"GZ")
-        if ! [ $GZIP -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: gzip -dk $1\e[0m"
-        gzip -dk $1
-    ;;
-    "xz")
-        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: xz -dk $1\e[0m"
-        xz -dk $1
-    ;;
-    "bz2")
-        if ! [ $BZIP2 -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: bzip2 -dk $1\e[0m"
-        bzip2 -dk $1
-    ;;
-    "lz"|"lzma")
-        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: xz -dk --format=lzma $1\e[0m"
-        xz -dk --format=lzma $1
-    ;;
-    "7z")
-        if ! [ $Z7 -eq 0 ]; then echo -e "\e[31mERROR: p7zip NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: 7za x $1 $1\e[0m"
-        7za x $1
-    ;;
-    "zip")
-        if ! [ $UNZIP -eq 0 ]; then echo -e "\e[31mERROR: zip NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: unzip -r $1 $1\e[0m"
-        unzip $1
-    ;;
-    "rar")
-        if ! [ $UNRAR -eq 0 ]; then echo -e "\e[31mERROR: unrar NO exist!\e[0m";exit 1;fi
-        unrar $1
-esac
+# ============ Functions ============
 # Ckeck for all compoments: backend.
 function preck(){
     TAR=`tar --help&>>/dev/null;echo $?`
@@ -75,8 +7,8 @@ function preck(){
     XZIP=`xz -h&>>/dev/null;echo $?`
     BZIP2=`bzip2 -h&>>/dev/null;echo $?`
     Z7=`7z -h&>>/dev/null;echo $?`
-    ZIP=`zip -h&>>/dev/null;echo $?`
-    RAR=`rar -\?&>>/dev/null;echo $?`
+    UNZIP=`zip -h&>>/dev/null;echo $?`
+    UNRAR=`rar -\?&>>/dev/null;echo $?`
 }
 # Ckeck for all compoments: frontend.
 function autozipck(){
@@ -114,32 +46,98 @@ function autozipck(){
     else
         echo -e "Checking for '7z'...\e[31mNO\e[33m"
     fi
-    if [ $ZIP -eq 0 ];then
-        echo -e "Checking for 'zip'...\e[32mOK\e[33m"
+    if [ $UNZIP -eq 0 ];then
+        echo -e "Checking for 'unzip'...\e[32mOK\e[33m"
         availext="$availext, zip"
     else
-        echo -e "Checking for 'zip'...\e[31mNO\e[33m"
+        echo -e "Checking for 'unzip'...\e[31mNO\e[33m"
     fi
-    if [ $RAR -eq 0 ];then
-        echo -e "Checking for 'rar'...\e[32mOK\e[33m"
+    if [ $UNRAR -eq 0 ];then
+        echo -e "Checking for 'unrar'...\e[32mOK\e[33m"
         availext="$availext, rar"
     else
-        echo -e "Checking for 'rar'...\e[31mNO\e[33m"
+        echo -e "Checking for 'unrar'...\e[31mNO\e[33m"
     fi
     echo -e "Available extension name on your computer:\n$availext"
+}
+# ============ Start ============
+echo -e "\e[33mYuZJLab AutoUnZip.\e[0m"
+echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
+preck
+if [ -z $1 ];then
+    autozipck
     exit 0
-}
-# Get extension
-function getext(){
-    fn=${1%.*}
-    ext=${1##*.}
-    if [ ${fn##*.} -eq "tar" ];then
-        fn=${fn##*.}
-        ext="tar.${1##*.}"
-    fi
-    echo -e "\e[33mReceived: $0 $1 ==>Extension=$ext\e[0m"
-    if [ -e $1 ];then
-        echo -e "\e[31mWARNING: $fn exists! Will rename $fn as $fn.bak.\e[0m"
-        mv -f $fn $fn.bak
-    fi
-}
+    elif ! [ -e $1 ];then
+    echo -e "\e[31mERROR: Filename '$1' invalid.\e[0m"
+    exit 1
+fi
+fn=${1%.*}
+ext=${1##*.}
+if [ ${fn##*.} = "tar" ];then
+    ext="tar.$ext"
+    fn=${fn%.*}
+fi
+echo -e "\e[33mReceived: $0 $1 ==>Extension=$ext\e[0m"
+if [ -e $fn ];then
+    echo -e "\e[31mWARNING: $fn exists! Will rename $fn as $fn.bak.\e[0m"
+    mv -f $fn $fn.bak
+fi
+case $ext in
+    "tar")
+        echo -e "\e[33mWill execute: tar xvf $1\e[0m"
+        tar xvf $1
+    ;;
+    "tar.gz"|"tgz"|"tar.GZ")
+        if ! [ $GZIP -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
+        echo -e "\e[33mWill execute: tar xzvf $1\e[0m"
+        tar xzvf $1
+    ;;
+    "tar.xz"|"txz")
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ Utils NO exist!\e[0m";exit 1;fi
+        echo -e "\e[33mWill execute: tar xJvf $1\e[0m"
+        tar xJvf $1
+    ;;
+    "tar.bz2"|"tbz")
+        if ! [ $BZIP2 -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
+        echo -e "\e[33mWill execute: tar xjvf $1\e[0m"
+        tar xjvf $1
+    ;;
+    "tar.lzma"|"tar.lz"|"tlz")
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ Utils NO exist!\e[0m";exit 1;fi
+        echo -e "\e[33mWill execute: tar xvf --lzma $1\e[0m"
+        tar xvf --lzma $1
+    ;;
+    "gz"|"GZ")
+        if ! [ $GZIP -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
+        echo -e "\e[33mWill execute: gzip -dk $1\e[0m"
+        gzip -dk $1
+    ;;
+    "xz")
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ Utils NO exist!\e[0m";exit 1;fi
+        echo -e "\e[33mWill execute: xz -dk $1\e[0m"
+        xz -dk $1
+    ;;
+    "bz2")
+        if ! [ $BZIP2 -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
+        echo -e "\e[33mWill execute: bzip2 -dk $1\e[0m"
+        bzip2 -dk $1
+    ;;
+    "lz"|"lzma")
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ Utils NO exist!\e[0m";exit 1;fi
+        echo -e "\e[33mWill execute: xz -dk --format=lzma $1\e[0m"
+        xz -dk --format=lzma $1
+    ;;
+    "7z")
+        if ! [ $Z7 -eq 0 ]; then echo -e "\e[31mERROR: p7zip NO exist!\e[0m";exit 1;fi
+        echo -e "\e[33mWill execute: 7za x $1 $1\e[0m"
+        7za x $1
+    ;;
+    "zip")
+        if ! [ $UNZIP -eq 0 ]; then echo -e "\e[31mERROR: zip NO exist!\e[0m";exit 1;fi
+        echo -e "\e[33mWill execute: unzip -r $1 $1\e[0m"
+        unzip $1
+    ;;
+    "rar")
+        if ! [ $UNRAR -eq 0 ]; then echo -e "\e[31mERROR: unrar NO exist!\e[0m";exit 1;fi
+        unrar x $1
+esac
