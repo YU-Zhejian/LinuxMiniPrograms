@@ -1,0 +1,96 @@
+YuZJLab                    Auto Zip                      Manual 
+NAME
+    autozip - An automatic file compression tool
+DESCRIPTION
+    1. autozip
+        The first thing to do after installation. This will 
+        check the algorithms installed on your computer and 
+        give back a list of available extension name.
+    2. autozip [source] 
+        This will compress files and folders with default 
+        extension gz & tar.gz.
+    3. autozip [source] [ext] 
+        This will compress files and folders with extension 
+        [ext].
+    4. autozip [source] [ext] [level]
+        This will compress files and folders with extension 
+        [ext] to [level]. You can make it 1 (fastest) - 9 
+        (best). Some algorithms (e.g. xzip, zip) may support 0 
+        (store only; no compression).
+USE OF GNU PARALLEL (WITH ROOT PREVILEDGE)
+    It is recommended to use GNU Parallel to accelerate the 
+    speed of compression. You can change the first line of
+    autoxip.conf to "PARALLEL" to enable this feature.
+    
+    WARNING! GNU Parallel consumes lots of memory & CPU 
+    resources.
+CODE EXAMPLE
+    autozip
+        YuZJLab AutoZip. Usage: autozip [file& folder name] 
+[[extension] [level]]
+        Copyright (C) 2019-2020 YU Zhejian
+        WARNING: Configure file NOT exist. Will generate one 
+by default value.
+        Start checking all compoments...
+        Checking for 'tar'...OK
+        Checking for 'gzip'...OK
+        Checking for 'xz'...NO
+        Checking for 'bzip2'...OK
+        Checking for 'lzma'...NO
+        Checking for '7z'...NO
+        Checking for 'zip'...NO
+        Checking for 'rar'...NO
+        Checking for 'parallel' in /usr/bin...NO
+        Checking for /usr/bin/autozip.conf...NO
+        Available extension name on your computer:
+        tar, gz, GZ, tar.gz, tar.GZ, tgz, bz2, tar.bz2, tbz
+        Configure file /usr/bin/autozip.conf are as follows:
+        =====Begin /usr/bin/autozip.conf=====
+        NOPARALLEL
+        =====End   /usr/bin/autozip.conf=====
+
+
+    autozip etc
+        YuZJLab AutoZip. Usage: autozip [file& folder name] 
+[[extension] [level]]
+        Copyright (C) 2019-2020 YU Zhejian
+        WARNING: Compression level '' undefined. Will use 
+default value provided by corresponding algorism.
+        Received: /usr/bin/autozip etc tar.gz
+        Will execute: tar cv etc|gzip >etc.tar.gz
+        etc/
+        etc/bash.bashrc
+        etc/bash.bash_logout
+        etc/DIR_COLORS
+        etc/docx2txt.config
+        etc/fstab
+        =============SEVERAL LINES OMITTED=============
+
+
+    autozip Smst2 tbz 9
+        YuZJLab AutoZip. Usage: autozip [file& folder name]
+[[extension] [level]]
+        Copyright (C) 2019-2020 YU Zhejian
+        Received: /usr/bin/autozip Smst2 tbz
+        Will execute: tar cv Smst2|bzip2 -9>Smst2.tbz
+        Smst2/
+        Smst2/desktop.ini
+        Smst2/IBI/
+        Smst2/IBI/IBI1_course_handbook_19_20.pdf
+        Smst2/IBMS/
+        =============SEVERAL LINES OMITTED=============
+
+EXIT STATUS
+    0. OK
+    1. ERROR
+AUTHOR
+    YU Zhejian
+REPORTING BUGS
+    YU Zhejian <Zhejian.19@intl.zju.edu.cn>
+COPYRIGHT
+    Copyright © 2019-2020 YuZJ Lab
+    License GPLv3+: GNU GPL version 3 or later 
+    <https://gnu.org/licenses/gpl.html>.
+    This is free software: you are free to change and 
+    redistribute it. There is NO WARRANTY, to the extent 
+    permitted by law.

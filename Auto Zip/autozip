@@ -15,7 +15,7 @@ LVL=""
 USEPARALLEL=false
 CONF=1
 if ! [ -f $CONFN ];then
-    echo -e "\e[31mWARNING: Configure file \e[31mNO\e[33mt exist. Will generate one by default value.\e[0m"
+    echo -e "\e[31mWARNING: Configure file NOT exist. Will generate one by default value.\e[0m"
     echo "NOPARALLEL">$CONFN
     elif [ -d $CONFN ];then
     echo -e "\e[31mERROR: Configure file is a directory.\e[0m"
@@ -152,7 +152,7 @@ case $ext in
         echo -e "\e[31m WARNING: 1. RAR is a property software. 2. Use ABSOLUTE PATH.\e[0m"
     ;;
     *)
-        echo -e "\e[31mERROR: Extension name '$ext' invalid.\nYou can use 'autozip -s' to check available method and extension.\e[0m"
+        echo -e "\e[31mERROR: Extension name '$ext' invalid.\nYou can use 'autozip' to check available method and extension.\e[0m"
 esac
 echo -e "\e[33mReceived: $0 $1 $ext $lvl\e[0m"
 if [ -e $1.$ext ];then
@@ -198,7 +198,7 @@ case $ext in
             echo -e "\e[33mWill execute: tar cv $1|/usr/bin/parallel --pipe --recend '' -k bzip2 $LVL>$1.$ext\e[0m"
             tar cv $1|/usr/bin/parallel --pipe --recend '' -k bzip2 $LVL>$1.$ext
         else
-            echo -e "\e[33mWill execute: tar cv $1|gzip $LVL>$1.$ext\e[0m"
+            echo -e "\e[33mWill execute: tar cv $1|bzip2 $LVL>$1.$ext\e[0m"
             tar cv $1|bzip2 $LVL>$1.$ext
         fi
     ;;
