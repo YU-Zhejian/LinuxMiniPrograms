@@ -17,17 +17,26 @@ DESCRIPTION
         [ext] to [level]. You can make it 1 (fastest) - 9 
         (best). Some algorithms (e.g. xzip, zip) may support 0 
         (store only; no compression).
-USE OF GNU PARALLEL (WITH ROOT PREVILEDGE)
+USE OF GNU PARALLEL (REQUIRE ROOT PREVILEDGE)
     It is recommended to use GNU Parallel to accelerate the 
     speed of compression. You can change the first line of
     autoxip.conf to "PARALLEL" to enable this feature.
     
     WARNING! GNU Parallel consumes lots of memory & CPU 
     resources.
+USE OF LZMA AND XZIP
+    The core of the XZ Utils compression code is based on LZMA 
+    SDK. So when you're about to compress & decompress files 
+    with lz, lzma, tar.lzma, tlz extensions, we'll use XZIP.
+USE OF 7ZIP
+    WARNING: DO NOT USE the 7-zip format for backup purpose on 
+    Linux/Unix because 7-zip does not store the owner/group of 
+    the file.
+USE OF RAR
+    WARNING: 1. RAR is a property software. 2. Use ABSOLUTE PATH.
 CODE EXAMPLE
     autozip
-        YuZJLab AutoZip. Usage: autozip [file& folder name] 
-[[extension] [level]]
+        YuZJLab AutoZip.
         Copyright (C) 2019-2020 YU Zhejian
         WARNING: Configure file NOT exist. Will generate one 
 by default value.
@@ -51,8 +60,7 @@ by default value.
 
 
     autozip etc
-        YuZJLab AutoZip. Usage: autozip [file& folder name] 
-[[extension] [level]]
+        YuZJLab AutoZip.
         Copyright (C) 2019-2020 YU Zhejian
         WARNING: Compression level '' undefined. Will use 
 default value provided by corresponding algorism.
@@ -68,8 +76,7 @@ default value provided by corresponding algorism.
 
 
     autozip Smst2 tbz 9
-        YuZJLab AutoZip. Usage: autozip [file& folder name]
-[[extension] [level]]
+        YuZJLab AutoZip.
         Copyright (C) 2019-2020 YU Zhejian
         Received: /usr/bin/autozip Smst2 tbz
         Will execute: tar cv Smst2|bzip2 -9>Smst2.tbz
@@ -79,7 +86,6 @@ default value provided by corresponding algorism.
         Smst2/IBI/IBI1_course_handbook_19_20.pdf
         Smst2/IBMS/
         =============SEVERAL LINES OMITTED=============
-
 EXIT STATUS
     0. OK
     1. ERROR
