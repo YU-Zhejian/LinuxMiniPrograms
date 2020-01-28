@@ -27,13 +27,6 @@ function preck(){
         done <$CONFN
         unset line
         if [ ${conf[0]} = "PARALLEL" ]&&[ $PARALLEL ];then USEPARALLEL=true;echo -e "\e[33mWill use GNU Parallel if possible.\e[0m";fi
-        case $3 in
-            [0-9])
-                LVL="-"$3
-            ;;
-            *)
-                echo -e "\e[31mWARNING: Compression level '$3' undefined. Will use default value provided by corresponding algorism.\e[0m"
-        esac
         unset conf
     fi
 }
@@ -138,6 +131,15 @@ if [ -z $2 ]; then
 else
     ext=$2
 fi
+case $3 in
+    [0-9])
+        LVL="-"$3
+        if [ $ext = "7z" ];then LVL="-mx=$3";fi
+    ;;
+    *)
+        unset LVL
+        echo -e "\e[31mWARNING: Compression level '$3' undefined. Will use default value provided by corresponding algorism.\e[0m"
+esac
 ckext $1
 echo -e "\e[33mReceived: $0 $1 $ext $lvl\e[0m"
 if [ -e $1.$ext ];then
@@ -166,13 +168,13 @@ case $ext in
         fi
     ;;
     "tar.xz"|"txz")
-        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ Utils NO exist!\e[0m";exit 1;fi
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then
-            echo -e "\e[33mWill execute: tar cv $1|xz -T0>$1.$ext\e[0m"
-            tar cv $1|xz -T0>$1.$ext
+            echo -e "\e[33mWill execute: tar cv $1|xz -T0 $LVL>$1.$ext\e[0m"
+            tar cv $1|xz -T0 $LVL>$1.$ext
         else
-            echo -e "\e[33mWill execute: tar cv $1|xz>$1.$ext\e[0m"
-            tar cv $1|xz>$1.$ext
+            echo -e "\e[33mWill execute: tar cv $1|xz $LVL>$1.$ext\e[0m"
+            tar cv $1|xz $LVL>$1.$ext
         fi
     ;;
     "tar.bz2"|"tbz")
@@ -186,13 +188,13 @@ case $ext in
         fi
     ;;
     "tar.lzma"|"tar.lz"|"tlz")
-        if ! [ $LZMA -eq 0 ]; then echo -e "\e[31mERROR: XZ Utils NO exist!\e[0m";exit 1;fi
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then
-            echo -e "\e[33mWill execute: cat $1|xz -T --format=lzma 0>$1.$ext\e[0m"
-            tar cv $1|xz -T --format=lzma 0>$1.$ext
+            echo -e "\e[33mWill execute:  tar cv $1|/usr/bin/parallel --pipe --recend '' -k xz -T0 -F lzma $LVL >$1.$ext\e[0m"
+            tar cv $1|/usr/bin/parallel --pipe --recend '' -k xz -T0 -F lzma $LVL >$1.$ext
         else
-            echo -e "\e[33mWill execute: cat $1|xz --format=lzma>$1.$ext\e[0m"
-            tar cv $1|xz --format=lzma>$1.$ext
+            echo -e "\e[33mWill execute: tar cv $1|xz -F lzma $LVL >$1.$ext\e[0m"
+            tar cv $1|xz -F lzma $LVL >$1.$ext
         fi
     ;;
     "gz"|"GZ")
@@ -206,13 +208,13 @@ case $ext in
         fi
     ;;
     "xz")
-        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ Utils NO exist!\e[0m";exit 1;fi
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then
             echo -e "\e[33mWill execute: cat $1|xz -T 0>$1.$ext\e[0m"
-            cat $1|xz -T 0>$1.$ext
+            cat $1|xz -T0 $LVL>$1.$ext
         else
             echo -e "\e[33mWill execute: cat $1|xz>$1.$ext\e[0m"
-            cat $1|xz>$1.$ext
+            cat $1|xz $LVL>$1.$ext
         fi
     ;;
     "bz2")
@@ -226,23 +228,23 @@ case $ext in
         fi
     ;;
     "lz"|"lzma")
-        if ! [ $LZMA -eq 0 ]; then echo -e "\e[31mERROR: XZ Utils NO exist!\e[0m";exit 1;fi
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then
-            echo -e "\e[33mWill execute: cat $1|xz -T --format=lzma 0>$1.$ext\e[0m"
-            cat $1|xz -T --format=lzma 0>$1.$ext
+            echo -e "\e[33mcat cv $1|/usr/bin/parallel --pipe --recend '' -k xz -T0 -F lzma $LVL>$1.$ext\e[0m"
+            cat cv $1|/usr/bin/parallel --pipe --recend '' -k xz -T0 -F lzma $LVL>$1.$ext
         else
-            echo -e "\e[33mWill execute: cat $1|xz --format=lzma>$1.$ext\e[0m"
-            cat $1|xz --format=lzma>$1.$ext
+            echo -e "\e[33mWill execute: cat $1|xz --F lzma $LVL>$1.$ext\e[0m"
+            cat $1|xz --F lzma $LVL>$1.$ext
         fi
     ;;
     "7z")
         if ! [ $Z7 -eq 0 ]; then echo -e "\e[31mERROR: p7zip NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: 7za u $1.$ext $1\e[0m"
+        echo -e "\e[33mWill execute: 7za u $1.$ext $1 $LVL\e[0m"
         7za u $1.$ext $1 $LVL
     ;;
     "zip")
         if ! [ $ZIP -eq 0 ]; then echo -e "\e[31mERROR: zip NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: zip -r $1.$ext $1\e[0m"
+        echo -e "\e[33mWill execute: zip -r $1.$ext $1 $LVL\e[0m"
         zip -r $1.$ext $1 $LVL
     ;;
     "rar")

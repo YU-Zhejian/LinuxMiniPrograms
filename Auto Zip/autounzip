@@ -93,7 +93,7 @@ case $ext in
         tar xzvf $1
     ;;
     "tar.xz"|"txz")
-        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ Utils NO exist!\e[0m";exit 1;fi
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
         echo -e "\e[33mWill execute: tar xJvf $1\e[0m"
         tar xJvf $1
     ;;
@@ -103,7 +103,7 @@ case $ext in
         tar xjvf $1
     ;;
     "tar.lzma"|"tar.lz"|"tlz")
-        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ Utils NO exist!\e[0m";exit 1;fi
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: LZMA SDK NO exist!\e[0m";exit 1;fi
         echo -e "\e[33mWill execute: tar xvf --lzma $1\e[0m"
         tar xvf --lzma $1
     ;;
@@ -113,7 +113,7 @@ case $ext in
         gzip -dk $1
     ;;
     "xz")
-        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ Utils NO exist!\e[0m";exit 1;fi
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
         echo -e "\e[33mWill execute: xz -dk $1\e[0m"
         xz -dk $1
     ;;
@@ -123,7 +123,7 @@ case $ext in
         bzip2 -dk $1
     ;;
     "lz"|"lzma")
-        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ Utils NO exist!\e[0m";exit 1;fi
+        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
         echo -e "\e[33mWill execute: xz -dk --format=lzma $1\e[0m"
         xz -dk --format=lzma $1
     ;;
