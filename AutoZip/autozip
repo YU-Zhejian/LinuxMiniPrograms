@@ -210,7 +210,7 @@ case $ext in
     "xz")
         if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then
-            echo -e "\e[33mWill execute: cat $1|xz -T 0>$1.$ext\e[0m"
+            echo -e "\e[33mWill execute: cat $1|xz -T0>$1.$ext\e[0m"
             cat $1|xz -T0 $LVL>$1.$ext
         else
             echo -e "\e[33mWill execute: cat $1|xz>$1.$ext\e[0m"
