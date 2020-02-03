@@ -7,6 +7,6 @@ if [ -z $1 ]; then
 cat psstmp|more
 else
 head -n 1 psstmp
-grep $1 psstmp --color=auto
+cat psstmp|grep --color=auto -- $1
 fi
 rm psstmp
