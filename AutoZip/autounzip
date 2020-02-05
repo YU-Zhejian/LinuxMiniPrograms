@@ -1,143 +1,449 @@
 #!/bin/bash
 # ============ Functions ============
-# Ckeck for all compoments: backend.
-function preck(){
-    TAR=`tar --help&>>/dev/null;echo $?`
-    GZIP=`gzip -h&>>/dev/null;echo $?`
-    XZIP=`xz -h&>>/dev/null;echo $?`
-    BZIP2=`bzip2 -h&>>/dev/null;echo $?`
-    Z7=`7za -h&>>/dev/null;echo $?`
-    UNZIP=`unzip -h&>>/dev/null;echo $?`
-    UNRAR=`unrar -\?&>>/dev/null;echo $?`
-}
-# Ckeck for all compoments: frontend.
-function autozipck(){
-    echo -e "\e[33mStart checking all compoments..."
-    if [ $TAR -eq 0 ];then
-        echo -e "\e[33mChecking for 'tar'...\e[32mOK\e[33m"
-        availext="tar"
-    else
-        echo -e "\e[33mChecking for 'tar'...\e[31mNO\e[33m"
-    fi
-    if [ $GZIP -eq 0 ];then
-        echo -e "Checking for 'gzip'...\e[32mOK\e[33m"
-        availext="$availext, gz, GZ"
-        if [ $TAR -eq 0 ];then availext="$availext, tar.gz, tar.GZ, tgz";fi
-    else
-        echo -e "Checking for 'gzip'...\e[31mNO\e[33m"
-    fi
-    if [ $XZIP -eq 0 ];then
-        echo -e "Checking for 'xz'...\e[32mOK\e[33m"
-        availext="$availext, xz, lzma, lz"
-        if [ $TAR -eq 0 ];then availext="$availext, tar.xz, txz, tar.lzma, tlz";fi
-    else
-        echo -e "Checking for 'xz'...\e[31mNO\e[33m"
-    fi
-    if [ $BZIP2 -eq 0 ];then
-        echo -e "Checking for 'bzip2'...\e[32mOK\e[33m"
-        availext="$availext, bz2"
-        if [ $TAR -eq 0 ];then availext="$availext, tar.bz2, tbz";fi
-    else
-        echo -e "Checking for 'bzip2'...\e[31mNO\e[33m"
-    fi
-    if [ $Z7 -eq 0 ]
-    then echo -e "Checking for '7z'...\e[32mOK\e[33m"
-        availext="$availext, 7z"
-    else
-        echo -e "Checking for '7z'...\e[31mNO\e[33m"
-    fi
-    if [ $UNZIP -eq 0 ];then
-        echo -e "Checking for 'unzip'...\e[32mOK\e[33m"
-        availext="$availext, zip"
-    else
-        echo -e "Checking for 'unzip'...\e[31mNO\e[33m"
-    fi
-    if [ $UNRAR -eq 0 ];then
-        echo -e "Checking for 'unrar'...\e[32mOK\e[33m"
-        availext="$availext, rar"
-    else
-        echo -e "Checking for 'unrar'...\e[31mNO\e[33m"
-    fi
-    echo -e "Available extension name on your computer:\n$availext"
+DN=`dirname $0`
+. $DN/libautozip
+# Make a number 3 digit
+function fixthree(){
+    fout=""$1
+    while [ ${#fout} -lt 3 ];do
+        fout="0"$fout
+    done
+    echo $fout
 }
 # ============ Start ============
 echo -e "\e[33mYuZJLab AutoUnZip.\e[0m"
 echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
 preck
-if [ -z $1 ];then
+USESPLIT=false
+# ============ Possess options ============
+for opt in $@;do
+    if [ `isopt $opt` -eq 0 ];then
+        case $opt in
+            "-h"|"--help")
+                if [ -f $DN/autozip.Usage ];then
+                    cat $DN/autozip.Usage
+                    exit 0
+                else
+                    echo -e "\e[31mERROR: $DN/autozip.Usage not found!\e[0m"
+                    exit 1
+                fi
+            ;;
+            "-v"|"--version")
+                echo "Version 1.0.0"
+            ;;
+            *)
+                echo -e "\e[31mERROR: Option '$opt' invalid.\e[0m"
+                exit 1
+        esac
+        OPT="$OPT $opt"
+    else
+        STDS="$STDS $opt"
+    fi
+done
+# ============ Possess arguments ============
+STDI=($STDS)
+fulln=${STDI[0]}
+if [ -z $fulln ];then
     autozipck
     exit 0
-    elif ! [ -e $1 ];then
-    echo -e "\e[31mERROR: Filename '$1' invalid.\e[0m"
+    elif [ -e "$fulln.001" ];then
+    USESPLIT=true
+    elif ! [ -e $fulln ];then
+    echo -e "\e[31mERROR: Filename '$fulln' invalid.\e[0m"
     exit 1
 fi
-fn=${1%.*}
-ext=${1##*.}
+fn=${fulln%.*}
+ext=${fulln##*.}
 if [ ${fn##*.} = "tar" ];then
     ext="tar.$ext"
     fn=${fn%.*}
 fi
-echo -e "\e[33mReceived: $0 $1 ==>Extension=$ext\e[0m"
 if [ -e $fn ];then
     echo -e "\e[31mWARNING: $fn exists! Will rename $fn as $fn.bak.\e[0m"
     mv -f $fn $fn.bak
 fi
+echo -e "\e[33mReceived: $0 $fulln $OPT ==>Extension=$ext\e[0m"
+# ============ Makt tmp ============
+tempdir=`mktemp -dt autozip.XXXXXX`
+echo -e "\e[33mTEMP directory '$tempdir' made.\e[0m"
+tempf=`mktemp -t autozip.XXXXXX`
+echo -e "\e[33mTEMP file '$tempf' made.\e[0m"
+# ============ Start Compressing ============
 case $ext in
-    "tar")
-        echo -e "\e[33mWill execute: tar xvf $1\e[0m"
-        tar xvf $1
+    "tar") # ============ tar ============
+        if $USESPLIT;then
+            file_i=1
+            in_i=001
+            while [ -f $fulln.$in_i ] ;do
+                echo -e "\e[33mWill execute: cat $fulln.$in_i>$tempf\e[0m"
+                cat $fulln.$in_i>>$tempf
+                file_i=$[$file_i +1]
+                in_i=`fixthree $file_i`
+            done
+            unset file_i in_1
+            echo -e "\e[33mWill execute: tar xvf $tempf\e[0m"
+            tar xvf $tempf
+            echo -e "\e[33mWill execute: rm $tempf\e[0m"
+            rm $tempf
+        else
+            echo -e "\e[33mWill execute: tar xvf $fulln\e[0m"
+            tar xvf $fulln
+        fi
     ;;
-    "tar.gz"|"tgz"|"tar.GZ")
+    "tar.gz"|"tgz"|"tar.GZ") # ============ tgz ============
         if ! [ $GZIP -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: tar xzvf $1\e[0m"
-        tar xzvf $1
+        if $USESPLIT;then
+            file_i=1
+            in_i=001
+            if $USEPARALLEL;then
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: echo \"cat `pwd`/$fulln.$in_i|gzip -dk>>$tempdir/$in_i\">>$tempdir/$in_i.sh\e[0m"
+                    echo "cat `pwd`/$fulln.$in_i|gzip -dk>>$tempdir/$in_i">>$tempdir/$in_i.sh
+                    chmod +x $tempdir/$in_i.sh
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+                echo -e "\e[33mWill execute: find $tempdir/*.sh|/usr/bin/parallel bash\e[0m"
+                find $tempdir/*.sh|/usr/bin/parallel bash
+            else
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: cat $fulln.$in_i|gzip -dk>>$tempdir/$in_i\e[0m"
+                    cat $fulln.$in_i|gzip -dk>>$tempdir/$in_i
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+            fi
+            file_i=1
+            in_i=001
+            while [ -f $fulln.$in_i ] ;do
+                echo -e "\e[33mWill execute: cat $tempdir/$in_i>>$tempf\e[0m"
+                cat $tempdir/$in_i>>$tempf
+                file_i=$[$file_i +1]
+                in_i=`fixthree $file_i`
+            done
+            unset file_i in_1
+            echo -e "\e[33mWill execute: tar xvf $tempf\e[0m"
+            tar xvf $tempf
+            echo -e "\e[33mWill execute: rm $tempf\e[0m"
+            rm $tempf
+        else
+            if $USEPARALLEL && [ $PIGZ -eq 0 ];then
+                echo -e "\e[33mWill execute: tar xzvf $fulln\e[0m"
+                pigz -d $fulln|tar zvf >$fn
+            else
+                echo -e "\e[33mWill execute: tar xzvf $fulln\e[0m"
+                tar xzvf $fulln
+            fi
+        fi
     ;;
-    "tar.xz"|"txz")
+    "tar.xz"|"txz") # ============ txz ============
         if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: tar xJvf $1\e[0m"
-        tar xJvf $1
+        if $USESPLIT;then
+                        file_i=1
+            in_i=001
+            if $USEPARALLEL;then
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: echo \"cat `pwd`/$fulln.$in_i|xz -dk>>$tempdir/$in_i\">>$tempdir/$in_i.sh\e[0m"
+                    echo "cat `pwd`/$fulln.$in_i|xz -dk>>$tempdir/$in_i">>$tempdir/$in_i.sh
+                    chmod +x $tempdir/$in_i.sh
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+                echo -e "\e[33mWill execute: find $tempdir/*.sh|/usr/bin/parallel bash\e[0m"
+                find $tempdir/*.sh|/usr/bin/parallel bash
+            else
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: cat $fulln.$in_i|xz -dk>>$tempdir/$in_i\e[0m"
+                    cat $fulln.$in_i|xz -dk>>$tempdir/$in_i
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+            fi
+            file_i=1
+            in_i=001
+            while [ -f $fulln.$in_i ] ;do
+                echo -e "\e[33mWill execute: cat $tempdir/$in_i>>$tempf\e[0m"
+                cat $tempdir/$in_i>>$tempf
+                file_i=$[$file_i +1]
+                in_i=`fixthree $file_i`
+            done
+            unset file_i in_1
+            echo -e "\e[33mWill execute: tar xvf $tempf\e[0m"
+            tar xvf $tempf
+            echo -e "\e[33mWill execute: rm $tempf\e[0m"
+            rm $tempf
+        else
+            echo -e "\e[33mWill execute: tar xJvf $fulln\e[0m"
+            tar xJvf $fulln
+        fi
     ;;
-    "tar.bz2"|"tbz")
+    "tar.bz2"|"tbz") # ============ tbz ============
         if ! [ $BZIP2 -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: tar xjvf $1\e[0m"
-        tar xjvf $1
+        if $USESPLIT;then
+            
+            file_i=1
+            in_i=001
+            if $USEPARALLEL;then
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: echo \"cat `pwd`/$fulln.$in_i|bzip2 -dk>>$tempdir/$in_i\">>$tempdir/$in_i.sh\e[0m"
+                    echo "cat `pwd`/$fulln.$in_i|bzip2 -dk>>$tempdir/$in_i">>$tempdir/$in_i.sh
+                    chmod +x $tempdir/$in_i.sh
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+                echo -e "\e[33mWill execute: find $tempdir/*.sh|/usr/bin/parallel bash\e[0m"
+                find $tempdir/*.sh|/usr/bin/parallel bash
+            else
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: cat $fulln.$in_i|bzip2 -dk>>$tempdir/$in_i\e[0m"
+                    cat $fulln.$in_i|bzip2 -dk>>$tempdir/$in_i
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+            fi
+            file_i=1
+            in_i=001
+            while [ -f $fulln.$in_i ] ;do
+                echo -e "\e[33mWill execute: cat $tempdir/$in_i>>$tempf\e[0m"
+                cat $tempdir/$in_i>>$tempf
+                file_i=$[$file_i +1]
+                in_i=`fixthree $file_i`
+            done
+            unset file_i in_1
+            echo -e "\e[33mWill execute: tar xvf $tempf\e[0m"
+            tar xvf $tempf
+            echo -e "\e[33mWill execute: rm $tempf\e[0m"
+            rm $tempf
+        else
+            echo -e "\e[33mWill execute: tar xjvf $fulln\e[0m"
+            tar xjvf $fulln
+        fi
     ;;
-    "tar.lzma"|"tar.lz"|"tlz")
+    "tar.lzma"|"tar.lz"|"tlz") # ============ tlz ============
         if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: LZMA SDK NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: tar xvf --lzma $1\e[0m"
-        tar xvf --lzma $1
+        if $USESPLIT;then
+            file_i=1
+            in_i=001
+            if $USEPARALLEL;then
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: echo \"cat `pwd`/$fulln.$in_i|xz -dk --format=lzma>>$tempdir/$in_i\">>$tempdir/$in_i.sh\e[0m"
+                    echo "cat `pwd`/$fulln.$in_i|xz -dk --format=lzma>>$tempdir/$in_i">>$tempdir/$in_i.sh
+                    chmod +x $tempdir/$in_i.sh
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+                echo -e "\e[33mWill execute: find $tempdir/*.sh|/usr/bin/parallel bash\e[0m"
+                find $tempdir/*.sh|/usr/bin/parallel bash
+            else
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: cat $fulln.$in_i|xz -dk --format=lzma>>$tempdir/$in_i\e[0m"
+                    cat $fulln.$in_i|xz -dk --format=lzma>>$tempdir/$in_i
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+            fi
+            file_i=1
+            in_i=001
+            while [ -f $fulln.$in_i ] ;do
+                echo -e "\e[33mWill execute: cat $tempdir/$in_i>>$tempf\e[0m"
+                cat $tempdir/$in_i>>$tempf
+                file_i=$[$file_i +1]
+                in_i=`fixthree $file_i`
+            done
+            unset file_i in_1
+            echo -e "\e[33mWill execute: tar xvf $tempf\e[0m"
+            tar xvf $tempf
+            echo -e "\e[33mWill execute: rm $tempf\e[0m"
+            rm $tempf
+        else
+            echo -e "\e[33mWill execute: tar xvf --lzma $fulln\e[0m"
+            tar xvf --lzma $fulln
+        fi
     ;;
-    "gz"|"GZ")
+    "gz"|"GZ") # ============ gz ============
         if ! [ $GZIP -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: gzip -dk $1\e[0m"
-        gzip -dk $1
+        if $USESPLIT;then
+            file_i=1
+            in_i=001
+            if $USEPARALLEL;then
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: echo \"cat `pwd`/$fulln.$in_i|gzip -dk>>$tempdir/$in_i\">>$tempdir/$in_i.sh\e[0m"
+                    echo "cat `pwd`/$fulln.$in_i|gzip -dk>>$tempdir/$in_i">>$tempdir/$in_i.sh
+                    chmod +x $tempdir/$in_i.sh
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+                echo -e "\e[33mWill execute: find $tempdir/*.sh|/usr/bin/parallel bash\e[0m"
+                find $tempdir/*.sh|/usr/bin/parallel bash
+            else
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: cat $fulln.$in_i|gzip -dk>>$tempdir/$in_i\e[0m"
+                    cat $fulln.$in_i|gzip -dk>>$tempdir/$in_i
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+            fi
+            file_i=1
+            in_i=001
+            while [ -f $fulln.$in_i ] ;do
+                echo -e "\e[33mWill execute: cat $tempdir/$in_i>>$fn\e[0m"
+                cat $tempdir/$in_i>>$fn
+                file_i=$[$file_i +1]
+                in_i=`fixthree $file_i`
+            done
+            unset file_i in_1
+        else
+            if $USEPARALLEL && [ $PIGZ -eq 0 ];then
+                echo -e "\e[33mWill execute: pigz -dk $fulln\e[0m"
+                cat $fulln|pigz -d>$fn
+            else
+                echo -e "\e[33mWill execute: gzip -dk $fulln\e[0m"
+                cat $fulln|gzip -d>$fn
+            fi
+        fi
     ;;
-    "xz")
+    "xz") # ============ xz ============
         if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: xz -dk $1\e[0m"
-        xz -dk $1
+        if $USESPLIT;then
+            file_i=1
+            in_i=001
+            if $USEPARALLEL;then
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: echo \"cat `pwd`/$fulln.$in_i|xz -dk>>$tempdir/$in_i\">>$tempdir/$in_i.sh\e[0m"
+                    echo "cat `pwd`/$fulln.$in_i|xz -dk>>$tempdir/$in_i">>$tempdir/$in_i.sh
+                    chmod +x $tempdir/$in_i.sh
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+                echo -e "\e[33mWill execute: find $tempdir/*.sh|/usr/bin/parallel bash\e[0m"
+                find $tempdir/*.sh|/usr/bin/parallel bash
+            else
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: cat $fulln.$in_i|xz -dk>>$tempdir/$in_i\e[0m"
+                    cat $fulln.$in_i|xz -dk>>$tempdir/$in_i
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+            fi
+            file_i=1
+            in_i=001
+            while [ -f $fulln.$in_i ] ;do
+                echo -e "\e[33mWill execute: cat $tempdir/$in_i>>$fn\e[0m"
+                cat $tempdir/$in_i>>$fn
+                file_i=$[$file_i +1]
+                in_i=`fixthree $file_i`
+            done
+            unset file_i in_1
+        else
+            echo -e "\e[33mWill execute: xz -dk $fulln\e[0m"
+            xz -dk $fulln
+        fi
     ;;
-    "bz2")
+    "bz2") # ============ bz2 ============
         if ! [ $BZIP2 -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: bzip2 -dk $1\e[0m"
-        bzip2 -dk $1
+        if $USESPLIT;then
+            file_i=1
+            in_i=001
+            if $USEPARALLEL;then
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: echo \"cat `pwd`/$fulln.$in_i|bzip2 -dk>>$tempdir/$in_i\">>$tempdir/$in_i.sh\e[0m"
+                    echo "cat `pwd`/$fulln.$in_i|bzip2 -dk>>$tempdir/$in_i">>$tempdir/$in_i.sh
+                    chmod +x $tempdir/$in_i.sh
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+                echo -e "\e[33mWill execute: find $tempdir/*.sh|/usr/bin/parallel bash\e[0m"
+                find $tempdir/*.sh|/usr/bin/parallel bash
+            else
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: cat $fulln.$in_i|bzip2 -dk>>$tempdir/$in_i\e[0m"
+                    cat $fulln.$in_i|bzip2 -dk>>$tempdir/$in_i
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+            fi
+            file_i=1
+            in_i=001
+            while [ -f $fulln.$in_i ] ;do
+                echo -e "\e[33mWill execute: cat $tempdir/$in_i>>$fn\e[0m"
+                cat $tempdir/$in_i>>$fn
+                file_i=$[$file_i +1]
+                in_i=`fixthree $file_i`
+            done
+            unset file_i in_1
+        else
+            echo -e "\e[33mWill execute: bzip2 -dk $fulln\e[0m"
+            bzip2 -dk $fulln
+        fi
     ;;
-    "lz"|"lzma")
+    "lz"|"lzma") # ============ lz ============
         if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: xz -dk --format=lzma $1\e[0m"
-        xz -dk --format=lzma $1
+        if $USESPLIT;then
+            file_i=1
+            in_i=001
+            if $USEPARALLEL;then
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: echo \"cat `pwd`/$fulln.$in_i|xz -dk --format=lzma>>$tempdir/$in_i\">>$tempdir/$in_i.sh\e[0m"
+                    echo "cat `pwd`/$fulln.$in_i|xz -dk --format=lzma>>$tempdir/$in_i">>$tempdir/$in_i.sh
+                    chmod +x $tempdir/$in_i.sh
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+                echo -e "\e[33mWill execute: find $tempdir/*.sh|/usr/bin/parallel bash\e[0m"
+                find $tempdir/*.sh|/usr/bin/parallel bash
+            else
+                while [ -f $fulln.$in_i ] ;do
+                    echo -e "\e[33mWill execute: cat $fulln.$in_i|xz -dk --format=lzma>>$tempdir/$in_i\e[0m"
+                    cat $fulln.$in_i|xz -dk --format=lzma>>$tempdir/$in_i
+                    file_i=$[$file_i +1]
+                    in_i=`fixthree $file_i`
+                done
+            fi
+            file_i=1
+            in_i=001
+            while [ -f $fulln.$in_i ] ;do
+                echo -e "\e[33mWill execute: cat $tempdir/$in_i>>$fn\e[0m"
+                cat $tempdir/$in_i>>$fn
+                file_i=$[$file_i +1]
+                in_i=`fixthree $file_i`
+            done
+            unset file_i in_1
+        else
+            echo -e "\e[33mWill execute: xz -dk --format=lzma $fulln\e[0m"
+            xz -dk --format=lzma $fulln
+        fi
     ;;
-    "7z")
+    "7z") # ============ 7z ============
         if ! [ $Z7 -eq 0 ]; then echo -e "\e[31mERROR: p7zip NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: 7za x $1 $1\e[0m"
-        7za x $1
+        if $USESPLIT;then SUFF=".001";fi
+        if $USEPARALLEL;then PAR="-mmt0";fi
+        echo -e "\e[33mWill execute: 7za $PAR x $fulln $fulln$SUFF\e[0m"
+        7za $PAR x $fulln$SUFF
     ;;
-    "zip")
-        if ! [ $UNZIP -eq 0 ]; then echo -e "\e[31mERROR: zip NO exist!\e[0m";exit 1;fi
-        echo -e "\e[33mWill execute: unzip -r $1 $1\e[0m"
-        unzip $1
+    "zip") # ============ zip ============
+        if ! [ $UNZIP -eq 0 ]; then echo -e "\e[31mERROR: unzip NO exist!\e[0m";exit 1;fi
+        if [[ -f $fn.z01 ]];then
+            if ! [ $ZIP -eq 0 ]; then echo -e "\e[31mERROR: zip NO exist!\e[0m";exit 1;fi
+            echo -e "\e[33mWill execute: cat $fn.z* > $tempdir/$fn.zip\e[0m"
+            cp $fn.z* $tempdir/
+            echo -e "\e[33mWill execute: zip -F $tempdir/$fn.zip\e[0m"
+            zip -FF $tempdir/$fn.zip --out $tempdir/$fn.fzip
+            echo -e "\e[33mWill execute: unzip $tempdir/$fn.zip\e[0m"
+            unzip $tempdir/$fn.fzip
+        else
+            echo -e "\e[33mWill execute: unzip -r $fulln $fulln\e[0m"
+            unzip $fulln
+        fi
     ;;
     "rar")
         if ! [ $UNRAR -eq 0 ]; then echo -e "\e[31mERROR: unrar NO exist!\e[0m";exit 1;fi
-        unrar x $1
+        if $USEPARALLEL;then PAR="-mt8";fi
+        unrar $PAR x $fulln
 esac
+# ============ Finished ============
+echo -e "\e[33mWill execute: rm -rf $tempdir\e[0m"
+rm -rf $tempdir
+echo -e "\e[33mWill execute: rm -rf $tempf\e[0m"
+rm -rf $tempf
+echo -e "\e[33mFinished.\e[0m"
+exit 0
