@@ -74,7 +74,7 @@ USE OF PIGZ
 
 USE OF GNU GZIP
     When processing bioinformatical data, please make sure that
-    You should use GUN GZIP to produce a GZIP COMPRESSED DATA 
+    You should use GZIP to produce a GZIP COMPRESSED DATA 
     instead of BGZIP to produce a BLOCKED GNU ZIP FORMAT
     before using this tool!
 
@@ -82,12 +82,12 @@ USE OF BGZIP
     This is the right way to produce a BLOCKED GNU ZIP FORMAT
     with "gz" extension. Because it is capable of GNU GZip, 
     we'll not distinguish them when extracting data. "tar.gz"
-    is not supported in bgzip format because it sounds weird.
+    is not supported in bgz format because it sounds weird.
 
 USE OF LZMA SDK AND XZ UTILS
     The core of the XZ Utils compression code is based on LZMA 
     SDK. So when you're about to compress & decompress files 
-    with lz, lzma, tar.lzma, tlz extensions, we'll use XZIP.
+    with lz, lzma, tar.lzma, tlz extensions, we'll use XZ Utils.
 
 USE OF 7ZIP
     WARNING: DO NOT USE the 7-zip format for backup purpose on 
@@ -100,58 +100,6 @@ USE OF 7ZIP
 USE OF RAR
     WARNING: 1. RAR is a PROPERTY software. 2. Use ABSOLUTE PATH.
 
-CODE EXAMPLE
-    autozip
-        YuZJLab AutoZip.
-        Copyright (C) 2019-2020 YU Zhejian
-        WARNING: Configure file NOT exist. Will generate one 
-        by default value.
-        Start checking all compoments...
-        Checking for 'tar'...OK
-        Checking for 'gzip'...OK
-        Checking for 'xz'...NO
-        Checking for 'bzip2'...OK
-        Checking for 'lzma'...NO
-        Checking for '7z'...NO
-        Checking for 'zip'...NO
-        Checking for 'rar'...NO
-        Checking for 'parallel' in /usr/bin...NO
-        Checking for /usr/bin/autozip.conf...NO
-        Available extension name on your computer:
-        tar, gz, GZ, tar.gz, tar.GZ, tgz, bz2, tar.bz2, tbz
-        Configure file /usr/bin/autozip.conf are as follows:
-        =====Begin /usr/bin/autozip.conf=====
-        NOPARALLEL
-        =====End   /usr/bin/autozip.conf=====
-
-
-    autozip etc
-        YuZJLab AutoZip.
-        Copyright (C) 2019-2020 YU Zhejian
-        WARNING: Compression level '' undefined. Will use 
-        default value provided by corresponding algorism.
-        Received: /usr/bin/autozip etc tar.gz
-        Will execute: tar cv etc|gzip >etc.tar.gz
-        etc/
-        etc/bash.bashrc
-        etc/bash.bash_logout
-        etc/DIR_COLORS
-        etc/docx2txt.config
-        etc/fstab
-        =============SEVERAL LINES OMITTED=============
-
-
-    autozip Smst2 tbz 9
-        YuZJLab AutoZip.
-        Copyright (C) 2019-2020 YU Zhejian
-        Received: /usr/bin/autozip Smst2 tbz
-        Will execute: tar cv Smst2|bzip2 -9>Smst2.tbz
-        Smst2/
-        Smst2/desktop.ini
-        Smst2/IBI/
-        Smst2/IBI/IBI1_course_handbook_19_20.pdf
-        Smst2/IBMS/
-        =============SEVERAL LINES OMITTED=============
 
 EXIT STATUS
     0. OK

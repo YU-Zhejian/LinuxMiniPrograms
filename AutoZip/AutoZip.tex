@@ -1,0 +1,233 @@
+\documentclass[journal,twocolumn]{IEEEtran}
+\usepackage[backref,bookmarks=true,bookmarksopen=true]{hyperref}
+\usepackage{rotating}
+\begin{document}
+\bibliographystyle{IEEEtran}
+\title{AutoZip: An Integrated \& Convenient Way for File Compression}
+\author{Zhejian YU \IEEEcompsocitemizethanks{\IEEEcompsocthanksitem Zhejian YU $<$\url{Zhejian.19@zju.edu.cn}$>$ is a student of Zhejiang University.}}
+\markboth{TDS Journal,~Vol.~1, No.~1,~January~2020}{YU \MakeLowercase{\textit{et al.}}: AutoZip: An Integrated \& Convenient Way for File Compression}
+\maketitle
+\begin{abstract}
+Compressing files and folders with a handful of algorithms is a daily task for programmers in various aspects. Because there are plenty of compressing algorithms available, one needs to remember different syntaxes for corresponding software when using them, which can be a waste of time. So, in order to eliminate the time wasted on recalling syntaxes, we invented AutoZip, whose aim is to make its users more efficient and productive by free them from memorizing the different syntax of different compressing software. This article describes how AutoZip archives its goal.
+\end{abstract}
+\begin{IEEEkeywords}
+File Compression.
+\end{IEEEkeywords}
+\section{Introduction}
+For daily system administration work, one need to compress/decompress files or folders for various purposes such as backup or file transporting within or among computers. The appearance of file-compressing algorithms successfully makes our life easier.\par
+There are several widely-used compression algorithms in our society. For users under the Microsoft Windows platform, WinRAR, WinZip, 7Zip and Bandizip are most popular among users in China while GNU Tar \cite{tar}, gzip \cite{gzip}, XZ Utils \cite{xz}, bzip2 \cite{bzip2} and Zip are mostly used under GNU/Linux. However, the different syntaxes used by these software makes it hard for ordinary people to memorize. So, when they received an archive of unknown format, they have to look up the manual and learn the new syntax used by corresponding software, which slows down the speed of processing data and thus, influencing efficiency and productibility.\par
+So, in order to solve this problem, we invented AutoZip, whose aim is to libre us from memorizing all those syntaxes by memorizing only one set of syntax: the syntax of AutoZip! AutoZip provided us with great flexibility and convenience, whose syntax is easy enough for everyone to memorize.
+\section{Usage of AutoZip}
+\subsection{You Need to Know ...}
+You need to know how to operate package management systems on your machine such as \verb|apt|, \verb|yum| or \verb|pacman|, or how to build a software from its source code. You need to know how to operate at least one text editor such ad \verb|vim|, \verb|emacs| or \verb|nemo|. You need to know the basic knowledge about GNU/Linux filesystems and environment variable \verb|PATH|.
+\subsection{Installation}
+AutoZip is designed to be portable; if you want to install AutoZip, you should firstly make sure that you have installed GNU Bash at \verb|/bin/bash|.The dependencies for AutoZip are as follows:
+\begin{enumerate}
+\item GNU Tar (optional)
+\item gzip (optional)
+\item pigz (optional)
+\item XZ Utils (optional)
+\item bzip2 (optional)
+\item Zip \& UnZip (optional)
+\item RAR \& UNRAR (optional)
+\item p7zip (optional)
+\item bgzip (optional, for bioinformatical use only)
+\item GNU Parallel (optional)
+\item GNU Split (optional)
+\end{enumerate}
+They can be installed by package management system provided by your GNU/Linux distributions. You need to install GNU Parallel and pigz if you wish to (de)compress the files with a greater speed.\par
+The installation of the main AutoZip program is simple: you need to copy \verb|autozip|, \verb|autounzip|, \verb|autozip.Usage| and \verb|libautozip| to a folder and add the path to that folder to \verb|PATH| environmenta varible of your system (if you have root previlidge) or your own account. This can be done by:
+\begin{verbatim}
+mkdir [dest]
+cp autounzip [dest]
+cp autozip [dest]
+cp autozip.Usage [dest]
+cp libautozip [dest]
+echo "export PATH=\$PATH:[dest]">>~/.bashrc
+\end{verbatim}
+if \verb|[dest]| is your destination folder (e.g. \verb|/usr/bin| if you have root previlidge or \verb|~/bin| if not.).
+\subsection{Self-Check after Installation}
+After installation, you should open a new terminal emulator and excute \verb|autozip| with NO arguments and use \verb|sudo| if you installed it with root previlidge. This can form a report for your system. The output of which are as follows (We assume that you have ALL the depencencies installed.):
+\begin{enumerate}
+\item Copyright information:
+\begin{verbatim}
+$ sudo autozip
+YuZJLab AutoZip.
+Copyright (C) 2019-2020 YU Zhejian
+\end{verbatim}
+\item Generating a configure file. This will only appear for the first time:
+\begin{verbatim}
+WARNING: Configure file NOT exist. \
+Will generate one by default value.
+\end{verbatim}
+\item Check for all compoments:
+\begin{verbatim}
+Start checking all compoments...
+Checking for 'tar'...OK
+Checking for 'gzip'...OK
+Checking for 'pigz'...OK
+Checking for 'bgzip'...OK
+Checking for 'xz'...OK
+Checking for 'bzip2'...OK
+Checking for '7z'...OK
+Checking for 'zip'...OK
+Checking for 'rar'...OK
+Checking for 'unzip'...OK
+Checking for 'unrar'...OK
+Checking for 'parallel' in\
+/usr/bin...OK
+\end{verbatim}
+\item Report available extensions:
+\begin{verbatim}
+Available extension name on your\
+computer: tar, gz, GZ, tar.gz,\
+tar.GZ, tgz, bgz, xz, lzma, lz,\
+tar.xz, txz, tar.lzma, tlz, bz2,\
+tar.bz2, tbz, 7z, zip, rar
+\end{verbatim}
+\item Show you the current configure file:
+\begin{verbatim}
+Configure file /usr/bin/autozip.conf\
+are as follows:
+=====Begin /usr/bin/autozip.conf=====
+NOPARALLEL
+=====End   /usr/bin/autozip.conf=====
+\end{verbatim}
+\end{enumerate}
+By default, GNU Parallel will NOT be used when (de)compressing files. If you want to use GNU Parallel, you should install it to \verb|\usr\bin| and make the first line of \verb|[dest]/autozip.conf| \verb|PARALLEL|. After altering, you can see \verb|Will use GNU Parallel if possible.| when running the command \verb|autozip| again.
+\subsection{Compression}
+The syntax for compressing data are as follows:
+\begin{verbatim}
+autozip [SOURCE] [EXT] [LVL] [OPTS]
+\end{verbatim}
+The argument \verb|[SOURCE]| is the source of data. It can be a file or a folder under the working directory. \verb|[EXT]| is the extension for compressed file. You can get a list of available extensions on your computer by running \verb|autozip| without arguments. \verb|[LVL]| is compression level. The RULES of arranging these arguments are as follows:
+\begin{enumerate}
+\item The arguments should be in a STRICT order of \verb|[SOURCE] [EXT] [LVL]|.
+\item You can ommit the arguments on the button. This means that you can omit \verb|[LVL]|, both \verb|[EXT]| and \verb|[LVL]| or ommit all the arguments. If \verb|[LVL]| is omitted, we'll use the default compression level provided by the algorithm. If both \verb|[EXT]| and \verb|[LVL]| are omitted, we'll compress FILES to \verb|gz| and FOLDERS to \verb|tar.gz|, which is widely used under GNU/Linux. If all the arguments are ommitted, AutoZip will run a self-check and print the resluts to your terminal.
+\item For \verb|[LVL]|, different software use different levels. There are 0-9 for XZ Utils, 0-5 for RAR, 0,1,3,5,7,9 for 7-Zip and 1-9 for gzip and bzip2. There will be no compression level for GNU Tar. For each level, 0 indicates ``store only'' (EXCEPT for XZ Utils!), which means just like GNU Tar, they make a folder a file instead of compressing a folder.
+\end{enumerate}
+You can refer to Table \ref{tbl:AllExt} at page \pageref{tbl:AllExt} for details. Available options:
+\begin{itemize}
+\item -h \textbar --help \par Print standard Usage: this should be in the file \verb|autozip.Usage|.
+\item -v \textbar --version \par Show verion information.
+\item -s[:SPLIT] \textbar --split[:SPLIT] \par Split the data by \verb|[SPLIT]|. The standard \verb|[SPLIT]| varies by format. For rar it is numbers+b/k/m; for zip, it is numbers+k/m/g/t; for 7z, it is numbers+b/k/m/g, for other archive, it is number only (bytes) \& numbers+K/M/G/T/P/E/Z/Y (1024 based) or numbers+KB/MB/GB/TB/PB/EB/ZB/YB (1000 based). You can refer to Table \ref{tbl:AllSplit} at page \pageref{tbl:AllSplit} for details.
+\item --force-parallel:[PATH\_TO\_PARALLEL] \par Force to use GNU Parallel in \verb|[PATH_TO_PARALLEL]| insetad of standard \verb|\usr\bin\parallel|.
+\end{itemize}
+\subsection{Decompression}
+The syntax of autounzip are as follows:
+\begin{verbatim}
+autozip [SOURCE] [OPTS]
+\end{verbatim}
+Extract \verb|[SOURCE]|. If the archive is SPLITTED, suffix like ``\verb|001|'' or ``\verb|z01|'' should not be added. HOWEVER, for rar you should indicate the FIRST part. For example, ``\verb|r1.part1.rar|''. Available options:
+\begin{itemize}
+	\item -h \textbar --help \par Same as those in autozip.
+	\item -v \textbar --version \par Same as those in autozip.
+	\item --force-parallel:[PATH\_TO\_PARALLEL] \par Same as those in autozip.
+\end{itemize}
+\section{Special Warnings}
+This section lists common mistakes you may make. \textbf{YOU SHOULD READ THIS SECTION WITH EXTRA CARE.} \par
+\begin{enumerate}
+\item DO NOT USE the 7-zip format for backup purpose on Linux/Unix because 7-zip does not store the owner/group of the file.
+\item RAR is a PROPERTY software (while UNRAR is not) and use ABSOLUTE PATH when using RAR.
+\item when you're about to compress \& decompress files with lz, lzma, tar.lzma, tlz extensions, we'll use XZ Utils.
+\item You should use GZIP to produce a GZIP COMPRESSED DATA instead of BGZIP to produce a BLOCKED GNU ZIP FORMAT which is only used by bioinformaticians! To produce a BLOCKED GNU ZIP FORMAT with "gz" extension, you should use \verb|[EXT]| as \verb|bgz|. Because it is capable of GNU GZip, we'll not distinguish them when extracting data. "tar.gz" is not supported in bgz format because it sounds weird.
+\item DO PAY ATTENTION WHEN USING GNU PARALLEL! IT CONSUMES A LOT OF COMPUTER RESOURCES AND MAY CAUSE YOU COMPUTER TO BE ``DEAD''. NEVER USE IT ON A PUBLIC COMPUTER OR ANY OTHER MACHINE THAT DE NOT BELONGS TO YOU! e.g, computing clusters.
+\end{enumerate}
+\section{How AutoZip Compress Your Data}
+The route of AutoZip are as follows:
+\begin{enumerate}
+\item Load \verb|libautozip|.
+\item Check all compoments by function \verb|preck| in \verb|libautozip|.
+\item Get all the commandline arguments and devide them into two parts: options and other arguments by function \verb|isopt| in \verb|libautozip|. Options are then checked by Regular Expressions.
+\item Check if the filename, extension name and \verb|[SPLIT]| value is valid.
+\item Start making archive.
+\end{enumerate}
+If you use GNU Parallel by altering default \verb|autozip.conf| or by \verb|--force-parallel|, the archive-making process is:
+\begin{enumerate}
+\item If you use gzip, we'll turn to pigz (if available) for help. If there's no pigz installation, we'll use GBNU Parallel.
+\item if you use bzip2, we'll use GNU Parallel.
+\item If you use XZ Utils (for xz or lzma format), we'll use as much thread as your macjine can by the algorithm (add \verb|-T0| option).
+\item If you use RAR or 7-Zip, we will use 8 threads by the algorithm.
+\item If you use Zip or GNU Tar, there will be no difference form ordinary compression.
+\end{enumerate}
+If you want to split your archive, the archive-making process is:
+\begin{enumerate}
+\item If the target is a FOLDER, we firstly TAR it, then we split the tar to a temporary directory and finally compress the pieces respectively.
+\item If the target is a FILE, we will split it to a temporary directory and finally compress the pieces respectively.
+\item If you use RAR, Zip or 7-Zip, we'll use the splitting function provided by the corresponding algorithms.
+\end{enumerate}
+The reason why we split before compress rather than compress then split is that when extracting the splitted archives, the splitted pieces can be parallelly decompressed.
+\section{How AutoUnZip Deompress Your Data}
+The route of AutoUnZip are as follows:
+\begin{enumerate}
+\item Load \verb|libautozip|.
+\item Check all compoments by function \verb|preck| in \verb|libautozip|.
+\item Get all the commandline arguments and devide them into two parts: options and other arguments by function \verb|isopt| in \verb|libautozip|. Options are then checked by Regular Expressions.
+\item Check if the filename is valid.
+\item Start decompressing archive.
+\end{enumerate}
+If you use GNU Parallel by altering default \verb|autozip.conf| or by \verb|--force-parallel|, the archive decomprocession process is:
+\begin{enumerate}
+\item If you use gzip, we'll turn to pigz (if available) for help. If there's no pigz installation, there will be no difference form ordinary decompression.
+\item If you use XZ Utils (for xz or lzma format), we'll use as much thread as your macjine can by the algorithm (add \verb|-T0| option).
+\item If you use RAR or 7-Zip, we will use 8 threads by the algorithm.
+\item If you use Zip, bz2 or GNU Tar, there will be no difference form ordinary compression.
+\end{enumerate}
+If you want to decompress a splitted archive, the archive decomprocession process is:
+\begin{enumerate}
+\item Archives are parallely (with GNU Parallel. We \verb|echo|ed the decompression commands into different scripts and let GNU Parallel to execute them parallelly) or orderly decompressed to a temporary folder.
+\item The decompressed files are then assembled into a TAR file (for FOLDERS) or the original file (for FILE). Then, it is moved \& extracted to your working directory.
+\item If you use RAR or 7-Zip, we'll use the splitting function provided by the corresponding algorithms.
+\item If you use Zip, we'll use \verb|zip -FF| to assemble the archive and then, decompress it.
+\end{enumerate}
+\section{Code Availibility}
+The code is available on \url{https://github.com/YuZJLab/LinuxMiniPrograms/tree/master/AutoZip}.
+\section{Known Problems}
+\begin{enumerate}
+\item Can NOT extract zip archives created by KuaiZip \cite{KuaiZip}.
+\item Unstable when extracting splitted zip archives under GNU/Linux UnZip \cite{UnZip}.
+\end{enumerate}
+\bibliography{Ref}
+\newpage
+\onecolumn
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline\hline
+[EXT] & Real Extension & Software & Command & [LVL] \\\hline\hline
+tar & tar & GNU Tar & tar & NA \\\hline
+gz, GZ & gz, GZ & gzip \& pigz & gzip \& pigz & 1-9 \\\hline
+tar.gz, tgz, tGZ & tar, gz, tgz, tGZ & GNU Tar, - & tar, - & - \\\hline
+bgz & gz & bgzip & bgzip & - \\\hline
+bz2 & bz2 & bzip2 & bzip2 & - \\\hline
+tar.bz2, tbz & tar.bz2, tbz & GNU Tar, - & tar, - & - \\\hline
+xz & xz & XZ Utils & xz & 0-9 \\\hline
+tar.xz, txz & tar.xz, txz & GNU Tar, - & tar, - & - \\\hline
+lzma, lz & lzma, lz & XZ Utils & xz & - \\\hline
+tar.lzma, tlz & tar.lzma, tlz & GNU Tar, - & tar, - & - \\\hline
+zip & zip & Zip, UnZip & zip, unzip & - \\\hline
+7z & 7z & p7zip & 7za & 0, 1, 3, 5, 7, 9 \\\hline
+rar & rar & RAR, UNRAR & rar, unrar & 1-9 \\\hline\hline
+\end{tabular}
+\caption{A Table for All Extensions and Levels}
+\label{tbl:AllExt}
+\end{table}
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline\hline
+[EXT] & Splitted by & [SPLIT] & Paralleled by \\\hline\hline
+bz2, tar.bz2, tbz & GNU Split &\parbox{7cm}{number only (bytes) \&\\ numbers+K/M/G/T/P/E/Z/Y (1024 based) \\ \& numbers+KB/MB/GB/TB/PB/EB/ZB/YB (1000 based)} & GNU Parallel \\\hline
+tar, gz, GZ, tar.gz, tgz, tGZ,& - & - & pigz, - \\\hline
+xz, tar.xz, txz, lzma, lz, tar.lzma, tlz & - & - & XZ Utils \\\hline
+bgz & NA & NA & GNU Parallel\\\hline
+zip & ZIP & numbers+k/m/g/t & NA \\\hline
+7z & p7zip & numbers+b/k/m/g & p7zip \\\hline
+rar & RAR & numbers+b/k/m & RAR \\\hline\hline
+\end{tabular}
+\caption{A Table for All Split \& Parallel Mthods}
+\label{tbl:AllSplit}
+\end{table}
+\newpage
+\twocolumn
+\end{document}

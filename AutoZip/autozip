@@ -1,8 +1,11 @@
 #!/bin/bash
 # ============ Functions ============
 DN=`dirname $0`
+if ! [ -f $DN/libautozip ];then
+    echo -e "\e[31mERROR: libautozip NO found!.\e[0m"
+    exit 1
+fi
 . $DN/libautozip
-# Check if SPLIT is valid.
 # Check filename
 function ckfn(){
     if [ -z $fn ];then
@@ -13,6 +16,7 @@ function ckfn(){
         exit 1
     fi
 }
+# Check if SPLIT is valid.
 function ckSPLIT(){
     if ! $USESPLIT;then return 0;fi
     case $ext in
@@ -439,8 +443,8 @@ case $ext in
                 cat $tfn|xz $PAR --format=lzma $LVL>$fn.$ext.${tfn:0-3}
             done
         else
-            echo -e "\e[33mWill execute: cat $fn|xz $PAR ---format=lzma $LVL>$fn.$ext\e[0m"
-            cat $fn|xz $PAR ---format=lzma $LVL>$fn.$ext
+            echo -e "\e[33mWill execute: cat $fn|xz $PAR --format=lzma $LVL>$fn.$ext\e[0m"
+            cat $fn|xz $PAR --format=lzma $LVL>$fn.$ext
             
         fi
     ;;
