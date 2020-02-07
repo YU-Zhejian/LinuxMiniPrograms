@@ -3,7 +3,7 @@
 function preck(){
     TAR=`tar --help&>>/dev/null;echo $?`
     GZIP=`gzip -h&>>/dev/null;echo $?`
-    BGZIP=`bgzip -h&>>/dev/null;echo $?`
+    BGZIP=$[`bgzip -h&>>/dev/null;echo $?` -1]
     PIGZ=`pigz -h&>>/dev/null;echo $?`
     XZIP=`xz -h&>>/dev/null;echo $?`
     BZIP2=`bzip2 -h&>>/dev/null;echo $?`
