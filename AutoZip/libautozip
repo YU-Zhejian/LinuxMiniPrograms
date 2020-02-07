@@ -58,7 +58,7 @@ function autozipck(){
         echo -e "Checking for 'bgzip'...\e[32mOK\e[33m"
         availext="$availext, bgz"
     else
-        echo -e "Checking for 'gzip'...\e[31mNO\e[33m"
+        echo -e "Checking for 'bgzip'...\e[31mNO\e[33m"
     fi
     if [ $XZIP -eq 0 ];then
         echo -e "Checking for 'xz'...\e[32mOK\e[33m"
