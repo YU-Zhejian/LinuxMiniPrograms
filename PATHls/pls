@@ -1,0 +1,52 @@
+#!/bin/bash
+echo -e "\e[33mYuZJLab PATH ls. Usage: pls [string]\e[0m"
+echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
+wd=`pwd`
+function do_work(){
+    if ! [ -d $1 ];then return;fi
+    cd $1
+    echo "======$1======"
+    ls | while read item; do
+        item=$1/$item
+        if [ -f $item ];then
+            if [ -x $item ];then
+                echo -e "\e[32m\t $item\e[0m"
+            else
+                echo -e "\e[0m\t $item\e[0m"
+            fi
+        else
+            echo -e "\e[34m \t $item/ \e[0m"
+        fi
+    done
+}
+function do_search(){
+    if ! [ -d $1 ];then return;fi
+    cd $1
+    echo "======$1======"
+    ls | while read item; do
+        if [ -f $item ] && [[ $item = *$2* ]];then
+            item=$1/$item
+            if [ -x $item ];then
+                echo -e "\e[32m\t $item\e[0m"
+            else
+                echo -e "\e[0m\t $item\e[0m"
+            fi
+        fi
+    done
+}
+mypath=`echo $PATH`
+IFS=":"
+eachpath=($mypath)
+IFS=" "
+if [ -z $1 ];then
+    for dir in ${eachpath[@]}; do
+        do_work $dir
+    done
+    do_work $wd
+else
+    for dir in ${eachpath[@]}; do
+        do_search $dir $1
+    done
+    do_search $wd $1
+fi
+IFS=" "
