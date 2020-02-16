@@ -2,9 +2,15 @@
 function isopt(){
     case $1 in
         -?|--*|-?\:*|--*\:*)
-            echo 0
+            return 0
         ;;
         *)
-            echo 1
+            return 1
     esac
 }
+# This function can be used to determine whether $1 is an option.
+# Examples for option are:
+# -h
+# --help
+# -m:5
+# --max:5

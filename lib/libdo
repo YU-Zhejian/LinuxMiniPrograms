@@ -1,21 +1,37 @@
 #!/bin/bash
-# Do something!
-# ENVIRONMENTAL VARIABLES:
-# LIBDO_MEN:  when failed, exit immediately.
-# LIBDO_TOP_PID: the pid to kill if failed.
-# LIBDO_PRIV: exit status.
-# LIBDO_PRD: redierct or pipe is used in the code.
+function DO_ECHO(){
+    if ! [ $LIBDO_PRD ];then
+        echo $@>>$LIBDO_LOG
+    else
+        echo -e "\e[33m$@\e[0m"
+    fi
+}
 function DO(){
-if ! [ -f LIBDO_M ];then
-    touch LIBDO_M
-fi
-echo "LIBDO IS GOING TO EXECUTE $@ .">>LIBDO_M
-    if ! [ $LIBDO_PRD ]; then eval $@ &>>LIBDO_M;else eval $@;fi
+    if [ -z $LIBDO_LOG ];then
+        LIBDO_PRD=true
+        elif ! [ -f $LIBDO_LOG ];then
+        touch $LIBDO_LOG
+    fi
+    DO_ECHO "LIBDO IS GOING TO EXECUTE $@ ."
+    if ! [ $LIBDO_PRD ]; then
+        eval $@ &>>$LIBDO_LOG
+    else
+        eval $@
+    fi
     LIBDO_PRIV=$?
     if [ $LIBDO_PRIV -ne 0 ];then
-        echo -e "LIBDO FAILED, GOT \$?=$LIBDO_PRIV.">>LIBDO_M
-return 1
-if [ $LIBDO_MEN ];then kill -9 $LIBDO_TOP_PID;fi
+        DO_ECHO "LIBDO FAILED, GOT \$?=$LIBDO_PRIV."
+        if ! [ -z $LIBDO_TOP_PID ];then
+            DO_ECHO "WILL KILL $LIBDO_TOP_PID"
+            kill -9 $LIBDO_TOP_PID
+        fi
     fi
-echo "LIBDO EXITED SUCCESSFULLY.">>LIBDO_M
+    DO_ECHO "LIBDO EXITED SUCCESSFULLY."
+    return $LIBDO_PRIV
 }
+# Do something! The return value is the exit value of "something".
+# ENVIRONMENTAL VARIABLES:
+# LIBDO_TOP_PID: the pid to kill if failed. If blank, will not kill.
+# LIBDO_PRIV: exit status.
+# LIBDO_LOG: log name. If blank, there will be no logs.
+# LIBDO_PRD: redierct or pipe is used in the code. If you need redirections, USE ESCAPE (\)!
