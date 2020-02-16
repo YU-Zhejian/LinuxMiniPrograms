@@ -1,0 +1,10 @@
+#!/bin/bash
+function isopt(){
+    case $1 in
+        -?|--*|-?\:*|--*\:*)
+            echo 0
+        ;;
+        *)
+            echo 1
+    esac
+}

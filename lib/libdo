@@ -1,0 +1,21 @@
+#!/bin/bash
+# Do something!
+# ENVIRONMENTAL VARIABLES:
+# LIBDO_MEN:  when failed, exit immediately.
+# LIBDO_TOP_PID: the pid to kill if failed.
+# LIBDO_PRIV: exit status.
+# LIBDO_PRD: redierct or pipe is used in the code.
+function DO(){
+if ! [ -f LIBDO_M ];then
+    touch LIBDO_M
+fi
+echo "LIBDO IS GOING TO EXECUTE $@ .">>LIBDO_M
+    if ! [ $LIBDO_PRD ]; then eval $@ &>>LIBDO_M;else eval $@;fi
+    LIBDO_PRIV=$?
+    if [ $LIBDO_PRIV -ne 0 ];then
+        echo -e "LIBDO FAILED, GOT \$?=$LIBDO_PRIV.">>LIBDO_M
+return 1
+if [ $LIBDO_MEN ];then kill -9 $LIBDO_TOP_PID;fi
+    fi
+echo "LIBDO EXITED SUCCESSFULLY.">>LIBDO_M
+}
