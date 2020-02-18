@@ -8,6 +8,7 @@ fi
 . $DN/libautozip
 # Check filename
 function ckfn(){
+    if [ ${fn:0-1} = '/' ]; then fn=${fn:0:${#fn}-1};fi
     if [ -z $fn ];then
         autozipck
         exit 0
