@@ -114,8 +114,8 @@ function autozipck(){
     echo -e "\e[33m=====End   $CONFN=====\e[0m"
 }
 #Load libopt
-if [ -f ../lib/libisopt ] && [ -x ../lib/libisopt ];then
-    . ../lib/libisopt
+if [ -f $DN/../lib/libisopt ] && [ -x $DN/../lib/libisopt ];then
+    . $DN/../lib/libisopt
     echo -e "\e[33mlibisopt loaded.\e[0m">&2
 else
     echo -e "\e[31mERROR: libisopt not found.\e[0m">&2
