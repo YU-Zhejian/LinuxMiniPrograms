@@ -113,13 +113,11 @@ function autozipck(){
     cat $CONFN
     echo -e "\e[33m=====End   $CONFN=====\e[0m"
 }
-# Check if it is an option.
-function isopt(){
-    case $1 in
-        -?|--*|-?\:*|--*\:*)
-            echo 0
-        ;;
-        *)
-            echo 1
-    esac
-}
+#Load libopt
+if [ -f ../lib/libisopt ] && [ -x ../lib/libisopt ];then
+    . ../lib/libisopt
+    echo -e "\e[33mlibisopt loaded.\e[0m">&2
+else
+    echo -e "\e[31mERROR: libisopt not found.\e[0m">&2
+    exit 1
+fi
