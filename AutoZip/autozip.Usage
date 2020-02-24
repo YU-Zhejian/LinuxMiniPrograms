@@ -1,0 +1,133 @@
+YuZJLab              AutoZip & AutoUnZip                 Manual
+
+NAME
+    autozip - An automatic file compression tool.
+    autounzip - An automatic file decompression tool.
+
+DESCRIPTION
+    1. autozip
+        The first thing to do after installation. This will 
+        check the algorithms installed on your computer and 
+        give back a list of available extension name.
+    2. autozip [source] 
+        This will compress files and folders with default 
+        extension gz & tar.gz.
+    3. autozip [source] [ext] 
+        This will compress files and folders with extension 
+        [ext].
+    4. autozip [source] [ext] [level]
+        This will compress files and folders with extension 
+        [ext] to [level]. You can make it 1 (fastest) - 9 
+        (best). Some algorithms (e.g. xzip, zip) may support 0 
+        (store only; no compression).
+    5. autounzip
+        Almost equal to autozip.
+    6. autounzip [source]
+        Extract [source]. If the archive is SPLITTED, suffix 
+        like "001" or "z01" should not be added. HOWEVER, for
+        rar you should indicate the FIRST part. For example, 
+        "r1.part1.rar"
+
+OPTIONS (NEED GETOPT)
+    Several arguments is available to autozip and zutounzip.
+    You should place them AFTER the [source] [ext] or  [level]
+    field. They are:
+    FOR BOTH
+        -h|--help
+            Show this help.
+        -v|--version
+            Print version.
+        --force-parallel:[location]
+            Force to use GUN parallel at [location]. This will
+            not affect pgzip, XZ Utils or other algorithms 
+            which do not require GNU Parallel.
+    FOR AUTOZIP ONLY
+        -s[:[split]]|-split[:[split]]
+            Split the archive by [split]. This is realized by 
+            using GNU coreunits "split" or those provided in 
+            corresponding algorithms like 7zip, zip or rar. If
+            [split] is omitted, it will be treated as 1G. legal
+            [split] are those which can be recognized by GNU 
+            coreunits "split" or corresponding algorithms.
+
+            When making a tar.?z archive, this will split the 
+            tar file and compress them orderly.
+
+            When using zip format, we'll use "zip -FF" to merge
+            the zips.
+
+USE OF GNU PARALLEL (REQUIRE ROOT PREVILEDGE)
+    It is recommended to use GNU Parallel to accelerate the 
+    speed of compression. You can change the first line of
+    autoxip.conf to "PARALLEL" to enable this feature. GNU
+    Parallel is not available on autounzip.
+
+    When using XZ Utils, we will use argument "-T0" instead of
+    GNN Parallel.
+    
+    WARNING! GNU Parallel consumes lots of memory & CPU 
+    resources. NEVER USE IT ON CLUSTERS!!!
+
+USE OF PIGZ
+    When pigz, GNU parallel both exist and you have PARALLEL in
+    autozip.conf, pigz will be used.
+
+USE OF GNU GZIP
+    When processing bioinformatical data, please make sure that
+    You should use GZIP to produce a GZIP COMPRESSED DATA 
+    instead of BGZIP to produce a BLOCKED GNU ZIP FORMAT
+    before using this tool!
+
+USE OF BGZIP
+    This is the right way to produce a BLOCKED GNU ZIP FORMAT
+    with "gz" extension. Because it is capable of GNU GZip, 
+    we'll not distinguish them when extracting data. "tar.gz"
+    is not supported in bgz format because it sounds weird.
+
+USE OF LZMA SDK AND XZ UTILS
+    The core of the XZ Utils compression code is based on LZMA 
+    SDK. So when you're about to compress & decompress files 
+    with lz, lzma, tar.lzma, tlz extensions, we'll use XZ Utils.
+
+USE OF 7ZIP
+    WARNING: DO NOT USE the 7-zip format for backup purpose on 
+    Linux/Unix because 7-zip does not store the owner/group of 
+    the file.
+
+    Although 7-zip provided us with a handful of algorithms, we
+    will only take default values.
+
+USE OF RAR
+    WARNING: 1. RAR is a PROPERTY software. 2. Use ABSOLUTE PATH.
+
+
+EXIT STATUS
+    0. OK
+    1. ERROR
+
+INFORMATION ABOUT ALGORITHMS
+	1.9G TDSGitServer
+	478M TDSGitServer.txz
+	479M TDSGitServer.7z
+	540M TDSGitServer.rar
+	580M TDSGitServer.tlz
+	673M TDSGitServer.tbz
+	718M TDSGitServer.zip
+	719M TDSGitServer.tgz
+	1.9G TDSGitServer.tar
+
+AUTHOR
+    YU Zhejian <Zhejian.19@intl.zju.edu.cn>
+
+REPORTING BUGS
+    YU Zhejian <Zhejian.19@intl.zju.edu.cn>
+
+COPYRIGHT
+    Copyright © 2019-2020 YuZJ Lab
+    License GPLv3+: GNU GPL version 3 or later 
+    <https://gnu.org/licenses/gpl.html>.
+    This is free software: you are free to change and 
+    redistribute it. There is NO WARRANTY, to the extent 
+    permitted by law.
+
+YuZJLab                 2019-2020                        MANUAL
