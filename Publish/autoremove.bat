@@ -1,0 +1,17 @@
+del *.log
+del *.aux
+del *.bbl
+del *.blg
+del *.toc
+del *.out
+del *.tmp
+del *.fls
+del *.brf
+del *.fdb_latexmk
+del *.idx
+del *.ind
+del *.lof
+del *.lot
+del *.ilg
+del *.tps
+del *.synctex.gz

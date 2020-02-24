@@ -1,4 +1,6 @@
 #!/bin/bash
+USESPLIT=false
+REMOVE=false
 # Check for all compoments: backend.
 function preck(){
     TAR=`tar --help&>>/dev/null;echo $?`
@@ -32,6 +34,7 @@ function preck(){
         if [ ${conf[0]} = "PARALLEL" ]&&[ $PARALLEL ];then USEPARALLEL=true;echo -e "\e[33mWill use GNU Parallel if possible.\e[0m";fi
         unset conf
     fi
+    if [ $PARALLEL -eq 0 ];then PP="/usr/bin/parallel";fi
 }
 # Check for all compoments: frontend.
 function autozipck(){
@@ -119,5 +122,16 @@ if [ -f $DN/../lib/libisopt ] && [ -x $DN/../lib/libisopt ];then
     echo -e "\e[33mlibisopt loaded.\e[0m">&2
 else
     echo -e "\e[31mERROR: libisopt not found.\e[0m">&2
+    exit 1
+fi
+#Load libdo
+if [ -f $DN/../lib/libdo ] && [ -x $DN/../lib/libdo ];then
+    LIBDO_LOG=""
+    LIBDO_TOP_PID=$TOP_PID
+    LIBDO_PRD=true
+    . $DN/../lib/libdo
+    echo -e "\e[33mlibdo loaded.\e[0m">&2
+else
+    echo -e "\e[31mERROR: libdo not found.\e[0m">&2
     exit 1
 fi
