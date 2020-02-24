@@ -10,11 +10,9 @@ fi
 . $DN/libautozip
 # Check filename
 function ckfn(){
+    if [ -z $fn ];then autozipck;exit 0;fi
     if [ ${fn:0-1} = '/' ]; then fn=${fn:0:${#fn}-1};fi
-    if [ -z $fn ];then
-        autozipck
-        exit 0
-        elif ! [ -e $fn ];then
+    if ! [ -e $fn ];then
         echo -e "\e[31mERROR: Filename '$fn' invalid.\e[0m"
         exit 1
     fi
