@@ -80,7 +80,7 @@ for opt in $@;do
                 fi
             ;;
             "-v"|"--version")
-                echo "Version 1.0.0"
+                echo "Version 1 patch 1"
             ;;
             --force-parallel\:*)
                 PP=${opt:17}
@@ -117,6 +117,7 @@ if [ -z $fulln ];then
     echo -e "\e[31mERROR: Filename '$fulln' invalid.\e[0m"
     exit 1
 fi
+fulln=`echo $fulln|sed -e "s,(,\\\\\(,g"`
 fn=${fulln%.*}
 ext=${fulln##*.}
 if [ ${fn##*.} = "tar" ];then
