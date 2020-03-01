@@ -182,7 +182,8 @@ function ppopt(){
                     fi
                 ;;
                 "-v"|"--version")
-                    echo "Version 1 patch 2"
+                    echo "Version 1 patch 3"
+                    exit 0
                 ;;
                 --force-parallel\:*)
                     PP=${opt:17}
