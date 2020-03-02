@@ -1,0 +1,110 @@
+#!/bin/bash
+#LibMakeTable
+function mktbl_GetLongestString(){
+    mktbl_GetLongestString_max_str=""
+    for item in $@;do
+        if [ ${#item} -gt ${#mktbl_GetLongestString_max_str} ];then
+            mktbl_GetLongestString_max_str=$item
+        fi
+    done
+    echo mktbl_GetLongestString_max_str
+    unset mktbl_GetLongestString_max_str item
+}
+function mktbl(){
+    oldifs=$IFS
+    if ! [ -f $1 ];then
+        echo -e "\e[31mERROR: Table file $1 invalid.\e[0m"
+        exit 1
+    fi
+    while read line;do
+        if [[ $line != \#* ]];then
+            IFS=";"
+            curr_col_items=($line)
+            IFS=" "
+            for item in curr_col_items;do
+                row[$curr_row_num]="${row[$curr_row_num]};$item"
+                curr_row_num=$[$curr_row_num+1]
+            done
+            unset item
+        else
+            row_instruction=(${row_instruction[@]} $line)
+        fi
+    done <$1
+    unset curr_row_num
+    for row_tmp_str in ${row[@]};do
+        IFS=";"
+        row_tmp=($row_tmp_str)
+        unset row_tmp_str
+        IFS=" "
+        for item in ${row_tmp[@]};do
+            if [[ ${row_instruction[$curr_row_num]} = "\#W*" ]];then
+                #Wrap
+                wrap=${row_instruction[$curr_row_num]:2}
+                wrap_s=0
+                wrap_e=$wrap
+                while [ $wrap_e -lt ${#item} ];then
+                    nit="${item:$wrap_s:$wrap}\n"
+                    wrap_s=$[$wrap_s+$wrap]
+                    wrap_e=$[$wrap_e+$wrap]
+                    formatted_item=$formatted_item$nit
+                done
+                formatted_item="$formatted_item\n${item:$wrap_s}"
+                item=$formatted_item
+                unset formatted_item wrap_s wrap wrap_e nit
+                elif [[ ${row_instruction[$curr_row_num]} = "\#S*" ]];then
+                #Shrink
+                shrink=${row_instruction[$curr_row_num]:2}
+                shrinked=$[$shrink-3]
+                if [ ${#item} -gt $shrink ];then
+                    item="${item:0:$shrinked}..."
+                fi
+                unset shrink shrinked
+            else
+                #Unshrinkable
+                row_len=${#`mktbl_GetLongestString ${row_tmp[@]}`}
+                while [ ${#item} -lt $row_len ];do
+                    item="$item "
+                done
+                unset row_len
+            fi
+            curr_row="$curr_row;$item"
+            formatted_row=(${formatted_row[@]} $curr_row)
+            unset curr_row item
+        done
+        curr_row_num=$[$curr_row_num+1]
+    done
+    #print
+    IFS=";"
+    row_num_tmp=(${#formatted_row[0]})
+    row_number=${#row_num_tmp[@]}
+    IFS=" "
+    unset row_num_tmp
+    for curr_row_num in {0..${#formatted_row[@]}};do
+        IFS=";"
+        curr_row_items=(${#formatted_row[$curr_row_num]})
+        IFS=" "
+        for item in ${curr_row_items[@]};do
+            col[$curr_col_num]="${col[$curr_col_num]};$item"
+            curr_col_num=$[$curr_col_num+1]
+        done
+    done
+    unset curr_row_items item curr_col_num
+    col_len=$[${#col[0]}+1]
+    for i in {0..$col_len};do
+        SPB="$SPB-"
+    done
+    echo $SPB
+    for curr_col in ${col[@]};do
+        IFS=";"
+        curr_col_items=($curr_col)
+        IFS=" "
+        msg="|"
+        for item in ${curr_col_items[@]};do
+            msg="$msg$item|"
+        done
+        echo $msg
+        echo $SPB
+    done
+    
+    IFS=$oldifs
+}
