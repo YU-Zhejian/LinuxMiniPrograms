@@ -1,13 +1,13 @@
 #!/bin/bash
 # ============ Functions ============
 DN=`dirname $0`
-LIBDO_TOP_PID=$$
 exec 1>&2
 if ! [ -f $DN/libautozip ];then
     echo -e "\e[31mERROR: libautozip NO found!.\e[0m"
     exit 1
 fi
 . $DN/libautozip
+LIBDO_TOP_PID=$$
 # Check filename
 function ckfn(){
     if [ -z $fn ];then autozipck;exit 0;fi
@@ -149,69 +149,22 @@ preck
 if [ $PARALLEL -eq 0 ];then PP="/usr/bin/parallel";fi
 USESPLIT=false
 # ============ Possess options ============
-for opt in $@;do
-    if isopt $opt;then
-        case $opt in
-            "-h"|"--help")
-                if [ -f $DN/autozip.Usage ];then
-                    cat $DN/autozip.Usage
-                    exit 0
-                else
-                    echo -e "\e[31mERROR: $DN/autozip.Usage not found!\e[0m"
-                    exit 1
-                fi
-            ;;
-            "-v"|"--version")
-                echo "Version 1.0.0"
-                exit 0
-            ;;
-            "-s"|"--split")
-                USESPLIT=true
-                SPLIT=1G
-            ;;
-            -s\:*)
-                USESPLIT=true
-                SPLIT=${opt:3}
-            ;;
-            --split\:*)
-                USESPLIT=true
-                SPLIT=${opt:8}
-            ;;
-            --force-parallel\:*)
-                PP=${opt:17}
-                if [ `$PP -h&>>/dev/null;echo $?` -eq 0 ];then
-                    USEPARALLEL=true
-                    echo -e "\e[33mWill use GNU Parallel in '$PP'.\e[0m"
-                else
-                    echo -e "\e[31mERROR: GNU Parallel path '$PP' invalid.\e[0m"
-                    if [ $PARALLEL -eq 0 ];then PP="/usr/bin/parallel";echo -e "\e[31mERROR: Will use GNU Parallel in /usr/bin/parallel\e[0m";fi
-                fi
-            ;;
-            "--remove")
-                REMOVE=true
-            ;;
-            *)
-                echo -e "\e[31mERROR: Option '$opt' invalid.\e[0m"
-                exit 1
-        esac
-        OPT="$OPT $opt"
-    else
-        STDS="$STDS $opt"
-    fi
-done
+ISAOTOZIP=true
+ppopt $@
 # ============ Possess arguments ============
 STDI=($STDS)
 fn=${STDI[0]}
 ckfn $fn
+fn=`mfn $fn`
 ckext
 ckSPLIT
 ckLVL
 echo -e "\e[33mReceived: $0 $fn $ext $lvl $OPT \e[0m"
 bupf
 # ============ Makt tmpdir ============
-tempdir=`mktemp -dt autozip.XXXXXX`
-echo -e "\e[33mTEMP directory '$tempdir' made.\e[0m"
+mktmp
 # ============ Start Compressing ============
+if $USEPARALLEL;then PAR="$PP --pipe --recend '' -k";fi
 case $ext in
     "tar") # ============ tar ============
         if $USESPLIT;then
@@ -222,18 +175,14 @@ case $ext in
     ;;
     "tar.gz"|"tgz"|"tar.GZ") # ============ tgz ============
         if ! [ $GZIP -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
-        if $USEPARALLEL;then PAR="$PP --pipe --recend '' -k";fi
+        if [ $PIGZ -eq 0 ];then cmd="pigz";else cmd="$PAR gzip";fi
         if $USESPLIT;then
             DO tar cv $fn\|split -a 3  --numeric-suffixes=001  -b $SPLIT - $tempdir/$fn.
             for tfn in $tempdir/$fn.*;do
-                if [ $PIGZ -eq 0 ];then
-                    DO cat $tfn\|pigz $LVL \>$fn.$ext.${tfn:0-3}
-                else
-                    DO cat $tfn\|$PAR gzip $LVL \>$fn.$ext.${tfn:0-3}
-                fi
+                DO cat $tfn\|$cmd $LVL \>$fn.$ext.${tfn:0-3}
             done
         else
-            DO  tar cv $fn\|$PAR gzip $LVL\>$fn.$ext
+            DO tar cv $fn\|$cmd $LVL \>$fn.$ext
         fi
     ;;
     "tar.xz"|"txz") # ============ txz ============
@@ -244,12 +193,11 @@ case $ext in
             for tfn in $tempdir/$fn.*;do
                 DO cat $tfn\|xz $PAR $LVL\>$fn.$ext.${tfn:0-3}
             done
-            DO tar cv $fn\|xz $PAR $LVL>$fn.$ext
+            DO tar cv $fn\|xz $PAR $LVL\>$fn.$ext
         fi
     ;;
     "tar.bz2"|"tbz") # ============ tbz ============
         if ! [ $BZIP2 -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
-        if $USEPARALLEL;then PAR="$PP --pipe --recend '' -k";fi
         if $USESPLIT;then
             DO tar cv $fn\|split -a 3  --numeric-suffixes=001  -b $SPLIT - $tempdir/$fn.
             for tfn in $tempdir/$fn.*;do
@@ -272,38 +220,17 @@ case $ext in
     ;;
     "gz"|"GZ") # ============ gz ============
         if ! [ $GZIP -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
-        if $USEPARALLEL;then PAR="$PP --pipe --recend '' -k";fi
+        if [ $PIGZ -eq 0 ];then cmd="pigz";else cmd="$PAR gzip";fi
         if $USESPLIT;then
             DO cat $fn\|split -a 3  --numeric-suffixes=001  -b $SPLIT - $tempdir/$fn.
-            if $USEPARALLEL;then
-                for tfn in $tempdir/$fn.*;do
-                    if [ $PIGZ -eq 0 ];then
-                        DO cat $tfn\|pigz $LVL\>$fn.$ext.${tfn:0-3}
-                    else
-                        DO  cat $tfn\|$PAR gzip $LVL\>$fn.$ext.${tfn:0-3}
-                    fi
-                done
-            else
-                for tfn in $tempdir/$fn.*;do
-                    DO cat $tfn\| gzip $LVL\>$fn.$ext.${tfn:0-3}
-                done
-            fi
+            DO cat $tfn\|$cmd $LVL\>$fn.$ext.${tfn:0-3}
         else
-            if $USEPARALLEL;then
-                if [ $PIGZ -eq 0 ];then
-                    DO cat $fn\|pigz $LVL\>$fn.$ext
-                else
-                    DO cat $fn\|$PAR gzip $LVL\>$fn.$ext
-                fi
-            else
-                DO cat $fn\|gzip $LVL\>$fn.$ext
-            fi
+            DO cat $tfn\|$cmd $LVL\>$fn.$ext
         fi
     ;;
     "bgz") # ============ bgz ============
         if ! [ $BGZIP -eq 0 ]; then echo -e "\e[31mERROR: BGZip NO exist!\e[0m";exit 1;fi
         $ext="gz"
-        if $USEPARALLEL;then PAR="$PP --pipe --recend '' -k";fi
         if $USESPLIT;then
             DO tar cv $fn\|split -a 3  --numeric-suffixes=001  -b $SPLIT - $tempdir/$fn.
             for tfn in $tempdir/$fn.*;do
@@ -327,7 +254,6 @@ case $ext in
     ;;
     "bz2") # ============ bz2 ============
         if ! [ $BZIP2 -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
-        if $USEPARALLEL;then PAR="$PP --pipe --recend '' -k";fi
         if $USESPLIT;then
             DO cat $fn\|split -a 3  --numeric-suffixes=001  -b $SPLIT - $tempdir/$fn.
             for tfn in $tempdir/$fn.*;do
@@ -367,7 +293,7 @@ case $ext in
 esac
 # ============ Finished ============
 echo -e "\e[33mRemoving temporary resources...\e[0m"
-rm -rf $tempdir
-echo -e "\e[33mFinished.\e[0m"
+rm -rf $tempdir $tempf
 if $REMOVE; then DO rm -rf $fn; fi
+echo -e "\e[33mFinished.\e[0m"
 exit 0

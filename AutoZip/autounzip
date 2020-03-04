@@ -1,13 +1,13 @@
 #!/bin/bash
 # ============ Functions ============
 DN=`dirname $0`
-LIBDO_TOP_PID=$$
 exec 1>&2
 if ! [ -f $DN/libautozip ];then
     echo -e "\e[31mERROR: libautozip NO found!.\e[0m"
     exit 1
 fi
 . $DN/libautozip
+LIBDO_TOP_PID=$$
 # Make a number 3 digit
 function fixthree(){
     fout=""$1
@@ -67,44 +67,8 @@ echo -e "\e[33mYuZJLab AutoUnZip.\e[0m"
 echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
 preck
 # ============ Possess options ============
-for opt in $@;do
-    if isopt $opt;then
-        case $opt in
-            "-h"|"--help")
-                if [ -f $DN/autozip.Usage ];then
-                    cat $DN/autozip.Usage
-                    exit 0
-                else
-                    echo -e "\e[31mERROR: $DN/autozip.Usage not found!\e[0m"
-                    exit 1
-                fi
-            ;;
-            "-v"|"--version")
-                echo "Version 1.0.0"
-            ;;
-            --force-parallel\:*)
-                PP=${opt:17}
-                if [ `$PP -h&>>/dev/null;echo $?` -eq 0 ];then
-                    USEPARALLEL=true
-                    echo -e "\e[33mWill use GNU Parallel in '$PP'.\e[0m"
-                else
-                    echo -e "\e[31mERROR: GNU Parallel path '$PP' invalid.\e[0m"
-                    if [ $PARALLEL -eq 0 ];then PP="/usr/bin/parallel";echo -e "\e[31mERROR: Will use GNU Parallel in /usr/bin/parallel\e[0m";fi
-                fi
-            ;;
-            "--remove")
-                echo -e "\e[33mWARNING: Will remove $fn if success.\e[0m"
-                REMOVE=true
-            ;;
-            *)
-                echo -e "\e[31mERROR: Option '$opt' invalid.\e[0m"
-                exit 1
-        esac
-        OPT="$OPT $opt"
-    else
-        STDS="$STDS $opt"
-    fi
-done
+ISAOTOZIP=false
+ppopt $@
 # ============ Possess arguments ============
 STDI=($STDS)
 fulln=${STDI[0]}
@@ -117,6 +81,7 @@ if [ -z $fulln ];then
     echo -e "\e[31mERROR: Filename '$fulln' invalid.\e[0m"
     exit 1
 fi
+fulln=`mfn $fulln`
 fn=${fulln%.*}
 ext=${fulln##*.}
 if [ ${fn##*.} = "tar" ];then
@@ -129,9 +94,7 @@ if [ -e $fn ];then
 fi
 echo -e "\e[33mReceived: $0 $fulln $OPT ==>Extension=$ext\e[0m"
 # ============ Makt tmp ============
-tempdir=`mktemp -dt autozip.XXXXXX`
-tempf=`mktemp -t autozip.XXXXXX`
-echo -e "\e[33mTEMP file '$tempf' and directory '$tempdir' made.\e[0m"
+mktmp
 # ============ Start Compressing ============
 case $ext in
     "tar") # ============ tar ============
@@ -155,7 +118,7 @@ case $ext in
             stdtc "gzip -dk"
         else
             if $USEPARALLEL && [ $PIGZ -eq 0 ];then
-                DO pigz -d $fulln\|tar zvf \>$fn
+                DO pigz -d $fulln\|tar xv \>$fn
             else
                 DO tar xzvf $fulln
             fi
@@ -229,7 +192,7 @@ case $ext in
     ;;
     "zip") # ============ zip ============
         if ! [ $UNZIP -eq 0 ]; then echo -e "\e[31mERROR: unzip NO exist!\e[0m";exit 1;fi
-        if [[ -f $fn.z01 ]];then
+        if [ -f $fn.z01 ];then
             if ! [ $ZIP -eq 0 ]; then echo -e "\e[31mERROR: zip NO exist!\e[0m";exit 1;fi
             DO cp $fn.z* $tempdir/
             DO zip -FF $tempdir/$fn.zip --out $tempdir/$fn.fzip
@@ -246,7 +209,6 @@ esac
 # ============ Finished ============
 echo -e "\e[33mRemoving temporary resources...\e[0m"
 rm -rf $tempdir $tempf
-echo -e "\e[33mFinished.\e[0m"
 if $REMOVE; then
     if $USESPLIT; then
         file_i=1
@@ -260,4 +222,5 @@ if $REMOVE; then
         DO rm -rf $fulln
     fi
 fi
+echo -e "\e[33mFinished.\e[0m"
 exit 0
