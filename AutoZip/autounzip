@@ -1,13 +1,13 @@
 #!/bin/bash
 # ============ Functions ============
 DN=`dirname $0`
-LIBDO_TOP_PID=$$
 exec 1>&2
 if ! [ -f $DN/libautozip ];then
     echo -e "\e[31mERROR: libautozip NO found!.\e[0m"
     exit 1
 fi
 . $DN/libautozip
+LIBDO_TOP_PID=$$
 # Make a number 3 digit
 function fixthree(){
     fout=""$1

@@ -33,7 +33,11 @@ function DO(){
                 LIBDO_PID=$!
         esac
     fi
-    DO_ECHO "LIBDO PID $LIBDO_PID"
+    if [ -z $LIBDO_TOP_PID ];then
+       DO_ECHO "LIBDO PID $LIBDO_PID"
+       else
+	   DO_ECHO "LIBDO PID $LIBDO_PID with top_pid $LIBDO_TOP_PID"
+	   fi
     wait $LIBDO_PID
     LIBDO_PRIV=$?
     DO_ECHO "LIBDO STOPPED AT `date`."
@@ -48,7 +52,7 @@ function DO(){
     fi
     return $LIBDO_PRIV
 }
-# Do something! The return value is the exit value of "something".
+# LibDO V1 EP1 Do something! The return value is the exit value of "something".
 # ENVIRONMENTAL VARIABLES:
 # LIBDO_TOP_PID: the pid to kill if failed. If blank, will not kill.
 # LIBDO_PRIV: exit status.

@@ -1,13 +1,13 @@
 #!/bin/bash
 # ============ Functions ============
 DN=`dirname $0`
-LIBDO_TOP_PID=$$
 exec 1>&2
 if ! [ -f $DN/libautozip ];then
     echo -e "\e[31mERROR: libautozip NO found!.\e[0m"
     exit 1
 fi
 . $DN/libautozip
+LIBDO_TOP_PID=$$
 # Check filename
 function ckfn(){
     if [ -z $fn ];then autozipck;exit 0;fi
@@ -182,7 +182,7 @@ case $ext in
                 DO cat $tfn\|$cmd $LVL \>$fn.$ext.${tfn:0-3}
             done
         else
-            DO cat $tfn\|$cmd $LVL \>$fn.$ext.${tfn:0-3}
+            DO tar cv $fn\|$cmd $LVL \>$fn.$ext
         fi
     ;;
     "tar.xz"|"txz") # ============ txz ============
