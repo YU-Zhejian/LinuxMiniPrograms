@@ -1,5 +1,5 @@
 #!/bin/bash
-#LibMakeTable
+#LibMakeTable V1 EP1
 function mktbl_GetLongestString(){
     mktbl_GetLongestString_max_str=""
     for item in $@;do
@@ -26,12 +26,12 @@ function mktbl(){
                 row[$j]="${row[$j]}$item;"
                 j=$[$j+1]
             done
-            unset item
+            unset item curr_col_items j
         else
             row_instruction=(${row_instruction[@]} ${line:1})
         fi
-    done <$1
-    unset j
+        unset line
+    done < $1
     for row_tmp_str in ${row[@]};do
         IFS=";"
         row_tmp=($row_tmp_str)
@@ -41,7 +41,7 @@ function mktbl(){
         row_len=${#row_tmp_len}
         unset row_tmp_len
         if [[ ${row_instruction[$j]} =~ ^W.* ]];then #Wrap
-        echo "Still Testing.";exit
+            echo "Still Testing.";exit
             wrap=${row_instruction[$j]:1}
             wrap_s=0
             wrap_e=$wrap
@@ -59,7 +59,7 @@ function mktbl(){
                 formatted_item="$formatted_item\n${item:$wrap_s}"
                 curr_row="$curr_row$formatted_item;"
             done
-            unset formatted_item wrap_s wrap wrap_e nit
+            unset formatted_item wrap_s wrap wrap_e nit row_tmp
             elif [[ ${row_instruction[$j]} =~ ^S.* ]];then #Shrink
             shrink=${row_instruction[$j]:1}
             shrinked=$[$shrink-3]
@@ -73,7 +73,7 @@ function mktbl(){
                 done
                 curr_row="$curr_row$item;"
             done
-            unset shrink shrinked
+            unset shrink shrinked row_tmp
         else #Unshrinkable
             for item in ${row_tmp[@]};do
                 while [ ${#item} -lt $row_len ];do
@@ -83,7 +83,7 @@ function mktbl(){
             done
         fi
         formatted_row=(${formatted_row[@]} $curr_row)
-        unset curr_row item
+        unset curr_row item row_tmp
         j=$[$j+1]
         total_col_len=$[$total_col_len+$row_len]
     done
@@ -107,11 +107,12 @@ function mktbl(){
         done
     done
     #exit
-    unset curr_row_items item curr_col_num
+    unset curr_row_items item curr_col_num formatted_row
     col_len=$[$col_num+$total_col_len]
     for ((i=0;i<=$col_len;i++));do
         SPB="$SPB"-
     done
+    unset col_num total_col_len col_len
     echo $SPB
     for curr_col in ${col[@]};do
         IFS=";"
@@ -125,4 +126,5 @@ function mktbl(){
         echo $SPB
     done
     IFS=$oldifs
+    unset col curr_col msg SPB
 }

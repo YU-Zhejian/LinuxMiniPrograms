@@ -9,7 +9,15 @@ else
     echo -e "\e[31mERROR: libisopt not found.\e[0m">&2
     exit 1
 fi
+if [ -f $DN/../lib/libmktbl ] && [ -x $DN/../lib/libmktbl ];then
+    . $DN/../lib/libmktbl
+    echo -e "\e[33mlibmktbl loaded.\e[0m">&2
+else
+    echo -e "\e[31mERROR: libmktbl not found.\e[0m">&2
+    exit 1
+fi
 more="more"
+cmd=0
 for opt in $@;do
     if isopt $opt;then
         case $opt in
@@ -20,18 +28,14 @@ for opt in $@;do
                 echo "Available options:"
                 echo "  -h|--help Dicplay this help."
                 echo "  -v|--version Print version information."
-                echo "  -s|--summary Print summary."
                 echo "  -o:[item]|--output:[item] Get the output of [item] (from 1)."
                 echo "  --more:[program]|The GNU/Linux program \"more\" will be used if there's too much output. Use [program] to replace it."
                 echo -e "\e[0m"
                 exit 0
             ;;
             "-v"|"--version")
-                echo -e "\e[31mVersion 1 released, compatiable with libdo Version 1.\e[0m"
+                echo -e "\e[31mVersion 2, compatiable with libdo Version 1.\e[0m"
                 exit 0
-            ;;
-            "-s"|"--summary")
-                cmd=0
             ;;
             -o\:*)
                 cmd=${opt:3}
@@ -52,85 +56,83 @@ for opt in $@;do
     fi
 done
 STDI=($STDS)
-fn=${STDI[0]}
-if ! [ -f $fn ];then
-    echo -e "\e[31mERROR: Filename '$fn' invalid.\e[0m"
-    exit 1
+if [ ${#STDI[@]} -gt 1 ];then
+    echo "\e[33m More than one filename was received. Will disable -o option.\e[0m"
+    cmd=0
 fi
-echo -e "\e[33mReceived: $0 $fn $OPT \e[0m"
-summary=`mktemp -t libdo_man.XXXXXX`
-cat $fn> $summary
-echo -e "\e[33mTemporay file created. \e[0m"
-Proj=0
-ln=0
-status=2
-while read line;do
-    ln=$[$ln+1]
-    case $line in
-        "LIBDO IS GOING TO EXECUTE"*)
-            if [ $status -eq 1 ];then
-                Proj_Cont_e[$Proj]=$[$ln-1]
-                Proj_Time_e[$Proj]=0
-                Proj_Exit[$Proj]="-1."
-            fi
-            Proj=$[$Proj+1]
-            status=1
-            Proj_CMD[$Proj]=${line:26}
-        ;;
-        "LIBDO STARTED AT"*)
-            Proj_Time_s[$Proj]=${line:17}
-        ;;
-        "LIBDO PID"*)
-            Proj_Cont_s[$Proj]=$[$ln+1]
-        ;;
-        "LIBDO STOPPED AT"*)
-            Proj_Cont_e[$Proj]=$[$ln-1]
-            Proj_Time_e[$Proj]=${line:17}
-        ;;
-        "LIBDO EXITED SUCCESSFULLY.")
-            status=2
-            Proj_Exit[$Proj]="0."
-        ;;
-        "LIBDO FAILED, GOT"*)
-            status=2
-            Proj_Exit[$Proj]=${line:21}
-    esac
-done < $summary
-if [ $status -eq 1 ];then
-    Proj_Cont_e[$Proj]=$[$ln-1]
-    Proj_Time_e[$Proj]=0
-    Proj_Exit[$Proj]="-1"
-fi
-echo -e "\e[33mFile loaded \e[0m"
-if [ "$cmd" = 0 ];then
-    table=`mktemp -t libdo_man.XXXXXX`
-    if [ -f $DN/../lib/libmktbl ] && [ -x $DN/../lib/libmktbl ];then
-        . $DN/../lib/libmktbl
-        echo -e "\e[33mlibmktbl loaded.\e[0m">&2
-    else
-        echo -e "\e[31mERROR: libmktbl not found.\e[0m">&2
+for fn in ${STDI[@]};do
+    if ! [ -f $fn ] || [ -z $fn ];then
+        echo -e "\e[31mERROR: Filename '$fn' invalid. Use libdoman -h for help.\e[0m"
         exit 1
     fi
-    echo -e "\#1\n\#S100\n\#1">$table
-    echo "Index;COMMAND;EXIT_STATUS">>$table
-    for ((i=1;i<=$Proj;i++));do
-        echo "$i;${Proj_CMD[$i]};${Proj_Exit[$i]}"|sed "s/ /_/g">>$table
-    done
-    mktbl $table
-    rm $table
-else
-    if [ $Proj -lt $cmd ];then echo -e "\e[31mERROR: $cmd too large.\e[0m">&2;exit 1;fi
-    echo "JOB_CMD     : ${Proj_CMD[$cmd]}"
-    echo "TIME        : ${Proj_Time_s[$cmd]} to ${Proj_Time_e[$cmd]}"
-    echo "EXIT_STATUS : ${Proj_Exit[$cmd]}"
-    echo "__________JOB_OUTPUT__________"
-    if [ ${Proj_Cont_s[$cmd]} -ge ${Proj_Cont_e[$cmd]} ];then
-        echo -e "\e[33mNO_OUTPUT\e[0m"
-    else
-        cat -n  $summary|head -n $[${Proj_Cont_e[$cmd]}]|tail -n $[${Proj_Cont_e[$cmd]}-${Proj_Cont_s[$cmd]}+1]|$more
+done
+echo -e "\e[33mReceived: $0 $STDS $OPT \e[0m"
+for fn in ${STDI[@]};do
+    Proj=0
+    ln=0
+    status=2
+    while read line;do
+        ln=$[$ln+1]
+        case $line in
+            "LIBDO IS GOING TO EXECUTE"*)
+                if [ $status -eq 1 ];then
+                    Proj_Cont_e[$Proj]=$[$ln-1]
+                    Proj_Time_e[$Proj]=0
+                    Proj_Exit[$Proj]="-1."
+                fi
+                Proj=$[$Proj+1]
+                status=1
+                Proj_CMD[$Proj]=${line:26}
+            ;;
+            "LIBDO STARTED AT"*)
+                Proj_Time_s[$Proj]=${line:17}
+            ;;
+            "LIBDO PID"*)
+                Proj_Cont_s[$Proj]=$[$ln+1]
+            ;;
+            "LIBDO STOPPED AT"*)
+                Proj_Cont_e[$Proj]=$[$ln-1]
+                Proj_Time_e[$Proj]=${line:17}
+            ;;
+            "LIBDO EXITED SUCCESSFULLY.")
+                status=2
+                Proj_Exit[$Proj]="0."
+            ;;
+            "LIBDO FAILED, GOT"*)
+                status=2
+                Proj_Exit[$Proj]=${line:21}
+        esac
+    done < $fn
+    if [ $status -eq 1 ];then
+        Proj_Cont_e[$Proj]=$[$ln-1]
+        Proj_Time_e[$Proj]=0
+        Proj_Exit[$Proj]="-1"
     fi
-    echo "_____JOB_OUTPUT_FINISHED______"
-fi
-rm $summary
+    echo -e "\e[33mFile $fn loaded \e[0m"
+    if [ $cmd = 0 ];then
+        table=`mktemp -t libdo_man.XXXXXX`
+        echo -e "\#1\n\#S100\n\#1">$table
+        echo "Index;COMMAND;EXIT_STATUS">>$table
+        for ((i=1;i<=$Proj;i++));do
+            echo "$i;${Proj_CMD[$i]};${Proj_Exit[$i]}"|sed "s/ /_/g">>$table
+        done
+        echo -e "\n">>$table
+        mktbl $table
+        rm $table
+    else
+        if [ $Proj -lt $cmd ];then echo -e "\e[31mERROR: $cmd too large.\e[0m">&2;exit 1;fi
+        echo "JOB_CMD     : ${Proj_CMD[$cmd]}"
+        echo "TIME        : ${Proj_Time_s[$cmd]} to ${Proj_Time_e[$cmd]}"
+        echo "EXIT_STATUS : ${Proj_Exit[$cmd]}"
+        echo "__________JOB_OUTPUT__________"
+        if [ ${Proj_Cont_s[$cmd]} -ge ${Proj_Cont_e[$cmd]} ];then
+            echo -e "\e[33mNO_OUTPUT\e[0m"
+        else
+            cat -n  $fn|head -n $[${Proj_Cont_e[$cmd]}]|tail -n $[${Proj_Cont_e[$cmd]}-${Proj_Cont_s[$cmd]}+1]|$more
+        fi
+        echo "_____JOB_OUTPUT_FINISHED______"
+    fi
+    unset Proj Proj_CMD Proj_Cont_e Proj_Cont_s Proj_Exit Proj_Time_e Proj_Time_s
+done
 echo -e "\e[33mFinished.\e[0m">&2
 exit 0
