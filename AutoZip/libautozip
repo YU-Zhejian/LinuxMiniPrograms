@@ -182,7 +182,7 @@ function ppopt(){
                     fi
                 ;;
                 "-v"|"--version")
-                    echo "Version 1 patch 4 [EMERGENCY]"
+                    echo "Version 1 patch 5 [EMERGENCY]"
                     exit 0
                 ;;
                 --force-parallel\:*)

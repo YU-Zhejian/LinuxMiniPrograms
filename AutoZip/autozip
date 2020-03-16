@@ -193,6 +193,7 @@ case $ext in
             for tfn in $tempdir/$fn.*;do
                 DO cat $tfn\|xz $PAR $LVL\>$fn.$ext.${tfn:0-3}
             done
+        else
             DO tar cv $fn\|xz $PAR $LVL\>$fn.$ext
         fi
     ;;
