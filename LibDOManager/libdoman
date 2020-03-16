@@ -34,7 +34,7 @@ for opt in $@;do
                 exit 0
             ;;
             "-v"|"--version")
-                echo -e "\e[31mVersion 2, compatiable with libdo Version 1.\e[0m"
+                echo -e "\e[31mVersion 2 patch 1, compatiable with libdo Version 1.\e[0m"
                 exit 0
             ;;
             -o\:*)
@@ -57,7 +57,7 @@ for opt in $@;do
 done
 STDI=($STDS)
 if [ ${#STDI[@]} -gt 1 ];then
-    echo "\e[33m More than one filename was received. Will disable -o option.\e[0m"
+    echo -e "\e[33m More than one filename was received. Will disable -o option.\e[0m"
     cmd=0
 fi
 for fn in ${STDI[@]};do
@@ -116,7 +116,6 @@ for fn in ${STDI[@]};do
         for ((i=1;i<=$Proj;i++));do
             echo "$i;${Proj_CMD[$i]};${Proj_Exit[$i]}"|sed "s/ /_/g">>$table
         done
-        echo -e "\n">>$table
         mktbl $table
         rm $table
     else
