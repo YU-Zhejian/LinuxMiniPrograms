@@ -10,6 +10,7 @@ else
     exit 1
 fi
 more="more"
+cmd=0
 for opt in $@;do
     if isopt $opt;then
         case $opt in
@@ -20,7 +21,6 @@ for opt in $@;do
                 echo "Available options:"
                 echo "  -h|--help Dicplay this help."
                 echo "  -v|--version Print version information."
-                echo "  -s|--summary Print summary."
                 echo "  -o:[item]|--output:[item] Get the output of [item] (from 1)."
                 echo "  --more:[program]|The GNU/Linux program \"more\" will be used if there's too much output. Use [program] to replace it."
                 echo -e "\e[0m"
@@ -29,9 +29,6 @@ for opt in $@;do
             "-v"|"--version")
                 echo -e "\e[31mVersion 1 released, compatiable with libdo Version 1.\e[0m"
                 exit 0
-            ;;
-            "-s"|"--summary")
-                cmd=0
             ;;
             -o\:*)
                 cmd=${opt:3}
@@ -52,12 +49,18 @@ for opt in $@;do
     fi
 done
 STDI=($STDS)
-fn=${STDI[0]}
-if ! [ -f $fn ];then
-    echo -e "\e[31mERROR: Filename '$fn' invalid.\e[0m"
+if [ ${#STDI[@]} -gt 1 ];then
+    echo "\e[33m More than one filename was received. Will disable -o option.\e[0m"
+cmd=0
+fi
+for fn in ${STDI[@]};do
+if ! [ -f $fn ]||[ -z $fn ];then
+    echo -e "\e[31mERROR: Filename '$fn' invalid. Use libdoman -h for help.\e[0m"
     exit 1
 fi
-echo -e "\e[33mReceived: $0 $fn $OPT \e[0m"
+done
+echo -e "\e[33mReceived: $0 $STDS $OPT \e[0m"
+for fn in ${STDI[@]};do
 summary=`mktemp -t libdo_man.XXXXXX`
 cat $fn> $summary
 echo -e "\e[33mTemporay file created. \e[0m"
@@ -101,7 +104,7 @@ if [ $status -eq 1 ];then
     Proj_Time_e[$Proj]=0
     Proj_Exit[$Proj]="-1"
 fi
-echo -e "\e[33mFile loaded \e[0m"
+echo -e "\e[33mFile $fn loaded \e[0m"
 if [ "$cmd" = 0 ];then
     table=`mktemp -t libdo_man.XXXXXX`
     if [ -f $DN/../lib/libmktbl ] && [ -x $DN/../lib/libmktbl ];then
@@ -116,6 +119,7 @@ if [ "$cmd" = 0 ];then
     for ((i=1;i<=$Proj;i++));do
         echo "$i;${Proj_CMD[$i]};${Proj_Exit[$i]}"|sed "s/ /_/g">>$table
     done
+echo -e "\n">>$table
     mktbl $table
     rm $table
 else
@@ -132,5 +136,6 @@ else
     echo "_____JOB_OUTPUT_FINISHED______"
 fi
 rm $summary
+done
 echo -e "\e[33mFinished.\e[0m">&2
 exit 0
