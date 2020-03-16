@@ -8,9 +8,10 @@ function DO_ECHO(){
     fi
 }
 function DO(){
-    LIBDO_CMD="$@"
+    local LIBDO_CMD="$@"
     DO_ECHO "LIBDO IS GOING TO EXECUTE $LIBDO_CMD"
     DO_ECHO "LIBDO STARTED AT `date`."
+    local LIBDO_PID
     if [ -z $LIBDO_LOG ];then
         eval $LIBDO_CMD &
         LIBDO_PID=$!
@@ -52,7 +53,7 @@ function DO(){
     fi
     return $LIBDO_PRIV
 }
-# LibDO V1 EP1 Do something! The return value is the exit value of "something".
+# LibDO V1 Patch 2 Do something! The return value is the exit value of "something".
 # ENVIRONMENTAL VARIABLES:
 # LIBDO_TOP_PID: the pid to kill if failed. If blank, will not kill.
 # LIBDO_PRIV: exit status.
