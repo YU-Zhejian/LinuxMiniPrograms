@@ -183,8 +183,8 @@ else
     tls=$[$ln_s+2]
     if [ $ln_e -le $tls ];then
         echo -e "\e[33mNO_OUTPUT\e[0m"
-        elif [ $Exit="-1" ];then
-        cat $fn|head -n $[$ln_e]|tail -n $[$ln_s-$ln_e+2]|$more
+        elif [ $Exit -eq -1 ];then
+        cat $fn|head -n $ln_e|tail -n $[$ln_s-$ln_e+2]|$more
     else
         cat $fn|head -n $[$ln_e-2]|tail -n $[$ln_s-$ln_e+4]|$more
     fi
