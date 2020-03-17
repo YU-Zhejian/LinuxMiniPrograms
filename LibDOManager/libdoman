@@ -41,7 +41,7 @@ for opt in $@;do
                 exit 0
             ;;
             "-v"|"--version")
-                echo -e "\e[31mVersion 3, compatiable with libdo Version 1.\e[0m"
+                echo -e "\e[31mVersion 3 patch 1, compatiable with libdo Version 1.\e[0m"
                 exit 0
             ;;
             -o\:*)
@@ -118,13 +118,12 @@ for fn in ${STDI[@]};do
     echo -e "\e[33mFile $fn loaded \e[0m"
     if [ $cmd = 0 ];then
         table=`mktemp -t libdo_man.XXXXXX`
-        echo -e "\#1\n\#S100\n\#1\n\#1">$table
+        echo -e "\#1\n\#S90\n\#1\n\#1">$table
         echo "Index;COMMAND;EXIT_STATUS;TIME">>$table
         for ((i=1;i<=$Proj;i++));do
             echo "$i;${Proj_CMD[$i]};${Proj_Exit[$i]};${Proj_Time[$i]}"|sed "s/ /_/g">>$table
         done
         mktbl $table
-        cat $table
         rm $table
     else
         if [ $Proj -lt $cmd ];then echo -e "\e[31mERROR: $cmd too large.\e[0m">&2;exit 1;fi
