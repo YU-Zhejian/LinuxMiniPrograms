@@ -41,7 +41,7 @@ for opt in $@;do
                 exit 0
             ;;
             "-v"|"--version")
-                echo -e "\e[31mVersion 4 EP 1, compatiable with libdo Version 1.\e[0m"
+                echo -e "\e[31mVersion 4 patch 2, compatiable with libdo Version 1.\e[0m"
                 exit 0
             ;;
             -o\:*)
@@ -169,6 +169,9 @@ else
             "LIBDO FAILED, GOT"*)
                 status=0
                 Exit=`echo ${line:21}|sed "s/.$//"`
+                ;;
+                *"WILL KILL"*)
+                ln_e=$[$ln_e-1]
         esac
     done <$tmpprj
     if [ $status -eq 1 ];then
@@ -179,7 +182,7 @@ else
     echo "JOB_CMD      : $CMD"
     echo "ELAPSED_TIME : $Time_s to $Time_e, Total $Time"
     echo "EXIT_STATUS  : $Exit"
-    echo "__________JOB_OUTPUT__________"
+    echo "____________________JOB_OUTPUT____________________"
     tls=$[$ln_s+2]
     if [ $ln_e -le $tls ];then
         echo -e "\e[33mNO_OUTPUT\e[0m"
@@ -188,7 +191,7 @@ else
     else
         cat $fn|head -n $[$ln_e-2]|tail -n $[$ln_s-$ln_e+4]|$more
     fi
-    echo "_____JOB_OUTPUT_FINISHED______"
+    echo "_______________JOB_OUTPUT_FINISHED________________"
     rm $tmpprj
 fi
 echo -e "\e[33mFinished.\e[0m">&2
