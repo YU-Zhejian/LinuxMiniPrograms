@@ -1,5 +1,5 @@
 #!/bin/bash
-#LibMakeTable V1 EP1
+#LibMakeTable V1 EP2
 function GetLongestString(){
     local GetLongestString_max_str
     for item in $@;do
@@ -95,11 +95,11 @@ function mktbl(){
     unset row row_len
     #print
     IFS=";"
-    local row_num_tmp=(${formatted_row[0]})
-    local row_num=${#row_num_tmp[@]}
-    local col_num=${#formatted_row[@]}
+    local col_num_tmp=(${formatted_row[0]})
+    local col_num=${#row_num_tmp[@]}
+    local row_num=${#formatted_row[@]}
     IFS=" "
-    unset row_num_tmp
+    unset col_num_tmp
     local curr_row curr_row_items
     for ((j=0;j<=$row_num;j++));do
         IFS=";"
@@ -114,24 +114,24 @@ function mktbl(){
         done
     done
     unset curr_row_items item curr_col_num formatted_row
-    local col_len=$[$col_num+$total_col_len]
+    local col_len=$[$row_num+$total_col_len]
     local SPB
     for ((i=0;i<=$col_len;i++));do
         SPB="$SPB"-
     done
     unset col_num total_col_len col_len
-    echo $SPB
+    echo -e "\e[36m$SPB\e[0m"
     local curr_col_items msg
     for curr_col in ${col[@]};do
         IFS=";"
         curr_col_items=($curr_col)
         IFS=" "
-        msg="|"
+        msg="\e[36m|\e[0m"
         for item in ${curr_col_items[@]};do
-            msg="$msg$item|"
+            msg="$msg$item\e[36m|\e[0m"
         done
-        echo $msg
-        echo $SPB
+        echo -e $msg
+        echo -e "\e[36m$SPB\e[0m"
     done
     unset col curr_col msg SPB oldifs
     IFS=$oldifs
