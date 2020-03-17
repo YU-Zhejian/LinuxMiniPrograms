@@ -16,6 +16,13 @@ else
     echo -e "\e[31mERROR: libmktbl not found.\e[0m">&2
     exit 1
 fi
+if [ -f $DN/../lib/libdate ] && [ -x $DN/../lib/libdate ];then
+    . $DN/../lib/libdate
+    echo -e "\e[33mlibdate loaded.\e[0m">&2
+else
+    echo -e "\e[31mERROR: libdate not found.\e[0m">&2
+    exit 1
+fi
 more="more"
 cmd=0
 for opt in $@;do
@@ -34,7 +41,7 @@ for opt in $@;do
                 exit 0
             ;;
             "-v"|"--version")
-                echo -e "\e[31mVersion 2 patch 1, compatiable with libdo Version 1.\e[0m"
+                echo -e "\e[31mVersion 3, compatiable with libdo Version 1.\e[0m"
                 exit 0
             ;;
             -o\:*)
@@ -65,9 +72,6 @@ for fn in ${STDI[@]};do
         echo -e "\e[31mERROR: Filename '$fn' invalid. Use libdoman -h for help.\e[0m"
         exit 1
     fi
-done
-echo -e "\e[33mReceived: $0 $STDS $OPT \e[0m"
-for fn in ${STDI[@]};do
     Proj=0
     ln=0
     status=2
@@ -78,50 +82,54 @@ for fn in ${STDI[@]};do
                 if [ $status -eq 1 ];then
                     Proj_Cont_e[$Proj]=$[$ln-1]
                     Proj_Time_e[$Proj]=0
-                    Proj_Exit[$Proj]="-1."
+                    Proj_Exit[$Proj]="-1"
+                    Proj_Time[$Proj]="ERR"
                 fi
                 Proj=$[$Proj+1]
                 status=1
                 Proj_CMD[$Proj]=${line:26}
             ;;
             "LIBDO STARTED AT"*)
-                Proj_Time_s[$Proj]=${line:17}
+                Proj_Time_s[$Proj]=`echo ${line:17}|sed "s/.$//"`
             ;;
             "LIBDO PID"*)
                 Proj_Cont_s[$Proj]=$[$ln+1]
             ;;
             "LIBDO STOPPED AT"*)
                 Proj_Cont_e[$Proj]=$[$ln-1]
-                Proj_Time_e[$Proj]=${line:17}
+                Proj_Time_e[$Proj]=`echo ${line:17}|sed "s/.$//"`
+                Proj_Time[$Proj]=`timediff "${Proj_Time_s[$Proj]}" "${Proj_Time_e[$Proj]}"`
             ;;
             "LIBDO EXITED SUCCESSFULLY.")
                 status=2
-                Proj_Exit[$Proj]="0."
+                Proj_Exit[$Proj]="0"
             ;;
             "LIBDO FAILED, GOT"*)
                 status=2
-                Proj_Exit[$Proj]=${line:21}
+                Proj_Exit[$Proj]=`echo ${line:21}|sed "s/.$//"`
         esac
     done < $fn
     if [ $status -eq 1 ];then
         Proj_Cont_e[$Proj]=$[$ln-1]
         Proj_Time_e[$Proj]=0
         Proj_Exit[$Proj]="-1"
+        Proj_Time[$Proj]="ERR"
     fi
     echo -e "\e[33mFile $fn loaded \e[0m"
     if [ $cmd = 0 ];then
         table=`mktemp -t libdo_man.XXXXXX`
-        echo -e "\#1\n\#S100\n\#1">$table
-        echo "Index;COMMAND;EXIT_STATUS">>$table
+        echo -e "\#1\n\#S100\n\#1\n\#1">$table
+        echo "Index;COMMAND;EXIT_STATUS;TIME">>$table
         for ((i=1;i<=$Proj;i++));do
-            echo "$i;${Proj_CMD[$i]};${Proj_Exit[$i]}"|sed "s/ /_/g">>$table
+            echo "$i;${Proj_CMD[$i]};${Proj_Exit[$i]};${Proj_Time[$i]}"|sed "s/ /_/g">>$table
         done
         mktbl $table
+        cat $table
         rm $table
     else
         if [ $Proj -lt $cmd ];then echo -e "\e[31mERROR: $cmd too large.\e[0m">&2;exit 1;fi
         echo "JOB_CMD     : ${Proj_CMD[$cmd]}"
-        echo "TIME        : ${Proj_Time_s[$cmd]} to ${Proj_Time_e[$cmd]}"
+        echo "TIME        : ${Proj_Time_s[$cmd]} to ${Proj_Time_e[$cmd]}, Total ${Proj_Time[$cmd]}"
         echo "EXIT_STATUS : ${Proj_Exit[$cmd]}"
         echo "__________JOB_OUTPUT__________"
         if [ ${Proj_Cont_s[$cmd]} -ge ${Proj_Cont_e[$cmd]} ];then
