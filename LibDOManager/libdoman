@@ -41,7 +41,7 @@ for opt in $@;do
                 exit 0
             ;;
             "-v"|"--version")
-                echo -e "\e[31mVersion 4, compatiable with libdo Version 1.\e[0m"
+                echo -e "\e[31mVersion 4 EP 1, compatiable with libdo Version 1.\e[0m"
                 exit 0
             ;;
             -o\:*)
@@ -76,7 +76,9 @@ if [ $cmd -eq 0 ];then
         fi
         Proj=0
         status=2
-        cat $fn| grep LIBDO| while read line;do
+        ffn=`mktemp -t libdo_man.XXXXXX`
+        cat $fn| grep LIBDO>$ffn
+        while read line;do
             ln=$[$ln+1]
             case $line in
                 "LIBDO IS GOING TO EXECUTE"*)
@@ -104,21 +106,22 @@ if [ $cmd -eq 0 ];then
                     status=2
                     Proj_Exit[$Proj]=`echo ${line:21}|sed "s/.$//"`
             esac
-            if [ $status -eq 1 ];then
-                Proj_Time_e[$Proj]=0
-                Proj_Exit[$Proj]="-1"
-                Proj_Time[$Proj]="ERR"
-            fi
-            echo -e "\e[33mFile $fn loaded \e[0m"
-            table=`mktemp -t libdo_man.XXXXXX`
-            echo -e "\#1\n\#S90\n\#1\n\#1">$table
-            echo "NO.;COMMAND;EXIT;TIME">>$table
-            for ((i=1;i<=$Proj;i++));do
-                echo "$i;${Proj_CMD[$i]};${Proj_Exit[$i]};${Proj_Time[$i]}"|sed "s/ /_/g">>$table
-            done
-            mktbl $table
-            rm $table
+            
+        done <$ffn
+        if [ $status -eq 1 ];then
+            Proj_Time_e[$Proj]=0
+            Proj_Exit[$Proj]="-1"
+            Proj_Time[$Proj]="ERR"
+        fi
+        echo -e "\e[33mFile $fn loaded \e[0m"
+        table=`mktemp -t libdo_man.XXXXXX`
+        echo -e "\#1\n\#S90\n\#1\n\#1">$table
+        echo "NO.;COMMAND;EXIT;TIME">>$table
+        for ((i=1;i<=$Proj;i++));do
+            echo "$i;${Proj_CMD[$i]};${Proj_Exit[$i]};${Proj_Time[$i]}"|sed "s/ /_/g">>$table
         done
+        mktbl $table
+        rm $table
     done
     unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s
 else
@@ -131,8 +134,9 @@ else
         ln=$[$ln+1]
         if [ $ln -eq $cmd ];then
             ln_s=`echo $line|cut -f 1 -d " "`
-            elif [ $ln -lt $cmd ];then
+            elif [ $ln -gt $cmd ];then
             ln_e=$[`echo $line|cut -f 1 -d " "`-1]
+            break
         fi
     done <$tmps
     rm $tmps
