@@ -41,7 +41,7 @@ for opt in $@;do
                 exit 0
             ;;
             "-v"|"--version")
-                echo -e "\e[31mVersion 4 patch 2, compatiable with libdo Version 1.\e[0m"
+                echo -e "\e[31mVersion 4 patch 3, compatiable with libdo Version 1.\e[0m"
                 exit 0
             ;;
             -o\:*)
@@ -126,6 +126,10 @@ if [ $cmd -eq 0 ];then
     unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s
 else
     fn=${STDI[0]}
+    if ! [ -f $fn ] || [ -z $fn ];then
+        echo -e "\e[31mERROR: Filename '$fn' invalid. Use libdoman -h for help.\e[0m"
+        exit 1
+    fi
     ln_s=0
     ln_e=0
     tmps=`mktemp -t libdo_man.XXXXXX`
@@ -169,8 +173,8 @@ else
             "LIBDO FAILED, GOT"*)
                 status=0
                 Exit=`echo ${line:21}|sed "s/.$//"`
-                ;;
-                *"WILL KILL"*)
+            ;;
+            *"WILL KILL"*)
                 ln_e=$[$ln_e-1]
         esac
     done <$tmpprj
@@ -179,10 +183,10 @@ else
         Exit="-1"
         Time="ERR"
     fi
-    echo "JOB_CMD      : $CMD"
-    echo "ELAPSED_TIME : $Time_s to $Time_e, Total $Time"
-    echo "EXIT_STATUS  : $Exit"
-    echo "____________________JOB_OUTPUT____________________"
+    echo -e "\e[33mJOB_CMD      \e[36m: $CMD\e[0m">&2
+    echo -e "\e[33mELAPSED_TIME \e[36m: $Time_s to $Time_e, Total $Time\e[0m">&2
+    echo -e "\e[33mEXIT_STATUS  \e[36m: $Exit\e[0m">&2
+    echo -e "\e[33m________________JOB_________OUTPUT________________\e[0m">&2
     tls=$[$ln_s+2]
     if [ $ln_e -le $tls ];then
         echo -e "\e[33mNO_OUTPUT\e[0m"
@@ -191,7 +195,7 @@ else
     else
         cat $fn|head -n $[$ln_e-2]|tail -n $[$ln_s-$ln_e+4]|$more
     fi
-    echo "_______________JOB_OUTPUT_FINISHED________________"
+    echo -e "\e[33m________________OUTPUT____FINISHED________________\e[0m">&2
     rm $tmpprj
 fi
 echo -e "\e[33mFinished.\e[0m">&2
