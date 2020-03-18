@@ -1,12 +1,8 @@
 #!/bin/bash
 # ============ Functions ============
-DN=`dirname $0`
+DN=$(dirname $0)
 exec 1>&2
-if ! [ -f $DN/libautozip ];then
-    echo -e "\e[31mERROR: libautozip NO found!.\e[0m"
-    exit 1
-fi
-. $DN/libautozip
+. $DN/libautozip && echo -e "\e[33mlibautozip loaded.\e[0m"
 LIBDO_TOP_PID=$$
 # Make a number 3 digit
 function fixthree(){
@@ -22,18 +18,18 @@ function stdc_h(){
     local in_i=001
     if $USEPARALLEL;then
         while [ -f $fulln.$in_i ] ;do
-            echo -e "\e[33mWill execute: echo \"cat `pwd`/$fulln.$in_i|$@>>$tempdir/$in_i\">>$tempdir/$in_i.sh\e[0m"
-            echo "cat `pwd`/$fulln.$in_i|$@>>$tempdir/$in_i">>$tempdir/$in_i.sh
+            echo -e "\e[33mWill execute: echo \"cat ${PWD}/$fulln.$in_i|$@>>$tempdir/$in_i\">>$tempdir/$in_i.sh\e[0m"
+            echo "cat ${PWD}/$fulln.$in_i|$@>>$tempdir/$in_i">>$tempdir/$in_i.sh
             chmod +x $tempdir/$in_i.sh
             file_i=$[$file_i +1]
-            in_i=`fixthree $file_i`
+            in_i=$(fixthree $file_i)
         done
         DO find $tempdir/*.sh\|$PP bash
     else
         while [ -f $fulln.$in_i ] ;do
             DO cat $fulln.$in_i\|$@\>\>$tempdir/$in_i
             file_i=$[$file_i +1]
-            in_i=`fixthree $file_i`
+            in_i=$(fixthree $file_i)
         done
     fi
 }
@@ -45,7 +41,7 @@ function stdtc(){
     while [ -f $fulln.$in_i ] ;do
         DO cat $tempdir/$in_i\>\>$tempf
         file_i=$[$file_i +1]
-        in_i=`fixthree $file_i`
+        in_i=$(fixthree $file_i)
     done
     unset file_i in_1
     DO tar xvf $tempf
@@ -58,7 +54,7 @@ function stdfc(){
     while [ -f $fulln.$in_i ] ;do
         DO cat $tempdir/$in_i\>\>$fn
         file_i=$[$file_i +1]
-        in_i=`fixthree $file_i`
+        in_i=$(fixthree $file_i)
     done
     unset file_i in_1
 }
@@ -81,7 +77,7 @@ if [ -z $fulln ];then
     echo -e "\e[31mERROR: Filename '$fulln' invalid.\e[0m"
     exit 1
 fi
-fulln=`mfn $fulln`
+fulln=$(mfn $fulln)
 fn=${fulln%.*}
 ext=${fulln##*.}
 if [ ${fn##*.} = "tar" ];then
@@ -98,13 +94,14 @@ mktmp
 # ============ Start Compressing ============
 case $ext in
     "tar") # ============ tar ============
+    if ! [ $(TAR) -eq 0 ]; then echo -e "\e[31mERROR: GNU Tar NO exist!\e[0m";exit 1;fi
         if $USESPLIT;then
             file_i=1
             in_i=001
             while [ -f $fulln.$in_i ] ;do
                 DO cat $fulln.$in_i>>$tempf
                 file_i=$[$file_i +1]
-                in_i=`fixthree $file_i`
+                in_i=$(fixthree $file_i)
             done
             unset file_i in_1
             DO tar xvf $tempf
@@ -113,7 +110,7 @@ case $ext in
         fi
     ;;
     "tar.gz"|"tgz"|"tar.GZ") # ============ tgz ============
-        if ! [ $GZIP -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
+        if ! [ $(GZIP) -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
         if $USESPLIT;then
             stdtc "gzip -dk"
         else
@@ -125,7 +122,7 @@ case $ext in
         fi
     ;;
     "tar.xz"|"txz") # ============ txz ============
-        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
+        if ! [ $(XZIP) -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
         if $USESPLIT;then
             stdtc "xz -dk"
         else
@@ -133,7 +130,7 @@ case $ext in
         fi
     ;;
     "tar.bz2"|"tbz") # ============ tbz ============
-        if ! [ $BZIP2 -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
+        if ! [ $(BZIP2) -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
         if $USESPLIT;then
             stdtc "bzip2 -dk"
         else
@@ -141,7 +138,7 @@ case $ext in
         fi
     ;;
     "tar.lzma"|"tar.lz"|"tlz") # ============ tlz ============
-        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: LZMA SDK NO exist!\e[0m";exit 1;fi
+        if ! [ $(XZIP) -eq 0 ]; then echo -e "\e[31mERROR: LZMA SDK NO exist!\e[0m";exit 1;fi
         if $USESPLIT;then
             stdtc "xz -dk --format=lzma"
         else
@@ -149,7 +146,7 @@ case $ext in
         fi
     ;;
     "gz"|"GZ") # ============ gz ============
-        if ! [ $GZIP -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
+        if ! [ $(GZIP) -eq 0 ]; then echo -e "\e[31mERROR: GZip NO exist!\e[0m";exit 1;fi
         if $USESPLIT;then
             stdfc "gzip -dk"
         else
@@ -161,7 +158,7 @@ case $ext in
         fi
     ;;
     "xz") # ============ xz ============
-        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
+        if ! [ $(XZIP) -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
         if $USESPLIT;then
             stdfc "xz -dk"
         else
@@ -169,7 +166,7 @@ case $ext in
         fi
     ;;
     "bz2") # ============ bz2 ============
-        if ! [ $BZIP2 -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
+        if ! [ $(BZIP2) -eq 0 ]; then echo -e "\e[31mERROR: BZip2 NO exist!\e[0m";exit 1;fi
         if $USESPLIT;then
             stdfc "bzip2 -dk"
         else
@@ -177,7 +174,7 @@ case $ext in
         fi
     ;;
     "lz"|"lzma") # ============ lz ============
-        if ! [ $XZIP -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
+        if ! [ $(XZIP) -eq 0 ]; then echo -e "\e[31mERROR: XZ NO exist!\e[0m";exit 1;fi
         if $USESPLIT;then
             stdfc "xz -dk --format=lzma"
         else
@@ -185,13 +182,13 @@ case $ext in
         fi
     ;;
     "7z") # ============ 7z ============
-        if ! [ $Z7 -eq 0 ]; then echo -e "\e[31mERROR: p7zip NO exist!\e[0m";exit 1;fi
+        if ! [ $(Z7) -eq 0 ]; then echo -e "\e[31mERROR: p7zip NO exist!\e[0m";exit 1;fi
         if $USESPLIT;then SUFF=".001";fi
         if $USEPARALLEL;then PAR="-mmt0";fi
         DO 7za $PAR x $fulln$SUFF
     ;;
     "zip") # ============ zip ============
-        if ! [ $UNZIP -eq 0 ]; then echo -e "\e[31mERROR: unzip NO exist!\e[0m";exit 1;fi
+        if ! [ $(UNZIP) -eq 0 ]; then echo -e "\e[31mERROR: unzip NO exist!\e[0m";exit 1;fi
         if [ -f $fn.z01 ];then
             if ! [ $ZIP -eq 0 ]; then echo -e "\e[31mERROR: zip NO exist!\e[0m";exit 1;fi
             DO cp $fn.z* $tempdir/
@@ -202,7 +199,7 @@ case $ext in
         fi
     ;;
     "rar")
-        if ! [ $UNRAR -eq 0 ]; then echo -e "\e[31mERROR: unrar NO exist!\e[0m";exit 1;fi
+        if ! [ $(UNRAR) -eq 0 ]; then echo -e "\e[31mERROR: unrar NO exist!\e[0m";exit 1;fi
         if $USEPARALLEL;then PAR="-mt8";fi
         DO unrar $PAR x $fulln
 esac
@@ -216,7 +213,7 @@ if $REMOVE; then
         while [ -f $fulln.$in_i ] ;do
             DO rm -rf $fulln.$in_i
             file_i=$[$file_i +1]
-            in_i=`fixthree $file_i`
+            in_i=$(fixthree $file_i)
         done
     else
         DO rm -rf $fulln

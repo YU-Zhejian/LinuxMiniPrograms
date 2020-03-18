@@ -2,31 +2,11 @@
 DN=`dirname $0`
 echo -e "\e[33mYuZJLab LibDO Manager.\e[0m"
 echo -e "\e[33mCopyright (C) 2020 YU Zhejian\e[0m"
-if [ -f $DN/../lib/libisopt ] && [ -x $DN/../lib/libisopt ];then
-    . $DN/../lib/libisopt
-    echo -e "\e[33mlibisopt loaded.\e[0m">&2
-else
-    echo -e "\e[31mERROR: libisopt not found.\e[0m">&2
-    exit 1
-fi
-if [ -f $DN/../lib/libmktbl ] && [ -x $DN/../lib/libmktbl ];then
-    . $DN/../lib/libmktbl
-    echo -e "\e[33mlibmktbl loaded.\e[0m">&2
-else
-    echo -e "\e[31mERROR: libmktbl not found.\e[0m">&2
-    exit 1
-fi
-if [ -f $DN/../lib/libdate ] && [ -x $DN/../lib/libdate ];then
-    . $DN/../lib/libdate
-    echo -e "\e[33mlibdate loaded.\e[0m">&2
-else
-    echo -e "\e[31mERROR: libdate not found.\e[0m">&2
-    exit 1
-fi
+. $DN/../lib/libisopt &&. $DN/../lib/libmktbl &&. $DN/../lib/libdate && echo -e "\e[33mlibisopt, libmktbl, libdate loaded.\e[0m">&2
 more="more"
 cmd=0
 for opt in $@;do
-    if isopt $opt;then
+    if isopt "$opt";then
         case $opt in
             "-h"|"--help")
                 echo -e "\e[33mThis is a LibDO Log Manager. Useage:"
@@ -41,7 +21,7 @@ for opt in $@;do
                 exit 0
             ;;
             "-v"|"--version")
-                echo -e "\e[31mVersion 4 patch 3, compatiable with libdo Version 1.\e[0m"
+                echo -e "\e[31mVersion 4 patch 4, compatiable with libdo Version 1.\e[0m"
                 exit 0
             ;;
             -o\:*)
