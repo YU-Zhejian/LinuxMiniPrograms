@@ -25,7 +25,7 @@ for opt in "${@}"; do
             ;;
         esac
     else
-        STDS="${STDS}${opt}"
+        STDS="${STDS} ${opt}"
     fi
 done
 if [ -n "${STDS}" ]; then

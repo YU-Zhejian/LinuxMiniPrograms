@@ -53,6 +53,10 @@ case $1 in
     echo -e "\e[33mVersion 2 Patch 1, compatiable with LiveChat Version 1 & 2.\e[0m"
     exit 0
     ;;
+"-h")
+    yldoc lcman
+    exit 0
+    ;;
 *)
     echo -e "\e[31mERROR: Cannot understand \"${1}\".\e[0m"
     echo -e "\e[31mERROR: Available options: -s, -l, -h, -v.\e[0m"

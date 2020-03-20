@@ -1,5 +1,5 @@
 # Readme For YuZJLab LinuxMiniPrograms
-## Purpoose
+## Purpose
 The reason I write these programs are to cut down time a bioinformatician spent on doing sysadmin work.
 
 ## Installation
@@ -13,5 +13,5 @@ echo "PATH=\"${PWD}:\${PATH}\";export \${PATH}">>${HOME}/.bashrc
 ```
 for an installation that only works on yourself.
 ## Help
-After installation, you can execure `yldoc --list` to get acomplete  list of all available documentations and view
- them by using `yldoc [name]`.
+After installation, you can execure `yldoc --list` to get acomplete  list of all available documentations and view them by using `yldoc [name]`.
+

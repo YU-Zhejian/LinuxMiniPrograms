@@ -1,11 +1,15 @@
-YuZJLab              BashHistorySearcher                 Manual
+YuZJLab                     PathLS                       Manual
 
 NAME
-____bhs - Bash History Searcher.
+____pls - A program to search $PATH variables
 
 DESCRIPTION
-    bhs [STRING] [OPTIONS]
-    Search [STRING] in ~/.bash_history with 'grep'.
+    pls [STRING] [[STRING2]...] [OPTIONS]
+    Search [STRING] in ${PATH}. If [STRING] is omitted, the
+    program will list all contents in each vaild ${PATH}.
+
+    Those executables will be listed in green and folders will
+    be listed in red.
 
 OPTIONS
     -h|--help

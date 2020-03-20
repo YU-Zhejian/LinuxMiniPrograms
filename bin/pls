@@ -2,7 +2,7 @@
 # PLS V1P1
 echo -e "\e[33mYuZJLab PATH ls. Usage: pls [string]\e[0m"
 echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
-wd=`pwd`
+wd=${PWD}
 function do_work(){
     if ! [ -d ${1} ];then return;fi
     cd ${1}
@@ -25,7 +25,7 @@ function do_search(){
     cd ${1}
     echo "======${1}======"
     ls | while read item; do
-        if [ -f ${item} ] && [[ ${item} = *$2* ]];then
+        if [ -f ${item} ] && [[ ${item} = *${2}* ]];then
             item=${1}/${item}
             if [ -x ${item} ];then
                 echo -e "\e[32m\t ${item}\e[0m"
@@ -35,19 +35,50 @@ function do_search(){
         fi
     done
 }
-mypath=$(echo $PATH)
+more="more"
+{ . $DN/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || { echo -e "\e[31mFail to load libisopt.\e[0m";exit 1; }
+for opt in "${@}"; do
+    if isopt ${opt}; then
+        case ${opt} in
+        "-h" | "--help")
+            yldoc pls
+            exit 0
+            ;;
+        "-v" | "--version")
+            echo "Version 1 patch 1"
+            exit 0
+            ;;
+        --more\:*)
+            more=${opt:7}
+            ;;
+        *)
+            echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
+            exit 1
+            ;;
+        esac
+    else
+        STDS="${STDS} ${opt}"
+    fi
+done
+mypath=$(echo ${PATH})
 IFS=":"
 eachpath=(${mypath})
+eachpath=(${eachpath[@]} ${wd})
 IFS=" "
-if [ -z ${1} ];then
+tmpf=$(mktemp -t pls.XXXXXX)
+
+if [ -z "${STDS}" ];then
     for dir in "${eachpath[@]}"; do
-        do_work ${dir}
+        do_work ${dir} &>>${tmpf}
     done
-    do_work ${wd}
 else
+    STDI=(${STDS})
+    for fn in "${STDI[@]}";do
+        echo "${fn}:"&>>${tmpf}
     for dir in "${eachpath[@]}"; do
-        do_search ${dir} ${1}
+        do_search ${dir} ${fn} &>>${tmpf}
     done
-    do_search ${wd} ${1}
+    done
 fi
 IFS=" "
+cat ${tmpf}|${more}

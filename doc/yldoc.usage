@@ -1,11 +1,11 @@
-YuZJLab              BashHistorySearcher                 Manual
+YuZJLab           YuZJLabDocumentationSystem             Manual
 
 NAME
-____bhs - Bash History Searcher.
+____yldoc - YuZJLab Documentation System.
 
 DESCRIPTION
-    bhs [STRING] [OPTIONS]
-    Search [STRING] in ~/.bash_history with 'grep'.
+    yldoc [STRING] [[STRING2]...] [OPTIONS]
+    Search [STRING] in 'doc' folder.
 
 OPTIONS
     -h|--help
@@ -16,6 +16,8 @@ OPTIONS
          The GNU/Linux program 'more' will be used if there's
          too much output. Use [program] to replace 'more'.
          e.g. 'less', 'cat', 'head' or 'tail'.
+    -l|--list
+        List all available commands and libraries.
 
 AUTHOR
     YU Zhejian <Zhejian.19@intl.zju.edu.cn>

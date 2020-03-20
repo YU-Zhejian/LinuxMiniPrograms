@@ -1,11 +1,12 @@
-YuZJLab              BashHistorySearcher                 Manual
+YuZJLab             ProcessSnapshotSearcher              Manual
 
 NAME
-____bhs - Bash History Searcher.
+____pss - A program to search Process Snapshots
 
 DESCRIPTION
-    bhs [STRING] [OPTIONS]
-    Search [STRING] in ~/.bash_history with 'grep'.
+    pss [STRING] [[STRING2]...] [OPTIONS]
+    Search [STRING] in Process Snapshots. If [STRING] is
+    omitted, the program will list all Process Snapshots
 
 OPTIONS
     -h|--help

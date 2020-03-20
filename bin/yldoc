@@ -11,14 +11,7 @@ for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
         "-h" | "--help")
-            echo -e "\e[33mThis is a Documentation System. Useage:"
-            echo "yldoc [string] [options]"
-            echo
-            echo "Available options:"
-            echo "  -h|--help Display this help."
-            echo "  -v|--version Print version information."
-            echo "  --more:[program]|The GNU/Linux program \"more\" will be used if there's too much output. Use [program] to replace it."
-            echo -e "\e[0m"
+            yldoc yldoc
             exit 0
             ;;
         "-v" | "--version")
@@ -28,25 +21,25 @@ for opt in "${@}"; do
         --more\:*)
             more=${opt:7}
             ;;
-        "-l"|"--list")
-        for fn in ${DN}/../doc/*;do
-            cat ${fn}|grep "^____"
-        done
-        ;;
+        "-l" | "--list")
+            for fn in ${DN}/../doc/*; do
+                cat ${fn} | grep "^____"
+            done
+            ;;
         *)
             echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
             exit 1
             ;;
         esac
     else
-        STDS="${STDS}${opt}"
+        STDS="${STDS} ${opt}"
     fi
 done
 STDI=(${STDS})
 if [ -f ${DN}/../etc/yldoc.conf ]; then
     while read line; do
         li=(${line})
-        for ((i=0;i<${#STDI[@]};i++)); do
+        for ((i = 0; i < ${#STDI[@]}; i++)); do
             if [ ${STDI[${i}]} = ${li[0]} ]; then
                 STDI[${i}]=${li[1]}
             fi

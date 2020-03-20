@@ -1,21 +1,22 @@
-YuZJLab              BashHistorySearcher                 Manual
+YuZJLab                 LiveChatManager                  Manual
 
 NAME
-____bhs - Bash History Searcher.
+____lcman - LiveChat History Manager
 
 DESCRIPTION
-    bhs [STRING] [OPTIONS]
-    Search [STRING] in ~/.bash_history with 'grep'.
+    pls [OPTIONS]
+    Detailed explainations are listed below.
 
 OPTIONS
     -h|--help
         Show this help.
     -v|--version
         Print version.
-    --more:[program]
-         The GNU/Linux program 'more' will be used if there's
-         too much output. Use [program] to replace 'more'.
-         e.g. 'less', 'cat', 'head' or 'tail'.
+    -l
+        List all history.
+    -s [from|message] [STRING]
+        Search [STRING] in history. The history with sender
+        ("from") or message ("message") will be listed.
 
 AUTHOR
     YU Zhejian <Zhejian.19@intl.zju.edu.cn>
