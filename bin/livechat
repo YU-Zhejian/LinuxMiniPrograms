@@ -1,83 +1,85 @@
 #! /bin/bash
-#LiveChat Version 1 patch 1
+# LIVECHAT V1P2
 function sdmess(){
-    echo "`date +%Y-%m-%d,%H:%M:%S`;$1;$MESS_SD">>MESSAGES
+    echo "`date +%Y-%m-%d,%H:%M:%S`;${1};${MESS_SD}">>MESSAGES
 }
 function F_REC(){
     while true;do
         IFS=" "
         sleep 1
         local arr=(`wc -l MESSAGES`)
-        local en=$((${arr[0]}-$M_R))
-        if [ $en -ne 0 ]; then
+        local en=$((${arr[0]}-${M_R}))
+        if [ ${en} -ne 0 ]; then
             echo -ne "\007"
-            tail -n $((${arr[0]}-$M_R)) MESSAGES>"URM_$LCUN"
+            tail -n $((${arr[0]}-$M_R)) MESSAGES>"URM_${LCUN}"
             local M_R=${arr[0]}
             unset arr
             IFS=";"
             while read line;do
                 local M_A=($line)
                 echo -e "\e[31m[${M_A[0]}]\e[0m \e[36m[${M_A[1]}]\e[0m ${M_A[2]}"
-            done <"URM_$LCUN"
+            done <"URM_${LCUN}"
         fi
     done
 }
 echo -e "\e[33mInitializing...\e[0m"
-DN=`dirname $0`
-OLD_IFS="$IFS"
-if [ -e $DN/livechat.d ];then
-    if [ -f $DN/livechat.d ];then
-        echo -e "\e[31mERROR: \"$DN/livechat.d\" is a file rather than a directory.\e[0m"
+DN=$(dirname ${0})
+OLD_IFS="${IFS}"
+LVCD="$DN/../var/livechat.d"
+if [ -e ${LVCD} ];then
+    if [ -f ${LVCD} ];then
+        echo -e "\e[31mERROR: \"${LVCD}\" is a file rather than a directory.\e[0m"
         exit 1
     fi
 else
     echo -e "\e[31mWARNING: livechat.d not exist.\e[0m"
-    mkdir $DN/livechat.d
+    mkdir ${LVCD}
 fi
-if [ ! -e $DN/livechat.d/LCONLINE ];then
+if [ ! -e ${LVCD}/LCONLINE ];then
     echo -e "\e[31mWARNING: livechat.d/LCONLINE not exist.\e[0m"
-    touch $DN/livechat.d/LCONLINE
+    touch ${LVCD}/LCONLINE
 fi
-cd $DN/livechat.d
+cd ${LVCD}
+unset LVCD
 echo -e "\e[33mWelcome to YuZJLab LiveChat!\e[0m"
 echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
-if [ -z $1 ]; then
+if [ -z ${1} ]; then
     echo -e "\e[33mPlease key in your name/roomnumber:\e[0m"
     echo -e "\e[33mUse Ctrl-C to exit\e[0m"
     read LCUN
 else
-    LCUN=$1
+    LCUN=${1}
 fi
-if [ `cat LCONLINE|grep "$LCUN"|wc -l` -ne 0 ]; then
+if [ `cat LCONLINE|grep "${LCUN}"|wc -l` -ne 0 ]; then
     echo -e "\e[31m ERROR: There's a user with the same name.\e[0m"
     exit 1
 fi
 unset BOOLONLINE
-echo $LCUN>>LCONLINE
-MESS_SD="$LCUN is now on line."
+echo ${LCUN}>>LCONLINE
+MESS_SD="${LCUN} is now on line."
 sdmess SYSTEM
 echo -e "\e[33mThe following users are now online:\e[0m"
 cat LCONLINE
 echo -e "\e[33mPlease use 'logout' instead of Ctrl-C to exit.\e[0m"
 export M_R=0
 (F_REC)&
-pid_rec=$!
+pid_rec=${!}
 echo -e "\e[33mPID of reciever: ${pid_rec}.\e[0m"
 while [ true ];do
     read MESS_SD
-    if [ "$MESS_SD" != "logout" ]; then
-        sdmess $LCUN
+    if [ "${MESS_SD}" != "logout" ]; then
+        sdmess ${LCUN}
         printf "\e[1A"
     else
-        MESS_SD="$LCUN had quitted."
+        MESS_SD="${LCUN} had quitted."
         sdmess "SYSTEM"
         kill -9 $pid_rec &>>/dev/null
-        cat LCONLINE|grep -v $LCUN>tmp
+        cat LCONLINE|grep -v ${LCUN}>tmp
         cat tmp>LCONLINE
         rm tmp
-        rm URM_$LCUN
+        rm URM_${LCUN}
         echo -e "\e[33mThanks for using this system.\e[0m"
-        IFS=$OLD_IFS
+        IFS=${OLD_IFS}
         exit 0
     fi
 done

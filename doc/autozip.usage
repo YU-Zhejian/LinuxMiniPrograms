@@ -1,8 +1,8 @@
 YuZJLab              AutoZip & AutoUnZip                 Manual
 
 NAME
-    autozip - An automatic file compression tool.
-    autounzip - An automatic file decompression tool.
+____autozip - An automatic file compression tool.
+____autounzip - An automatic file decompression tool.
 
 DESCRIPTION
     1. autozip
@@ -17,8 +17,8 @@ DESCRIPTION
         [ext].
     4. autozip [source] [ext] [level]
         This will compress files and folders with extension 
-        [ext] to [level]. You can make it 1 (fastest) - 9 
-        (best). Some algorithms (e.g. xzip, zip) may support 0 
+        [ext] to [level]. You can make it 1 (fastest)-9 (best).
+         Some algorithms (e.g. xzip, zip) may support 0
         (store only; no compression).
     5. autounzip
         Almost equal to autozip.

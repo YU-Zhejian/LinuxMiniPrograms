@@ -1,0 +1,348 @@
+#!/bin/bash
+# AUTOZIP V2P2
+# ============ Functions ============
+DN=$(dirname ${0})
+exec 1>&2
+ISAUTOZIP=True
+{ . $DN/../lib/libautozip; } && { echo -e "\e[33mlibautozip loaded.\e[0m"; } || {
+    echo -e "\e[31mFail to load libautozip.\e[0m"
+    exit 1
+}
+LIBDO_TOP_PID=${$}
+# Check filename
+function ckfn() {
+    if [ -z ${fn} ]; then
+        autozipck
+        exit 0
+    fi
+    if [ ${fn:0-1} = '/' ]; then fn=${fn:0:${#fn}-1}; fi
+    if ! [ -e ${fn} ]; then
+        echo -e "\e[31mERROR: Filename '${fn}' invalid.\e[0m"
+        exit 1
+    fi
+}
+# Check if SPLIT is valid.
+function ckSPLIT() {
+    if ! ${USESPLIT}; then return 0; fi
+    case ${ext} in
+    "rar")
+        if [[ ${SPLIT} =~ ^[0-9]+[bkm]$ ]]; then
+            echo -e "\e[33mWill split the archive to ${SPLIT} \e[0m"
+            return 0
+        fi
+        ;;
+    "zip")
+        if [[ ${SPLIT} =~ ^[0-9]+[kmgt]$ ]]; then
+            echo -e "\e[33mWill split the archive to ${SPLIT} \e[0m"
+            return 0
+        fi
+        ;;
+    "7z")
+        if [[ ${SPLIT} =~ ^[0-9]+[bkmg]$ ]]; then
+            echo -e "\e[33mWill split the archive to ${SPLIT} \e[0m"
+            return 0
+        fi
+        ;;
+    *)
+        if [[ ${SPLIT} =~ ^[0-9]+$ ]] || [[ ${SPLIT} =~ ^[0-9]+[KMGTPEZY]$ ]] || [[ ${SPLIT} =~ ^[0-9]+[KMGTPEZY]B$ ]]; then
+            echo -e "\e[33mWill split the archive to ${SPLIT} \e[0m"
+            return 0
+        fi
+        ;;
+    esac
+    if ${USESPLIT}; then
+        echo -e "\e[31mERROR: SPLIT value '${SPLIT}' invalid.\e[0m"
+        exit 1
+    fi
+}
+# Check extension names.
+function ckext() {
+    if [ -z ${STDI[1]} ]; then
+        if [ -f ${fn} ]; then
+            ext="gz"
+        else
+            ext="tar.gz"
+        fi
+    else
+        ext=${STDI[1]}
+    fi
+    case ${ext} in
+    "tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "tbz" | "tar.lzma" | "tar.lz" | "tlz")
+        if [ -f ${fn} ]; then
+            echo -e "\e[31mERROR: You're about to compress FILE '${fn}' with extension '${ext}', which is designed for compressing FOLDERs.\e[0m"
+            exit 1
+        elif ! [ $(TAR) -eq 0 ]; then
+            echo -e "\e[31mERROR: GNU TAR \e[31mNO\e[33mt exist!\e[0m"
+            exit 1
+        fi
+        ;;
+    "gz" | "bgz" | "GZ" | "xz" | "bz" | "lzma" | "lz")
+        if [ -d ${fn} ]; then
+            echo -e "\e[31mERROR: You're about to compress FOLDER '${fn}' with extension '${ext}', which is designed for compressing SINGLE FILE.\e[0m"
+            exit 1
+        fi
+        ;;
+    "7z" | "zip" | "rar")
+        echo -e "\e[31mWARNING: Not recommend under GNU/Linux.\e[0m"
+        ;;
+    *)
+        echo -e "\e[31mERROR: Extension name '${ext}' invalid.\nYou can use 'autozip' to check available method and extension.\e[0m"
+        exit 1
+        ;;
+    esac
+}
+# Check compression level
+function ckLVL() {
+    case ${ext} in
+    "tar")
+        lvl_able=""
+        ;;
+    "xz" | "tar.xz" | "txz" | "zip" | "lzma" | "tlz" | "tar.lzma")
+        lvl_able="[0123456789]"
+        ;;
+    "rar")
+        lvl_able="[012345]"
+        ;;
+    "7z")
+        lvl_able="[013579]"
+        ;;
+    *)
+        lvl_able="[123456789]"
+        ;;
+    esac
+    case ${STDI[2]} in
+    ${lvl_able})
+        LVL="-"${STDI[2]}
+        if [ ${ext} = "7z" ]; then LVL="-x=${STDI[2]}"; fi
+        ;;
+    *)
+        unset LVL
+        echo -e "\e[31mWARNING: Compression level '${STDI[2]}' undefined. You can use ${lvl_able} for ${ext} extension. Will use default value provided by corresponding algorism.\e[0m"
+        ;;
+    esac
+}
+# Backup if exist.
+function bupf() {
+    if ${USESPLIT}; then
+        if [ -e ${fn}.${ext}.[0-9][0-9][0-9] ]; then
+            for tfn in ${fn}.${ext}.[0-9][0-9][0-9]; do
+                mv -f ${tfn} ${tfn}.bak
+            done
+        elif [ -e ${fn}.part*.${ext} ]; then
+            for tfn in ${fn}.part*.${ext}; do
+                mv -f ${tfn} ${tfn}.bak
+            done
+        elif [ -e ${fn}.z[0-9][0-9] ]; then
+            for tfn in ${fn}.z[0-9][0-9]; do
+                mv -f ${tfn} ${tfn}.bak
+            done
+        elif [ -e ${fn}.${ext} ]; then
+            mv -f ${fn}.${ext} ${fn}.${ext}.bak
+        fi
+        unset tfn
+    else
+        if [ -e ${fn}.${ext} ]; then
+            case ${ext} in
+            "tar" | "7z" | "zip" | "rar")
+                echo -e "\e[31mWARNING: ${fn}.${ext} exists! Will ADD NEW&MODIFIED FILES TO ${fn}.${ext}.\e[0m"
+                ;;
+            *)
+                echo -e "\e[31mWARNING: ${fn}.${ext} exists! Will rename ${fn}.${ext} as ${fn}.${ext}.bak.\e[0m"
+                mv -f ${fn}.${ext} ${fn}.${ext}.bak
+                ;;
+            esac
+        fi
+    fi
+}
+# ============ Start ============
+echo -e "\e[33mYuZJLab AutoZip.\e[0m"
+echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
+preck
+USESPLIT=false
+# ============ Possess options ============
+ISAOTOZIP=true
+ppopt ${@}
+# ============ Possess arguments ============
+STDI=($STDS)
+fn=${STDI[0]}
+ckfn ${fn}
+fn=$(mfn ${fn})
+ckext
+ckSPLIT
+ckLVL
+echo -e "\e[33mReceived: $0 ${fn} ${ext} ${lvl} ${OPT} \e[0m"
+bupf
+# ============ Makt tmpdir ============
+mktmp
+# ============ Start Compressing ============
+if ${USEPARALLEL}; then PAR="$PP --pipe --recend '' -k"; fi
+case ${ext} in
+"tar") # ============ tar ============
+    if ${USESPLIT}; then
+        DO tar cv ${fn} | split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${fn}.${ext}.
+    else
+        DO tar uvf ${fn}.${ext} ${fn}
+    fi
+    ;;
+"tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
+    if ! [ $(GZIP) -eq 0 ]; then
+        echo -e "\e[31mERROR: GZip NO exist!\e[0m"
+        exit 1
+    fi
+    if [ $(PIGZ) -eq 0 ]; then cmd="pigz"; else cmd="${PAR} gzip"; fi
+    if ${USESPLIT}; then
+        DO tar cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
+        for tfn in ${tempdir}/${fn}.*; do
+            DO cat ${tfn}\|$cmd ${LVL} \>${fn}.${ext}.${tfn:0-3}
+        done
+    else
+        DO tar cv ${fn}\|$cmd ${LVL} \>${fn}.${ext}
+    fi
+    ;;
+"tar.xz" | "txz") # ============ txz ============
+    if ! [ $(XZIP) -eq 0 ]; then
+        echo -e "\e[31mERROR: XZ NO exist!\e[0m"
+        exit 1
+    fi
+    if ${USEPARALLEL}; then PAR="-T0"; fi
+    if ${USESPLIT}; then
+        DO tar cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
+        for tfn in ${tempdir}/${fn}.*; do
+            DO cat ${tfn}\|xz ${PAR} ${LVL}\>${fn}.${ext}.${tfn:0-3}
+        done
+    else
+        DO tar cv ${fn}\|xz ${PAR} ${LVL}\>${fn}.${ext}
+    fi
+    ;;
+"tar.bz2" | "tbz") # ============ tbz ============
+    if ! [ $(BZIP2) -eq 0 ]; then
+        echo -e "\e[31mERROR: BZip2 NO exist!\e[0m"
+        exit 1
+    fi
+    if ${USESPLIT}; then
+        DO tar cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
+        for tfn in ${tempdir}/${fn}.*; do
+            DO cat ${tfn}\|${PAR} bzip2 ${LVL}\>${fn}.${ext}.${tfn:0-3}
+        done
+    else
+        DO tar cv ${fn}\|${PAR} bzip2 ${LVL}\>${fn}.${ext}
+    fi
+    ;;
+"tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
+    if ! [ $(XZIP) -eq 0 ]; then
+        echo -e "\e[31mERROR: XZ NO exist!\e[0m"
+        exit 1
+    fi
+    if ${USESPLIT}; then
+        DO tar cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
+        for tfn in ${tempdir}/${fn}.*; do
+            DO cat ${tfn}\|xz --format=lzma ${LVL}\>${fn}.${ext}.${tfn:0-3}
+        done
+    else
+        DO tar cv ${fn}\|xz --format=lzma ${LVL} \>${fn}.${ext}
+    fi
+    ;;
+"gz" | "GZ") # ============ gz ============
+    if ! [ $(GZIP) -eq 0 ]; then
+        echo -e "\e[31mERROR: GZip NO exist!\e[0m"
+        exit 1
+    fi
+    if [ $(PIGZ) -eq 0 ]; then cmd="pigz"; else cmd="${PAR} gzip"; fi
+    if ${USESPLIT}; then
+        DO cat ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
+        DO cat ${tfn}\|$cmd ${LVL}\>${fn}.${ext}.${tfn:0-3}
+    else
+        DO cat ${tfn}\|$cmd ${LVL}\>${fn}.${ext}
+    fi
+    ;;
+"bgz") # ============ bgz ============
+    if ! [ $(BGZIP) -eq 0 ]; then
+        echo -e "\e[31mERROR: BGZip NO exist!\e[0m"
+        exit 1
+    fi
+    ${ext}="gz"
+    if ${USESPLIT}; then
+        DO tar cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
+        for tfn in ${tempdir}/${fn}.*; do
+            DO cat ${tfn}\|${PAR} bgzip ${LVL}\>${fn}.${ext}.${tfn:0-3}
+        done
+    else
+        DO cat ${fn}\|${PAR} bgzip ${LVL}\>${fn}.${ext}
+    fi
+    ;;
+"xz") # ============ xz ============
+    if ! [ $(XZIP) -eq 0 ]; then
+        echo -e "\e[31mERROR: XZ NO exist!\e[0m"
+        exit 1
+    fi
+    if ${USEPARALLEL}; then PAR="-T0"; fi
+    if ${USESPLIT}; then
+        DO cat ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
+        for tfn in ${tempdir}/${fn}.*; do
+            DO cat ${tfn}\|xz ${PAR} ${LVL}\>${fn}.${ext}.${tfn:0-3}
+        done
+    else
+        DO cat ${fn}\|xz ${PAR} ${LVL}\>${fn}.${ext}
+    fi
+    ;;
+"bz2") # ============ bz2 ============
+    if ! [ $(BZIP2) -eq 0 ]; then
+        echo -e "\e[31mERROR: BZip2 NO exist!\e[0m"
+        exit 1
+    fi
+    if ${USESPLIT}; then
+        DO cat ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
+        for tfn in ${tempdir}/${fn}.*; do
+            DO cat ${tfn}\|${PAR} bzip2 ${LVL}\>${fn}.${ext}.${tfn:0-3}
+        done
+    else
+        DO cat ${fn}\|${PAR} bzip2 ${LVL}\>${fn}.${ext}
+    fi
+    ;;
+"lz" | "lzma") # ============ lz ============
+    if ! [ $(XZIP) -eq 0 ]; then
+        echo -e "\e[31mERROR: XZ NO exist!\e[0m"
+        exit 1
+    fi
+    if ${USESPLIT}; then
+        DO cat ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
+        for tfn in ${tempdir}/${fn}.*; do
+            DO cat ${tfn}\|xz --format=lzma ${LVL}\>${fn}.${ext}.${tfn:0-3}
+        done
+    else
+        DO cat ${fn}\|xz --format=lzma ${LVL}\>${fn}.${ext}
+    fi
+    ;;
+"7z") # ============ 7z ============
+    if ! [ $(Z7) -eq 0 ]; then
+        echo -e "\e[31mERROR: p7zip NO exist!\e[0m"
+        exit 1
+    fi
+    if ${USESPLIT}; then SPL="-v${SPLIT}"; fi
+    if ${USEPARALLEL}; then PAR="-mmt0"; fi
+    DO 7za ${PAR} u ${fn}.${ext} ${fn} ${LVL} $SPL
+    ;;
+"zip") # ============ zip ============
+    if ! [ $(ZIP) -eq 0 ]; then
+        echo -e "\e[31mERROR: zip NO exist!\e[0m"
+        exit 1
+    fi
+    if ${USESPLIT}; then SPL="-s ${SPLIT}"; fi
+    DO zip $SPL -r ${fn}.${ext} ${fn} ${LVL}
+    ;;
+"rar") # ============ rar ============
+    if ! [ $(RAR) -eq 0 ]; then
+        echo -e "\e[31mERROR: rar NO exist!\e[0m"
+        exit 1
+    fi
+    if ${USEPARALLEL}; then PAR="-mt8"; fi
+    if ${USESPLIT}; then SPL="-v${SPLIT}"; fi
+    DO rar ${PAR} $SPL a ${fn}.${ext} ${fn}
+    ;;
+esac
+# ============ Finished ============
+echo -e "\e[33mRemoving temporary resources...\e[0m"
+rm -rf ${tempdir} $tempf
+if $REMOVE; then DO rm -rf ${fn}; fi
+echo -e "\e[33mFinished.\e[0m"
+exit 0

@@ -1,0 +1,14 @@
+#!/bin/bash
+# PSS V1P1
+echo -e "\e[33mYuZJLab Process Snapshot Searcher Usage: pss [string]\e[0m"
+echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
+cd $(dirname ${0})
+psstmp=$(mktemp -t psstmp.XXXXXX)
+ps -A all>${psstmp}
+if [ -z ${1} ]; then
+cat ${psstmp}|more
+else
+head -n 1 ${psstmp}
+cat ${psstmp}|grep --color=auto -- ${1}
+fi
+rm ${psstmp}

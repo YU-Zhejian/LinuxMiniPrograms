@@ -1,0 +1,36 @@
+#!/bin/bash
+# BHS V1P2
+DN=$(dirname ${0})
+more="more"
+echo -e "\e[33mYuZJLab Bash History Searcher Usage: bhs [string]"
+echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
+{ . $DN/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || { echo -e "\e[31mFail to load libisopt.\e[0m";exit 1; }
+for opt in "${@}"; do
+    if isopt ${opt}; then
+        case ${opt} in
+        "-h" | "--help")
+            yldoc bhs
+            exit 0
+            ;;
+        "-v" | "--version")
+            echo "Version 1 patch 2"
+            exit 0
+            ;;
+        --more\:*)
+            more=${opt:7}
+            ;;
+        *)
+            echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
+            exit 1
+            ;;
+        esac
+    else
+        STDS="${STDS}${opt}"
+    fi
+done
+if [ -n "${STDS}" ]; then
+    echo \"${STDS}\"
+    cat -n ~/.bash_history | grep --color=auto -- ${STDS} | $more
+else
+    cat -n ~/.bash_history | $more
+fi
