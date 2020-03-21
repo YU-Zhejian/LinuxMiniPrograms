@@ -1,7 +1,7 @@
 YuZJLab                     PathLS                       Manual
 
 NAME
-____pls - A program to search $PATH variables
+____pls - A program to search ${PATH} variables
 
 DESCRIPTION
     pls [STRING] [[STRING2]...] [OPTIONS]

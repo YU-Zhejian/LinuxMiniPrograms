@@ -3,6 +3,7 @@ YuZJLab              AutoZip & AutoUnZip                 Manual
 NAME
 ____autozip - An automatic file compression tool.
 ____autounzip - An automatic file decompression tool.
+____libautozip - Library for above files.
 
 DESCRIPTION
     1. autozip
