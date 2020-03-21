@@ -8,18 +8,25 @@ DESCRIPTION
     Search [STRING] in ${PATH}. If [STRING] is omitted, the
     program will list all contents in each vaild ${PATH}.
 
-    Those executables will be listed in green and folders will
-    be listed in red.
-
 OPTIONS
     -h|--help
         Show this help.
     -v|--version
         Print version.
     --more:[program]
-         The GNU/Linux program 'more' will be used if there's
-         too much output. Use [program] to replace 'more'.
-         e.g. 'less', 'cat', 'head' or 'tail'.
+        The GNU/Linux program 'more' will be used if there's
+        too much output. Use [program] to replace 'more'.
+        e.g. 'less', 'cat', 'head' or 'tail'.
+    --no-[MODE]
+        Filter the filenames by a specific rule. Available
+        MODE:
+        x   Executable files.
+        d   Directory.
+        o   Non-executable files.
+    -l|--list
+        List all valid path variable.
+    -i|--invalid
+        List all invalid path variable.
 
 AUTHOR
     YU Zhejian <Zhejian.19@intl.zju.edu.cn>

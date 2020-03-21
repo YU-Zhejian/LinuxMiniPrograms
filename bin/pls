@@ -1,42 +1,55 @@
 #!/bin/bash
-# PLS V1P1
+# PLS V1P2
 echo -e "\e[33mYuZJLab PATH ls. Usage: pls [string]\e[0m"
 echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
 wd=${PWD}
-function do_work(){
-    if ! [ -d ${1} ];then return;fi
+oldifs="${IFS}"
+function gepath() {
+    local mypath="$(echo ${PATH}):${wd}"
+    IFS=":"
+    eachpath=(${mypath})
+    IFS=''
+}
+function do_work() {
+    if ! [ -d ${1} ]; then return; fi
     cd ${1}
     echo "======${1}======"
     ls | while read item; do
         item=${1}/${item}
-        if [ -f ${item} ];then
-            if [ -x ${item} ];then
-                echo -e "\e[32m\t ${item}\e[0m"
+        if [ -f ${item} ]; then
+            if [ -x ${item} ]; then
+                echo -e "\t ${item}*"
             else
-                echo -e "\e[0m\t ${item}\e[0m"
+                echo -e "\t ${item}"
             fi
         else
-            echo -e "\e[34m \t ${item}/ \e[0m"
+            echo -e "\t ${item}/"
         fi
     done
 }
-function do_search(){
-    if ! [ -d ${1} ];then return;fi
+function do_search() {
+    if ! [ -d ${1} ]; then return; fi
     cd ${1}
     echo "======${1}======"
     ls | while read item; do
-        if [ -f ${item} ] && [[ ${item} = *${2}* ]];then
+        if [ -f ${item} ] && [[ ${item} == *${2}* ]]; then
             item=${1}/${item}
-            if [ -x ${item} ];then
-                echo -e "\e[32m\t ${item}\e[0m"
+            if [ -x ${item} ]; then
+                echo -e "\t ${item}*"
             else
-                echo -e "\e[0m\t $i{tem}\e[0m"
+                echo -e "\t ${item}"
             fi
         fi
     done
 }
 more="more"
-{ . $DN/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || { echo -e "\e[31mFail to load libisopt.\e[0m";exit 1; }
+{ . $DN/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || {
+    echo -e "\e[31mFail to load libisopt.\e[0m"
+    exit 1
+}
+allow_x=True
+allow_d=True
+allow_o=True
 for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
@@ -46,6 +59,29 @@ for opt in "${@}"; do
             ;;
         "-v" | "--version")
             echo "Version 1 patch 1"
+            exit 0
+            ;;
+        "--no-x")
+            allow_x=False
+            ;;
+        "--no-d")
+            allow_d=False
+            ;;
+        "--no-o")
+            allow_o=False
+            ;;
+        "-l" | "--list")
+            gepath
+            for dir in "${eachpath[@]}"; do
+                if [ -d ${dir} ]; then echo "${dir}/"; fi
+            done
+            exit 0
+            ;;
+        "-i" | "--invalid")
+            gepath
+            for dir in "${eachpath[@]}"; do
+                if ! [ -d ${dir} ]; then echo "${dir}/"; fi
+            done
             exit 0
             ;;
         --more\:*)
@@ -60,25 +96,38 @@ for opt in "${@}"; do
         STDS="${STDS} ${opt}"
     fi
 done
-mypath=$(echo ${PATH})
-IFS=":"
-eachpath=(${mypath})
-eachpath=(${eachpath[@]} ${wd})
-IFS=" "
+gepath
 tmpf=$(mktemp -t pls.XXXXXX)
-
-if [ -z "${STDS}" ];then
+echo -e "\e[33mReading database...\e[0m"
+if [ -z "${STDS}" ]; then
     for dir in "${eachpath[@]}"; do
         do_work ${dir} &>>${tmpf}
     done
 else
     STDI=(${STDS})
-    for fn in "${STDI[@]}";do
-        echo "${fn}:"&>>${tmpf}
-    for dir in "${eachpath[@]}"; do
-        do_search ${dir} ${fn} &>>${tmpf}
-    done
+    for fn in "${STDI[@]}"; do
+        echo "${fn}:" &>>${tmpf}
+        for dir in "${eachpath[@]}"; do
+            do_search ${dir} ${fn} &>>${tmpf}
+        done
     done
 fi
-IFS=" "
-cat ${tmpf}|${more}
+echo -e "\e[33mFiltering results...\e[0m"
+if ! ${allow_x}; then
+    tmpff=$(mktemp -t pls.XXXXXX)
+    cat ${tmpf} | grep -v '.*\*$' >${tmpff}
+    mv ${tmpff} ${tmpf}
+fi
+if ! ${allow_d}; then
+    tmpff=$(mktemp -t pls.XXXXXX)
+    cat ${tmpf} | grep -v '.*/$' >${tmpff}
+    mv ${tmpff} ${tmpf}
+fi
+if ! ${allow_o}; then
+    tmpff=$(mktemp -t pls.XXXXXX)
+    cat ${tmpf} | grep -e '.*[/\*]$' -e "^=" >${tmpff}
+    mv ${tmpff} ${tmpf}
+fi
+cat ${tmpf} | ${more}
+rm ${tmpf}
+IFS="${oldifs}"

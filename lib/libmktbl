@@ -1,5 +1,5 @@
 #!/bin/bash
-# LIBMKTNL V1P3
+# LIBMKTNL V1P4
 function mktbl_GetLongestString(){
     local mktbl_GetLongestString_max_str
     for item in "${@}";do
@@ -20,7 +20,7 @@ function mktbl(){
         if ! [[ "${line}" =~ ^#.* ]];then
             IFS=";"
             local curr_col_items=(${line})
-            IFS=" "
+            IFS=''
             j=0
             for item in "${curr_col_items[@]}";do
                 row[${j}]="${row[${j}]}$item;"
@@ -37,8 +37,8 @@ function mktbl(){
         IFS=";"
         local row_tmp=(${row_tmp_str})
         unset row_tmp_str
-        IFS=" "
-        local row_tmp_len=$(mktbl_GetLongestString ${row_tmp[@]})
+        IFS=''
+        local row_tmp_len=$(mktbl_GetLongestString "${row_tmp[@]}")
         local row_len=${#row_tmp_len}
         unset row_tmp_len
         local curr_row
@@ -58,7 +58,7 @@ function mktbl(){
                     formatted_item=${formatted_item}${nit}
                 done
                 while [ ${#formatted_item} -lt ${row_len} ];do
-                    formatted_item="${formatted_item} "
+                    formatted_item="${formatted_item}_"
                 done
                 formatted_item="${formatted_item}\n${item:$wrap_s}"
                 curr_row="${curr_row}${formatted_item};"
@@ -73,7 +73,7 @@ function mktbl(){
                     item="${item:0:$shrinked}..."
                 fi
                 while [ ${#item} -lt ${row_len} ];do
-                    item="${item}_"
+                    item=${item}' '
                 done
                 curr_row="${curr_row}${item};"
             done
@@ -81,7 +81,7 @@ function mktbl(){
         else #Unshrinkable
             for item in "${row_tmp[@]}";do
                 while [ ${#item} -lt ${row_len} ];do
-                    item="${item}_"
+                    item="${item} "
                 done
                 curr_row="${curr_row}${item};"
             done
@@ -98,14 +98,14 @@ function mktbl(){
     local col_num_tmp=(${formatted_row[0]})
     local col_num=${#row_num_tmp[@]}
     local row_num=${#formatted_row[@]}
-    IFS=" "
+    IFS=''
     unset col_num_tmp
     local curr_row curr_row_items
     for ((j=0;j<=${row_num};j++));do
-        IFS=";"
         curr_row=${formatted_row[${j}]}
+        IFS=";"
         curr_row_items=(${curr_row})
-        IFS=" "
+        IFS=''
         local curr_col_num=0
         local col[0]
         for item in "${curr_row_items[@]}";do
@@ -125,7 +125,7 @@ function mktbl(){
     for curr_col in "${col[@]}";do
         IFS=";"
         curr_col_items=(${curr_col})
-        IFS=" "
+        IFS=''
         msg="\e[36m|\e[0m"
         for item in "${curr_col_items[@]}";do
             msg="${msg}${item}\e[36m|\e[0m"
