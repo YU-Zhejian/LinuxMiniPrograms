@@ -1,5 +1,5 @@
 #! /bin/bash
-# LIVECHAT V1P2
+# LIVECHAT V1P3
 function sdmess(){
     echo "`date +%Y-%m-%d,%H:%M:%S`;${1};${MESS_SD}">>MESSAGES
 }
@@ -22,9 +22,6 @@ function F_REC(){
         fi
     done
 }
-echo -e "\e[33mInitializing...\e[0m"
-DN=$(dirname ${0})
-OLD_IFS="${IFS}"
 LVCD="$DN/../var/livechat.d"
 if [ -e ${LVCD} ];then
     if [ -f ${LVCD} ];then
@@ -43,12 +40,34 @@ cd ${LVCD}
 unset LVCD
 echo -e "\e[33mWelcome to YuZJLab LiveChat!\e[0m"
 echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
-if [ -z ${1} ]; then
+{ . $DN/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || { echo -e "\e[31mFail to load libisopt.\e[0m";exit 1; }
+for opt in "${@}"; do
+    if isopt ${opt}; then
+        case ${opt} in
+        "-h" | "--help")
+            yldoc livechat
+            exit 0
+            ;;
+        "-v" | "--version")
+            echo "Version 1 patch 3"
+            exit 0
+            ;;
+        *)
+            echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
+            exit 1
+            ;;
+        esac
+    else
+        STDS="${STDS} ${opt}"
+    fi
+done
+
+if [ -z ${STDS[0]} ]; then
     echo -e "\e[33mPlease key in your name/roomnumber:\e[0m"
     echo -e "\e[33mUse Ctrl-C to exit\e[0m"
     read LCUN
 else
-    LCUN=${1}
+    LCUN=${STDS[0]}
 fi
 if [ `cat LCONLINE|grep "${LCUN}"|wc -l` -ne 0 ]; then
     echo -e "\e[31m ERROR: There's a user with the same name.\e[0m"
