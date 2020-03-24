@@ -1,5 +1,5 @@
 #!/bin/bash
-# PLS V1P3
+# PLS V1P4
 echo -e "\e[33mYuZJLab PATH ls. Usage: pls [string]\e[0m"
 echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
 wd=${PWD}
@@ -30,7 +30,7 @@ function do_search() {
     fi
     if ! ${allow_o}; then
         tmpffff=$(mktemp -t pls.XXXXXX)
-        cat ${tmpff} | grep -v '^.*[^\*/]$' >${tmpffff}
+        cat ${tmpff} | grep -v '[^\*/]$' >${tmpffff}
         mv ${tmpffff} ${tmpff}
     fi
     cat ${tmpff} >>${tmpf}
@@ -41,9 +41,9 @@ more="more"
     echo -e "\e[31mFail to load libisopt.\e[0m"
     exit 1
 }
-allow_x=True
-allow_d=False
-allow_o=True
+allow_x=true
+allow_d=false
+allow_o=true
 for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
@@ -56,13 +56,13 @@ for opt in "${@}"; do
             exit 0
             ;;
         "--no-x")
-            allow_x=False
+            allow_x=false
             ;;
         "--allow-d")
-            allow_d=True
+            allow_d=true
             ;;
         "--no-o")
-            allow_o=False
+            allow_o=false
             ;;
         "-l" | "--list")
             gepath
