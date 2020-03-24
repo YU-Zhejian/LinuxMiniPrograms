@@ -1,54 +1,48 @@
 #!/bin/bash
-# PLS V1P2
+# PLS V1P3
 echo -e "\e[33mYuZJLab PATH ls. Usage: pls [string]\e[0m"
 echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
 wd=${PWD}
 oldifs="${IFS}"
+DN=$(dirname ${0})
 function gepath() {
     local mypath="$(echo ${PATH}):${wd}"
     IFS=":"
     eachpath=(${mypath})
     IFS=''
 }
-function do_work() {
-    if ! [ -d ${1} ]; then return; fi
-    cd ${1}
-    echo "======${1}======"
-    ls | while read item; do
-        item=${1}/${item}
-        if [ -f ${item} ]; then
-            if [ -x ${item} ]; then
-                echo -e "\t ${item}*"
-            else
-                echo -e "\t ${item}"
-            fi
-        else
-            echo -e "\t ${item}/"
-        fi
-    done
-}
 function do_search() {
-    if ! [ -d ${1} ]; then return; fi
-    cd ${1}
-    echo "======${1}======"
-    ls | while read item; do
-        if [ -f ${item} ] && [[ ${item} == *${2}* ]]; then
-            item=${1}/${item}
-            if [ -x ${item} ]; then
-                echo -e "\t ${item}*"
-            else
-                echo -e "\t ${item}"
-            fi
-        fi
-    done
+    if ! [ -d ${dir} ]; then return; fi
+    echo -e "\e[33mSearching ${dir}...\e[0m" >&2
+    local item
+    local tmpff
+    tmpff=$(mktemp -t pls.XXXXXX)
+    ls -FC ${dir} -w 1 | grep "${fn}" |sed "s;^;$(echo ${dir})/;" >${tmpff}
+    if ! ${allow_d}; then
+        tmpffff=$(mktemp -t pls.XXXXXX)
+        cat ${tmpff} | grep -v '/$' >${tmpffff}
+        mv ${tmpffff} ${tmpff}
+    fi
+    if ! ${allow_x}; then
+        tmpffff=$(mktemp -t pls.XXXXXX)
+        cat ${tmpff} | grep -v '\*$' >${tmpffff}
+        mv ${tmpffff} ${tmpff}
+    fi
+    if ! ${allow_o}; then
+        tmpffff=$(mktemp -t pls.XXXXXX)
+        cat ${tmpff} | grep -v '^.*[^\*/]$' >${tmpffff}
+        mv ${tmpffff} ${tmpff}
+    fi
+    cat ${tmpff} >>${tmpf}
+    rm ${tmpff}
 }
 more="more"
-{ . $DN/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || {
+{ . ${DN}/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || {
     echo -e "\e[31mFail to load libisopt.\e[0m"
     exit 1
 }
 allow_x=True
-allow_d=True
+allow_d=False
 allow_o=True
 for opt in "${@}"; do
     if isopt ${opt}; then
@@ -58,14 +52,14 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 1 patch 1"
+            echo "Version 1 patch 3"
             exit 0
             ;;
         "--no-x")
             allow_x=False
             ;;
-        "--no-d")
-            allow_d=False
+        "--allow-d")
+            allow_d=True
             ;;
         "--no-o")
             allow_o=False
@@ -101,33 +95,18 @@ tmpf=$(mktemp -t pls.XXXXXX)
 echo -e "\e[33mReading database...\e[0m"
 if [ -z "${STDS}" ]; then
     for dir in "${eachpath[@]}"; do
-        do_work ${dir} &>>${tmpf}
+        do_search
     done
 else
+    IFS=" "
     STDI=(${STDS})
+    IFS=''
     for fn in "${STDI[@]}"; do
-        echo "${fn}:" &>>${tmpf}
+        echo "${fn}:" >>${tmpf}
         for dir in "${eachpath[@]}"; do
-            do_search ${dir} ${fn} &>>${tmpf}
+            do_search
         done
     done
 fi
-echo -e "\e[33mFiltering results...\e[0m"
-if ! ${allow_x}; then
-    tmpff=$(mktemp -t pls.XXXXXX)
-    cat ${tmpf} | grep -v '.*\*$' >${tmpff}
-    mv ${tmpff} ${tmpf}
-fi
-if ! ${allow_d}; then
-    tmpff=$(mktemp -t pls.XXXXXX)
-    cat ${tmpf} | grep -v '.*/$' >${tmpff}
-    mv ${tmpff} ${tmpf}
-fi
-if ! ${allow_o}; then
-    tmpff=$(mktemp -t pls.XXXXXX)
-    cat ${tmpf} | grep -e '.*[/\*]$' -e "^=" >${tmpff}
-    mv ${tmpff} ${tmpf}
-fi
-cat ${tmpf} | ${more}
-rm ${tmpf}
+cat ${tmpf}|${more}
 IFS="${oldifs}"

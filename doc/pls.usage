@@ -21,8 +21,9 @@ OPTIONS
         Filter the filenames by a specific rule. Available
         MODE:
         x   Executable files.
-        d   Directory.
         o   Non-executable files.
+    --allow-d
+        List the directories.
     -l|--list
         List all valid path variable.
     -i|--invalid
