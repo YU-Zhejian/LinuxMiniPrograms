@@ -1,5 +1,5 @@
 #!/bin/bash
-# LIBAUTOZIP V2P2
+# LIBAUTOZIP V2P3
 USESPLIT=false
 REMOVE=false
 #Load libopt
@@ -184,7 +184,7 @@ function ppopt() {
                 exit 0
                 ;;
             "-v" | "--version")
-                echo "Version 2 patch 2"
+                echo "Version 2 patch 3"
                 exit 0
                 ;;
             --force-parallel\:*)

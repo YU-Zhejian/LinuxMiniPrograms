@@ -33,7 +33,7 @@ for opt in "${@}"; do
 done
 psstmp=$(mktemp -t psstmp.XXXXXX)
 pssstmp=$(mktemp -t psstmp.XXXXXX)
-ps --all >${psstmp}
+/usr/bin/ps -A all >${psstmp}
 if [ -z "${STDS}" ]; then
     cat ${psstmp} | ${more}
 else

@@ -1,5 +1,5 @@
 #!/bin/bash
-# AUTOUNZIP V2P2
+# AUTOUNZIP V2P3
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
@@ -87,7 +87,7 @@ if [ ${fn##*.} = "tar" ]; then
 fi
 if [ -e ${fn} ]; then
     echo -e "\e[31mWARNING: ${fn} exists! Will rename ${fn} as ${fn}.bak.\e[0m"
-    mv -f ${fn} ${fn}.bak
+    DO mv -f ${fn} ${fn}.bak
 fi
 echo -e "\e[33mReceived: $0 ${fulln} $OPT ==>Extension=${ext}\e[0m"
 # ============ Makt tmp ============
@@ -216,7 +216,7 @@ case ${ext} in
     fi
     if ${USESPLIT}; then SUFF=".001"; fi
     if ${USEPARALLEL}; then PAR="-mmt0"; fi
-    DO 7za ${PAR} x ${fulln}${SUFF}
+    DO 7za -y ${PAR} x ${fulln}${SUFF}
     ;;
 "zip") # ============ zip ============
     if ! [ $(UNZIP) -eq 0 ]; then

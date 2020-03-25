@@ -1,5 +1,5 @@
 #!/bin/bash
-# LCMAN V3
+# LCMAN V3P1
 DN=$(dirname ${0})
 LVCD="${DN}/../var/livechat.d"
 if [ ! -e ${LVCD}/MESSAGES ]; then
@@ -18,7 +18,7 @@ for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
         "-v")
-            echo -e "\e[33mVersion 3, compatiable with LiveChat Version 1 & 2.\e[0m"
+            echo -e "\e[33mVersion 3 patch 1, compatiable with LiveChat Version 1 & 2.\e[0m"
             exit 0
             ;;
         "-h")
@@ -63,48 +63,48 @@ while read line; do
     msg_tmp=(${line})
     f[${i}]=${msg_tmp[1]}
     m[${i}]=${msg_tmp[2]}
-    uf[${i}]=False
-    um[${i}]=False
+    uf[${i}]=false
+    um[${i}]=false
     unset msg_tmp
     i=$(($i + 1))
 done <${LVCD}/MESSAGES
 echo -e "\e[33mFiltering...\e[0m"
 if [ ${#sf[@]} -eq 0 ]; then
     for ((n = 0; n <= i; n++)); do
-        uf[${n}]=True
+        uf[${n}]=true
     done
     else
     for item in "${sf[@]}"; do
         for ((n = 0; n <= i; n++)); do
             if [[ ${f[${n}]} == *${item}* ]]; then
-                uf[${n}]=True
+                uf[${n}]=true
             fi
         done
     done
 fi
 if [ ${#se[@]} -eq 0 ]; then
     for ((n = 0; n <= i; n++)); do
-        uf[${n}]=True
+        uf[${n}]=true
     done
     else
     for item in "${se[@]}"; do
         for ((n = 0; n <= i; n++)); do
             if [[ ${f[${n}]} == *${item}* ]]; then
-                uf[${n}]=False
+                uf[${n}]=false
             fi
         done
     done
 fi
 if [ ${#sm[@]} -eq 0 ]; then
     for ((n = 0; n <= i; n++)); do
-        um[${n}]=True
+        um[${n}]=true
     done
     else
     for item in "${sm[@]}"; do
         for ((n = 0; n <= i; n++)); do
 
             if [[ ${m[${n}]} == *${item}* ]]; then
-                um[${n}]=True
+                um[${n}]=true
 
             fi
         done
