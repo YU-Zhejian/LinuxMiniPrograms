@@ -1,5 +1,5 @@
 #!/bin/bash
-# AUTOZIP V2P4
+# AUTOZIP V2P5
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
@@ -124,18 +124,19 @@ function ckLVL() {
 # Backup if exist.
 function bupf() {
     if ${USESPLIT}; then
-        if [ -e ${fn}.${ext}.[0-9][0-9][0-9] ]; then
+        if [ -e ${fn}.${ext}.001 ]; then
             for tfn in ${fn}.${ext}.[0-9][0-9][0-9]; do
                 DO mv -f ${tfn} ${tfn}.bak
             done
-        elif [ -e ${fn}.part*.${ext} ]; then
-            for tfn in ${fn}.part*.${ext}; do
+        elif [ -e ${fn}.part1.rar ]; then
+            for tfn in ${fn}.part*.rar; do
                 DO mv -f ${tfn} ${tfn}.bak
             done
-        elif [ -e ${fn}.z[0-9][0-9] ]; then
+        elif [ -e ${fn}.z01 ]; then
             for tfn in ${fn}.z[0-9][0-9]; do
                 DO mv -f ${tfn} ${tfn}.bak
             done
+            DO mv -f ${fn}.zip ${fn}.zip.bak
         elif [ -e ${fn}.${ext} ]; then
             DO mv -f ${fn}.${ext} ${fn}.${ext}.bak
         fi
@@ -175,7 +176,7 @@ bupf
 # ============ Makt tmpdir ============
 mktmp
 # ============ Start Compressing ============
-if ${USEPARALLEL}; then PAR="$PP --pipe --recend '' -k"; fi
+if ${USEPARALLEL}; then PAR="${PP} --pipe --recend '' -k"; fi
 case ${ext} in
 "tar") # ============ tar ============
     if ${USESPLIT}; then
@@ -189,14 +190,18 @@ case ${ext} in
         echo -e "\e[31mERROR: GZip NO exist!\e[0m"
         exit 1
     fi
-    if [ $(PIGZ) -eq 0 ]; then cmd="pigz"; else cmd="${PAR} gzip"; fi
+    if [ $(PIGZ) -eq 0 ] && ${USEPARALLEL}; then
+        cmd="pigz"
+    else
+        cmd="${PAR} gzip"
+    fi
     if ${USESPLIT}; then
         DO tar cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
         for tfn in ${tempdir}/${fn}.*; do
-            DO cat ${tfn}\|$cmd ${LVL} \>${fn}.${ext}.${tfn:0-3}
+            DO cat ${tfn}\|${cmd} ${LVL} \>${fn}.${ext}.${tfn:0-3}
         done
     else
-        DO tar cv ${fn}\|$cmd ${LVL} \>${fn}.${ext}
+        DO tar cv ${fn}\|${cmd} ${LVL} \>${fn}.${ext}
     fi
     ;;
 "tar.xz" | "txz") # ============ txz ============
@@ -204,7 +209,11 @@ case ${ext} in
         echo -e "\e[31mERROR: XZ NO exist!\e[0m"
         exit 1
     fi
-    if ${USEPARALLEL}; then PAR="-T0"; fi
+    if ${USEPARALLEL}; then
+        PAR="--threads=0"
+    else
+        echo "dsafsefs"
+    fi
     if ${USESPLIT}; then
         DO tar cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
         for tfn in ${tempdir}/${fn}.*; do
@@ -236,10 +245,10 @@ case ${ext} in
     if ${USESPLIT}; then
         DO tar cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
         for tfn in ${tempdir}/${fn}.*; do
-            DO cat ${tfn}\|xz --format=lzma ${LVL}\>${fn}.${ext}.${tfn:0-3}
+            DO cat ${tfn}\|${PAR} xz --format=lzma ${LVL}\>${fn}.${ext}.${tfn:0-3}
         done
     else
-        DO tar cv ${fn}\|xz --format=lzma ${LVL} \>${fn}.${ext}
+        DO tar cv ${fn}\|${PAR} xz --format=lzma ${LVL} \>${fn}.${ext}
     fi
     ;;
 "gz" | "GZ") # ============ gz ============
@@ -262,10 +271,8 @@ case ${ext} in
     fi
     ${ext}="gz"
     if ${USESPLIT}; then
-        DO tar cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
-        for tfn in ${tempdir}/${fn}.*; do
-            DO cat ${tfn}\|${PAR} bgzip ${LVL}\>${fn}.${ext}.${tfn:0-3}
-        done
+        echo -e "\e[31mERROR: BGZip do not support split!\e[0m"
+        exit 1
     else
         DO cat ${fn}\|${PAR} bgzip ${LVL}\>${fn}.${ext}
     fi
@@ -275,7 +282,7 @@ case ${ext} in
         echo -e "\e[31mERROR: XZ NO exist!\e[0m"
         exit 1
     fi
-    if ${USEPARALLEL}; then PAR="-T0"; fi
+    if ${USEPARALLEL}; then PAR="--threads=0"; fi
     if ${USESPLIT}; then
         DO cat ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
         for tfn in ${tempdir}/${fn}.*; do
@@ -307,10 +314,10 @@ case ${ext} in
     if ${USESPLIT}; then
         DO cat ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
         for tfn in ${tempdir}/${fn}.*; do
-            DO cat ${tfn}\|xz --format=lzma ${LVL}\>${fn}.${ext}.${tfn:0-3}
+            DO cat ${tfn}\|${PAR} xz --format=lzma ${LVL}\>${fn}.${ext}.${tfn:0-3}
         done
     else
-        DO cat ${fn}\|xz --format=lzma ${LVL}\>${fn}.${ext}
+        DO cat ${fn}\|${PAR} xz --format=lzma ${LVL}\>${fn}.${ext}
     fi
     ;;
 "7z") # ============ 7z ============

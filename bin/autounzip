@@ -1,9 +1,12 @@
 #!/bin/bash
-# AUTOUNZIP V2P4
+# AUTOUNZIP V2P5
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
-. $DN/../lib/libautozip && echo -e "\e[33mlibautozip loaded.\e[0m" || { echo -e "\e[31mFail to load libautozip.\e[0m";exit 1; }
+. $DN/../lib/libautozip && echo -e "\e[33mlibautozip loaded.\e[0m" || {
+    echo -e "\e[31mFail to load libautozip.\e[0m"
+    exit 1
+}
 LIBDO_TOP_PID=${$}
 # Make a number 3 digit
 function fixthree() {
@@ -84,6 +87,8 @@ ext=${fulln##*.}
 if [ ${fn##*.} = "tar" ]; then
     ext="tar.${ext}"
     fn=${fn%.*}
+    elif [[ ${fulln} = *".part1.rar" ]];then
+        fn=$(echo ${fulln}|sed "s/.part1.rar//")
 fi
 if [ -e ${fn} ]; then
     echo -e "\e[31mWARNING: ${fn} exists! Will rename ${fn} as ${fn}.bak.\e[0m"
@@ -118,7 +123,7 @@ case ${ext} in
         echo -e "\e[31mERROR: GZip NO exist!\e[0m"
         exit 1
     fi
-        if ! [ $(TAR) -eq 0 ]; then
+    if ! [ $(TAR) -eq 0 ]; then
         echo -e "\e[31mERROR: GNU Tar NO exist!\e[0m"
         exit 1
     fi
@@ -228,7 +233,7 @@ case ${ext} in
         exit 1
     fi
     if [ -f ${fn}.z01 ]; then
-        if ! [ $ZIP -eq 0 ]; then
+        if ! [ $(ZIP) -eq 0 ]; then
             echo -e "\e[31mERROR: zip NO exist!\e[0m"
             exit 1
         fi

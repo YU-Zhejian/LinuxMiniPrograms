@@ -1,5 +1,5 @@
 #!/bin/bash
-# LIBAUTOZIP V2P4
+# LIBAUTOZIP V2P5
 USESPLIT=false
 REMOVE=false
 #Load libopt
@@ -75,13 +75,13 @@ function preck() {
             i=$((${i} + 1))
         done <${CONFN}
         unset line
-        if [ ${conf[0]} = "PARALLEL" ] && [ $PARALLEL ]; then
+        if [ ${conf[0]} = "PARALLEL" ] && [ $(PARALLEL) -eq 0 ] ; then
             USEPARALLEL=true
+            PP="/usr/bin/parallel"
             echo -e "\e[33mWill use GNU Parallel if possible.\e[0m"
         fi
         unset conf
     fi
-    if [ $(PARALLEL) -eq 0 ]; then PP="/usr/bin/parallel"; fi
 }
 # Check for all compoments: frontend.
 function autozipck() {
@@ -184,7 +184,7 @@ function ppopt() {
                 exit 0
                 ;;
             "-v" | "--version")
-                echo "Version 2 patch 4"
+                echo "Version 2 patch 5"
                 exit 0
                 ;;
             --force-parallel\:*)
