@@ -1,0 +1,34 @@
+YuZJLab              BashHistorySearcher                 Manual
+
+NAME
+____bhs - Bash History Searcher.
+
+DESCRIPTION
+    bhs [STRING] [OPTIONS]
+    Search [STRING] in ~/.bash_history with 'grep'.
+
+OPTIONS
+    -h|--help
+        Show this help.
+    -v|--version
+        Print version.
+    --more:[program]
+         The GNU/Linux program 'more' will be used if there's
+         too much output. Use [program] to replace 'more'.
+         e.g. 'less', 'cat', 'head' or 'tail'.
+
+AUTHOR
+    YU Zhejian <Zhejian.19@intl.zju.edu.cn>
+
+REPORTING BUGS
+    YU Zhejian <Zhejian.19@intl.zju.edu.cn>
+
+COPYRIGHT
+    Copyright © 2019-2020 YuZJ Lab
+    License GPLv3+: GNU GPL version 3 or later
+    <https://gnu.org/licenses/gpl.html>.
+    This is free software: you are free to change and
+    redistribute it. There is NO WARRANTY, to the extent
+    permitted by law.
+
+YuZJLab                 2019-2020                        MANUAL

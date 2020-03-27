@@ -1,0 +1,38 @@
+YuZJLab                 LiveChatManager                  Manual
+
+NAME
+____lcman - LiveChat History Manager
+
+DESCRIPTION
+    lcman [OPTIONS]
+    Detailed explainations are listed below.
+
+OPTIONS
+    -h|--help
+        Show this help.
+    -v|--version
+        Print version.
+    -f:[STRING]|--from:[STRING]
+        Search in history with sender [STRING].
+    -m:[STRING]|--message:[STRING]
+        Search in history with message [STRING].
+    -s|--exclude-system
+        Exclude message from SYSTEM.
+    -e:[STRING]|--exclude:[STRING]
+        Search in history without sender [STRING].
+
+AUTHOR
+    YU Zhejian <Zhejian.19@intl.zju.edu.cn>
+
+REPORTING BUGS
+    YU Zhejian <Zhejian.19@intl.zju.edu.cn>
+
+COPYRIGHT
+    Copyright © 2019-2020 YuZJ Lab
+    License GPLv3+: GNU GPL version 3 or later
+    <https://gnu.org/licenses/gpl.html>.
+    This is free software: you are free to change and
+    redistribute it. There is NO WARRANTY, to the extent
+    permitted by law.
+
+YuZJLab                 2019-2020                        MANUAL

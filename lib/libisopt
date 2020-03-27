@@ -1,4 +1,5 @@
 #!/bin/bash
+# LIBISOPT V1P1
 function isopt(){
     case $1 in
         -?|--*|-?\:*|--*\:*)
