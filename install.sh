@@ -22,3 +22,7 @@ if [ ${ifpath} -eq 0 ]; then
 else
     echo -e "\e[33m\$PATH unchanged.\e[0m"
 fi
+echo -e "\e[33mModifying file ermissions...\e[0m"
+chmod +x bin/*
+chmod +x *.sh
+echo -e "\e[33mFinished.\e[0m"
