@@ -1,5 +1,5 @@
 #!/bin/bash
-# AUTOUNZIP V2P5
+# AUTOUNZIP V2P6
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
@@ -63,8 +63,8 @@ function stdfc() {
     unset file_i in_1
 }
 # ============ Start ============
-echo -e "\e[33mYuZJLab AutoUnZip.\e[0m"
-echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
+echo -e "\e[33mYuZJLab AutoUnZip"
+echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 preck
 # ============ Possess options ============
 ISAOTOZIP=false

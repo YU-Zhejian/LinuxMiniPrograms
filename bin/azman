@@ -1,5 +1,5 @@
 #!/bin/bash
-# AZMAN V1P1
+# AZMAN V2P6
 DN=$(dirname ${0})
 exec 1>&2
 ISAUTOZIP=True
@@ -9,8 +9,8 @@ ISAUTOZIP=True
 }
 LIBDO_TOP_PID=${$}
 # ============ Start ============
-echo -e "\e[33mYuZJLab AutoZipManager.\e[0m"
-echo -e "\e[33mCopyright (C) 2020 YU Zhejian\e[0m"
+echo -e "\e[33mYuZJLab AutoZipManager"
+echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
 preck
 # ============ Possess options ============
 ISAOTOZIP=false
