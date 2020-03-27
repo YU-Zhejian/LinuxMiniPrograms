@@ -1,5 +1,5 @@
 #!/bin/bash
-# LIBAUTOZIP V2P3
+# LIBAUTOZIP V2P4
 USESPLIT=false
 REMOVE=false
 #Load libopt
@@ -177,14 +177,14 @@ function mktmp() {
 # Check opt
 function ppopt() {
     for opt in "${@}"; do
-        if isopt $opt; then
-            case $opt in
+        if isopt ${opt}; then
+            case ${opt} in
             "-h" | "--help")
                 yldoc autozip
                 exit 0
                 ;;
             "-v" | "--version")
-                echo "Version 2 patch 3"
+                echo "Version 2 patch 4"
                 exit 0
                 ;;
             --force-parallel\:*)
@@ -209,6 +209,10 @@ function ppopt() {
                 ;;
 
             "-s" | "--split")
+            if ! ${ISAOTOZIP};then
+              echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
+                exit 1
+                fi
                 USESPLIT=true
                 case ${ext} in
                 "rar" | "zip" | "7z")
@@ -220,21 +224,29 @@ function ppopt() {
                 esac
                 ;;
             -s\:*)
+                          if ! ${ISAOTOZIP};then
+              echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
+                exit 1
+                fi
                 USESPLIT=true
                 SPLIT=${opt:3}
                 ;;
             --split\:*)
+                          if ! ${ISAOTOZIP};then
+              echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
+                exit 1
+                fi
                 USESPLIT=true
                 SPLIT=${opt:8}
                 ;;
             *)
-                echo -e "\e[31mERROR: Option '$opt' invalid.\e[0m"
+                echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
                 exit 1
                 ;;
             esac
-            OPT="$OPT $opt"
+            OPT="${OPT} ${opt}"
         else
-            STDS="$STDS $opt"
+            STDS="${STDS} ${opt}"
         fi
     done
 }

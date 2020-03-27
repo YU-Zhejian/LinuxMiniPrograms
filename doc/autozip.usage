@@ -1,33 +1,35 @@
-YuZJLab              AutoZip & AutoUnZip                 Manual
+YuZJLab     AutoZip & AutoUnZip & AutoZip Manager        Manual
 
 NAME
 ____autozip - An automatic file compression tool.
 ____autounzip - An automatic file decompression tool.
 ____libautozip - Library for above files.
+____azman - AutoZip file Manager.
 
 DESCRIPTION
-    1. autozip
-        The first thing to do after installation. This will 
-        check the algorithms installed on your computer and 
-        give back a list of available extension name.
-    2. autozip [source] 
-        This will compress files and folders with default 
-        extension gz & tar.gz.
-    3. autozip [source] [ext] 
-        This will compress files and folders with extension 
-        [ext].
-    4. autozip [source] [ext] [level]
-        This will compress files and folders with extension 
-        [ext] to [level]. You can make it 1 (fastest)-9 (best).
-         Some algorithms (e.g. xzip, zip) may support 0
-        (store only; no compression).
-    5. autounzip
-        Almost equal to autozip.
-    6. autounzip [source]
-        Extract [source]. If the archive is SPLITTED, suffix 
+    1. autozip [source] [ext] [level] [options]
+        This will compress files and folders with extension
+        [ext] to [level]. You can make [level] 1 (fastest) to 9
+        (best). Some algorithms (e.g. xzip, zip) may support 0
+        (store only; no compression). If [level] is omitted,
+        will use default value provided by algorithm. If [ext]
+        is also omitted, will use gz & tar.gz. If [source] is
+        omitted, will check the algorithms installed on your
+        computer and give back a list of available extension
+        name.
+    2. autounzip [source] [options]
+        Extract [source]. If the archive is SPLITTED, suffix
         like "001" or "z01" should not be added. HOWEVER, for
         rar you should indicate the FIRST part. For example, 
-        "r1.part1.rar"
+        "r1.part1.rar". If [source] is omitted, will check the
+        algorithms installed on your computer and give back a
+        list of available extension name.
+    3. azman [subcommand] [source] [options]
+        Use [subcommand] on [source]. The subcommands will be
+        introduced bellow. If one of the [subcommand] or
+        [source] is omitted, will check the algorithms
+        installed on your computer and give back a list of
+        available extension name.
 
 OPTIONS (NEED GETOPT)
     Several arguments is available to autozip and zutounzip.
@@ -49,13 +51,19 @@ OPTIONS (NEED GETOPT)
             corresponding algorithms like 7zip, zip or rar. If
             [split] is omitted, it will be treated as 1G. legal
             [split] are those which can be recognized by GNU 
-            coreunits "split" or corresponding algorithms.
+            coreunits "split" or corresponding algorithms. This
+            option will be ignored in autounzip.
 
             When making a tar.?z archive, this will split the 
             tar file and compress them orderly.
 
             When using zip format, we'll use "zip -FF" to merge
             the zips.
+
+AZMAN SUBCOMMANDS
+    list
+        List all files and folders inside with a verbose
+        format.
 
 USE OF GNU PARALLEL (REQUIRE ROOT PREVILEDGE)
     It is recommended to use GNU Parallel to accelerate the 

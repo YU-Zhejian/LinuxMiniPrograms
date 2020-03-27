@@ -1,5 +1,5 @@
 #!/bin/bash
-# AUTOUNZIP V2P3
+# AUTOUNZIP V2P4
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
@@ -65,7 +65,7 @@ echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
 preck
 # ============ Possess options ============
 ISAOTOZIP=false
-ppopt $@
+ppopt ${@}
 # ============ Possess arguments ============
 STDI=(${STDS})
 fulln=${STDI[0]}
@@ -89,7 +89,7 @@ if [ -e ${fn} ]; then
     echo -e "\e[31mWARNING: ${fn} exists! Will rename ${fn} as ${fn}.bak.\e[0m"
     DO mv -f ${fn} ${fn}.bak
 fi
-echo -e "\e[33mReceived: $0 ${fulln} $OPT ==>Extension=${ext}\e[0m"
+echo -e "\e[33mReceived: ${0} ${fulln} ${OPT} ==>Extension=${ext}\e[0m"
 # ============ Makt tmp ============
 mktmp
 # ============ Start Compressing ============
@@ -116,6 +116,10 @@ case ${ext} in
 "tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
     if ! [ $(GZIP) -eq 0 ]; then
         echo -e "\e[31mERROR: GZip NO exist!\e[0m"
+        exit 1
+    fi
+        if ! [ $(TAR) -eq 0 ]; then
+        echo -e "\e[31mERROR: GNU Tar NO exist!\e[0m"
         exit 1
     fi
     if ${USESPLIT}; then

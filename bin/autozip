@@ -1,5 +1,5 @@
 #!/bin/bash
-# AUTOZIP V2P3
+# AUTOZIP V2P4
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
@@ -170,7 +170,7 @@ fn=$(mfn ${fn})
 ckext
 ckSPLIT
 ckLVL
-echo -e "\e[33mReceived: $0 ${fn} ${ext} ${lvl} ${OPT} \e[0m"
+echo -e "\e[33mReceived: ${0} ${fn} ${ext} ${lvl} ${OPT} \e[0m"
 bupf
 # ============ Makt tmpdir ============
 mktmp
