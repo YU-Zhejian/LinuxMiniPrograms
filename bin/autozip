@@ -1,5 +1,5 @@
 #!/bin/bash
-# AUTOZIP V2P5
+# AUTOZIP V2P6
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
@@ -156,8 +156,8 @@ function bupf() {
     fi
 }
 # ============ Start ============
-echo -e "\e[33mYuZJLab AutoZip.\e[0m"
-echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
+echo -e "\e[33mYuZJLab AutoZip"
+echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 preck
 USESPLIT=false
 # ============ Possess options ============

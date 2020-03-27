@@ -1,5 +1,7 @@
 #!/bin/bash
-# LCMAN V3P1
+# LCMAN V3P2
+echo -e "\e[33mYuZJLab LiveChat Manager"
+echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 DN=$(dirname ${0})
 LVCD="${DN}/../var/livechat.d"
 if [ ! -e ${LVCD}/MESSAGES ]; then
@@ -18,7 +20,7 @@ for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
         "-v")
-            echo -e "\e[33mVersion 3 patch 1, compatiable with LiveChat Version 1 & 2.\e[0m"
+            echo -e "\e[33mVersion 3 patch 2, compatiable with LiveChat Version 1 & 2.\e[0m"
             exit 0
             ;;
         "-h")

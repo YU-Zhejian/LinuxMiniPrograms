@@ -1,7 +1,7 @@
 #!/bin/bash
-# PSS V1P2
-echo -e "\e[33mYuZJLab Process Snapshot Searcher Usage: pss [string]\e[0m"
-echo -e "\e[33mCopyright (C) 2019-2020 YU Zhejian\e[0m"
+# PSS V1P3
+echo -e "\e[33mYuZJLab Process Snapshot Searcher"
+echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 cd $(dirname ${0})
 { . ../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || {
     echo -e "\e[31mFail to load libisopt.\e[0m"
@@ -16,7 +16,7 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 1 patch 2"
+            echo "Version 1 patch 3"
             exit 0
             ;;
         --more\:*)

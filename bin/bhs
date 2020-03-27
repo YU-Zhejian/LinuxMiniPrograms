@@ -1,8 +1,8 @@
 #!/bin/bash
-# BHS V1P2
+# BHS V1P3
 DN=$(dirname ${0})
 more="more"
-echo -e "\e[33mYuZJLab Bash History Searcher Usage: bhs [string]"
+echo -e "\e[33mYuZJLab Bash History Searcher"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 { . $DN/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || { echo -e "\e[31mFail to load libisopt.\e[0m";exit 1; }
 for opt in "${@}"; do

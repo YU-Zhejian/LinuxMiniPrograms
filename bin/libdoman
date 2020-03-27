@@ -1,8 +1,8 @@
 #!/bin/bash
-# LIBDOMAN V4P5
+# LIBDOMAN V4P6
 DN=$(dirname ${0})
-echo -e "\e[33mYuZJLab LibDO Manager.\e[0m"
-echo -e "\e[33mCopyright (C) 2020 YU Zhejian\e[0m"
+echo -e "\e[33mYuZJLab LibDO Manager."
+echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
 { . $DN/../lib/libisopt && . $DN/../lib/libmktbl && . $DN/../lib/libdate; } && { echo -e "\e[33mlibisopt, libmktbl, libdate loaded.\e[0m" >&2; }  || { echo -e "\e[31mFail to load libisopt, libmktbl, libdate.\e[0m"  >&2;exit 1; }
 more="more"
 cmd=0
@@ -14,7 +14,7 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-v" | "--version")
-            echo -e "\e[33mVersion 4 patch 5, compatiable with libdo Version 1.\e[0m"
+            echo -e "\e[33mVersion 4 patch 6, compatiable with libdo Version 1.\e[0m"
             exit 0
             ;;
         -o\:*)
