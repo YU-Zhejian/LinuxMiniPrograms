@@ -1,5 +1,5 @@
 #!/bin/bash
-# LIBFINDPYTHON V1
+# LIBFINDPYTHON V1P1
 # Usage: FindPython [2|3] [-q]
 function FindPython() {
     local DN=$(dirname ${0})
@@ -37,7 +37,7 @@ function FindPython() {
         local tmpf=$(mktemp -t pycmd.XXXXXX)
         ls -FC ${dir} -w 1 | grep '.\*$' | sed "s;\*\$;;" | grep '^python' | grep '^python\([23]\(\.[0-9]*\)*\)*\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >${tmpf}
         while read line; do
-            local curr_version=$(${line} --version 2>/dev/null | cut -f 2 -d " ")
+            local curr_version=$(${line} --version 2>&1 | cut -f 2 -d " ")
             if [[ "${curr_version}" == ${VER}* ]]; then
                 if ${FP_QUICK_ACTION}; then
                     echo "${line}"
