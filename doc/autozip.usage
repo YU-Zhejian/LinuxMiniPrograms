@@ -35,15 +35,20 @@ OPTIONS (NEED GETOPT)
     Several arguments is available to autozip and zutounzip.
     You should place them AFTER the [source] [ext] or  [level]
     field. They are:
-    FOR BOTH
+    FOR ALL
         -h|--help
             Show this help.
         -v|--version
             Print version.
+    FOR AUTOZIP/AUTOUNZIP ONLY
         --force-parallel:[location]
             Force to use GUN parallel at [location]. This will
             not affect pgzip, XZ Utils or other algorithms 
             which do not require GNU Parallel.
+        --force
+            Remove the target if exists.
+        --remove
+            Remove [sorce] if success.
     FOR AUTOZIP ONLY
         -s[:[split]]|-split[:[split]]
             Split the archive by [split]. This is realized by 

@@ -1,8 +1,9 @@
 #!/bin/bash
-# AUTOUNZIP V2P6
+# AUTOUNZIP V2P7
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
+ISFORCE=false
 . $DN/../lib/libautozip && echo -e "\e[33mlibautozip loaded.\e[0m" || {
     echo -e "\e[31mFail to load libautozip.\e[0m"
     exit 1
@@ -87,14 +88,27 @@ ext=${fulln##*.}
 if [ ${fn##*.} = "tar" ]; then
     ext="tar.${ext}"
     fn=${fn%.*}
-    elif [[ ${fulln} = *".part1.rar" ]];then
-        fn=$(echo ${fulln}|sed "s/.part1.rar//")
+elif [[ ${fulln} == *".part1.rar" ]]; then
+    fn=$(echo ${fulln} | sed "s/.part1.rar//")
 fi
+case ${ext} in
+"tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "tbz" | "tar.lzma" | "tar.lz" | "tlz" | "gz" | "GZ" | "xz" | "bz2" | "lz" | "lzma" | "7z" | "zip" | "rar")
+    echo -e "\e[33mReceived: ${0} ${fulln} ${OPT} ==>Extension=${ext}\e[0m"
+    ;;
+*)
+    echo -e "\e[31mERROR: Extension ${ext} invalid!\e[0m"
+    exit 1
+    ;;
+esac
 if [ -e ${fn} ]; then
-    echo -e "\e[31mWARNING: ${fn} exists! Will rename ${fn} as ${fn}.bak.\e[0m"
-    DO mv -f ${fn} ${fn}.bak
+    if ${ISFORCE}; then
+        echo -e "\e[31mWARNING: ${fn} exists! Will remove ${fn}.\e[0m"
+        DO rm -rf ${fn}
+    else
+        echo -e "\e[31mWARNING: ${fn} exists! Will rename ${fn} as ${fn}.bak.\e[0m"
+        DO mv -f ${fn} ${fn}.bak
+    fi
 fi
-echo -e "\e[33mReceived: ${0} ${fulln} ${OPT} ==>Extension=${ext}\e[0m"
 # ============ Makt tmp ============
 mktmp
 # ============ Start Compressing ============
