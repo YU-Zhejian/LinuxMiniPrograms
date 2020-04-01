@@ -24,10 +24,12 @@ Detailed code:
 git clone https://github.com/YuZJLab/LinuxMiniPrograms
 cd LinuxMiniPrograms
 chmod +x install.sh
-./install.sh
+./install.sh --all
 ```
 
+## Branches on GitHub
 
+There are two main branches on github: `master` and `NEW`. `master` branch is a stable releasing branch and `NEW` branch is cutting-edge developing branch. Other branches should be considered as unstable.
 
 ## Help
 After installation, you can execute `yldoc --list` to get a complete  list of all available documentations and view them by using `yldoc [name]`.

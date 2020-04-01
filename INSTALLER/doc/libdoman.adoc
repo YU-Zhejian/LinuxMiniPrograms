@@ -1,0 +1,26 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= libdoman(1)
+
+== NAME
+
+libdoman - LibDO log manager.
+
+== SYNOPSIS
+
+libdoman [log] [[log2] ...] [OPTIONS]
+
+== DESCRIPTION
+
+Decode LibDO output information from logs.
+
+== OPTIONS
+
+include::include/cmnopt.adoc[]
+
+`--more:[program]` The GNU/Linux program 'more' will be used if there's too much output. Use [program] to replace 'more'.e.g. 'less', 'cat', 'head' or 'tail'.
+
+`-o:[item]|--output:[item]` Get more information about [item]. The numbering of items started from 1.
+
+include::include/copy.adoc[]

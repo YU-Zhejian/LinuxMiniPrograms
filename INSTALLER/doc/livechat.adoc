@@ -1,0 +1,22 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= livechat(1)
+
+== NAME
+
+livechat - A chatting server
+
+== SYNOPSIS
+
+livechat [USER] [OPTIONS]
+
+== DESCRIPTION
+
+Logon as [USER] and start chatting!
+
+== OPTIONS
+
+include::include/cmnopt.adoc[]
+
+include::include/copy.adoc[]

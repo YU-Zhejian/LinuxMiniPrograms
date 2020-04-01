@@ -1,4 +1,12 @@
-.idea
+/.idea
 /etc/autozip.conf
 /var/livechat.d/
-/backup.tgz
+/*backup.tgz
+/doc
+/man
+/html
+/pdf
+/INSTALLER/doc/*.1
+/INSTALLER/doc/*.html
+/INSTALLER/doc/*.pdf
+/INSTALLER/*.fulladoc

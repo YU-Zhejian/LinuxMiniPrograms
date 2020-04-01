@@ -1,0 +1,34 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= azman(1)
+
+== NAME
+
+azman - AutoZip file Manager.
+
+== SYNOPSIS
+
+azman [subcommand] [source] [options]
+
+== DESCRIPTION
+
+Use [subcommand] on [source]. The subcommands will be introduced bellow. If one of the [subcommand] or [source] is omitted, will check the algorithms installed on your computer and give back a list of available extension name.
+
+
+== OPTIONS
+
+include::include/cmnopt.adoc[]
+
+== SUBCOMMANDS
+`list` List all files and folders inside with a verbose format.
+
+== USE OF RAR
+WARNING: 1. RAR is a PROPERTY software. 2. Use ABSOLUTE PATH.
+
+== EXIT STATUS
+`0` OK
+
+`1` ERROR
+
+include::include/copy.adoc[]

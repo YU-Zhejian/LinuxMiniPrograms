@@ -1,0 +1,19 @@
+#!/bin/bash
+DN=$(dirname ${0})
+
+function getfullasciidoc() {
+    while read line; do
+        if [[ ${line} =~ include::.*\[\] ]];then
+            local deepfn=$(echo ${line} | sed "s/^include\:\://" | sed "s/\[\]$//")
+            getfullasciidoc ${DN}/doc/${deepfn}
+         else
+            echo ${line}
+         fi
+    done <"${1}"
+}
+rm *.fulladoc -f
+for fn in ${DN}/doc/*.adoc; do
+    fn_base=$(basename ${fn%.*})
+    getfullasciidoc ${fn}|sed 's/^=* //'|sed 's/\:.*\:.*$//'>${fn_base}.fulladoc
+
+done
