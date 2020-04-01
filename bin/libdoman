@@ -1,5 +1,5 @@
 #!/bin/bash
-# LIBDOMAN V4P6
+# LIBDOMAN V4P7
 DN=$(dirname ${0})
 echo -e "\e[33mYuZJLab LibDO Manager."
 echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
@@ -14,7 +14,7 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-v" | "--version")
-            echo -e "\e[33mVersion 4 patch 6, compatiable with libdo Version 1.\e[0m"
+            echo -e "\e[33mVersion 4 patch 7, compatiable with libdo Version 1.\e[0m"
             exit 0
             ;;
         -o\:*)
@@ -49,6 +49,8 @@ if [ ${#STDI[@]} -gt 1 ]; then
 fi
 ln=0
 if [ ${cmd} -eq 0 ]; then
+    more="cat"
+    echo -e "\e[33mWill use '${more}' as More.\e[0m"
     for fn in "${STDI[@]}"; do
         if ! [ -f ${fn} ] || [ -z ${fn} ]; then
             echo -e "\e[31mERROR: Filename '${fn}' invalid. Use libdoman -h for help.\e[0m"

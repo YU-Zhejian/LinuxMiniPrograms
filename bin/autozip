@@ -1,9 +1,10 @@
 #!/bin/bash
-# AUTOZIP V2P6
+# AUTOZIP V2P7
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
-ISAUTOZIP=True
+ISAUTOZIP=true
+ISFORCE=false
 { . $DN/../lib/libautozip; } && { echo -e "\e[33mlibautozip loaded.\e[0m"; } || {
     echo -e "\e[31mFail to load libautozip.\e[0m"
     exit 1
@@ -123,35 +124,53 @@ function ckLVL() {
 }
 # Backup if exist.
 function bupf() {
-    if ${USESPLIT}; then
-        if [ -e ${fn}.${ext}.001 ]; then
-            for tfn in ${fn}.${ext}.[0-9][0-9][0-9]; do
-                DO mv -f ${tfn} ${tfn}.bak
-            done
-        elif [ -e ${fn}.part1.rar ]; then
-            for tfn in ${fn}.part*.rar; do
-                DO mv -f ${tfn} ${tfn}.bak
-            done
-        elif [ -e ${fn}.z01 ]; then
-            for tfn in ${fn}.z[0-9][0-9]; do
-                DO mv -f ${tfn} ${tfn}.bak
-            done
-            DO mv -f ${fn}.zip ${fn}.zip.bak
-        elif [ -e ${fn}.${ext} ]; then
-            DO mv -f ${fn}.${ext} ${fn}.${ext}.bak
+    if ${ISFORCE}; then
+        if ${USESPLIT}; then
+            if [ -e ${fn}.${ext}.001 ]; then
+                DO rm -f ${fn}.${ext}.[0-9][0-9][0-9]
+            elif [ -e ${fn}.part1.rar ]; then
+                DO rm -f ${fn}.part*.rar
+            elif [ -e ${fn}.z01 ]; then
+                DO rm -f ${fn}.z[0-9][0-9] ${fn}.zip
+            fi
+        else
+            if [ -e ${fn}.${ext} ]; then
+                echo -e "\e[31mWARNING: ${fn}.${ext} exists! Will remove ${fn}.${ext}.\e[0m"
+                DO rm -f ${fn}.${ext}
+            fi
         fi
-        unset tfn
     else
-        if [ -e ${fn}.${ext} ]; then
-            case ${ext} in
-            "tar" | "7z" | "zip" | "rar")
-                echo -e "\e[31mWARNING: ${fn}.${ext} exists! Will ADD NEW&MODIFIED FILES TO ${fn}.${ext}.\e[0m"
-                ;;
-            *)
-                echo -e "\e[31mWARNING: ${fn}.${ext} exists! Will rename ${fn}.${ext} as ${fn}.${ext}.bak.\e[0m"
+        if ${USESPLIT}; then
+            echo -e "\e[31mWARNING: ${fn}.${ext} exists! Will rename ${fn}.${ext} as ${fn}.${ext}.bak.\e[0m"
+            if [ -e ${fn}.${ext}.001 ]; then
+                for tfn in ${fn}.${ext}.[0-9][0-9][0-9]; do
+                    DO mv -f ${tfn} ${tfn}.bak
+                done
+            elif [ -e ${fn}.part1.rar ]; then
+                for tfn in ${fn}.part*.rar; do
+                    DO mv -f ${tfn} ${tfn}.bak
+                done
+            elif [ -e ${fn}.z01 ]; then
+                for tfn in ${fn}.z[0-9][0-9]; do
+                    DO mv -f ${tfn} ${tfn}.bak
+                done
+                DO mv -f ${fn}.zip ${fn}.zip.bak
+            elif [ -e ${fn}.${ext} ]; then
                 DO mv -f ${fn}.${ext} ${fn}.${ext}.bak
-                ;;
-            esac
+            fi
+            unset tfn
+        else
+            if [ -e ${fn}.${ext} ]; then
+                case ${ext} in
+                "tar" | "7z" | "zip" | "rar")
+                    echo -e "\e[31mWARNING: ${fn}.${ext} exists! Will ADD NEW&MODIFIED FILES TO ${fn}.${ext}.\e[0m"
+                    ;;
+                *)
+                    echo -e "\e[31mWARNING: ${fn}.${ext} exists! Will rename ${fn}.${ext} as ${fn}.${ext}.bak.\e[0m"
+                    DO mv -f ${fn}.${ext} ${fn}.${ext}.bak
+                    ;;
+                esac
+            fi
         fi
     fi
 }

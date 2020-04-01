@@ -1,0 +1,54 @@
+#!/bin/bash
+# LIBFINDPYTHON V1P1
+# Usage: FindPython [2|3] [-q]
+function FindPython() {
+    local DN=$(dirname ${0})
+    . $DN/../lib/libisopt || return 1
+    local mypath="$(echo ${PATH}):${wd}"
+    local Out_C
+    IFS=":"
+    local eachpath=(${mypath})
+    IFS=''
+    local FP_QUICK_ACTION=false
+    for opt in "${@}"; do
+        if isopt "${opt}"; then
+            case ${opt} in
+            "-q" | "--quick")
+                FP_QUICK_ACTION=true
+                ;;
+            *)
+                return 1
+                ;;
+            esac
+        else
+            if ! [ -z ${STDS} ]; then return 1; fi
+            local STDS="${opt}"
+        fi
+    done
+    if [ -z ${STDS} ]; then
+        local VER=3
+        local Out_V=3
+    else
+        local VER=${STDS}
+        local Out_V=${STDS}
+    fi
+    for dir in "${eachpath[@]}"; do
+        if ! [ -d ${dir} ]; then continue; fi
+        local tmpf=$(mktemp -t pycmd.XXXXXX)
+        ls -FC ${dir} -w 1 | grep '.\*$' | sed "s;\*\$;;" | grep '^python' | grep '^python\([23]\(\.[0-9]*\)*\)*\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >${tmpf}
+        while read line; do
+            local curr_version=$(${line} --version 2>&1 | cut -f 2 -d " ")
+            if [[ "${curr_version}" == ${VER}* ]]; then
+                if ${FP_QUICK_ACTION}; then
+                    echo "${line}"
+                    return 0
+                elif [ $(expr ${curr_version} \>= ${Out_V}) -eq 1 ]; then
+                    Out_C="${line}"
+                    Out_V=${curr_version}
+                fi
+            fi
+        done <${tmpf}
+        rm ${tmpf}
+    done
+    echo ${Out_C}
+}
