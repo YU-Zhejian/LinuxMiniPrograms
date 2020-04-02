@@ -3,6 +3,7 @@
 # ============ functions ============
 
 function LMP_install_condig() {
+    mkdir -p etc
     echo -e "Backing up settings...\e[0m"
     tar czvf etc_backup.tgz etc
     echo -e "\e[33mInstalling config...\e[0m"
@@ -11,6 +12,7 @@ function LMP_install_condig() {
 }
 
 function LMP_clear_history() {
+    mkdir -p var
     echo -e "Backing up settings...\e[0m"
     tar czvf var_backup.tgz var
     rm -rf var/*
@@ -23,7 +25,7 @@ function LMP_install_path() {
         echo -e "\e[31mbin/pls not exist!\e[0m"
         exit 1
     fi
-    ifpath=$(bash bin/pls -l | grep ${PWD}/bin | wc -l | cut -d " " -f 1)
+    ifpath=$(bash bin/pls -l | grep ${PWD}/bin | wc -l |sed "s/^ *//"| cut -d " " -f 1)
     if [ ${ifpath} -eq 0 ]; then
         echo "export PATH=${PWD}/bin/"':${PATH}' >>${HOME}/.bashrc
         echo -e "\e[33m\$PATH modified.\e[0m"
