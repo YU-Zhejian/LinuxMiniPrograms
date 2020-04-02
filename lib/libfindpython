@@ -1,5 +1,5 @@
 #!/bin/bash
-# LIBFINDPYTHON V1P2
+# LIBFINDPYTHON V1P3
 # Usage: FindPython [2|3] [-q|-a]
 function FindPython() {
     local DN=$(dirname ${0})
@@ -39,7 +39,7 @@ function FindPython() {
     for dir in "${eachpath[@]}"; do
         if ! [ -d ${dir} ]; then continue; fi
         local tmpf=$(mktemp -t pycmd.XXXXXX)
-        ls -FC ${dir} -w 1 | grep '.\*$' | sed "s;\*\$;;" | grep '^python' | grep '^python\([23]\(\.[0-9]*\)*\)*\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >${tmpf}
+        ls -F -1 ${dir} | grep '.\*$' | sed "s;\*\$;;" | grep '^python' | grep '^python\([23]\(\.[0-9]*\)*\)*\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >${tmpf}
         while read line; do
             local curr_version=$(${line} --version 2>&1 | cut -f 2 -d " ")
             if [[ "${curr_version}" == ${VER}* ]]; then
