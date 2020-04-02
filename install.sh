@@ -1,5 +1,5 @@
 #!/bin/bash
-#INSTALLER V2P1
+#INSTALLER V2EP2
 # ============ functions ============
 
 function LMP_install_condig() {
@@ -39,11 +39,10 @@ function LMP_add_permission() {
 }
 
 function LMP_install_doc() {
-    mkdir man doc html pdf -p
-    mkdir man/man1 -p
+    mkdir -p man doc html pdf man/man1
     cd INSTALLER
     echo -e "\e[33mCompiling YuZJLab Usage...\e[0m"
-    ./adoc2usage
+    bash adoc2usage
     cd doc
     echo -e "\e[33mCompiling Groff man...\e[0m"
     asciidoctor *.adoc -b manpage
