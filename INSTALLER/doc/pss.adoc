@@ -1,0 +1,22 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= pss(1)
+
+== NAME
+pss - A program to search Process Snapshots
+
+== SYNOPSIS
+pss [STRING] [[STRING2]...] [OPTIONS]
+
+== DESCRIPTION
+
+Search [STRING] in Process Snapshots. If [STRING] is omitted, the program will list all Process Snapshots
+
+== OPTIONS
+
+include::include/cmnopt.adoc[]
+
+`--more:[program]` The GNU/Linux program 'more' will be used if there's too much output. Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
+
+include::include/copy.adoc[]

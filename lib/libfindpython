@@ -1,6 +1,6 @@
 #!/bin/bash
-# LIBFINDPYTHON V1P1
-# Usage: FindPython [2|3] [-q]
+# LIBFINDPYTHON V1P2
+# Usage: FindPython [2|3] [-q|-a]
 function FindPython() {
     local DN=$(dirname ${0})
     . $DN/../lib/libisopt || return 1
@@ -10,11 +10,15 @@ function FindPython() {
     local eachpath=(${mypath})
     IFS=''
     local FP_QUICK_ACTION=false
+    local FP_ALL=false
     for opt in "${@}"; do
         if isopt "${opt}"; then
             case ${opt} in
-            "-q" | "--quick")
+            "-q")
                 FP_QUICK_ACTION=true
+                ;;
+            "-a")
+                FP_ALL=true
                 ;;
             *)
                 return 1
@@ -42,7 +46,9 @@ function FindPython() {
                 if ${FP_QUICK_ACTION}; then
                     echo "${line}"
                     return 0
-                elif [ $(expr ${curr_version} \>= ${Out_V}) -eq 1 ]; then
+                    elif ${FP_ALL};then
+                        echo ${line}
+                elif [ $(expr ${curr_version} \>= ${Out_V}) -eq 1 ] ; then
                     Out_C="${line}"
                     Out_V=${curr_version}
                 fi
@@ -50,5 +56,7 @@ function FindPython() {
         done <${tmpf}
         rm ${tmpf}
     done
+    if ! [ -z "${Out_C}" ];then
     echo ${Out_C}
+    fi
 }

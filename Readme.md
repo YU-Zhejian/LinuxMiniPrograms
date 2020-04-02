@@ -24,7 +24,7 @@ Detailed code:
 git clone https://github.com/YuZJLab/LinuxMiniPrograms
 cd LinuxMiniPrograms
 chmod +x install.sh
-./install.sh
+./install.sh --all
 ```
 
 ## Branches on GitHub

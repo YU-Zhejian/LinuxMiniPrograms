@@ -1,0 +1,24 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= bhs(1)
+
+== NAME
+
+bhs - Bash History Searcher.
+
+== SYNOPSIS
+
+bhs [STRING] [OPTIONS]
+
+== DESCRIPTION
+
+Search [STRING] in ~/.bash_history with 'grep'.
+
+== OPTIONS
+
+include::include/cmnopt.adoc[]
+
+`--more:[program]` The GNU/Linux program 'more' will be used if there's too much output. Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
+
+include::include/copy.adoc[]

@@ -1,6 +1,6 @@
 /.idea
-/etc/autozip.conf
-/var/livechat.d/
+/etc
+/var
 /*backup.tgz
 /doc
 /man

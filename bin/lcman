@@ -19,11 +19,11 @@ more="more"
 for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
-        "-v")
+        "-v"|"--version")
             echo -e "\e[33mVersion 3 patch 2, compatiable with LiveChat Version 1 & 2.\e[0m"
             exit 0
             ;;
-        "-h")
+        "-h" | "--help")
             yldoc lcman
             exit 0
             ;;
@@ -43,14 +43,14 @@ for opt in "${@}"; do
             sm=(${sm[@]} ${opt:10})
             ;;
         -e\:*)
-        se=(${se[@]} ${opt:3})
-        ;;
-            --exclude\:*)
-        se=(${se[@]} ${opt:10})
-        ;;
-        "-s"|"--exclude-system")
-        se=(${se[@]} "SYSTEM")
-        ;;
+            se=(${se[@]} ${opt:3})
+            ;;
+        --exclude\:*)
+            se=(${se[@]} ${opt:10})
+            ;;
+        "-s" | "--exclude-system")
+            se=(${se[@]} "SYSTEM")
+            ;;
         *)
             echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
             exit 1
@@ -75,7 +75,7 @@ if [ ${#sf[@]} -eq 0 ]; then
     for ((n = 0; n <= i; n++)); do
         uf[${n}]=true
     done
-    else
+else
     for item in "${sf[@]}"; do
         for ((n = 0; n <= i; n++)); do
             if [[ ${f[${n}]} == *${item}* ]]; then
@@ -88,7 +88,7 @@ if [ ${#se[@]} -eq 0 ]; then
     for ((n = 0; n <= i; n++)); do
         uf[${n}]=true
     done
-    else
+else
     for item in "${se[@]}"; do
         for ((n = 0; n <= i; n++)); do
             if [[ ${f[${n}]} == *${item}* ]]; then
@@ -101,13 +101,11 @@ if [ ${#sm[@]} -eq 0 ]; then
     for ((n = 0; n <= i; n++)); do
         um[${n}]=true
     done
-    else
+else
     for item in "${sm[@]}"; do
         for ((n = 0; n <= i; n++)); do
-
             if [[ ${m[${n}]} == *${item}* ]]; then
                 um[${n}]=true
-
             fi
         done
     done

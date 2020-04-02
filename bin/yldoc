@@ -1,5 +1,5 @@
 #!/bin/bash
-# YLDOC V1P2
+# YLDOC V1P3
 DN=$(dirname ${0})
 more="more"
 echo -e "\e[33mYuZJLab Documentation System"
@@ -23,11 +23,8 @@ for opt in "${@}"; do
             more=${opt:7}
             ;;
         "-l" | "--list")
-            lstmp=$(mktemp -t yldoc.XXXXXX)
             echo -e "\e[33mReading database...\e[0m"
-            cat ${DN}/../doc/* | grep "^____" | sed -s "s/____//" >>${lstmp}
-            cat ${lstmp} | sort | ${more}
-            rm ${lstmp}
+            ls -C -w1 ${DN}/../doc | sort | ${more}
             exit 0
             ;;
         *)
@@ -40,7 +37,7 @@ for opt in "${@}"; do
     fi
 done
 if [ -z ${STDS} ]; then
-    yldoc yldoc | ${more}
+    yldoc yldoc
     exit 0
 fi
 STDI=(${STDS})
