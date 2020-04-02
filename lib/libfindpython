@@ -10,6 +10,7 @@ function FindPython() {
     local eachpath=(${mypath})
     IFS=''
     local FP_QUICK_ACTION=false
+    local FP_ALL=false
     for opt in "${@}"; do
         if isopt "${opt}"; then
             case ${opt} in

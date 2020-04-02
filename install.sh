@@ -1,5 +1,5 @@
 #!/bin/bash
-#INSTALLER V2
+#INSTALLER V2P1
 # ============ functions ============
 
 function LMP_install_condig() {
@@ -41,7 +41,10 @@ function LMP_add_permission() {
 function LMP_install_doc() {
     mkdir man doc html pdf -p
     mkdir man/man1 -p
-    cd INSTALLER/doc
+    cd INSTALLER
+    echo -e "\e[33mCompiling YuZJLab Usage...\e[0m"
+    ./adoc2usage
+    cd doc
     echo -e "\e[33mCompiling Groff man...\e[0m"
     asciidoctor *.adoc -b manpage
     echo -e "\e[33mCompiling html5...\e[0m"
@@ -52,7 +55,7 @@ function LMP_install_doc() {
     mv *.html ../../html
     mv *.pdf ../../pdf
     echo "export MANPATH=${PWD}/man/"':${MANPATH}' >>${HOME}/.bashrc
-    echo -e "\e[33mDocumentations instlled to 'man' and 'html'.\e[0m"
+    echo -e "\e[33mDocumentations instlled to 'man', 'pdf', 'html' and 'doc'.\e[0m"
     cd ../..
 }
 
@@ -93,7 +96,7 @@ OPTIONS:
     --clear-history Clear all previous histories in 'var'.
     --install-path Modify path variable.
     --add-permission Modify permissions of executables.
-    --install-doc Install all documentations, need 'asciidoctor' 'asciidoctor-pdf' available from Ruby's 'pem'."
+    --install-doc Install all documentations, need 'asciidoctor' 'asciidoctor-pdf' (available from Ruby's 'pem') and python 3."
             exit 0
             ;;
         "-a" | "--all")
@@ -162,7 +165,7 @@ if ${VAR_interactive}; then
     if [ ${VAR_Ans} = "Y" ]; then
         VAR_add_permission=true
     fi
-    echo -e "\e[33mDo you want to install documentations in Groff man, pdf and HTML? This need command 'asciidoctor' and 'asciidoctor-pdf' available from Ruby pem.\e[0m"
+    echo -e "\e[33mDo you want to install documentations in Groff man, pdf, YuZJLab Usage and HTML? This need command 'asciidoctor' and 'asciidoctor-pdf' (available from Ruby pem) and Python 3.\e[0m"
     read -p "Answer Y/N:>" VAR_Ans
     if [ ${VAR_Ans} = "Y" ]; then
         VAR_install_doc=true

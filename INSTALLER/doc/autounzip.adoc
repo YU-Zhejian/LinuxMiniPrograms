@@ -7,7 +7,6 @@
 
 autounzip - An automatic file decompression tool.
 
-
 == SYNOPSIS
 
 autounzip [source] [options]
@@ -27,7 +26,7 @@ include::include/cmnopt.adoc[]
 == USE OF GNU PARALLEL (REQUIRE ROOT PREVILEDGE)
 It is recommended to use GNU Parallel to accelerate the speed of compression. You can change the first line of autozip.conf to "PARALLEL" to enable this feature. GNU Parallel is not available on autounzip.
 
-When using XZ Utils, we will use argument "-T0" instead ofGNN Parallel.
+When using XZ Utils, we will use argument "-T0" instead of GNU Parallel.
 
 WARNING: GNU Parallel consumes lots of memory & CPU resources. NEVER USE IT ON CLUSTERS!!!
 

@@ -1,0 +1,26 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= yldoc(1)
+
+== NAME
+
+yldoc - YuZJLab Documentation System.
+
+== SYNOPSIS
+
+yldoc [STRING] [[STRING2]...] [OPTIONS]
+
+== DESCRIPTION
+
+Search [STRING] in 'doc' folder.
+
+== OPTIONS
+
+include::include/cmnopt.adoc[]
+
+`--more:[program]` The GNU/Linux program 'more' will be used if there's too much output. Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
+
+`-l|--list` List all available ".usage" files.
+
+include::include/copy.adoc[]
