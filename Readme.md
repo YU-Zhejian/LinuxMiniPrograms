@@ -35,7 +35,19 @@ chmod +x install.sh
 ## Compatibility
 
 * GNU/Linux distributions: Tested and fully supported.
-* BSD and MacOS: Currently, the program does not support BSD and other BSD-based systems (such as MacOS). We're working on this in branch BSD.
+* BSD and MacOS: Currently, the program does not support BSD and other BSD-based systems (such as MacOS). We're working on this in branch BSD. Known problems are listed below:
+
+	* `ps` in bin/pss. Fixed.
+
+	* `sed` in install.sh. Fixed.
+
+	* The coloring support of `more` in programs that support `--more:[more]`. Not and will not be fixed. Please use `--more:cat` to get the right color.
+
+	* `xz` in bin/autozip bin/autounzip. Fixed.
+
+	* `tar` in bin/autozip bin/autounzip. Fixed.
+
+	* `ls` in bin/pls lib/libfindpython installer.sh. Fixed.
 
 * CYGWin and Git Bash: Tested. We provide full support for CYGWin but some of the programs may fail on Git Bash.
 
