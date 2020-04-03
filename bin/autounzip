@@ -1,4 +1,4 @@
-#!/bin/bash
+###!/bin/bash
 # AUTOUNZIP V2P7
 # ============ Functions ============
 DN=$(dirname ${0})
@@ -181,7 +181,7 @@ case ${ext} in
     if ${USESPLIT}; then
         stdtc "xz -dk --format=lzma"
     else
-        DO tar xvf --lzma ${fulln}
+        DO xz -dc ${fulln}|tar xv -f -
     fi
     ;;
 "gz" | "GZ") # ============ gz ============

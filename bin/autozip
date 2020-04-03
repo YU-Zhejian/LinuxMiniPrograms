@@ -199,7 +199,7 @@ if ${USEPARALLEL}; then PAR="${PP} --pipe --recend '' -k"; fi
 case ${ext} in
 "tar") # ============ tar ============
     if ${USESPLIT}; then
-        DO tar cv ${fn} | split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${fn}.${ext}.
+        DO tar -f - -cv ${fn} | split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${fn}.${ext}.
     else
         DO tar uvf ${fn}.${ext} ${fn}
     fi
@@ -215,12 +215,12 @@ case ${ext} in
         cmd="${PAR} gzip"
     fi
     if ${USESPLIT}; then
-        DO tar cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
+        DO tar -f - -cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
         for tfn in ${tempdir}/${fn}.*; do
             DO cat ${tfn}\|${cmd} ${LVL} \>${fn}.${ext}.${tfn:0-3}
         done
     else
-        DO tar cv ${fn}\|${cmd} ${LVL} \>${fn}.${ext}
+        DO tar -f - -cv ${fn}\|${cmd} ${LVL} \>${fn}.${ext}
     fi
     ;;
 "tar.xz" | "txz") # ============ txz ============
@@ -230,16 +230,14 @@ case ${ext} in
     fi
     if ${USEPARALLEL}; then
         PAR="--threads=0"
-    else
-        echo "dsafsefs"
     fi
     if ${USESPLIT}; then
-        DO tar cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
+        DO tar -f - -cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
         for tfn in ${tempdir}/${fn}.*; do
             DO cat ${tfn}\|xz ${PAR} ${LVL}\>${fn}.${ext}.${tfn:0-3}
         done
     else
-        DO tar cv ${fn}\|xz ${PAR} ${LVL}\>${fn}.${ext}
+        DO tar -f - -cv ${fn}\|xz ${PAR} ${LVL}\>${fn}.${ext}
     fi
     ;;
 "tar.bz2" | "tbz") # ============ tbz ============
@@ -248,12 +246,12 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        DO tar cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
+        DO tar -f - -cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
         for tfn in ${tempdir}/${fn}.*; do
             DO cat ${tfn}\|${PAR} bzip2 ${LVL}\>${fn}.${ext}.${tfn:0-3}
         done
     else
-        DO tar cv ${fn}\|${PAR} bzip2 ${LVL}\>${fn}.${ext}
+        DO tar -f - -cv ${fn}\|${PAR} bzip2 ${LVL}\>${fn}.${ext}
     fi
     ;;
 "tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
@@ -262,12 +260,12 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        DO tar cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
+        DO tar -f - -cv ${fn}\|split -a 3 --numeric-suffixes=001 -b ${SPLIT} - ${tempdir}/${fn}.
         for tfn in ${tempdir}/${fn}.*; do
             DO cat ${tfn}\|${PAR} xz --format=lzma ${LVL}\>${fn}.${ext}.${tfn:0-3}
         done
     else
-        DO tar cv ${fn}\|${PAR} xz --format=lzma ${LVL} \>${fn}.${ext}
+        DO tar -f - -cv ${fn}\|${PAR} xz --format=lzma ${LVL} \>${fn}.${ext}
     fi
     ;;
 "gz" | "GZ") # ============ gz ============
