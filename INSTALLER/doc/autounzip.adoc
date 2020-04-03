@@ -1,0 +1,61 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= autounzip(1)
+
+== NAME
+
+autounzip - An automatic file decompression tool.
+
+== SYNOPSIS
+
+autounzip [source] [options]
+
+== DESCRIPTION
+
+Extract [source]. If the archive is SPLITTED, suffix like "001" or "z01" should not be added. HOWEVER, for rar you should indicate the FIRST part. For example,  "r1.part1.rar". If [source] is omitted, will check the algorithms installed on your computer and give back a list of available extension name.
+
+== OPTIONS
+include::include/cmnopt.adoc[]
+
+`--force-parallel:[location]` Force to use GUN parallel at [location]. This will not affect pgzip, XZ Utils or other algorithms which do not require GNU Parallel.
+
+`--force` Remove the target if exists.
+`--remove` Remove [sorce] if success.
+
+== USE OF GNU PARALLEL (REQUIRE ROOT PREVILEDGE)
+It is recommended to use GNU Parallel to accelerate the speed of compression. You can change the first line of autozip.conf to "PARALLEL" to enable this feature. GNU Parallel is not available on autounzip.
+
+When using XZ Utils, we will use argument "-T0" instead of GNU Parallel.
+
+WARNING: GNU Parallel consumes lots of memory & CPU resources. NEVER USE IT ON CLUSTERS!!!
+
+== USE OF PIGZ
+When pigz, GNU parallel both exist and you have PARALLEL in autozip.conf, pigz will be used.
+
+== USE OF GNU GZIP
+When processing bioinformatical data, please make sure that You should use GZIP to produce a GZIP COMPRESSED DATA instead of BGZIP to produce a BLOCKED GNU ZIP FORMAT before using this tool!
+
+== USE OF BGZIP
+This is the right way to produce a BLOCKED GNU ZIP FORMAT with "gz" extension. Because it is capable of GNU GZip, we'll not distinguish them when extracting data. "tar.gz" is not supported in bgz format because it sounds weird.
+
+== USE OF LZMA SDK AND XZ UTILS
+
+The core of the XZ Utils compression code is based on LZMA SDK. So when you're about to compress & decompress files with lz, lzma, tar.lzma, tlz extensions, we'll use XZ Utils.
+
+== USE OF 7ZIP
+WARNING: DO NOT USE the 7-zip format for backup purpose on Linux/Unix because 7-zip does not store the owner/group of the file.
+
+WARNING: Although 7-zip provided us with a handful of algorithms, we will only take default values.
+
+== USE OF RAR
+WARNING: 1. RAR is a PROPERTY software. 2. Use ABSOLUTE PATH.
+
+
+== EXIT STATUS
+`0` OK
+
+`1` ERROR
+
+
+include::include/copy.adoc[]

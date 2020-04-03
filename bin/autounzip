@@ -4,7 +4,7 @@
 DN=$(dirname ${0})
 exec 1>&2
 ISFORCE=false
-. $DN/../lib/libautozip && echo -e "\e[33mlibautozip loaded.\e[0m" || {
+. ${DN}/../lib/libautozip && echo -e "\e[33mlibautozip loaded.\e[0m" || {
     echo -e "\e[31mFail to load libautozip.\e[0m"
     exit 1
 }
