@@ -1,5 +1,5 @@
 #!/bin/bash
-# LCMAN V3P2
+# LCMAN V3P3
 echo -e "\e[33mYuZJLab LiveChat Manager"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 DN=$(dirname ${0})
@@ -20,7 +20,7 @@ for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
         "-v"|"--version")
-            echo -e "\e[33mVersion 3 patch 2, compatiable with LiveChat Version 1 & 2.\e[0m"
+            echo -e "\e[33mVersion 3 patch 3, compatiable with LiveChat Version 1 & 2.\e[0m"
             exit 0
             ;;
         "-h" | "--help")
@@ -84,11 +84,7 @@ else
         done
     done
 fi
-if [ ${#se[@]} -eq 0 ]; then
-    for ((n = 0; n <= i; n++)); do
-        uf[${n}]=true
-    done
-else
+if ! [ ${#se[@]} -eq 0 ]; then
     for item in "${se[@]}"; do
         for ((n = 0; n <= i; n++)); do
             if [[ ${f[${n}]} == *${item}* ]]; then
