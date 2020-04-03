@@ -1,5 +1,5 @@
 #!/bin/bash
-# AUTOZIP V2P7
+# AUTOZIP V2P8
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
@@ -77,7 +77,7 @@ function ckext() {
             exit 1
         fi
         ;;
-    "gz" | "bgz" | "GZ" | "xz" | "bz" | "lzma" | "lz")
+    "gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz")
         if [ -d ${fn} ]; then
             echo -e "\e[31mERROR: You're about to compress FOLDER '${fn}' with extension '${ext}', which is designed for compressing SINGLE FILE.\e[0m"
             exit 1

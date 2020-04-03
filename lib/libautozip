@@ -1,5 +1,5 @@
 #!/bin/bash
-# LIBAUTOZIP V2P7
+# LIBAUTOZIP V2P8
 USESPLIT=false
 REMOVE=false
 #Load libopt
@@ -184,7 +184,7 @@ function ppopt() {
                 exit 0
                 ;;
             "-v" | "--version")
-                echo "Version 2 patch 7"
+                echo "Version 2 patch 8"
                 exit 0
                 ;;
             "--force")
