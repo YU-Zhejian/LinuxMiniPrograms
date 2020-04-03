@@ -15,8 +15,13 @@ You should have received a copy of the GNU General Public License along with thi
 
 As we're developing programs mostly under Microsoft Windows, we **DO NOT** pay attention to file permissions. You can execute `git config core.filemode false` to make your own copy of repository ignore them as well.
 
-## Installation
+## Installation under GNU/Linux
 You can now execute `install.sh` to install all the programs for yourself. You can also run this script to change your settings to the defaults.
+
+All documentations are written in `asciidoctor`.If you wish to compile them into Groff man, PDF, HTML and YuZJLab Usage, please install the following dependencies:
+
+* Python3
+* `Ruby gem` package `asciidoctor` and `asciidoctor-pdf`.
 
 Detailed code:
 
@@ -27,10 +32,19 @@ chmod +x install.sh
 ./install.sh --all
 ```
 
+## Compatibility
+
+* GNU/Linux distributions: Tested and fully supported.
+* BSD and MacOS: Currently, the program does not support BSD and other BSD-based systems (such as MacOS). We're working on this in branch BSD.
+
+* CYGWin and Git Bash: Tested. We provide full support for CYGWin but some of the programs may fail on Git Bash.
+
+* Windows Subsystem of Linux: Have not been tested.
+
 ## Branches on GitHub
 
 There are two main branches on github: `master` and `NEW`. `master` branch is a stable releasing branch and `NEW` branch is cutting-edge developing branch. Other branches should be considered as unstable.
 
-## Help
-After installation, you can execute `yldoc --list` to get a complete  list of all available documentations and view them by using `yldoc [name]`.
+## Help & Documentation
+After installation, you can execute `yldoc --list` to get a complete list of all available documentations and view them by using `yldoc [name]`. You can also find PDF, HTML and other documentation format in corresponding folder.
 
