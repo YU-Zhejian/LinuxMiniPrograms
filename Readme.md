@@ -54,20 +54,21 @@ To install all archive utilities in `autozip` series, please install the followi
 * GNU/Linux distributions: Tested and fully supported.
 * BSD and MacOS: Currently, the program does not support BSD and other BSD-based systems (such as MacOS). We're working on this in branch BSD. The source of these problems are due to different syntax of the following programs:
 
-	* `ps` `in bin/pss`. Fixed.
-	* `sed` in `install.sh`. Fixed.
-	* The colouring support of `more` in programs that support `--more:[more]`. Not and will not be fixed. Please use `--more:cat` to get the right colour.
-	* `xz` in `bin/autozip` `bin/autounzip`. Fixed.
-	* `tar` in `bin/autozip` `bin/autounzip`. Fixed.
-	* `ls` in `bin/pls` `lib/libfindpython` `installer.sh`. Fixed.
+    * `ps` `in bin/pss`. Fixed.
+    * `sed` in `install.sh`. Fixed.
+    * The colouring support of `more` in programs that support `--more:[more]`. Not and will not be fixed. Please use `--more:cat` to get the right colour.
+    * `xz` in `bin/autozip` `bin/autounzip`. Fixed.
+    * `tar` in `bin/autozip` `bin/autounzip`. Fixed.
+    * `ls` in `bin/pls` `lib/libfindpython` `installer.sh`. Fixed.
 
-The following programs on branch BSD have been tested, and all functions can be used:
+The following programs on branch BSD have been tested:
 
-
+    * `pls` All functions can be used.
+    * `pss` All functions can be used.
 
 * CYGWin and Git Bash: Tested. We provide full support for CYGWin but some of the programs may fail on Git Bash.
 
-	* `ps` in CYGWin's `bin/pss`. Not and will not be fixed. 
+    * `ps` in CYGWin's `bin/pss`. Not and will not be fixed. 
 
 * Windows Subsystem of Linux: Have not been tested.
 
