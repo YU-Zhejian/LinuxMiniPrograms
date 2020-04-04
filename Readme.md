@@ -65,6 +65,8 @@ The following programs on branch BSD have been tested:
 
     * `pls` All functions can be used.
     * `pss` All functions can be used.
+    * `livechat`  All functions can be used.
+    * `lcman` All functions, except colouring support, can be used. To avoid this question, use `--more:cat`
 
 * CYGWin and Git Bash: Tested. We provide full support for CYGWin but some of the programs may fail on Git Bash.
 
