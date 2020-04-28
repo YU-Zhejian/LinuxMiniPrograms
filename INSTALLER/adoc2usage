@@ -1,5 +1,5 @@
 #!/bin/bash
-#AD2U V1P1
+# AD2U V1P2
 DN=$(dirname ${0})
 
 function getfullasciidoc() {
@@ -13,8 +13,7 @@ function getfullasciidoc() {
     done <"${1}"
 }
 
-. ../lib/libfindpython
-pypath=$(FindPython)
+pypath=${DN}/../etc/py
 if [ -z ${pypath} ];then
     exit 1
 fi

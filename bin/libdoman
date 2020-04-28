@@ -99,7 +99,7 @@ if [ ${cmd} -eq 0 ]; then
         fi
         echo -e "\e[33mFile ${fn} loaded. Making table...\e[0m"
         table=$(mktemp -t libdo_man.XXXXXX)
-        echo -e "\#1\n\#S90\n\#1\n\#1" >${table}
+        echo -e "#1\n#S90\n#1\n#1" >${table}
         echo "NO.;COMMAND;EXIT;TIME" >>${table}
         for ((i = 1; i <= ${Proj}; i++)); do
             echo "${i};${Proj_CMD[${i}]};${Proj_Exit[${i}]};${Proj_Time[${i}]}" >>${table}
