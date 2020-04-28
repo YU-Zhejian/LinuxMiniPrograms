@@ -1,5 +1,5 @@
 #!/bin/bash
-# LIBAUTOZIP V2P7
+# LIBAUTOZIP V2P8
 USESPLIT=false
 REMOVE=false
 #Load libopt
@@ -75,7 +75,7 @@ function preck() {
             i=$((${i} + 1))
         done <${CONFN}
         unset line
-        if [ ${conf[0]} = "PARALLEL" ] && [ $(PARALLEL) -eq 0 ]; then
+        if [ "${conf[0]}" = "PARALLEL" ] && [ $(PARALLEL) -eq 0 ]; then
             USEPARALLEL=true
             PP="/usr/bin/parallel"
             echo -e "\e[33mWill use GNU Parallel if possible.\e[0m"
@@ -184,7 +184,7 @@ function ppopt() {
                 exit 0
                 ;;
             "-v" | "--version")
-                echo "Version 2 patch 7"
+                echo "Version 2 patch 8"
                 exit 0
                 ;;
             "--force")

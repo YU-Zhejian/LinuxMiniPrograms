@@ -1,5 +1,5 @@
 #!/bin/bash
-# YLDOC V1P3
+# YLDOC V1P4
 DN=$(dirname ${0})
 more="more"
 echo -e "\e[33mYuZJLab Documentation System"
@@ -16,7 +16,7 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 1 patch 2"
+            echo "Version 1 patch 4"
             exit 0
             ;;
         --more\:*)
@@ -24,7 +24,7 @@ for opt in "${@}"; do
             ;;
         "-l" | "--list")
             echo -e "\e[33mReading database...\e[0m"
-            ls -C -w1 ${DN}/../doc | sort | ${more}
+            ls -1 ${DN}/../doc | sort | ${more}
             exit 0
             ;;
         *)

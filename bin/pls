@@ -1,5 +1,5 @@
 #!/bin/bash
-# PLS V1P5
+# PLS V1P6
 echo -e "\e[33mYuZJLab PATH ls"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 wd=${PWD}
@@ -17,7 +17,7 @@ function do_search() {
     local item
     local tmpff
     tmpff=$(mktemp -t pls.XXXXXX)
-    ls -FC ${dir} -w 1 | grep "${fn}" |sed "s;^;$(echo ${dir})/;" >${tmpff}
+    ls -1 -F ${dir} | grep "${fn}" |sed "s;^;$(echo ${dir})/;" >${tmpff}
     if ! ${allow_d}; then
         tmpffff=$(mktemp -t pls.XXXXXX)
         cat ${tmpff} | grep -v '/$' >${tmpffff}
@@ -52,7 +52,7 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 1 patch 3"
+            echo "Version 1 patch 6"
             exit 0
             ;;
         "--no-x")

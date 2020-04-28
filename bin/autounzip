@@ -1,5 +1,5 @@
 #!/bin/bash
-# AUTOUNZIP V2P7
+# AUTOUNZIP V2P8
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
@@ -23,8 +23,8 @@ function stdc_h() {
     local in_i=001
     if ${USEPARALLEL}; then
         while [ -f ${fulln}.${in_i} ]; do
-            echo -e "\e[33mWill execute: echo \"cat ${PWD}/${fulln}.${in_i}|$@>>${tempdir}/${in_i}\">>${tempdir}/${in_i}.sh\e[0m"
-            echo "cat ${PWD}/${fulln}.${in_i}|$@>>${tempdir}/${in_i}" >>${tempdir}/${in_i}.sh
+            echo -e "\e[33mWill execute: echo \"cat ${PWD}/${fulln}.${in_i}|${@}>>${tempdir}/${in_i}\">>${tempdir}/${in_i}.sh\e[0m"
+            echo "cat ${PWD}/${fulln}.${in_i}|${@}>>${tempdir}/${in_i}" >>${tempdir}/${in_i}.sh
             chmod +x ${tempdir}/${in_i}.sh
             file_i=$((${file_i} + 1))
             in_i=$(fixthree ${file_i})
@@ -32,7 +32,7 @@ function stdc_h() {
         DO find ${tempdir}/*.sh\|$PP bash
     else
         while [ -f ${fulln}.${in_i} ]; do
-            DO cat ${fulln}.${in_i}\|$@\>\>${tempdir}/${in_i}
+            DO cat ${fulln}.${in_i}\|${@}\>\>${tempdir}/${in_i}
             file_i=$((${file_i} + 1))
             in_i=$(fixthree ${file_i})
         done
@@ -181,7 +181,7 @@ case ${ext} in
     if ${USESPLIT}; then
         stdtc "xz -dk --format=lzma"
     else
-        DO tar xvf --lzma ${fulln}
+        DO xz -dc ${fulln}|tar xv -f -
     fi
     ;;
 "gz" | "GZ") # ============ gz ============

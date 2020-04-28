@@ -1,5 +1,5 @@
 #!/bin/bash
-#AD2U V1P1
+# AD2U V1P2
 DN=$(dirname ${0})
 
 function getfullasciidoc() {
@@ -13,17 +13,15 @@ function getfullasciidoc() {
     done <"${1}"
 }
 
-. ../lib/libfindpython
-pypath=$(FindPython)
+pypath=${DN}/../etc/py
 if [ -z ${pypath} ];then
     exit 1
 fi
-rm *.im *.usage -f
+rm -f ./*.im ../doc/*.usage
 for fn in ${DN}/doc/*.adoc; do
     fn_base=$(basename ${fn%.*})
     getfullasciidoc ${fn} | sed 's/^==*/#/' | sed 's/^\:.*\:.*$//' |grep -v '^#.*([0-9])$'| grep -v '^$' >${fn_base}.im
     ${pypath} adoc2usage_phase2.py ${fn_base}.im
 done
-rm *.im -f
-rm ../doc/*.usage -f
+rm -f ./*.im ../doc/*.usage
 mv *.usage ../doc/

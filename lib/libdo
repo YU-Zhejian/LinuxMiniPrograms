@@ -1,7 +1,7 @@
 #!/bin/bash
-# LIBDO V1P3
+# LIBDO V1EP4
 function DO_ECHO(){
-    if [ "${LIBDO_LOG}_MODE" = "S" ];then return;fi
+    if [ "${LIBDO_LOG_MODE}" = "S" ];then return;fi
     if ! [ -z ${LIBDO_LOG} ];then
         echo "${@}">>${LIBDO_LOG}
     else
