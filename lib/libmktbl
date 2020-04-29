@@ -4,8 +4,8 @@ DN=$(dirname ${0})
 mypy=$(cat ${DN}/../etc/py)
 if [ -x "${mypy}" ];then
     function mktbl() {
-        ${mypy} ${DN}/../lib/libmktbl.py "${@}"
+        ${mypy} ${DN}/../lib/exec/libmktbl.py "${@}"
     }
 else
-   . ${DN}/../lib/libmktbl.sh
+   . ${DN}/../lib/exec/libmktbl.sh
 fi

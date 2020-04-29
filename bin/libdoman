@@ -1,9 +1,12 @@
 #!/bin/bash
-# LIBDOMAN V4P7
+# LIBDOMAN V5
 DN=$(dirname ${0})
 echo -e "\e[33mYuZJLab LibDO Manager."
 echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
-{ . $DN/../lib/libisopt && . $DN/../lib/libmktbl && . $DN/../lib/libdate; } && { echo -e "\e[33mlibisopt, libmktbl, libdate loaded.\e[0m" >&2; }  || { echo -e "\e[31mFail to load libisopt, libmktbl, libdate.\e[0m"  >&2;exit 1; }
+{ . ${DN}/../lib/libisopt && . ${DN}/../lib/libmktbl && . ${DN}/../lib/libdate; } && { echo -e "\e[33mlibisopt, libmktbl, libdate loaded.\e[0m" >&2; } || {
+    echo -e "\e[31mFail to load libisopt, libmktbl, libdate.\e[0m" >&2
+    exit 1
+}
 more="more"
 cmd=0
 for opt in "${@}"; do
@@ -25,12 +28,15 @@ for opt in "${@}"; do
             ;;
         --more\:*)
             more=${opt:7}
-            if [ $("${more}" --help &> /dev/null;echo ${?}) -ne 0 ];then
+            if [ $(
+                "${more}" --help &>/dev/null
+                echo ${?}
+            ) -ne 0 ]; then
                 echo -e "\e[31mERROR! Invalid More '${more}'! Will use original 'more' instead.\e[0m"
                 more="more"
-                else
-                    echo -e "\e[33mWill use '${more}' as More.\e[0m"
-                fi
+            else
+                echo -e "\e[33mWill use '${more}' as More.\e[0m"
+            fi
             ;;
         *)
             echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
@@ -58,45 +64,51 @@ if [ ${cmd} -eq 0 ]; then
         fi
         echo -e "\e[33mLoading ${fn}...0 item proceeded.\e[0m"
         Proj=0
-        status=2
         ffn=$(mktemp -t libdo_man.XXXXXX)
-        cat ${fn} | grep LIBDO > ${ffn}
+        cat ${fn} | grep LIBDO >${ffn}
         while read line; do
-            ln=$((${ln} + 1))
-            case ${line} in
-            "LIBDO IS GOING TO EXECUTE"*)
-                if [ $status -eq 1 ]; then
+            all_lines=("${all_lines[@]}" "${line}")
+        done <${ffn}
+        i=0
+        while [ ${#all_lines[@]} -gt ${i} ]; do
+            line=${all_lines[i]}
+            i=$((${i} + 1))
+            if [[ ${line} =~ "LIBDO IS GOING TO EXECUTE"* ]]; then
+                Proj=$((${Proj} + 1))
+                echo -e "\e[33mLoading ${fn}...${Proj} item proceeded.\e[0m"
+                Proj_CMD[${Proj}]=${line:26}
+                line=${all_lines[i]}
+                if [[ ${line} =~ "LIBDO STARTED AT"* ]]; then
+                    Proj_Time_s[${Proj}]=$(echo ${line:17} | sed "s/.$//")
+                    i=$((${i} + 2)) #Skip PID
+                    line=${all_lines[i]}
+                fi
+                if [ ${#all_lines[@]} -eq ${i} ]; then
                     Proj_Time_e[${Proj}]=0
                     Proj_Exit[${Proj}]="-1"
                     Proj_Time[${Proj}]="ERR"
+                    continue
                 fi
-                Proj=$((${Proj} + 1))
-                echo -e "\e[33mLoading ${fn}...${Proj} item proceeded.\e[0m"
-                status=1
-                Proj_CMD[${Proj}]=${line:26}
-                ;;
-            "LIBDO STARTED AT"*)
-                Proj_Time_s[${Proj}]=$(echo ${line:17} | sed "s/.$//")
-                ;;
-            "LIBDO STOPPED AT"*)
-                Proj_Time_e[${Proj}]=$(echo ${line:17} | sed "s/.$//")
-                Proj_Time[${Proj}]=$(timediff "${Proj_Time_s[${Proj}]}" "${Proj_Time_e[${Proj}]}")
-                ;;
-            "LIBDO EXITED SUCCESSFULLY.")
-                status=2
-                Proj_Exit[${Proj}]="0"
-                ;;
-            "LIBDO FAILED, GOT"*)
-                status=2
-                Proj_Exit[${Proj}]=$(echo ${line:21} | sed "s/.$//")
-                ;;
-            esac
-        done <${ffn}
-        if [ $status -eq 1 ]; then
-            Proj_Time_e[${Proj}]=0
-            Proj_Exit[${Proj}]="-1"
-            Proj_Time[${Proj}]="ERR"
-        fi
+                if [[ ${line} =~ "LIBDO STOPPED AT"* ]]; then
+                    Proj_Time_e[${Proj}]=$(echo ${line:17} | sed "s/.$//")
+                    Proj_Time[${Proj}]=$(timediff "${Proj_Time_s[${Proj}]}" "${Proj_Time_e[${Proj}]}")
+                    i=$((${i} + 1))
+                    line=${all_lines[i]}
+                elif [[ ${line} =~ "LIBDO IS GOING TO EXECUTE"* ]]; then
+                    Proj_Time_e[${Proj}]=0
+                    Proj_Exit[${Proj}]="-1"
+                    Proj_Time[${Proj}]="ERR"
+                    continue
+                fi
+                if [[ ${line} == "LIBDO EXITED SUCCESSFULLY." ]]; then
+                    i=$((${i} + 1))
+                    Proj_Exit[${Proj}]="0"
+                elif [[ ${line} =~ "LIBDO FAILED, GOT"* ]]; then
+                    i=$((${i} + 1))
+                    Proj_Exit[${Proj}]=$(echo ${line:21} | sed "s/.$//")
+                fi
+            fi
+        done
         echo -e "\e[33mFile ${fn} loaded. Making table...\e[0m"
         table=$(mktemp -t libdo_man.XXXXXX)
         echo -e "#1\n#S90\n#1\n#1" >${table}
@@ -104,10 +116,10 @@ if [ ${cmd} -eq 0 ]; then
         for ((i = 1; i <= ${Proj}; i++)); do
             echo "${i};${Proj_CMD[${i}]};${Proj_Exit[${i}]};${Proj_Time[${i}]}" >>${table}
         done
-        mktbl ${table}|${more}
-        rm ${table}
+        mktbl ${table} | ${more}
+        rm ${table} ${ffn}
+        unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table
     done
-    unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table
 else
     fn=${STDI[0]}
     if ! [ -f ${fn} ] || [ -z ${fn} ]; then
@@ -137,40 +149,35 @@ else
     tmpprj=$(mktemp -t libdo_man.XXXXXX)
     cat ${fn} | tail -n $(($(wc -l ${fn} | cut -f 1 -d " ") - ${ln_s} + 1)) | head -n 2 >${tmpprj}
     while read line; do
-        case ${line} in
-        "LIBDO IS GOING TO EXECUTE"*)
-            CMD=${line:26}
-            ;;
-        "LIBDO STARTED AT"*)
-            Time_s=$(echo ${line:17} | sed "s/.$//")
-            ;;
-        esac
+        all_lines=("${all_lines[@]}" "${line}")
     done <${tmpprj}
-    status=1
+    CMD=${all_lines[0]:26}
+    Time_s=$(echo ${all_lines[1]:17} | sed "s/.$//")
+    unset all_lines
     cat ${fn} | head -n ${ln_e} | tail -n 2 >${tmpprj}
     while read line; do
-        case ${line} in
-        "LIBDO STOPPED AT"*)
-            Time_e=$(echo ${line:17} | sed "s/.$//")
-            Time=$(timediff "$Time_s" "$Time_e")
-            ;;
-        "LIBDO EXITED SUCCESSFULLY.")
-            status=0
-            Exit="0"
-            ;;
-        "LIBDO FAILED, GOT"*)
-            status=0
-            Exit=$(echo ${line:21} | sed "s/.$//")
-            ;;
-        *"WILL KILL"*)
-            ln_e=$((${ln_e} - 1))
-            ;;
-        esac
+        all_lines=("${all_lines[@]}" "${line}")
     done <${tmpprj}
-    if [ $status -eq 1 ]; then
+    if [ ${#all_lines[@]} -lt 2 ]; then
         Time_e=0
         Exit="-1"
         Time="ERR"
+    else
+        i=0
+        line=${all_lines[i]}
+        if [[ ${line} =~ "LIBDO STOPPED AT"* ]]; then
+            Time_e=$(echo ${line:17} | sed "s/.$//")
+            Time=$(timediff "${Time_s}" "${Time_e}")
+            i=$((${i} + 1))
+            line=${all_lines[i]}
+        fi
+        if [[ ${line} == "LIBDO EXITED SUCCESSFULLY." ]]; then
+            i=$((${i} + 1))
+            Exit="0"
+        elif [[ ${line} =~ "LIBDO FAILED, GOT"* ]]; then
+            i=$((${i} + 1))
+            Exit=$(echo ${line:21} | sed "s/.$//")
+        fi
     fi
     echo -e "\e[33mJOB_CMD      \e[36m: ${CMD}\e[0m" >&2
     echo -e "\e[33mELAPSED_TIME \e[36m: ${Time_s} to ${Time_e}, Total ${Time}\e[0m" >&2
@@ -179,7 +186,7 @@ else
     tls=$((${ln_s} + 2))
     if [ ${ln_e} -le ${tls} ]; then
         echo -e "\e[33mNO_OUTPUT\e[0m"
-    elif [ ${Exit} -eq -1 ]; then
+    elif [ ${Exit} = "-1" ]; then
         cat ${fn} | head -n ${ln_e} | tail -n $((${ln_s} - ${ln_e} + 2)) | ${more}
     else
         cat ${fn} | head -n $((${ln_e} - 2)) | tail -n $((${ln_s} - ${ln_e} + 4)) | ${more}

@@ -2,8 +2,7 @@
 # LIBMKTBL.py V2
 import sys
 import re
-fn=sys.argv[1]
-mylog=open(fn,"r")
+mylog=open(sys.argv[1],"r")
 configline=[]
 normalline=[]
 for line in mylog.readlines():

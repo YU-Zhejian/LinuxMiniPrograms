@@ -1,7 +1,5 @@
 #!/bin/bash
 # LIBMKTNL.sh V2
-
-
 function mktbl_GetLongestString(){
     local mktbl_GetLongestString_max_str
     for item in "${@}";do
