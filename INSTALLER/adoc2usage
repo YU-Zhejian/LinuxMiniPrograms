@@ -1,5 +1,5 @@
 #!/bin/bash
-# AD2U V1P2
+# AD2U V1P3
 DN=$(dirname ${0})
 
 function getfullasciidoc() {
@@ -13,7 +13,7 @@ function getfullasciidoc() {
     done <"${1}"
 }
 
-pypath=${DN}/../etc/py
+pypath=$(cat ${DN}/../etc/python.conf)
 if [ -z ${pypath} ];then
     exit 1
 fi
