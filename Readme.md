@@ -71,7 +71,7 @@ Some packages such as `libmktbl` have its Python version, which is more faster t
 
 * CYGWin and Git Bash: Tested. We provide full support for CYGWin but some of the programs may fail on Git Bash.
 
-    * `ps` in CYGWin's `bin/pss`. Not and will not be fixed. 
+    * `ps` in CYGWin's `bin/pss`. Fixed.
 
 * Windows Subsystem of Linux: Have not been tested.
 

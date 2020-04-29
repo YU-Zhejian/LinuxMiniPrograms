@@ -27,6 +27,6 @@ Tested with all functions supported.
 
 === CYGWin
 
-Not supported.
+Tested with all functions supported.
 
 include::include/copy.adoc[]
