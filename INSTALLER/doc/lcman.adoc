@@ -23,11 +23,13 @@ include::include/cmnopt.adoc[]
 
 `-e:[STRING]|--exclude:[STRING]` Search in history without sender [STRING].
 
-== BSD
+== COMPATIBILITY
+
+=== BSD
 
 Tested with all functions except coloring supported. Use `--more:cat` instead of the default `more` on BSD.
 
-== CYGWin
+=== CYGWin
 
 Tested with all functions supported.
 

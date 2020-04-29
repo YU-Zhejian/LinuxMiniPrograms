@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-#AD2U.py V1
+#AD2U.py V1P1
 import sys
 import re
-
 def fix_tail():
     tmp_line = fdoc_out_lines.pop()
     if len(tmp_line)>64:
@@ -15,7 +14,6 @@ def fix_tail():
         fix_tail()
     else:
         fdoc_out_lines.append(tmp_line)
-
 fadoc_file_str = sys.argv[1]
 fadoc_hand=open(fadoc_file_str,"r")
 fdoc_lines=fadoc_hand.readlines()
@@ -40,3 +38,4 @@ fdoc_out_lines.append("\nYuZJLab                     2019-2020                  
 fdoc_out_handle=open(dochead+'.usage','w')
 for line in fdoc_out_lines:
     fdoc_out_handle.write(line.rstrip()+'\n')
+fdoc_out_handle.close()

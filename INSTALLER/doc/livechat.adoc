@@ -19,11 +19,13 @@ Logon as [USER] and start chatting!
 
 include::include/cmnopt.adoc[]
 
-== BSD
+== COMPATIBILITY
+
+=== BSD
 
 Tested with all functions supported.
 
-== CYGWin
+=== CYGWin
 
 Tested with all functions supported.
 

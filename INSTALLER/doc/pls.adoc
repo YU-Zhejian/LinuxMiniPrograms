@@ -31,11 +31,13 @@ include::include/cmnopt.adoc[]
 
 `-i|--invalid` List all invalid path variable.
 
-== BSD
+== COMPATIBILITY
+
+=== BSD
 
 Tested with all functions supported.
 
-== CYGWin
+=== CYGWin
 
 Tested with all functions supported.
 
