@@ -81,3 +81,4 @@ There are two main branches on GitHub: `master` and `NEW`. `master` branch is a 
 ## Help & Documentation
 After installation, you can execute `yldoc --list` to get a complete list of all available documentations and view them by using `yldoc [name]`. You can also find PDF, HTML and other documentation format in corresponding folder.
 
+It is recommended to read the `LMP_basis` to know the basic configurations to Linux Mini Programs.

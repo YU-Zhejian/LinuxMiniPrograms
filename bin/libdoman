@@ -118,7 +118,7 @@ if [ ${cmd} -eq 0 ]; then
         done
         mktbl ${table} | ${more}
         rm ${table} ${ffn}
-        unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table
+        unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table ffn all_lines
     done
 else
     fn=${STDI[0]}
