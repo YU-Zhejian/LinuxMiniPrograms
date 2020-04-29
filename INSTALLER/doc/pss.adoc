@@ -19,4 +19,12 @@ include::include/cmnopt.adoc[]
 
 `--more:[program]` The GNU/Linux program 'more' will be used if there's too much output. Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
 
+== BSD
+
+Tested with all functions supported.
+
+== CYGWin
+
+Not supported.
+
 include::include/copy.adoc[]

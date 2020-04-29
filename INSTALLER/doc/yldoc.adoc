@@ -23,4 +23,12 @@ include::include/cmnopt.adoc[]
 
 `-l|--list` List all available ".usage" files.
 
+== BSD
+
+Tested with all functions supported.
+
+== CYGWin
+
+Tested with all functions supported.
+
 include::include/copy.adoc[]

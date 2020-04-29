@@ -19,4 +19,12 @@ Logon as [USER] and start chatting!
 
 include::include/cmnopt.adoc[]
 
+== BSD
+
+Tested with all functions supported.
+
+== CYGWin
+
+Tested with all functions supported.
+
 include::include/copy.adoc[]
