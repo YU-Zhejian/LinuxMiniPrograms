@@ -1,5 +1,5 @@
 #!/bin/bash
-# PSS V1P6
+# PSS V1P7
 echo -e "\e[33mYuZJLab Process Snapshot Searcher"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 cd $(dirname ${0})
@@ -16,7 +16,7 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 1 patch 6"
+            echo "Version 1 patch 7"
             exit 0
             ;;
         --more\:*)
@@ -36,7 +36,7 @@ pssstmp=$(mktemp -t psstmp.XXXXXX)
 if [[ ${OSTYPE} = *BSD ]];then
     /bin/ps -a -l >${psstmp}
 elif [[ $(ps --version) = *cygwin* ]];then
-    /usr/bin/ps >${psstmp}
+    /usr/bin/ps -W >${psstmp}
 else
     /bin/ps -A all >${psstmp}
 fi

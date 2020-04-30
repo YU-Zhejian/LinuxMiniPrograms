@@ -1,5 +1,5 @@
 #!/bin/bash
-# AD2U V1P4
+# AD2U V1P5
 DN=$(dirname ${0})
 
 function getfullasciidoc() {
@@ -23,9 +23,9 @@ for fn in ${DN}/doc/*.adoc; do
     getfullasciidoc ${fn} | sed 's/^==*/#/' | sed 's/^\:.*\:.*$//' |grep -v '^#.*([0-9])$'|grep -v '^image::'| grep -v '^$' >${fn_base}.im
     ${pypath} adoc2usage_phase2.py ${fn_base}.im
     if [ ${?} -eq 0 ];then
-        echo -e "\e[33mCompiling ${fn_base}...\e[32mPASSED\e[0m"
+        echo -e "\e[33mCompiling ${fn_base} in YuZJLab Usage...\e[32mPASSED\e[0m"
     else
-        echo -e "\e[33mCompiling ${fn_base}...\e[31mERROR\e[0m"
+        echo -e "\e[33mCompiling ${fn_base} in YuZJLab Usage...\e[31mERROR\e[0m"
     fi
 done
 rm -f ./*.im ../doc/*.usage
