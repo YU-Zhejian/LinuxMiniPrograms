@@ -59,6 +59,8 @@ Some packages such as `libmktbl` have its Python version, which is more faster t
 
 ## Compatibility
 
+The Python programs are tested in the newest `anaconda` under GNU/Linux, CYGWin, Git Bash and is tested under port `python` under FreeBSD.
+
 * GNU/Linux distributions: Tested and fully supported.
 * BSD and MacOS: Currently, the program does not support BSD and other BSD-based systems (such as MacOS). We're working on this in branch BSD. The source of these problems are due to different syntax of the following programs:
 

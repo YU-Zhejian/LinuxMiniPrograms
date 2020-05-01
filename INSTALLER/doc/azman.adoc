@@ -21,14 +21,15 @@ Use [subcommand] on [source]. The subcommands will be introduced bellow. If one 
 include::include/cmnopt.adoc[]
 
 == SUBCOMMANDS
+
 `list` List all files and folders inside with a verbose format.
 
 == USE OF RAR
+
 WARNING: 1. RAR is a PROPERTY software. 2. Use ABSOLUTE PATH.
 
-== EXIT STATUS
-`0` OK
+== SEE ALSO
 
-`1` ERROR
+autozip, azman
 
 include::include/copy.adoc[]

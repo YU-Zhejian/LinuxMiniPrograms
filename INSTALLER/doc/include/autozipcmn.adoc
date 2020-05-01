@@ -1,0 +1,45 @@
+== NOTES
+
+=== USE OF GNU PARALLEL (REQUIRE ROOT PREVILEDGE)
+
+It is recommended to use GNU Parallel to accelerate the speed of compression. You can change the first line of autozip.conf to "PARALLEL" to enable this feature. GNU Parallel is not available on autounzip.
+
+When using XZ Utils, we will use argument "-T0" instead of GNU Parallel.
+    
+WARNING: GNU Parallel consumes lots of memory & CPU resources. NEVER USE IT ON CLUSTERS!!!
+
+=== USE OF PIGZ
+
+When pigz, GNU parallel both exist and you have PARALLEL in autozip.conf, pigz will be used.
+
+=== USE OF GNU GZIP
+
+When processing bioinformatical data, please make sure that You should use GZIP to produce a GZIP COMPRESSED DATA instead of BGZIP to produce a BLOCKED GNU ZIP FORMAT before using this tool!
+
+=== USE OF BGZIP
+
+This is the right way to produce a BLOCKED GNU ZIP FORMAT with "gz" extension. Because it is capable of GNU GZip, we'll not distinguish them when extracting data. "tar.gz" is not supported in bgz format because it sounds weird.
+
+=== USE OF LZMA SDK AND XZ UTILS
+
+The core of the XZ Utils compression code is based on LZMA SDK. So when you're about to compress & decompress files with lz, lzma, tar.lzma, tlz extensions, we'll use XZ Utils.
+
+=== USE OF 7ZIP
+
+WARNING: DO NOT USE the 7-zip format for backup purpose on Linux/Unix because 7-zip does not store the owner/group of the file.
+
+WARNING: Although 7-zip provided us with a handful of algorithms, we will only take default values.
+
+=== USE OF RAR
+
+WARNING: 1. RAR is a PROPERTY software. 2. Use ABSOLUTE PATH.
+
+== CONFIGURATION
+
+The configuration file of `autozip` and `autounzip` is `etc/autozip.conf`. There should be one line inside the file. If there're multiple lines, the lines behind line 1 will be ignored.
+
+- `PARALLEL` or `NOPARALLEL` (default) at line 1 indicates whether or not to use GNU Parallel. If you want to ise GNU Parallel, you should change line 1 to `PARALLEL`.
+
+== FILES
+
+- `etc/autozip.conf`: The configuration file of `autozip` and `autounzip`.
