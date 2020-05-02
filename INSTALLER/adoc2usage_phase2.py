@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#AD2U.py V1P5
+#AD2U.py V1P6
 import sys
 import re
 fix_tgt=90
@@ -29,15 +29,15 @@ for line in fdoc_lines:
     elif Currindent.__contains__(r'| '):
         fdoc_out_lines.append(Currindent + line)
         continue
-    if line.startswith(r'='):
+    elif line.startswith(r"```"):
+        Currindent = Currindent+r'| '
+        fdoc_out_lines.append('')
+    elif line.startswith(r'='):
         reeq=re.match(r'=*=',line).span()
         lneq=reeq[1]-reeq[0]
         Currindent='    '*lneq
         fdoc_out_lines.append('')
         fdoc_out_lines.append('\n'+'    '*(lneq-1)+line.replace('=','').strip())
-        fdoc_out_lines.append('')
-    elif line.startswith(r"```"):
-        Currindent = Currindent+r'| '
         fdoc_out_lines.append('')
     elif line.startswith(r'*'):
         oci=Currindent
