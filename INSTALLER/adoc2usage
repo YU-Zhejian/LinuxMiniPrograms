@@ -20,7 +20,7 @@ fi
 rm -f ./*.im ../doc/*.usage
 for fn in ${DN}/doc/*.adoc; do
     fn_base=$(basename ${fn%.*})
-    getfullasciidoc ${fn} | sed 's/^\:.*\:.*$//' |grep -v '^#.*([0-9])$'|grep -v '^image::'| grep -v '^$' >${fn_base}.im
+    getfullasciidoc ${fn} | sed 's/^\:.*\:.*$//' |grep -v '^#.*([0-9])$'|grep -v '^image::'>${fn_base}.im
     ${pypath} adoc2usage_phase2.py ${fn_base}.im
     if [ ${?} -eq 0 ];then
         echo -e "\e[33mCompiling ${fn_base} in YuZJLab Usage...\e[32mPASSED\e[0m"

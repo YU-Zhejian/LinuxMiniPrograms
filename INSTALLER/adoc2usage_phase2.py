@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-#AD2U.py V1P2
+#AD2U.py V1P3
 import sys
 import re
-fix_tgt=80
+fix_tgt=90
 def fix_tail():
     tmp_line = fdoc_out_lines.pop()
     if len(tmp_line)<=fix_tgt:
@@ -21,7 +21,6 @@ fdoc_lines=fadoc_hand.readlines()
 fadoc_hand.close()
 fdoc_out_lines=[]
 Currindent=''
-
 for line in fdoc_lines:
     if line.startswith(r"```") and Currindent.__contains__(r'| '):
         Currindent=Currindent[0:-2]
@@ -35,7 +34,9 @@ for line in fdoc_lines:
         lneq=reeq[1]-reeq[0]
         Currindent='    '*lneq
         ln_ap=line.replace('=','').strip()
+        fdoc_out_lines.append('')
         fdoc_out_lines.append('\n'+'    '*(lneq-1)+ln_ap)
+        fdoc_out_lines.append('')
     elif line.startswith(r"```"):
         Currindent = Currindent+r'| '
         fdoc_out_lines.append('')
@@ -43,15 +44,11 @@ for line in fdoc_lines:
         soc=re.search(r'^`(.*)` (.*)',line)
         fdoc_out_lines.append(Currindent+soc.group(1))
         fdoc_out_lines.append(Currindent*2+soc.group(2))
+    elif line.strip()=='':
+        continue
     else:
         fdoc_out_lines.append(Currindent+line)
     fix_tail()
-
-
-
-
-
-
 dochead=fadoc_file_str[:-3:]
 blank_len=(51-len(dochead)) //2
 fdoc_out_lines.insert(0,'YuZJLab'+' '*blank_len+dochead+' '*blank_len+'MANUAL')
