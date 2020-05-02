@@ -9,13 +9,13 @@ libdo - A library to monitor process.
 
 == SYNOPSIS
 
-. /PATH/TO/LIBDO
+source /PATH/TO/LIBDO
 
 DO cmd
 
 == DESCRIPTION
 
-Firstly, use `. /PATH/TO/LIBDO` to import libdo.
+Firstly, use `. /PATH/TO/LIBDO` to import libdo. (Command `source` is equal to command `.`)
 
 Then, use `DO cmd` to `execute cmd`.
 
