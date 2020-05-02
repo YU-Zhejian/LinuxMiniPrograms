@@ -19,10 +19,11 @@ Extract [source]. If the archive is SPLITTED by `autozip`, suffix like "001" or 
 
 include::include/cmnopt.adoc[]
 
-`--force-parallel:[location]` Force to use GUN parallel at [location]. This will not affect pgzip, XZ Utils or other algorithms which do not require GNU Parallel.
+* `--force-parallel:[location]` Force to use GUN parallel at [location]. This will not affect pgzip, XZ Utils or other algorithms which do not require GNU Parallel.
 
-`--force` Remove the target if exists.
-`--remove` Remove [sorce] if success.
+* `--force` Remove the target if exists.
+
+* `--remove` Remove [sorce] if success.
 
 include::include/autozipcmn.adoc[]
 

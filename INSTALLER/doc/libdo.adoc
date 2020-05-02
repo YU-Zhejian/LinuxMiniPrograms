@@ -9,29 +9,35 @@ libdo - A library to monitor process.
 
 == SYNOPSIS
 
-See below
+. /PATH/TO/LIBDO
 
-== USAGE
+DO cmd
 
-Firstly, use '. /PATH/TO/LIBDO' to import libdo.
+== DESCRIPTION
 
-Then, use 'DO cmd' to execute 'cmd'.
+Firstly, use `. /PATH/TO/LIBDO` to import libdo.
+
+Then, use `DO cmd` to `execute cmd`.
 
 Please pay attention that program 'eval' is used to execute programs. So, if you want to use redirections or pipes, escape them first.
 
 == ENVIRONMENTAL VARIABLES
-`LIBDO_TOP_PID` the pid to kill if failed. If blank, will not kill any process.
+* `LIBDO_TOP_PID` the pid to kill if failed. If blank, will not kill any process.
 
-`LIBDO_PRIV` exit status.
+* `LIBDO_PRIV` exit status.
 
-`LIBDO_LOG` log name. If blank, there will be no logs.
+* `LIBDO_LOG` log name. If blank, there will be no logs.
 
-`LIBDO_LOG_MODE` log mode.
+* `LIBDO_LOG_MODE` log mode.
 
-        S Silent, stop DO_ECHO.
-        1 Redirect DO_ECHO only.
-        2: Redirect STDERR.
-        3: Redirect STDOUT.
-        4: Redirect all.
+** S Silent, stop DO_ECHO.
+
+** 1 Redirect DO_ECHO only.
+
+** 2: Redirect STDERR.
+
+** 3: Redirect STDOUT.
+
+** 4: Redirect all.
 
 include::include/copy.adoc[]

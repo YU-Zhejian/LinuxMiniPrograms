@@ -18,18 +18,18 @@ Search [STRING] in `${PATH}`. If [STRING] is omitted, the program will list all 
 
 include::include/cmnopt.adoc[]
 
-`--more:[program]` The GNU/Linux program 'more' will be used if there's too much output. Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
+* `--more:[program]` The GNU/Linux program 'more' will be used if there's too much output. Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
 
-`--no-[MODE]` Filter the filenames by a specific rule. Available MODE:
+* `--no-[MODE]` Filter the filenames by a specific rule. Available MODE:
 
-        x   Executable files.
-        o   Non-executable files.
+** x   Executable files.
+** o   Non-executable files.
 
-`--allow-d` List the directories.
+* `--allow-d` List the directories.
 
-`-l|--list` List all valid path variable.
+* `-l|--list` List all valid path variable.
 
-`-i|--invalid` List all invalid path variable.
+* `-i|--invalid` List all invalid path variable.
 
 == COMPATIBILITY
 

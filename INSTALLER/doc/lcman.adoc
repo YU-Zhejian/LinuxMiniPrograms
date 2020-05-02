@@ -15,13 +15,13 @@ lcman [OPTIONS]
 
 include::include/cmnopt.adoc[]
 
-`-f:[STRING]|--from:[STRING]` Search in history with sender [STRING].
+* `-f:[STRING]|--from:[STRING]` Search in history with sender [STRING].
 
-`-m:[STRING]|--message:[STRING]` Search in history with message [STRING].
+* `-m:[STRING]|--message:[STRING]` Search in history with message [STRING].
 
-`-s|--exclude-system` Exclude message from SYSTEM.
+* `-s|--exclude-system` Exclude message from SYSTEM.
 
-`-e:[STRING]|--exclude:[STRING]` Search in history without sender [STRING].
+* `-e:[STRING]|--exclude:[STRING]` Search in history without sender [STRING].
 
 == COMPATIBILITY
 

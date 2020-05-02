@@ -38,11 +38,11 @@ WARNING: 1. RAR is a PROPERTY software. 2. Use ABSOLUTE PATH.
 
 The configuration file of `autozip` and `autounzip` is `etc/autozip.conf`. There should be one line inside the file. If there're multiple lines, the lines behind line 1 will be ignored.
 
-- `PARALLEL` or `NOPARALLEL` (default) at line 1 indicates whether or not to use GNU Parallel. If you want to ise GNU Parallel, you should change line 1 to `PARALLEL`.
+`PARALLEL` or `NOPARALLEL` (default) at line 1 indicates whether or not to use GNU Parallel. If you want to ise GNU Parallel, you should change line 1 to `PARALLEL`.
 
 == FILES
 
-- `etc/autozip.conf`: The configuration file of `autozip` and `autounzip`.
+`etc/autozip.conf`: The configuration file of `autozip` and `autounzip`.
 
 == EXAMPLE
 

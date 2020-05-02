@@ -19,12 +19,13 @@ This will compress files and folders with extension [ext] to [level]. You can ma
 
 include::include/cmnopt.adoc[]
 
-`--force-parallel:[location]` Force to use GUN parallel at [location]. This will not affect pgzip, XZ Utils or other algorithms which do not require GNU Parallel.
+* `--force-parallel:[location]` Force to use GUN parallel at [location]. This will not affect pgzip, XZ Utils or other algorithms which do not require GNU Parallel.
 
-`--force` Remove the target if exists.
-`--remove` Remove [sorce] if success.
+* `--force` Remove the target if exists.
 
-`-s[:[split]]|-split[:[split]]` Split the archive by [split]. This is realized by using GNU coreunits "split" or those provided in corresponding algorithms like 7zip, zip or rar. If [split] is omitted, it will be treated as 1G. legal [split] are those which can be recognized by GNU coreunits "split" or corresponding algorithms.
+* `--remove` Remove [sorce] if success.
+
+* `-s[:[split]]|-split[:[split]]` Split the archive by [split]. This is realized by using GNU coreunits "split" or those provided in corresponding algorithms like 7zip, zip or rar. If [split] is omitted, it will be treated as 1G. legal [split] are those which can be recognized by GNU coreunits "split" or corresponding algorithms.
 
 When making a tar.?z archive, this will split the tar file and compress them orderly.
 
@@ -37,14 +38,17 @@ include::include/autozipcmn.adoc[]
 autounzip, azman
 
 == INFORMATION ABOUT ALGORITHMS
-	1.9G TDSGitServer
-	478M TDSGitServer.txz
-	479M TDSGitServer.7z
-	540M TDSGitServer.rar
-	580M TDSGitServer.tlz
-	673M TDSGitServer.tbz
-	718M TDSGitServer.zip
-	719M TDSGitServer.tgz
-	1.9G TDSGitServer.tar
+
+```
+1.9G TDSGitServer
+478M TDSGitServer.txz
+479M TDSGitServer.7z
+540M TDSGitServer.rar
+580M TDSGitServer.tlz
+673M TDSGitServer.tbz
+718M TDSGitServer.zip
+719M TDSGitServer.tgz
+1.9G TDSGitServer.tar
+```
 
 include::include/copy.adoc[]

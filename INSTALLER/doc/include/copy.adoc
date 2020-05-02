@@ -1,7 +1,7 @@
 == EXIT STATUS
-`0` OK
+* `0` OK
 
-`1` ERROR
+* `1` ERROR
 
 == REPORTING BUGS
 

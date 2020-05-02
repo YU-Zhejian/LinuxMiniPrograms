@@ -15,13 +15,23 @@ yldoc [STRING] [[STRING2]...] [OPTIONS]
 
 Search [STRING] in 'doc' folder.
 
+YuZJLab Usage is a very simple documentation format which supports all terminals and operating systems. It is directly compiled from dource code in `asciidoc` format located in `INSTALLER/doc` by a Bash script and a Python script.
+
+* Lines are breaked by 90 characters except those in a code block, where there would be no additional line breaks.
+
+* Lines started by `|` with none or several leading spaces are code blocks.
+
+* Lines started by `*` (just like this line) with none or several leading spaces are an item of a particular list.
+
+* The headings shows a hierachy structure by adding indents. The first level have no indentations and the second level have four spaces as indention, and so on. The indentation of body part under that heading have four more spaces than the indentation of the corresponding heading.
+
 == OPTIONS
 
 include::include/cmnopt.adoc[]
 
-`--more:[program]` The GNU/Linux program 'more' will be used if there's too much output. Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
+* `--more:[program]` The GNU/Linux program 'more' will be used if there's too much output. Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
 
-`-l|--list` List all available ".usage" files.
+* `-l|--list` List all available ".usage" files.
 
 == COMPATIBILITY
 

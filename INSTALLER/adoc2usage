@@ -1,5 +1,5 @@
 #!/bin/bash
-# AD2U V1P6
+# AD2U V1P7
 DN=$(dirname ${0})
 
 function getfullasciidoc() {
@@ -8,7 +8,7 @@ function getfullasciidoc() {
             local deepfn=$(echo ${line} | sed "s/^include\:\://" | sed "s/\[\]$//")
             getfullasciidoc ${DN}/doc/${deepfn}
         else
-            echo ${line}
+            echo "${line}"
         fi
     done <"${1}"
 }
