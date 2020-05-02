@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#AD2U.py V1P6
+#AD2U.py V1P7
 import sys
 import re
 fix_tgt=90
@@ -36,24 +36,25 @@ for line in fdoc_lines:
         reeq=re.match(r'=*=',line).span()
         lneq=reeq[1]-reeq[0]
         Currindent='    '*lneq
-        fdoc_out_lines.append('')
-        fdoc_out_lines.append('\n'+'    '*(lneq-1)+line.replace('=','').strip())
+        fdoc_out_lines.append('    '*(lneq-1)+line.replace('=','').strip())
         fdoc_out_lines.append('')
     elif line.startswith(r'*'):
-        oci=Currindent
         reeq = re.match(r'\**\*', line).span()
         lneq = reeq[1] - reeq[0]
-        fdoc_out_lines.append('    ' * lneq + r'* ' + line.replace('*', '').strip())
-        Currindent=oci
+        fdoc_out_lines.append(Currindent+'    ' * lneq + r'* ' + line.replace('*', '').strip())
+        fix_tail()
+        fdoc_out_lines.append('')
     elif line.strip()=='':
         continue
     else:
         fdoc_out_lines.append(Currindent+line)
-    fix_tail()
+        fix_tail()
+        fdoc_out_lines.append('')
 dochead=fadoc_file_str[:-3:]
-blank_len=(51-len(dochead)) //2
+blank_len=(fix_tgt-13-len(dochead)) //2
+fdoc_out_lines.insert(0,'')
 fdoc_out_lines.insert(0,'YuZJLab'+' '*blank_len+dochead+' '*blank_len+'MANUAL')
-fdoc_out_lines.append("\nYuZJLab                     2019-2020                     MANUAL")
+fdoc_out_lines.append('YuZJLab'+' '*34+'2019-2020'+' '*34+'MANUAL')
 fdoc_out_handle=open(dochead+'.usage','w')
 for line in fdoc_out_lines:
     fdoc_out_handle.write(line.rstrip()+'\n')
