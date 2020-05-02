@@ -1,5 +1,5 @@
 #!/bin/bash
-# AUTOZIP V2P8
+# AUTOZIP V2P9
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
@@ -193,7 +193,9 @@ ckLVL
 echo -e "\e[33mReceived: ${0} ${fn} ${ext} ${lvl} ${OPT} \e[0m"
 bupf
 # ============ Makt tmpdir ============
-mktmp
+if ${USESPLIT};then
+    mktmp
+fi
 # ============ Start Compressing ============
 if ${USEPARALLEL}; then PAR="${PP} --pipe --recend '' -k"; fi
 case ${ext} in
@@ -366,7 +368,9 @@ case ${ext} in
 esac
 # ============ Finished ============
 echo -e "\e[33mRemoving temporary resources...\e[0m"
-rm -rf ${tempdir} $tempf
+if ${USESPLIT};then
+    rm -rf ${tempdir} ${tempf}
+fi
 if $REMOVE; then DO rm -rf ${fn}; fi
 echo -e "\e[33mFinished.\e[0m"
 exit 0

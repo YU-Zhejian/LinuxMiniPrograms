@@ -24,9 +24,7 @@ include::include/cmnopt.adoc[]
 
 `list` List all files and folders inside with a verbose format.
 
-== USE OF RAR
-
-WARNING: 1. RAR is a PROPERTY software. 2. Use ABSOLUTE PATH.
+include::include/autozipcmn.adoc[]
 
 == SEE ALSO
 

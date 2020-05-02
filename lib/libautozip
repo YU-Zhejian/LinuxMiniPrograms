@@ -1,5 +1,5 @@
 #!/bin/bash
-# LIBAUTOZIP V2P8
+# LIBAUTOZIP V2P9
 USESPLIT=false
 REMOVE=false
 #Load libopt
@@ -56,7 +56,6 @@ function PARALLEL() {
     /usr/bin/parallel -h &>>/dev/null
     echo ${?}
 }
-
 function preck() {
     LVL=""
     CONFN=${DN}/../etc/autozip.conf
@@ -184,7 +183,7 @@ function ppopt() {
                 exit 0
                 ;;
             "-v" | "--version")
-                echo "Version 2 patch 8"
+                echo "Version 2 patch 9"
                 exit 0
                 ;;
             "--force")

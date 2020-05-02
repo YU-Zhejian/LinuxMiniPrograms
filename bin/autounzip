@@ -1,5 +1,5 @@
 #!/bin/bash
-# AUTOUNZIP V2P8
+# AUTOUNZIP V2P9
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
@@ -29,7 +29,7 @@ function stdc_h() {
             file_i=$((${file_i} + 1))
             in_i=$(fixthree ${file_i})
         done
-        DO find ${tempdir}/*.sh\|$PP bash
+        DO find ${tempdir}/*.sh\|${PP} bash
     else
         while [ -f ${fulln}.${in_i} ]; do
             DO cat ${fulln}.${in_i}\|${@}\>\>${tempdir}/${in_i}
@@ -109,8 +109,10 @@ if [ -e ${fn} ]; then
         DO mv -f ${fn} ${fn}.bak
     fi
 fi
-# ============ Makt tmp ============
-mktmp
+if ${USESPLIT};then
+    mktmp
+fi
+
 # ============ Start Compressing ============
 case ${ext} in
 "tar") # ============ tar ============
@@ -144,11 +146,7 @@ case ${ext} in
     if ${USESPLIT}; then
         stdtc "gzip -dk"
     else
-        if ${USEPARALLEL} && [ $(PIGZ) -eq 0 ]; then
-            DO pigz -d ${fulln}\|tar xv \>${fn}
-        else
-            DO tar xzvf ${fulln}
-        fi
+        DO tar xzvf ${fulln}
     fi
     ;;
 "tar.xz" | "txz") # ============ txz ============
@@ -269,8 +267,10 @@ case ${ext} in
 esac
 # ============ Finished ============
 echo -e "\e[33mRemoving temporary resources...\e[0m"
-rm -rf ${tempdir} ${tempf}
-if $REMOVE; then
+if ${USESPLIT};then
+    rm -rf ${tempdir} ${tempf}
+fi
+if ${REMOVE}; then
     if ${USESPLIT}; then
         file_i=1
         in_i=001

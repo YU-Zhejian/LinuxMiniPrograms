@@ -13,7 +13,7 @@ autounzip [source] [options]
 
 == DESCRIPTION
 
-Extract [source]. If the archive is SPLITTED, suffix like "001" or "z01" should not be added. HOWEVER, for rar you should indicate the FIRST part. For example,  "r1.part1.rar". If [source] is omitted, will check the algorithms installed on your computer and give back a list of available extension name.
+Extract [source]. If the archive is SPLITTED by `autozip`, suffix like "001" or "z01" should not be added. HOWEVER, for rar you should indicate the FIRST part. For example,  "r1.part1.rar". If [source] is omitted, the prgram will check the algorithms installed on your computer and give back a list of available extension name.
 
 == OPTIONS
 

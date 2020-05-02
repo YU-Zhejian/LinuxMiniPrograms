@@ -1,5 +1,5 @@
 #!/bin/bash
-# INSTALLER V2EP4
+# INSTALLER V2P5
 cd $(dirname ${0})
 echo -e "\e[33mYuZJLab Installer V1"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
@@ -22,7 +22,7 @@ for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
         "-v")
-            echo -e "\e[33mVersion 2 EmergencyPatch 4.\e[0m"
+            echo -e "\e[33mVersion 2 Patch 5.\e[0m"
             exit 0
             ;;
         "-h" | "--help")
@@ -101,6 +101,7 @@ OPTIONS:
     fi
 done
 # ========Check========
+echo -e "\e[33mChecking FileSystem...\e[0m"
 ETC=$(
     [ -d "etc" ]
     echo ${?}
@@ -117,9 +118,9 @@ ADOC_PDF=$(
     asciidoctor-pdf --help&>>/dev/null
     echo ${?}
 )
+echo -e "\e[33mGenerating config...\e[0m"
 # ========Prompt========
 if ${VAR_interactive}; then
-    echo -e "\e[33mGenerating config...\e[0m"
     echo -e "\e[33mWellcome to install YuZJLab LinuxMiniPrograms! Before installation, please agree to our License:\e[0m"
     cat LICENSE.md
     read -p "Answer Y/N:>" VAR_Ans
@@ -158,6 +159,7 @@ if ${VAR_interactive}; then
     fi
 fi
 #========Install========
+echo -e "\e[33mInstalling...\e[0m"
 if ${VAR_install_config}; then
     mkdir -p etc
     if [ ${ETC} -eq 1 ]; then
@@ -168,18 +170,20 @@ if ${VAR_install_config}; then
     cp -fr INSTALLER/etc/* etc/
     echo -e "\e[33mInstalling config...\e[32mPASSED\e[0m"
 fi
-bash INSTALLER/configpy
-if [ ${?} -eq 1 ]; then
-    echo -e "\e[33mConfiguring Python...\e[31mERROR\e[0m"
-    VAR_install_usage=false
-else
-    echo -e "\e[33mConfiguring Python...\e[32mPASSED\e[0m"
-    echo -e "\e[33mPython found in $(cat etc/python.conf)\e[0m"
+mypy=$(cat etc/python.conf)
+if ! [ -x "${mypy}" ];then
+    bash INSTALLER/configpy
+    if [ ${?} -eq 1 ]; then
+        echo -e "\e[33mConfiguring Python...\e[31mERROR\e[0m"
+        VAR_install_usage=false
+    else
+        echo -e "\e[33mConfiguring Python...\e[32mPASSED\e[0m"
+        echo -e "\e[33mPython found in $(cat etc/python.conf)\e[0m"
+    fi
 fi
 if ${VAR_clear_history}; then
     mkdir -p var
     if [ ${VAR} -eq 1 ]; then
-
         tar czf var_backup.tgz var
         rm -rf var/*
         echo -e "Backing up settings...\e[32mPASSED\e[0m"
