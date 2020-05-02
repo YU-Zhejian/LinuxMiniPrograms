@@ -121,9 +121,9 @@ YuZJLab AutoZipManager
 Copyright (C) 2020 YU Zhejian
 Will use GNU Parallel if possible.
 Received: /d/Software/LinuxMiniPrograms/bin/azman list R.tar.gz  ==>Extension=tar.gz
-drwxrwxrwx  0 0      0           0 4月 24 21:21 R/
-drwxrwxrwx  0 0      0           0 4月 24 21:21 R/win-library/
-drwxrwxrwx  0 0      0           0 4月 24 21:21 R/win-library/3.6/
+drwxrwxrwx  0 0      0           0 4? 24 21:21 R/
+drwxrwxrwx  0 0      0           0 4? 24 21:21 R/win-library/
+drwxrwxrwx  0 0      0           0 4? 24 21:21 R/win-library/3.6/
 Finished.
 ```
 

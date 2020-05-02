@@ -1,36 +1,57 @@
 #!/usr/bin/env python
-#AD2U.py V1P1
+#AD2U.py V1P2
 import sys
 import re
+fix_tgt=80
 def fix_tail():
     tmp_line = fdoc_out_lines.pop()
-    if len(tmp_line)>64:
+    if len(tmp_line)<=fix_tgt:
+        fdoc_out_lines.append(tmp_line)
+    else:
         tmp_blank_len=len(tmp_line) - len(tmp_line.lstrip())
-        blank_pos=tmp_line[64:0:-1].find(' ')
-        line1=tmp_line[0:64-blank_pos]
-        line2=' '*tmp_blank_len+tmp_line[65-blank_pos:]
+        blank_pos=tmp_line[fix_tgt:0:-1].find(' ')
+        line1=tmp_line[0:fix_tgt-blank_pos]
+        line2=' '*tmp_blank_len+tmp_line[fix_tgt+1-blank_pos:]
         fdoc_out_lines.append(line1)
         fdoc_out_lines.append(line2)
         fix_tail()
-    else:
-        fdoc_out_lines.append(tmp_line)
 fadoc_file_str = sys.argv[1]
 fadoc_hand=open(fadoc_file_str,"r")
 fdoc_lines=fadoc_hand.readlines()
 fadoc_hand.close()
 fdoc_out_lines=[]
-Currindent=False
+Currindent=''
+
 for line in fdoc_lines:
-    if line.startswith(r'#'):
-        fdoc_out_lines.append('\n'+line[2::])
-        Currindent=True
+    if line.startswith(r"```") and Currindent.__contains__(r'| '):
+        Currindent=Currindent[0:-2]
+        fdoc_out_lines.append('')
+        continue
+    elif Currindent.__contains__(r'| '):
+        fdoc_out_lines.append(Currindent + line)
+        continue
+    if line.startswith(r'='):
+        reeq=re.match(r'=*=',line).span()
+        lneq=reeq[1]-reeq[0]
+        Currindent='    '*lneq
+        ln_ap=line.replace('=','').strip()
+        fdoc_out_lines.append('\n'+'    '*(lneq-1)+ln_ap)
+    elif line.startswith(r"```"):
+        Currindent = Currindent+r'| '
+        fdoc_out_lines.append('')
     elif line.startswith(r'`'):
         soc=re.search(r'^`(.*)` (.*)',line)
-        fdoc_out_lines.append("    "+soc.group(1))
-        fdoc_out_lines.append("        "+soc.group(2))
+        fdoc_out_lines.append(Currindent+soc.group(1))
+        fdoc_out_lines.append(Currindent*2+soc.group(2))
     else:
-        fdoc_out_lines.append("    "+line)
+        fdoc_out_lines.append(Currindent+line)
     fix_tail()
+
+
+
+
+
+
 dochead=fadoc_file_str[:-3:]
 blank_len=(51-len(dochead)) //2
 fdoc_out_lines.insert(0,'YuZJLab'+' '*blank_len+dochead+' '*blank_len+'MANUAL')

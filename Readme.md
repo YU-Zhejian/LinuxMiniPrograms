@@ -74,6 +74,7 @@ The Python programs are tested in the newest `anaconda` under GNU/Linux, CYGWin,
 * CYGWin and Git Bash: Tested. We provide full support for CYGWin but some of the programs may fail on Git Bash.
 
     * `ps` in CYGWin's `bin/pss`. Fixed.
+    * `tar` in `bin/autozip` `bin/autounzip`. Not and will not be fixed.
 
 * Windows Subsystem of Linux: Have not been tested.
 
@@ -84,6 +85,7 @@ Please read the documents of each program to check if the program supports your 
 There are two main branches on GitHub: `master` and `NEW`. `master` branch is a stable releasing branch and `NEW` branch is cutting-edge developing branch. Other branches should be considered as unstable.
 
 ## Help & Documentation
+
 After installation, you can execute `yldoc --list` to get a complete list of all available documentations and view them by using `yldoc [name]`. You can also find PDF, HTML and other documentation format in corresponding folder.
 
 It is recommended to read the `LMP_basis` to know the basic configurations to Linux Mini Programs.
