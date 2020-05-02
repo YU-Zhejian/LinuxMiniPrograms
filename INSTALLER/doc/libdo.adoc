@@ -30,9 +30,9 @@ Please pay attention that program 'eval' is used to execute programs. So, if you
 
 * `LIBDO_LOG_MODE` log mode.
 
-** S Silent, stop DO_ECHO.
+** S: Silent, stop DO_ECHO.
 
-** 1 Redirect DO_ECHO only.
+** 1: Redirect DO_ECHO only.
 
 ** 2: Redirect STDERR.
 

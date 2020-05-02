@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#AD2U.py V1P7
+#AD2U.py V1P8
 import sys
 import re
 fix_tgt=90
@@ -34,7 +34,7 @@ for line in fdoc_lines:
         fdoc_out_lines.append('')
     elif line.startswith(r'='):
         reeq=re.match(r'=*=',line).span()
-        lneq=reeq[1]-reeq[0]
+        lneq=reeq[1]-reeq[0]-1
         Currindent='    '*lneq
         fdoc_out_lines.append('    '*(lneq-1)+line.replace('=','').strip())
         fdoc_out_lines.append('')
@@ -42,6 +42,12 @@ for line in fdoc_lines:
         reeq = re.match(r'\**\*', line).span()
         lneq = reeq[1] - reeq[0]
         fdoc_out_lines.append(Currindent+'    ' * lneq + r'* ' + line.replace('*', '').strip())
+        fix_tail()
+        fdoc_out_lines.append('')
+    elif line.startswith(r'.'):
+        reeq = re.match(r'\.*\.', line).span()
+        lneq = reeq[1] - reeq[0]
+        fdoc_out_lines.append(Currindent+'    ' * lneq + r'- ' + line.replace('.', '').strip())
         fix_tail()
         fdoc_out_lines.append('')
     elif line.strip()=='':
