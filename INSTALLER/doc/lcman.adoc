@@ -11,6 +11,12 @@ lcman - LiveChat History Manager
 
 lcman [OPTIONS]
 
+== DESCRIPTION
+
+Filter the history by OPTIONS.
+
+See OPTIONS section.
+
 == OPTIONS
 
 include::include/cmnopt.adoc[]
@@ -32,5 +38,17 @@ Tested with all functions except coloring supported. Use `--more:cat` instead of
 === CYGWin
 
 Tested with all functions supported.
+
+== FILES
+
+* var/livechat.d
+
+* var/livechat.d/LCONLINE
+
+* var/livechat.d/MESSAGES
+
+== SEE ALSO
+
+livechat
 
 include::include/copy.adoc[]

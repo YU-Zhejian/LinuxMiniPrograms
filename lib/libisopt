@@ -1,12 +1,13 @@
 #!/bin/bash
-# LIBISOPT V1P1
-function isopt(){
-    case $1 in
-        -?|--*|-?\:*|--*\:*)
-            return 0
+# LIBISOPT V1P2
+function isopt() {
+    case ${1} in
+    -? | --* | -?\:* | --*\:*)
+        return 0
         ;;
-        *)
-            return 1
+    *)
+        return 1
+        ;;
     esac
 }
 # This function can be used to determine whether $1 is an option.

@@ -1,0 +1,57 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= libmktbl(1)
+
+== NAME
+
+libmktbl - A library to make tables.
+
+== SYNOPSIS
+
+source /PATH/TO/LIBMKTBL
+
+mktbl ${tabel_file}
+
+== DESCRIPTION
+
+On executing, the program will check whether there's an active Python installation in `etc/python.conf`. If so, a Python script will be used.
+
+Firstly, use `. /PATH/TO/LIBMKTBL` to import libisopt. (Command `source` is equal to command `.`)
+
+Then, use `mktbl ${tabel_file}` to print table from a table file.
+
+The table file can be separated into two parts: column instructions and main body. Colum instruction is started with `#` and records the specific option of a particular column. Those started in S means if the length of this column exceeds the value after S, the column will be shrink by adding `...`. The colums are separated by `;`.
+
+== EXAMPLE
+
+This is an example of YuZJLab table file.
+
+```
+#1
+#S90
+#1
+#1
+NO.;COMMAND;EXIT;TIME
+1;bwa mem -M -R @RG"tID:case4_techrep_2tSM:case4_techrep_2tLB:WXStPL:Illumina" /gpfsdata/hg38.fa 1.fq 2.fq;0;3:47:51
+```
+
+Outcome:
+
+```
+============================================================================================================|
+|NO.|COMMAND                                                                                   |EXIT|TIME   |
+============================================================================================================|
+|1  |bwa mem -M -R @RG"tID:case4_techrep_2tSM:case4_techrep_2tLB:WXStPL:Illumina" /gpfsdata/...|0   |3:47:51|
+============================================================================================================|
+```
+
+== FILES
+
+etc/python.conf
+
+== SEE ALSO
+
+LMP_basis
+
+include::include/copy.adoc[]

@@ -13,11 +13,41 @@ livechat [USER] [OPTIONS]
 
 == DESCRIPTION
 
-Logon as [USER] and start chatting!
+Logon as [USER] and start chatting! There's no need to register.
+
+=== On a None-Specific User
+
+* Situation: Multiple users operate one non-specific account for particular jobs, for example, different steps in a bio-informatical project. You need to set up a secret chatting server.
+
+* Installation: No further installation after executing `install.sh`.
+
+* Usage: No specific usage.
+
+=== On a Specific User
+
+* Situation: You need to set up a chatting server inside a LAN.
+
+* Installation:
+
+. Add a specific user on your server. e.g. user `chat`
+
+. Modify the `.bashrc` file as follows:
+
+```
+echo -e "\e[33mChatting server on LAN ***.\e[0m"
+livechat
+exit
+```
+
+* Usage: On client, use `ssh chat@server_ip_addr` to access the chatting server.
 
 == OPTIONS
 
 include::include/cmnopt.adoc[]
+
+== WARNINGS
+
+When you start chatting, please use `logout` to exit chatting room instead of `Ctrl-C`. Using `Ctrl-C` will make the sub process "reciever" unable to exit.
 
 == COMPATIBILITY
 
@@ -28,5 +58,17 @@ Tested with all functions supported.
 === CYGWin
 
 Tested with all functions supported.
+
+== FILES
+
+* var/livechat.d
+
+* var/livechat.d/LCONLINE
+
+* var/livechat.d/MESSAGES
+
+== SEE ALSO
+
+lcman
 
 include::include/copy.adoc[]

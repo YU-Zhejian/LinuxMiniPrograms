@@ -17,20 +17,6 @@ As we're developing programs mostly under Microsoft Windows, we **DO NOT** pay a
 
 ## Installation
 
-### General Guide
-After downloading, you can now execute `install.sh` to install all the programs for yourself. You can also run this script to change your settings to the defaults.
-
-Detailed code:
-
-```bash
-git clone https://github.com/YuZJLab/LinuxMiniPrograms
-cd LinuxMiniPrograms
-chmod +x install.sh
-./install.sh --all
-```
-
-You can execute `./install.sh -h` to get help.
-
 ### Dependencies
 
 "Package manager" refers to software such as `apt` on Ubuntu Linux, `CYGWin installer` in CYGWin or  `ports` under FreeBSD.
@@ -57,36 +43,26 @@ To enable all archive utilities in `autozip` series, please install the followin
 
 Some packages such as `libmktbl` have its Python version, which is more faster than Shell version. Please see `LMP_basis` to configure Python.
 
+### General Guide
+After downloading, you can now execute `install.sh` to install all the programs for yourself. You can also run this script to change your settings to the defaults.
+
+Detailed code:
+
+```bash
+git clone https://github.com/YuZJLab/LinuxMiniPrograms
+cd LinuxMiniPrograms
+chmod +x install.sh
+./install.sh --all
+```
+
+You can execute `./install.sh -h` to get help.
+
 ## Compatibility
 
-The Python programs are tested in the newest `anaconda` under GNU/Linux, CYGWin, Git Bash and is tested under port `python` under FreeBSD.
-
-* GNU/Linux distributions: Tested and fully supported.
-* BSD and MacOS: Currently, the program does not support BSD and other BSD-based systems (such as MacOS). We're working on this in branch BSD. The source of these problems are due to different syntax of the following programs:
-
-    * `ps` `in bin/pss`. Fixed.
-    * `sed` in `install.sh`. Fixed.
-    * The colouring support of `more` in programs that support `--more:[more]`. Not and will not be fixed. Please use `--more:cat` to get the right colour.
-    * `xz` in `bin/autozip` `bin/autounzip`. Fixed.
-    * `tar` in `bin/autozip` `bin/autounzip`. Fixed.
-    * `ls` in `bin/pls` `lib/libfindpython` `installer.sh`. Fixed.
-
-* CYGWin and Git Bash: Tested. We provide full support for CYGWin but some of the programs may fail on Git Bash.
-
-    * `ps` in CYGWin's `bin/pss`. Fixed.
-    * `tar` in `bin/autozip` `bin/autounzip`. Not and will not be fixed.
-
-* Windows Subsystem of Linux: Have not been tested.
-
-Please read the documents of each program to check if the program supports your system.
-
-## Branches on GitHub
-
-There are two main branches on GitHub: `master` and `NEW`. `master` branch is a stable releasing branch and `NEW` branch is cutting-edge developing branch. Other branches should be considered as unstable.
+Please read the documents of each program and LMP_basis to check if the program supports your system.
 
 ## Help & Documentation
 
 After installation, you can execute `yldoc --list` to get a complete list of all available documentations and view them by using `yldoc [name]`. You can also find PDF, HTML and other documentation format in corresponding folder.
 
 It is recommended to read the `LMP_basis` to know the basic configurations to Linux Mini Programs.
-

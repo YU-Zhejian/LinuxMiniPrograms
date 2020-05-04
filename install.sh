@@ -1,5 +1,5 @@
 #!/bin/bash
-# INSTALLER V2P5
+# INSTALLER V2P6
 cd $(dirname ${0})
 echo -e "\e[33mYuZJLab Installer V1"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
@@ -22,7 +22,7 @@ for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
         "-v")
-            echo -e "\e[33mVersion 2 Patch 5.\e[0m"
+            echo -e "\e[33mVersion 2 Patch 6.\e[0m"
             exit 0
             ;;
         "-h" | "--help")
@@ -257,7 +257,16 @@ fi
 if ${VAR_install_usage}; then
     mkdir -p doc
     cd INSTALLER
-    bash adoc2usage
+    for fn in doc/*.adoc; do
+        bash adoc2usage ${fn}
+        if [ ${?} -eq 0 ];then
+            echo -e "\e[33mCompiling ${fn} in YuZJLab Usage...\e[32mPASSED\e[0m"
+        else
+            echo -e "\e[33mCompiling ${fn} in YuZJLab Usage...\e[31mERROR\e[0m"
+        fi
+    done
+    rm -f ./*.im ../doc/*.usage
+    mv *.usage ../doc/
     cd ..
 fi
 
