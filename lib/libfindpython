@@ -3,7 +3,7 @@
 # Usage: FindPython [2|3] [-q|-a]
 function FindPython() {
     local DN=$(dirname ${0})
-    . $DN/../lib/libisopt || return 1
+    . ${DN}/../lib/libisopt || return 1
     local mypath="$(echo ${PATH}):${wd}"
     local Out_C
     IFS=":"
@@ -46,9 +46,9 @@ function FindPython() {
                 if ${FP_QUICK_ACTION}; then
                     echo "${line}"
                     return 0
-                    elif ${FP_ALL};then
-                        echo ${line}
-                elif [ $(expr ${curr_version} \>= ${Out_V}) -eq 1 ] ; then
+                elif ${FP_ALL}; then
+                    echo ${line}
+                elif [ $(expr ${curr_version} \>= ${Out_V}) -eq 1 ]; then
                     Out_C="${line}"
                     Out_V=${curr_version}
                 fi
@@ -56,7 +56,7 @@ function FindPython() {
         done <${tmpf}
         rm ${tmpf}
     done
-    if ! [ -z "${Out_C}" ];then
-    echo ${Out_C}
+    if ! [ -z "${Out_C}" ]; then
+        echo ${Out_C}
     fi
 }

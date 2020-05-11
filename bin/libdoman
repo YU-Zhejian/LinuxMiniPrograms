@@ -3,8 +3,8 @@
 DN=$(dirname ${0})
 echo -e "\e[33mYuZJLab LibDO Manager."
 echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
-{ . ${DN}/../lib/libisopt && . ${DN}/../lib/libmktbl && . ${DN}/../lib/libdate; } && { echo -e "\e[33mlibisopt, libmktbl, libdate loaded.\e[0m" >&2; } || {
-    echo -e "\e[31mFail to load libisopt, libmktbl, libdate.\e[0m" >&2
+{ . ${DN}/../lib/libisopt && . ${DN}/../lib/libdate; } && { echo -e "\e[33mlibisopt, libdate loaded.\e[0m" >&2; } || {
+    echo -e "\e[31mFail to load libisopt, libdate.\e[0m" >&2
     exit 1
 }
 more="more"
@@ -116,7 +116,7 @@ if [ ${cmd} -eq 0 ]; then
         for ((i = 1; i <= ${Proj}; i++)); do
             echo "${i};${Proj_CMD[${i}]};${Proj_Exit[${i}]};${Proj_Time[${i}]}" >>${table}
         done
-        mktbl ${table} | ${more}
+        ylmktbl ${table} | ${more}
         rm ${table} ${ffn}
         unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table ffn all_lines
     done

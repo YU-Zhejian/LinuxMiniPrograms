@@ -1,11 +1,11 @@
 #!/bin/bash
-# LIBDO V1EP4
+# LIBDO V1P5
 function DO_ECHO(){
     if [ "${LIBDO_LOG_MODE}" = "S" ];then return;fi
     if ! [ -z ${LIBDO_LOG} ];then
         echo "${@}">>${LIBDO_LOG}
     else
-        echo -e "\e[33m${@}\e[0m">&2
+        echo -e "\e[33m${*}\e[0m">&2
     fi
 }
 function DO(){

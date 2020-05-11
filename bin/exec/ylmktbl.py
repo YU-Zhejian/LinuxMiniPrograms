@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# LIBMKTBL.py V2
+# YLMKTBL.py V2P1
 import sys
 import re
 mylog=open(sys.argv[1],"r")
@@ -32,7 +32,7 @@ for n in range(len(normalline[0])):
 alllen=0
 for item in normalline[0]:
     alllen=alllen+len(item)+1
-spb='\033[36m='*alllen+"|\033[0m"
+spb='\033[36m|'+'='*(alllen-1)+"|\033[0m"
 for item in normalline:
     print(spb)
     pl="\033[36m|\033[0m"
