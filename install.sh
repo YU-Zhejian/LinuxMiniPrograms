@@ -173,6 +173,7 @@ fi
 mypy=$(cat etc/python.conf)
 if ! [ -x "${mypy}" ];then
     bash INSTALLER/configpy
+    echo "export PYTHONPATH=${PWD}/pylib/"':${PYTHONPATH}' >>${HOME}/.bashrc
     if [ ${?} -eq 1 ]; then
         echo -e "\e[33mConfiguring Python...\e[31mERROR\e[0m"
         VAR_install_usage=false

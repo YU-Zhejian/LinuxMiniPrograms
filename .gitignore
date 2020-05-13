@@ -9,3 +9,4 @@
 /INSTALLER/doc/*.1
 /INSTALLER/doc/*.html
 /INSTALLER/doc/*.pdf
+__pycache__
