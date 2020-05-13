@@ -17,7 +17,7 @@ function do_search() {
     local item
     local tmpff
     tmpff=$(mktemp -t pls.XXXXXX)
-    ls -1 -F ${dir} | grep "${fn}" |sed "s;^;$(echo ${dir})/;" >${tmpff}
+    ls -1 -F ${dir} | grep "${fn}" | sed "s;^;$(echo ${dir})/;" >${tmpff}
     if ! ${allow_d}; then
         tmpffff=$(mktemp -t pls.XXXXXX)
         cat ${tmpff} | grep -v '/$' >${tmpffff}
@@ -37,8 +37,11 @@ function do_search() {
     rm ${tmpff}
 }
 more="more"
-{ . ${DN}/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || {
-    echo -e "\e[31mFail to load libisopt.\e[0m"
+{
+    . ${DN}/../lib/libisopt
+    . ${DN}/../lib/libpb
+} && { echo -e "\e[33mlibisopt, libpb loaded\e[0m"; } || {
+    echo -e "\e[31mFail to load libisopt, libpb.\e[0m"
     exit 1
 }
 allow_x=true
@@ -94,9 +97,15 @@ gepath
 tmpf=$(mktemp -t pls.XXXXXX)
 echo -e "\e[33mReading database...\e[0m"
 if [ -z "${STDS}" ]; then
+    echo aaa >&2
+    pb_num=$(libpb_init ${#eachpath[@]} 0) #?????????????????????????????????????????
+    n=0
     for dir in "${eachpath[@]}"; do
+        n=$((n + 1))
         do_search
+        libpb_set ${pb_num} ${n}
     done
+    libpb_rm ${pb_num}
 else
     IFS=" "
     STDI=(${STDS})
@@ -108,5 +117,5 @@ else
         done
     done
 fi
-cat ${tmpf}|${more}
+cat ${tmpf} | ${more}
 IFS="${oldifs}"
