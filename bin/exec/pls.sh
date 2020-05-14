@@ -1,7 +1,5 @@
 #!/bin/bash
-# PLS V2P1
-echo -e "\e[33mYuZJLab PATH ls"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
+# PLS V2P2
 wd=${PWD}
 oldifs="${IFS}"
 DN=$(dirname ${0})

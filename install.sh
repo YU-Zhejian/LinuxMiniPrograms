@@ -11,7 +11,6 @@ echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 # ========Def Var========
 VAR_install_config=false
 VAR_clear_history=false
-VAR_install_path=false
 VAR_install_man=false
 VAR_install_html=false
 VAR_install_pdf=false
@@ -37,7 +36,6 @@ OPTIONS:
     -a|--all Install all compoments.
     --install-config (Re)Install configuration files in 'etc'.
     --clear-history Clear all previous histories in 'var'.
-    --install-path Modify path variable.
     --install-doc Install all documentations, need 'asciidoctor' 'asciidoctor-pdf' (available from Ruby's 'pem') and python 3.
     --install-man Install doc in Groff man, need 'asciidoctor'.
     --install-usage Install yldoc usage, need python 3.
@@ -64,10 +62,6 @@ OPTIONS:
             ;;
         "--clear-history")
             VAR_clear_history=true
-            VAR_interactive=false
-            ;;
-        "--install-path")
-            VAR_install_path=true
             VAR_interactive=false
             ;;
         "--install-doc")
@@ -129,17 +123,17 @@ if ${VAR_interactive}; then
     if ! [ ${VAR_Ans} = "Y" ]; then
         exit 1
     fi
-    if ! ${ETC}; then
+    if [ ${ETC} -eq 0 ]; then
         echo -e "\e[33mDo you want to reinstall the config in 'etc'?\e[0m"
         read -p "Answer Y/N:>" VAR_Ans
         if [ ${VAR_Ans} = "Y" ]; then
             VAR_install_config=true
         fi
     else
-        echo -e "\e[33mWill install the config in 'etc'?\e[0m"
+        echo -e "\e[33mWill install the config in 'etc'\e[0m"
         VAR_install_config=true
     fi
-    if ! ${VAR}; then
+    if [ ${VAR} -eq 0 ] ; then
         echo -e "\e[33mDo you want to clear the history in 'var'?\e[0m"
         read -p "Answer Y/N:>" VAR_Ans
         if [ ${VAR_Ans} = "Y" ]; then
@@ -148,11 +142,6 @@ if ${VAR_interactive}; then
     else
         echo -e "\e[33mWill install history to 'var'\e[0m"
         VAR_clear_history=true
-    fi
-    echo -e "\e[33mDo you want to check or modify \$PATH variable?\e[0m"
-    read -p "Answer Y/N:>" VAR_Ans
-    if [ ${VAR_Ans} = "Y" ]; then
-        VAR_install_path=true
     fi
     echo -e "\e[33mDo you want to install documentations in Groff man, pdf, YuZJLab Usage and HTML? This need command 'asciidoctor' and 'asciidoctor-pdf' (available from Ruby pem) and Python 3.\e[0m"
     read -p "Answer Y/N:>" VAR_Ans
@@ -195,14 +184,6 @@ if ${VAR_clear_history}; then
     fi
     cp -fr INSTALLER/var/* var/
 fi
-#========Install PATH========
-echo "export PYTHONPATH=${PWD}/"':${PYTHONPATH}' >>${HOME}/.bashrc
-echo "export PATH=${PWD}/bin/"':${PATH}' >>${HOME}/.bashrc
-
-#========Install Permissions========
-echo -e "\e[33mModifying file permissions...\e[0m"
-chmod +x bin/*
-chmod +x *.sh
 #========Install DOC========
 cd INSTALLER/doc
 if ! [ ${ADOC} -eq 0 ];then
@@ -267,4 +248,25 @@ if ${VAR_install_usage}; then
 
 fi
 cd ../../
+#========Install PATH========
+echo "export PYTHONPATH=${PWD}/"':${PYTHONPATH}' >>${HOME}/.bashrc
+echo "export PATH=${PWD}/bin/"':${PATH}' >>${HOME}/.bashrc
+#========Install Permissions========
+function add_dir(){
+	 ls -1F|grep /$|while read dir_name;do
+		chmod +x ${dir_name}
+		cd ${dir_name}
+		add_dir
+		cd ..
+	done
+	ls -1F|grep -v /$|sed 's/*$//'|while read file_name;do
+		chmod -x ${file_name}
+	done
+}
+echo -e "\e[33mModifying file permissions...\e[0m"
+chown $(id -u) * -R
+chmod +r+w * -R
+add_dir
+chmod +x bin/*
+chmod +x *.sh
 echo -e "\e[33mFinished. Please execute 'exec bash' to restart bash.\e[0m"
