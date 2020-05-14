@@ -1,9 +1,0 @@
-#!/bin/bash
-# CONFIGPY V1P2
-DN=$(dirname ${0})
-. ${DN}/../lib/libfindpython || {
-    echo -e "\e[31mFail to load libfindpython.\e[0m"
-    exit 1
-}
-n=0
-FindPython 3 > ${DN}/../etc/python.conf

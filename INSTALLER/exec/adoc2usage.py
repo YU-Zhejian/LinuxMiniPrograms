@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-#AD2U.py V1P8
-import sys
-import re
+#AD2U.py V2
+import sys,re
 fix_tgt=90
 def fix_tail():
     tmp_line = fdoc_out_lines.pop()
@@ -15,48 +14,58 @@ def fix_tail():
         fdoc_out_lines.append(line1)
         fdoc_out_lines.append(line2)
         fix_tail()
-fadoc_file_str = sys.argv[1]
-fadoc_hand=open(fadoc_file_str,"r")
+def GetFullADoc(l:list):
+    n=0
+    while n<len(l):
+        if re.search('^include\:\:(.+)\[\]',l[n]):
+            includefile=open(re.search('^include\:\:(.+)\[\]',l[n]).group(1),'r')
+            include_lines=includefile.readlines()
+            includefile.close()
+            include_lines=GetFullADoc(include_lines)
+            l.pop(n)
+            for item in include_lines[::-1]:
+                l.insert(n,item)
+        n=n+1
+    return l
+fadoc_hand=open(sys.argv[1],"r")
 fdoc_lines=fadoc_hand.readlines()
 fadoc_hand.close()
 fdoc_out_lines=[]
 Currindent=''
+fdoc_lines=GetFullADoc(fdoc_lines)
+for i in range(len(fdoc_lines)-1,-1,-1):
+    fdoc_lines[i]=fdoc_lines[i].strip()
+    if fdoc_lines[i]=='' or fdoc_lines[i].startswith(r'image::') or re.match(r'^\:.+\:.*$',fdoc_lines[i]):
+        fdoc_lines.pop(i)
 for line in fdoc_lines:
     if line.startswith(r"```") and Currindent.__contains__(r'| '):
         Currindent=Currindent[0:-2]
         fdoc_out_lines.append('')
-        continue
     elif Currindent.__contains__(r'| '):
         fdoc_out_lines.append(Currindent + line)
-        continue
     elif line.startswith(r"```"):
         Currindent = Currindent+r'| '
         fdoc_out_lines.append('')
     elif line.startswith(r'='):
         reeq=re.match(r'=*=',line).span()
-        lneq=reeq[1]-reeq[0]-1
-        Currindent='    '*lneq
-        fdoc_out_lines.append('    '*(lneq-1)+line.replace('=','').strip())
+        Currindent='    '*(reeq[1]-reeq[0]-1)
+        fdoc_out_lines.append('    '*(reeq[1]-reeq[0]-2)+line.replace('=','').strip())
         fdoc_out_lines.append('')
     elif line.startswith(r'*'):
         reeq = re.match(r'\**\*', line).span()
-        lneq = reeq[1] - reeq[0]
-        fdoc_out_lines.append(Currindent+'    ' * lneq + r'* ' + line.replace('*', '').strip())
+        fdoc_out_lines.append(Currindent+'    ' * (reeq[1] - reeq[0]) + r'* ' + line.replace('*', '').strip())
         fix_tail()
         fdoc_out_lines.append('')
     elif line.startswith(r'.'):
         reeq = re.match(r'\.*\.', line).span()
-        lneq = reeq[1] - reeq[0]
-        fdoc_out_lines.append(Currindent+'    ' * lneq + r'- ' + line.replace('.', '').strip())
+        fdoc_out_lines.append(Currindent+'    ' * (reeq[1] - reeq[0]) + r'- ' + line.replace('.', '').strip())
         fix_tail()
         fdoc_out_lines.append('')
-    elif line.strip()=='':
-        continue
     else:
         fdoc_out_lines.append(Currindent+line)
         fix_tail()
         fdoc_out_lines.append('')
-dochead=fadoc_file_str[:-3:]
+dochead=sys.argv[1][:-5:]
 blank_len=(fix_tgt-13-len(dochead)) //2
 fdoc_out_lines.insert(0,'')
 fdoc_out_lines.insert(0,'YuZJLab'+' '*blank_len+dochead+' '*blank_len+'MANUAL')

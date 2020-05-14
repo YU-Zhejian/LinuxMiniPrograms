@@ -1,11 +1,11 @@
 #!/bin/bash
-# AUTOZIP V2P9
+# AUTOZIP V2P10
 # ============ Functions ============
 DN=$(dirname ${0})
 exec 1>&2
 ISAUTOZIP=true
 ISFORCE=false
-{ . $DN/../lib/libautozip; } && { echo -e "\e[33mlibautozip loaded.\e[0m"; } || {
+{ . ${DN}/exec/libautozip; } && { echo -e "\e[33mlibautozip loaded.\e[0m"; } || {
     echo -e "\e[31mFail to load libautozip.\e[0m"
     exit 1
 }
@@ -193,7 +193,7 @@ ckLVL
 echo -e "\e[33mReceived: ${0} ${fn} ${ext} ${lvl} ${OPT} \e[0m"
 bupf
 # ============ Makt tmpdir ============
-if ${USESPLIT};then
+if ${USESPLIT}; then
     mktmp
 fi
 # ============ Start Compressing ============
@@ -368,7 +368,7 @@ case ${ext} in
 esac
 # ============ Finished ============
 echo -e "\e[33mRemoving temporary resources...\e[0m"
-if ${USESPLIT};then
+if ${USESPLIT}; then
     rm -rf ${tempdir} ${tempf}
 fi
 if $REMOVE; then DO rm -rf ${fn}; fi

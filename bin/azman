@@ -1,9 +1,9 @@
 #!/bin/bash
-# AZMAN V2P9
+# AZMAN V2P10
 DN=$(dirname ${0})
 exec 1>&2
 ISAUTOZIP=True
-{ . $DN/../lib/libautozip; } && { echo -e "\e[33mlibautozip loaded.\e[0m"; } || {
+{ . ${DN}/exec/libautozip; } && { echo -e "\e[33mlibautozip loaded.\e[0m"; } || {
     echo -e "\e[31mFail to load libautozip.\e[0m"
     exit 1
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#PLS.py V1
+#PLS.py V1EP1
 from LMP_Pylib.libisopt import isopt
 import sys,os,re
 def mygrep(mylist:list,regxp:str)->list:
@@ -11,7 +11,7 @@ def mygrep(mylist:list,regxp:str)->list:
 def do_search(P:str)->list:
     if not os.path.isdir(P):
         return []
-    ls_ret=os.popen('ls -1 -F '+P,'r')
+    ls_ret=os.popen('ls -1 -F '+"'"+P+"'",'r')
     ls_all=ls_ret.readlines()
     ls_ret.close()
     for n in range(len(ls_all)):
@@ -24,8 +24,8 @@ def do_search(P:str)->list:
         ls_all=mygrep(ls_all,r'\*$')
     return ls_all
 
-mypaths=os.environ['PATH'].split(':')
-mypaths=mypaths+[os.getcwd()]
+mypaths=os.environ['PATH'].split(':')+[os.getcwd()]
+print(mypaths)
 for i in range(len(mypaths)):
     if not mypaths[i].endswith('/'):
         mypaths[i]+='/'
@@ -41,7 +41,7 @@ for sysarg in sys.argv:
             os.system('yldoc pls')
             exit(0)
         elif re.match(r'-v|--version',sysarg):
-            print('Version 1 in Python')
+            print('Version 1 Emergency Patch 1 in Python')
             exit(0)
         elif re.match(r'--no-x',sysarg):
             allow_x=False
@@ -79,4 +79,3 @@ else:
                 out_l.append(item)
     for item in out_l:
         print(item)
-    print('aaa')

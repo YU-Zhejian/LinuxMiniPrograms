@@ -10,3 +10,4 @@
 /INSTALLER/doc/*.html
 /INSTALLER/doc/*.pdf
 __pycache__
+*.stackdump

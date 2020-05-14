@@ -1,7 +1,7 @@
 #!/bin/bash
 # INSTALLER V2P6
 cd $(dirname ${0})
-echo -e "\e[33mYuZJLab Installer V1"
+echo -e "\e[33mYuZJLab Installer"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 
 . lib/libisopt && echo -e "\e[33mlibisopt loaded.\e[0m" || {
@@ -43,6 +43,8 @@ OPTIONS:
     --install-usage Install yldoc usage, need python 3.
     --install-pdf Install doc in pdf, need 'asciidoctor-pdf'.
     --install-html Install doc in html, need 'asciidoctor'.
+
+    If no opt is given, the interactive mode will be used.
     "
             exit 0
             ;;
@@ -158,7 +160,7 @@ if ${VAR_interactive}; then
         VAR_install_doc=true
     fi
 fi
-#========Install========
+#========Install ETC========
 echo -e "\e[33mInstalling...\e[0m"
 if ${VAR_install_config}; then
     mkdir -p etc
@@ -170,18 +172,20 @@ if ${VAR_install_config}; then
     cp -fr INSTALLER/etc/* etc/
     echo -e "\e[33mInstalling config...\e[32mPASSED\e[0m"
 fi
+#========Install Python========
 mypy=$(cat etc/python.conf)
 if ! [ -x "${mypy}" ];then
-    bash INSTALLER/configpy
-    echo "export PYTHONPATH=${PWD}/pylib/"':${PYTHONPATH}' >>${HOME}/.bashrc
+    bash INSTALLER/FindPython.sh 3 > ${DN}/../etc/python.conf
     if [ ${?} -eq 1 ]; then
         echo -e "\e[33mConfiguring Python...\e[31mERROR\e[0m"
         VAR_install_usage=false
     else
         echo -e "\e[33mConfiguring Python...\e[32mPASSED\e[0m"
-        echo -e "\e[33mPython found in $(cat etc/python.conf)\e[0m"
+
     fi
 fi
+echo -e "\e[33mPython found in $(cat etc/python.conf)\e[0m"
+#========Install VAR========
 if ${VAR_clear_history}; then
     mkdir -p var
     if [ ${VAR} -eq 1 ]; then
@@ -191,20 +195,16 @@ if ${VAR_clear_history}; then
     fi
     cp -fr INSTALLER/var/* var/
 fi
-if ${VAR_install_path}; then
-    if ! [ -e bin/pls ]; then
-        echo -e "\e[31mbin/pls not exist!\e[0m"
-        exit 1
-    fi
-    ifpath=$(bash bin/pls -l | grep ${PWD}/bin | wc -l | sed "s/^ *//" | cut -d " " -f 1)
-    if [ ${ifpath} -eq 0 ]; then
-        echo "export PATH=${PWD}/bin/"':${PATH}' >>${HOME}/.bashrc
-    fi
-    echo -e "\e[33mModifying \$PATH...\e[32mPASSED\e[0m"
-fi
+#========Install PATH========
+echo "export PYTHONPATH=${PWD}/"':${PYTHONPATH}' >>${HOME}/.bashrc
+echo "export PATH=${PWD}/bin/"':${PATH}' >>${HOME}/.bashrc
+
+#========Install Permissions========
 echo -e "\e[33mModifying file permissions...\e[0m"
 chmod +x bin/*
 chmod +x *.sh
+#========Install DOC========
+cd INSTALLER/doc
 if ! [ ${ADOC} -eq 0 ];then
     VAR_install_html=false
     VAR_install_man=false
@@ -213,8 +213,7 @@ if ! [ ${ADOC_PDF} -eq 0 ];then
     VAR_install_pdf=false
 fi
 if ${VAR_install_pdf}; then
-    mkdir -p pdf
-    cd INSTALLER/doc
+    mkdir -p ../../pdf
     for fn in *.adoc; do
         asciidoctor-pdf -a allow-uri-read ${fn}
         if [ ${?} -eq 0 ]; then
@@ -223,12 +222,11 @@ if ${VAR_install_pdf}; then
             echo -e "\e[33mCompiling ${fn} in pdf...\e[31mERROR\e[0m"
         fi
     done
+    rm -f ../../pdf/*
     mv *.pdf ../../pdf
-    cd ../../
 fi
 if ${VAR_install_html}; then
-    mkdir -p html
-    cd INSTALLER/doc
+    mkdir -p ../../html
     for fn in *.adoc; do
         asciidoctor -a allow-uri-read ${fn} -b html5
         if [ ${?} -eq 0 ]; then
@@ -237,12 +235,11 @@ if ${VAR_install_html}; then
             echo -e "\e[33mCompiling ${fn} in html5...\e[31mERROR\e[0m"
         fi
     done
+    rm -f ../../html/*
     mv *.html ../../html
-    cd ../../
 fi
 if ${VAR_install_man}; then
-    mkdir -p man man/man1
-    cd INSTALLER/doc
+    mkdir -p ../../man ../../man/man1
     for fn in *.adoc; do
         asciidoctor -a allow-uri-read ${fn} -b manpage
         if [ ${?} -eq 0 ]; then
@@ -251,24 +248,23 @@ if ${VAR_install_man}; then
             echo -e "\e[33mCompiling ${fn} in Groff man...\e[31mERROR\e[0m"
         fi
     done
+    rm -f ../../man/man1/*
     mv *.1 ../../man/man1
-    cd ../../
     echo "export MANPATH=${PWD}/man/"':${MANPATH}' >>${HOME}/.bashrc
 fi
 if ${VAR_install_usage}; then
-    mkdir -p doc
-    cd INSTALLER
-    for fn in doc/*.adoc; do
-        bash adoc2usage ${fn}
+    mkdir -p ../../doc
+    for fn in *.adoc; do
+        bash ../adoc2usage ${fn}
         if [ ${?} -eq 0 ];then
             echo -e "\e[33mCompiling ${fn} in YuZJLab Usage...\e[32mPASSED\e[0m"
         else
             echo -e "\e[33mCompiling ${fn} in YuZJLab Usage...\e[31mERROR\e[0m"
         fi
     done
-    rm -f ./*.im ../doc/*.usage
-    mv *.usage ../doc/
-    cd ..
-fi
+    rm -f ../../doc/*
+    mv *.usage ../../doc/
 
+fi
+cd ../../
 echo -e "\e[33mFinished. Please execute 'exec bash' to restart bash.\e[0m"
