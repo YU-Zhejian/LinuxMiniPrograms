@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # LIBAUTOZIP V2P10
 USESPLIT=false
 REMOVE=false

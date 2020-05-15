@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # FINDPYTHON V1
 # Usage: FindPython [2|3] [-q|-a]
 oldIFS=${IFS}

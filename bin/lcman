@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # LCMAN V3P3
 echo -e "\e[33mYuZJLab LiveChat Manager"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"

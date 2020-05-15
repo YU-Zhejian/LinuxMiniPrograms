@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # LIBDO V1P5
 function DO_ECHO(){
     if [ "${LIBDO_LOG_MODE}" = "S" ];then return;fi

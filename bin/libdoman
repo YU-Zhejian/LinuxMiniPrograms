@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # LIBDOMAN V5
 DN=$(dirname ${0})
 echo -e "\e[33mYuZJLab LibDO Manager."

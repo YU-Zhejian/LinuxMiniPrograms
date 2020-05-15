@@ -1,9 +1,9 @@
-#!/bin/bash
-# YLMKTNL V3
-DN=$(dirname ${0})
-mypy=$(cat ${DN}/../etc/python.conf)
+#!/usr/bin/env bash
+# YLMKTNL V3P1
+DN=$(dirname "${0}")
+mypy=$(cat "${DN}"/../etc/python.conf)
 if [ -x "${mypy}" ];then
-    ${mypy} ${DN}/exec/ylmktbl.py "${@}"
+    "${mypy}" "${DN}"/exec/ylmktbl.py "${@}"
 else
-   . ${DN}/exec/ylmktbl.sh "${@}"
+   . "${DN}"/exec/ylmktbl.sh "${@}"
 fi

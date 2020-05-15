@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # PSS V1P7
 echo -e "\e[33mYuZJLab Process Snapshot Searcher"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"

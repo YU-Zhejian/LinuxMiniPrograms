@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # AUTOUNZIP V2P10
 # ============ Functions ============
 DN=$(dirname ${0})

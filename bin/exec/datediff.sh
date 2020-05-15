@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # DATEDIFF v1
 Start_Sec=$(date --date="${1}" +%s)
 End_Sec=$(date --date="${2}" +%s)

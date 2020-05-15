@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # YLMKTNL.sh V3
 function mktbl_GetLongestString_max_str() {
     for item in "${@}"; do

@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 # LIVECHAT V1EP5
 function sdmess(){
     echo "`date +%Y-%m-%d,%H:%M:%S`;${1};${MESS_SD}">>MESSAGES

@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # AD2U V2
 mypy=$(cat ${PWD}/../../etc/python.conf)
 if [ -x "${mypy}" ];then
-    ${mypy} ${PWD}/../exec/adoc2usage.py "${@}"
+    "${mypy}" "${PWD}"/../exec/adoc2usage.py "${@}"
 else
-   . ${PWD}/../exec/adoc2usage_phase2.sh "${@}"
+   . "${PWD}"/../exec/adoc2usage_phase2.sh "${@}"
 fi

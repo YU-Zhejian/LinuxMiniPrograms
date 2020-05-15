@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # AD2U V2
 function getfullasciidoc() {
     while read line; do

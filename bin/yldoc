@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # YLDOC V1P5
 DN=$(dirname ${0})
 more="more"

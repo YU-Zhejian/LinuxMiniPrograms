@@ -1,11 +1,11 @@
-#!/bin/bash
-# PLS V2
-DN=$(dirname ${0})
+#!/usr/bin/env bash
+# PLS V2P1
+DN=$(dirname "${0}")
 echo -e "\e[33mYuZJLab PATH ls"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
-mypy=$(cat ${DN}/../etc/python.conf)
+mypy=$(cat "${DN}"/../etc/python.conf)
 if [ -x "${mypy}" ];then
-    ${mypy} ${DN}/exec/pls.py "${@}"
+    "${mypy}" "${DN}"/exec/pls.py "${@}"
 else
-   . ${DN}/exec/pls.sh "${@}"
+   . "${DN}"/exec/pls.sh "${@}"
 fi

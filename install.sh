@@ -1,6 +1,6 @@
-#!/bin/bash
-# INSTALLER V2P6
-cd $(dirname ${0})
+#!/usr/bin/env bash
+# INSTALLER V2P7
+cd $(dirname "${0}")
 echo -e "\e[33mYuZJLab Installer"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 
@@ -21,7 +21,7 @@ for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
         "-v")
-            echo -e "\e[33mVersion 2 Patch 6.\e[0m"
+            echo -e "\e[33mVersion 2 Patch 7.\e[0m"
             exit 0
             ;;
         "-h" | "--help")
@@ -120,13 +120,13 @@ if ${VAR_interactive}; then
     echo -e "\e[33mWellcome to install YuZJLab LinuxMiniPrograms! Before installation, please agree to our License:\e[0m"
     cat LICENSE.md
     read -p "Answer Y/N:>" VAR_Ans
-    if ! [ ${VAR_Ans} = "Y" ]; then
+    if ! [ "${VAR_Ans}" = "Y" ]; then
         exit 1
     fi
     if [ ${ETC} -eq 0 ]; then
         echo -e "\e[33mDo you want to reinstall the config in 'etc'?\e[0m"
         read -p "Answer Y/N:>" VAR_Ans
-        if [ ${VAR_Ans} = "Y" ]; then
+        if [ "${VAR_Ans}" = "Y" ]; then
             VAR_install_config=true
         fi
     else
@@ -136,7 +136,7 @@ if ${VAR_interactive}; then
     if [ ${VAR} -eq 0 ] ; then
         echo -e "\e[33mDo you want to clear the history in 'var'?\e[0m"
         read -p "Answer Y/N:>" VAR_Ans
-        if [ ${VAR_Ans} = "Y" ]; then
+        if [ "${VAR_Ans}" = "Y" ]; then
             VAR_clear_history=true
         fi
     else
@@ -145,7 +145,7 @@ if ${VAR_interactive}; then
     fi
     echo -e "\e[33mDo you want to install documentations in Groff man, pdf, YuZJLab Usage and HTML? This need command 'asciidoctor' and 'asciidoctor-pdf' (available from Ruby pem) and Python 3.\e[0m"
     read -p "Answer Y/N:>" VAR_Ans
-    if [ ${VAR_Ans} = "Y" ]; then
+    if [ "${VAR_Ans}" = "Y" ]; then
         VAR_install_doc=true
     fi
 fi
@@ -164,7 +164,7 @@ fi
 #========Install Python========
 mypy=$(cat etc/python.conf)
 if ! [ -x "${mypy}" ];then
-    bash INSTALLER/FindPython.sh 3 > ${DN}/../etc/python.conf
+    bash INSTALLER/FindPython 3 > etc/python.conf
     if [ ${?} -eq 1 ]; then
         echo -e "\e[33mConfiguring Python...\e[31mERROR\e[0m"
         VAR_install_usage=false

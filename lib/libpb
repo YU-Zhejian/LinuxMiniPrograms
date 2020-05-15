@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # LIBPB V1
 function libpb_init() {
     # $1: TOTAL $2: Val

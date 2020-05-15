@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # PLS V2P2
 wd=${PWD}
 oldifs="${IFS}"

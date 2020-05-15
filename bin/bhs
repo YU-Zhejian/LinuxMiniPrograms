@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # BHS V1P3
 DN=$(dirname ${0})
 more="more"

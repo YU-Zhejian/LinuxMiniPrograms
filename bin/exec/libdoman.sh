@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #LINDOMAN V6
 { . ${DN}/../lib/libisopt && . ${DN}/../lib/libdate; } && { echo -e "\e[33mlibisopt, libdate loaded.\e[0m" >&2; } || {
     echo -e "\e[31mFail to load libisopt, libdate.\e[0m" >&2
