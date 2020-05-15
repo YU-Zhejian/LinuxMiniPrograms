@@ -3,7 +3,7 @@
 USESPLIT=false
 REMOVE=false
 #Load libopt
-{ . ${DN}/../lib/libisopt && . ${DN}/../lib/libdo; } && { echo -e "\e[33mlibisopt, libdo loaded.\e[0m"; } || {
+{ . "${DN}"/../lib/libisopt && . "${DN}"/../lib/libdo; } && { echo -e "\e[33mlibisopt, libdo loaded.\e[0m"; } || {
     echo -e "\e[31mFail to load libisopt, libdo.\e[0m"
     exit 1
 }
@@ -58,12 +58,12 @@ function PARALLEL() {
 }
 function preck() {
     LVL=""
-    CONFN=${DN}/../etc/autozip.conf
+    CONFN="${DN}"/../etc/autozip.conf
     USEPARALLEL=false
-    if ! [ -f ${CONFN} ]; then
+    if ! [ -f "${CONFN}" ]; then
         echo -e "\e[31mWARNING: Configure file NOT exist. Will generate one by default value.\e[0m"
         echo "NOPARALLEL" >${CONFN}
-    elif [ -d ${CONFN} ]; then
+    elif [ -d "${CONFN}" ]; then
         echo -e "\e[31mERROR: Configure file is a directory.\e[0m"
         exit 1
     else
@@ -72,7 +72,7 @@ function preck() {
         while read line; do
             conf[${i}]=${line}
             i=$((${i} + 1))
-        done <${CONFN}
+        done <"${CONFN}"
         unset line
         if [ "${conf[0]}" = "PARALLEL" ] && [ $(PARALLEL) -eq 0 ]; then
             USEPARALLEL=true
@@ -94,8 +94,8 @@ function autozipck() {
     fi
     if [ $(GZIP) -eq 0 ]; then
         echo -e "Checking for 'gzip'...\e[32mOK\e[33m"
-        availext="$availext, gz, GZ"
-        if [ ${TAR} -eq 0 ]; then availext="$availext, tar.gz, tar.GZ, tgz"; fi
+        availext="${availext}, gz, GZ"
+        if [ ${TAR} -eq 0 ]; then availext="${availext}, tar.gz, tar.GZ, tgz"; fi
     else
         echo -e "Checking for 'gzip'...\e[31mNO\e[33m"
     fi
@@ -106,39 +106,39 @@ function autozipck() {
     fi
     if [ $(BGZIP) -eq 0 ]; then
         echo -e "Checking for 'bgzip'...\e[32mOK\e[33m"
-        availext="$availext, bgz"
+        availext="${availext}, bgz"
     else
         echo -e "Checking for 'bgzip'...\e[31mNO\e[33m"
     fi
     if [ $(XZIP) -eq 0 ]; then
         echo -e "Checking for 'xz'...\e[32mOK\e[33m"
-        availext="$availext, xz, lzma, lz"
-        if [ ${TAR} -eq 0 ]; then availext="$availext, tar.xz, txz, tar.lzma, tlz"; fi
+        availext="${availext}, xz, lzma, lz"
+        if [ ${TAR} -eq 0 ]; then availext="${availext}, tar.xz, txz, tar.lzma, tlz"; fi
     else
         echo -e "Checking for 'xz'...\e[31mNO\e[33m"
     fi
     if [ $(BZIP2) -eq 0 ]; then
         echo -e "Checking for 'bzip2'...\e[32mOK\e[33m"
-        availext="$availext, bz2"
-        if [ ${TAR} -eq 0 ]; then availext="$availext, tar.bz2, tbz"; fi
+        availext="${availext}, bz2"
+        if [ ${TAR} -eq 0 ]; then availext="${availext}, tar.bz2, tbz"; fi
     else
         echo -e "Checking for 'bzip2'...\e[31mNO\e[33m"
     fi
     if [ $(Z7) -eq 0 ]; then
         echo -e "Checking for '7z'...\e[32mOK\e[33m"
-        availext="$availext, 7z"
+        availext="${availext}, 7z"
     else
         echo -e "Checking for '7z'...\e[31mNO\e[33m"
     fi
     if [ $(ZIP) -eq 0 ]; then
         echo -e "Checking for 'zip'...\e[32mOK\e[33m"
-        availext="$availext, zip"
+        availext="${availext}, zip"
     else
         echo -e "Checking for 'zip'...\e[31mNO\e[33m"
     fi
     if [ $(RAR) -eq 0 ]; then
         echo -e "Checking for 'rar'...\e[32mOK\e[33m"
-        availext="$availext, rar"
+        availext="${availext}, rar"
     else
         echo -e "Checking for 'rar'...\e[31mNO\e[33m"
     fi
@@ -157,10 +157,10 @@ function autozipck() {
     else
         echo -e "Checking for 'parallel' in /usr/bin...\e[31mNO\e[33m"
     fi
-    echo -e "Available extension name on your computer:\n$availext"
+    echo -e "Available extension name on your computer:\n${availext}"
     echo "Configure file ${CONFN} are as follows:"
     echo -e "=====Begin ${CONFN}=====\e[0m"
-    cat ${CONFN}
+    cat "${CONFN}"
     echo -e "\e[33m=====End   ${CONFN}=====\e[0m"
 }
 #Modify Filenames

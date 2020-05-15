@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #LINDOMAN V6
-{ . ${DN}/../lib/libisopt && . ${DN}/../lib/libdate; } && { echo -e "\e[33mlibisopt, libdate loaded.\e[0m" >&2; } || {
+{ . "${DN}"/../lib/libisopt && . "${DN}"/../lib/libdate; } && { echo -e "\e[33mlibisopt, libdate loaded.\e[0m" >&2; } || {
     echo -e "\e[31mFail to load libisopt, libdate.\e[0m" >&2
     exit 1
 }
@@ -55,17 +55,17 @@ if [ ${cmd} -eq 0 ]; then
     more="cat"
     echo -e "\e[33mWill use '${more}' as More.\e[0m"
     for fn in "${STDI[@]}"; do
-        if ! [ -f ${fn} ] || [ -z ${fn} ]; then
+        if ! [ -f "${fn}" ] || [ -z "${fn}" ]; then
             echo -e "\e[31mERROR: Filename '${fn}' invalid. Use libdoman -h for help.\e[0m"
             exit 1
         fi
         echo -e "\e[33mLoading ${fn}...0 item proceeded.\e[0m"
         Proj=0
         ffn=$(mktemp -t libdo_man.XXXXXX)
-        cat ${fn} | grep LIBDO >${ffn}
+        cat "${fn}" | grep LIBDO >"${ffn}"
         while read line; do
             all_lines=("${all_lines[@]}" "${line}")
-        done <${ffn}
+        done <"${ffn}"
         i=0
         while [ ${#all_lines[@]} -gt ${i} ]; do
             line=${all_lines[i]}
@@ -108,25 +108,25 @@ if [ ${cmd} -eq 0 ]; then
         done
         echo -e "\e[33mFile ${fn} loaded. Making table...\e[0m"
         table=$(mktemp -t libdo_man.XXXXXX)
-        echo -e "#1\n#S90\n#1\n#1" >${table}
-        echo "NO.;COMMAND;EXIT;TIME" >>${table}
+        echo -e "#1\n#S90\n#1\n#1" >"${table}"
+        echo "NO.;COMMAND;EXIT;TIME" >>"${table}"
         for ((i = 1; i <= ${Proj}; i++)); do
-            echo "${i};${Proj_CMD[${i}]};${Proj_Exit[${i}]};${Proj_Time[${i}]}" >>${table}
+            echo "${i};${Proj_CMD[${i}]};${Proj_Exit[${i}]};${Proj_Time[${i}]}" >>"${table}"
         done
-        ylmktbl ${table} | ${more}
-        rm ${table} ${ffn}
+        ylmktbl "${table}" | ${more}
+        rm "${table}" "${ffn}"
         unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table ffn all_lines
     done
 else
     fn=${STDI[0]}
-    if ! [ -f ${fn} ] || [ -z ${fn} ]; then
+    if ! [ -f "${fn}" ] || [ -z "${fn}" ]; then
         echo -e "\e[31mERROR: Filename '${fn}' invalid. Use libdoman -h for help.\e[0m"
         exit 1
     fi
     ln_s=0
     ln_e=0
     tmps=$(mktemp -t libdo_man.XXXXXX)
-    cat -n ${fn} | grep "LIBDO IS GOING TO EXECUTE" >${tmps}
+    cat -n "${fn}" | grep "LIBDO IS GOING TO EXECUTE" >"${tmps}"
     while read line; do
         ln=$((${ln} + 1))
         if [ ${ln} -eq ${cmd} ]; then
@@ -135,8 +135,8 @@ else
             ln_e=$(($(echo $line | cut -f 1 -d " ") - 1))
             break
         fi
-    done <${tmps}
-    rm ${tmps}
+    done <"${tmps}"
+    rm "${tmps}"
     if [ ${ln_s} -eq 0 ]; then
         echo -e "\e[31mERROR: ${cmd} too large.\e[0m" >&2
         exit 1
@@ -144,17 +144,17 @@ else
     if [ ${ln_e} -eq 0 ]; then ln_e=$(($(wc -l ${fn} | cut -f 1 -d " "))); fi
     unset line
     tmpprj=$(mktemp -t libdo_man.XXXXXX)
-    cat ${fn} | tail -n $(($(wc -l ${fn} | cut -f 1 -d " ") - ${ln_s} + 1)) | head -n 2 >${tmpprj}
+    cat ${fn} | tail -n $(($(wc -l ${fn} | cut -f 1 -d " ") - ${ln_s} + 1)) | head -n 2 >"${tmpprj}"
     while read line; do
         all_lines=("${all_lines[@]}" "${line}")
-    done <${tmpprj}
+    done <"${tmpprj}"
     CMD=${all_lines[0]:26}
     Time_s=$(echo ${all_lines[1]:17} | sed "s/.$//")
     unset all_lines
-    cat ${fn} | head -n ${ln_e} | tail -n 2 >${tmpprj}
+    cat ${fn} | head -n ${ln_e} | tail -n 2 >"${tmpprj}"
     while read line; do
         all_lines=("${all_lines[@]}" "${line}")
-    done <${tmpprj}
+    done <"${tmpprj}"
     if [ ${#all_lines[@]} -lt 2 ]; then
         Time_e=0
         Exit="-1"
@@ -184,12 +184,12 @@ else
     if [ ${ln_e} -le ${tls} ]; then
         echo -e "\e[33mNO_OUTPUT\e[0m"
     elif [ ${Exit} = "-1" ]; then
-        cat ${fn} | head -n ${ln_e} | tail -n $((${ln_s} - ${ln_e} + 2)) | ${more}
+        cat "${fn}" | head -n ${ln_e} | tail -n $((${ln_s} - ${ln_e} + 2)) | ${more}
     else
-        cat ${fn} | head -n $((${ln_e} - 2)) | tail -n $((${ln_s} - ${ln_e} + 4)) | ${more}
+        cat "${fn}" | head -n $((${ln_e} - 2)) | tail -n $((${ln_s} - ${ln_e} + 4)) | ${more}
     fi
     echo -e "\e[33m________________OUTPUT____FINISHED________________\e[0m" >&2
-    rm ${tmpprj}
+    rm "${tmpprj}"
 fi
 echo -e "\e[33mFinished.\e[0m" >&2
 exit 0

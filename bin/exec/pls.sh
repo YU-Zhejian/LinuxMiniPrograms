@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 # PLS V2P2
-wd=${PWD}
+wd="${PWD}"
 oldifs="${IFS}"
 DN=$(dirname ${0})
 function my_grep() {
-    regstr=${1}
+    regstr="${1}"
     local tmpffff=$(mktemp -t pls.XXXXXX)
-    cat ${tmpf} | grep -v "${regstr}" >${tmpffff}
-    mv ${tmpffff} ${tmpf}
+    cat "${tmpf}" | grep -v "${regstr}" >"${tmpffff}"
+    mv "${tmpffff}" "${tmpf}"
 }
 more="more"
 {
-    . ${DN}/../lib/libisopt
+    . "${DN}"/../lib/libisopt
 } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || {
     echo -e "\e[31mFail to load libisopt.\e[0m"
     exit 1
 }
-mypath="$(echo ${PATH}):${wd}"
+mypath="${PATH}:${wd}"
 IFS=":"
 eachpath=(${mypath})
 unset mypath
@@ -46,13 +46,13 @@ for opt in "${@}"; do
             ;;
         "-l" | "--list")
             for dir in "${eachpath[@]}"; do
-                if [ -d ${dir} ]; then echo "${dir}/"; fi
+                if [ -d "${dir}" ]; then echo "${dir}/"; fi
             done
             exit 0
             ;;
         "-i" | "--invalid")
             for dir in "${eachpath[@]}"; do
-                if ! [ -d ${dir} ]; then echo "${dir}/"; fi
+                if ! [ -d "${dir}" ]; then echo "${dir}/"; fi
             done
             exit 0
             ;;
@@ -71,8 +71,8 @@ done
 tmpf=$(mktemp -t pls.XXXXXX)
 echo -e "\e[33mReading database...\e[0m"
 for dir in "${eachpath[@]}"; do
-    if ! [ -d ${dir} ]; then continue ; fi
-    ls -1 -F ${dir} | sed "s;^;$(echo ${dir})/;" >>${tmpf}
+    if ! [ -d "${dir}" ]; then continue ; fi
+    ls -1 -F "${dir}" | sed "s;^;$(echo "${dir}")/;" >>${tmpf}
 done
 if ! ${allow_d}; then
     my_grep '/$'
@@ -84,7 +84,7 @@ if ! ${allow_o}; then
     my_grep '[^\*/]$'
 fi
 if [ -z "${STDS}" ]; then
-    cat ${tmpf} | ${more}
+    cat "${tmpf}" | ${more}
 else
     IFS=" "
     STDI=(${STDS})
@@ -93,7 +93,7 @@ else
     for fn in "${STDI[@]}"; do
         grepstr=${grepstr}" -e "${fn}
     done
-    eval cat ${tmpf}\|grep ${grepstr}\|${more}
+    eval cat \"${tmpf}\"\|grep ${grepstr}\|${more}
 fi
-rm ${tmpf}
+rm "${tmpf}"
 IFS="${oldifs}"

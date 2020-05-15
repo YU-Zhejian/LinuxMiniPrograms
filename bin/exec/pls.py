@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#PLS.py V1P2
+#PLS.py V1EP3
 from LMP_Pylib.libisopt import isopt
 import sys,os,re
 def mygrep(mylist:list,regxp:str)->list:
@@ -40,7 +40,7 @@ for sysarg in sys.argv:
             os.system('yldoc pls')
             exit(0)
         elif re.match(r'-v|--version',sysarg):
-            print('Version 1 Patch 2 in Python')
+            print('Version 1 Emergency Patch 3 in Python')
             exit(0)
         elif re.match(r'--no-x',sysarg):
             allow_x=False
@@ -51,11 +51,17 @@ for sysarg in sys.argv:
         elif re.match(r'-l|--list',sysarg):
             for mypath in mypaths:
                 if os.path.isdir(mypath):
-                    print(mypath+'/')
+                    if not mypath.endswith('/'):
+                        mypath+='/'
+                    print(mypath)
+            exit(0)
         elif re.match(r'-i|--invalid',sysarg):
             for mypath in mypaths:
                 if not os.path.isdir(mypath):
-                    print(mypath+'/')
+                    if not mypath.endswith('/'):
+                        mypath+='/'
+                    print(mypath)
+            exit(0)
         else:
             print("\033[31mERROR: Option "+sysarg+" invalid.\033[0m")
             exit(1)

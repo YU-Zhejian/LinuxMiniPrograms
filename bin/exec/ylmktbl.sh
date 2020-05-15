@@ -18,8 +18,8 @@ function mktbl_GetLongestString() {
     echo ${mktbl_GetLongestString_max_str}
 }
 oldifs=${IFS}
-if ! [ -f ${1} ]; then
-    echo -e "\e[31mERROR: Table file $1 invalid.\e[0m"
+if ! [ -f "${1}" ]; then
+    echo -e "\e[31mERROR: Table file ${1} invalid.\e[0m"
     exit 1
 fi
 while read line; do
@@ -37,7 +37,7 @@ while read line; do
         row_instruction=(${row_instruction[@]} ${line:1})
     fi
     unset line
-done <${1}
+done <"${1}"
 for row_tmp_str in "${row[@]}"; do
     IFS=";"
     row_tmp=(${row_tmp_str})
