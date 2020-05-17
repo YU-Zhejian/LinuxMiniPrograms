@@ -180,7 +180,7 @@ if ${VAR_clear_history}; then
     if [ ${VAR} -eq 1 ]; then
         tar czf var_backup.tgz var
         rm -rf var/*
-        echo -e "Backing up settings...\e[32mPASSED\e[0m"
+        echo -e "\e[33Backing up histories...\e[32mPASSED\e[0m"
     fi
     cp -fr INSTALLER/var/* var/
 fi
