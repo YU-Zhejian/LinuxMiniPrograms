@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# YLMKTNL.sh V3
+# YLMKTNL.sh V3P1
 function mktbl_GetLongestString_max_str() {
     for item in "${@}"; do
         if [ ${#item} -gt ${mlen} ]; then
@@ -18,10 +18,6 @@ function mktbl_GetLongestString() {
     echo ${mktbl_GetLongestString_max_str}
 }
 oldifs=${IFS}
-if ! [ -f "${1}" ]; then
-    echo -e "\e[31mERROR: Table file ${1} invalid.\e[0m"
-    exit 1
-fi
 while read line; do
     if ! [[ "${line}" =~ ^#.* ]]; then
         IFS=";"

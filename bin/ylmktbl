@@ -2,6 +2,10 @@
 # YLMKTNL V3P1
 DN=$(dirname "${0}")
 mypy=$(cat "${DN}"/../etc/python.conf)
+if ! [ -f "${1}" ]; then
+    echo -e "\e[31mERROR: Table file ${1} invalid.\e[0m"
+    exit 1
+fi
 if [ -x "${mypy}" ];then
     "${mypy}" "${DN}"/exec/ylmktbl.py "${@}"
 else
