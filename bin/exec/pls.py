@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #PLS.py V1EP3
-from LMP_Pylib.libisopt import isopt
+from LMP_Pylib.libs import isopt
 import sys,os,re
 def mygrep(mylist:list,regxp:str)->list:
     for idx in range(len(mylist)-1,-1,-1):

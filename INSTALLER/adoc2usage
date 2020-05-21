@@ -4,5 +4,6 @@ mypy=$(cat ${PWD}/../../etc/python.conf)
 if [ -x "${mypy}" ];then
     "${mypy}" "${PWD}"/../exec/adoc2usage.py "${@}"
 else
-   . "${PWD}"/../exec/adoc2usage_phase2.sh "${@}"
+   echo -e "\e[033mERROR: Python ${mypy} invalid!\e[0m"
+   exit 1
 fi

@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
-# YLMKTNL V3P1
+# YLMKTNL V3P2
 DN=$(dirname "${0}")
-mypy=$(cat "${DN}"/../etc/python.conf)
-if ! [ -f "${1}" ]; then
-    echo -e "\e[31mERROR: Table file ${1} invalid.\e[0m"
-    exit 1
-fi
+mypy=$(cat ${DN}/../etc/python.conf)
 if [ -x "${mypy}" ];then
     "${mypy}" "${DN}"/exec/ylmktbl.py "${@}"
 else
-   . "${DN}"/exec/ylmktbl.sh "${@}"
+   . "${DN}"/exec/ylmktbl.sh
 fi

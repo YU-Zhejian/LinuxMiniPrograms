@@ -1,5 +1,35 @@
 #!/usr/bin/env bash
-# YLMKTNL.sh V3P1
+# YLMKTNL.sh V3P2
+
+{ . "${DN}"/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded.\e[0m" >&2; } || {
+    echo -e "\e[31mFail to load libisopt.\e[0m" >&2
+    exit 1
+}
+for opt in "${@}"; do
+    if isopt ${opt}; then
+        case ${opt} in
+        "-h" | "--help")
+            yldoc ylmktbl
+            exit 0
+            ;;
+        "-v" | "--version")
+            echo "Version 3 patch 2 in Bash"
+            exit 0
+            ;;
+        *)
+            echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
+            exit 1
+            ;;
+        esac
+    else
+        STDS="${opt}"
+    fi
+done
+mypy=$(cat "${DN}"/../etc/python.conf)
+if ! [ -f "${STDS}" ]; then
+    echo -e "\e[31mERROR: Table file ${STDS} invalid.\e[0m"
+    exit 1
+fi
 function mktbl_GetLongestString_max_str() {
     for item in "${@}"; do
         if [ ${#item} -gt ${mlen} ]; then
@@ -33,7 +63,7 @@ while read line; do
         row_instruction=(${row_instruction[@]} ${line:1})
     fi
     unset line
-done <"${1}"
+done <"${STDS}"
 for row_tmp_str in "${row[@]}"; do
     IFS=";"
     row_tmp=(${row_tmp_str})
@@ -94,7 +124,6 @@ for row_tmp_str in "${row[@]}"; do
     total_col_len=$((${total_col_len} + ${row_len}))
 done
 unset row row_len
-#print
 IFS=";"
 col_num_tmp=(${formatted_row[0]})
 col_num=${#row_num_tmp[@]}

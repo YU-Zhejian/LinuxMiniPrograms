@@ -7,5 +7,5 @@ mypy=$(cat "${DN}"/../etc/python.conf)
 if [ -x "${mypy}" ];then
     "${mypy}" "${DN}"/exec/pls.py "${@}"
 else
-   . "${DN}"/exec/pls.sh "${@}"
+   . "${DN}"/exec/pls.sh
 fi

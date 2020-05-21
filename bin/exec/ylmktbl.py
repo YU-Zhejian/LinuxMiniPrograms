@@ -1,8 +1,25 @@
 #!/usr/bin/env python
 # YLMKTBL.py V2P1
-import sys
-import re
-mylog=open(sys.argv[1],"r")
+import sys,os,re
+from LMP_Pylib.libs import isopt
+sys.argv.pop(0)
+sstr=[]
+for sysarg in sys.argv:
+    if isopt(sysarg):
+        if re.match(r'-h|--help',sysarg):
+            os.system('yldoc ylmktbl')
+            exit(0)
+        elif re.match(r'-v|--version',sysarg):
+            print('Version 2 Patch 1 in Python')
+            exit(0)
+        else:
+            print("\033[31mERROR: Option "+sysarg+" invalid.\033[0m")
+            exit(1)
+    else:
+        sstr.append(sysarg)
+if not os.path.isfile(sstr[0]):
+    print("\033[31mERROR: File "+sstr[0]+" invalid.\033[0m")
+mylog=open(sstr[0],"r")
 configline=[]
 normalline=[]
 for line in mylog.readlines():

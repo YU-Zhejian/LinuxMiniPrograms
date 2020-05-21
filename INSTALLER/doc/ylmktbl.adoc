@@ -1,25 +1,23 @@
 :toc:
 :author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
 
-= libmktbl(1)
+= ylmktbl(1)
 
 == NAME
 
-libmktbl - A library to make tables.
+ylmktbl - A command to make tables.
 
 == SYNOPSIS
 
-source /PATH/TO/LIBMKTBL
+ylmktbl [OPTIONS] ${tabel_file}
 
-mktbl ${tabel_file}
+include::include/cmnopt.adoc[]
 
 == DESCRIPTION
 
 On executing, the program will check whether there's an active Python installation in `etc/python.conf`. If so, a Python script will be used.
 
-Firstly, use `. /PATH/TO/LIBMKTBL` to import libisopt. (Command `source` is equal to command `.`)
-
-Then, use `mktbl ${tabel_file}` to print table from a table file.
+Use `ylmktbl ${tabel_file}` to print table from a table file.
 
 The table file can be separated into two parts: column instructions and main body. Colum instruction is started with `#` and records the specific option of a particular column. Those started in S means if the length of this column exceeds the value after S, the column will be shrink by adding `...`. The colums are separated by `;`.
 

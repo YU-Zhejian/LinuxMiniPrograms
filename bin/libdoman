@@ -3,69 +3,9 @@
 DN=$(dirname ${0})
 echo -e "\e[33mYuZJLab LibDO Manager."
 echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
-{ . "${DN}"/../lib/libisopt; } && { echo -e "\e[33mlibisopt, loaded.\e[0m" >&2; } || {
-    echo -e "\e[31mFail to load libisopt.\e[0m" >&2
-    exit 1
-}
-more="more"
-cmd=0
-for opt in "${@}"; do
-    if isopt "${opt}"; then
-        case ${opt} in
-        "-h" | "--help")
-            yldoc libdoman
-            exit 0
-            ;;
-        "-v" | "--version")
-            echo -e "\e[33mVersion 5, compatiable with libdo Version 1.\e[0m"
-            exit 0
-            ;;
-        -o\:*)
-            cmd=${opt:3}
-            ;;
-        --output\:*)
-            cmd=${opt:9}
-            ;;
-        --more\:*)
-            more=${opt:7}
-            if [ $(
-                "${more}" --help &>/dev/null
-                echo ${?}
-            ) -ne 0 ]; then
-                echo -e "\e[31mERROR! Invalid More '${more}'! Will use original 'more' instead.\e[0m"
-                more="more"
-            else
-                echo -e "\e[33mWill use '${more}' as More.\e[0m"
-            fi
-            ;;
-        *)
-            echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
-            exit 1
-            ;;
-        esac
-        OPT="$OPT ${opt}"
-    else
-        STDS="${STDS} ${opt}"
-    fi
-done
-STDI=(${STDS})
-if [ ${#STDI[@]} -gt 1 ]; then
-    echo -e "\e[33m More than one filename was received. Will disable -o option.\e[0m"
-    cmd=0
-fi
-mypy=$(cat ${DN}/../etc/python.conf)
+mypy=$(cat "${DN}"/../etc/python.conf)
 if [ -x "${mypy}" ];then
-    if [ ${cmd} -eq 0 ];then
-        ${mypy} ${DN}/exec/libdoman0.py "${PWD}" "${STDS}"
-    else
-        . ${DN}/exec/libdoman1.sh
-    fi
+    "${mypy}" "${DN}"/exec/libdoman.py "${PWD}" "${@}"
 else
-    if [ ${cmd} -eq 0 ];then
-        . ${DN}/exec/libdoman0.sh
-    else
-        . ${DN}/exec/libdoman1.sh
-    fi
+   . "${DN}"/exec/libdoman.sh
 fi
-echo -e "\e[33mFinished.\e[0m" >&2
-exit 0
