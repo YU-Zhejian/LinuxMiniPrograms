@@ -29,7 +29,7 @@ Legal option can be classified into following classes:
 
 * For those options with addition parameter, those parameter are attached after `:`. e.g. `-s:10M` or `--split:10M`
 
-That is, those parameter which matches the regular expression `-?|--.+|-?\:.+|--.+:.+`:
+That is, those parameter which matches the regular expression `-[^-\s]|--\S+|-[^-\s]\:\S+|--\S+:\S+`:
 
 == EXAMPLE
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#PLS.py V1P4
+#PLS.py V1P5
 from LMP_Pylib.libisopt import *
 import sys,os,re
 def mygrep(mylist:list,regxp:str)->list:
@@ -36,26 +36,26 @@ sys.argv.pop(0)
 sstr=[]
 for sysarg in sys.argv:
     if isopt(sysarg):
-        if hlp_opt.match(sysarg):
+        if sysarg=='-h' or sysarg=='--help':
             os.system('yldoc pls')
             exit(0)
-        elif ver_opt.match(sysarg):
-            print('Version 1 Patch 4 in Python')
+        elif sysarg=='-v' or sysarg=='--version':
+            print('Version 1 Patch 5 in Python')
             exit(0)
-        elif re.match(r'--no-x',sysarg):
+        elif sysarg=='--no-x':
             allow_x=False
-        elif re.match(r'--allow-d',sysarg):
+        elif sysarg=='--allow-d':
             allow_d=True
-        elif re.match(r'--no-o',sysarg):
+        elif sysarg=='--no-o':
             allow_o=False
-        elif re.match(r'-l|--list',sysarg):
+        elif sysarg=='-l' or sysarg=='--list':
             for mypath in mypaths:
                 if os.path.isdir(mypath):
                     if not mypath.endswith('/'):
                         mypath+='/'
                     print(mypath)
             exit(0)
-        elif re.match(r'-i|--invalid',sysarg):
+        elif sysarg=='-i' or sysarg=='--invalid':
             for mypath in mypaths:
                 if not os.path.isdir(mypath):
                     if not mypath.endswith('/'):
