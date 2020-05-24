@@ -1,16 +1,16 @@
 #!/usr/bin/env python
-# YLMKTBL.py V2P1
-import sys,os,re
-from LMP_Pylib.libs import isopt
+# YLMKTBL.py V2P2
+import sys
+from LMP_Pylib.libisopt import *
 sys.argv.pop(0)
 sstr=[]
 for sysarg in sys.argv:
     if isopt(sysarg):
-        if re.match(r'-h|--help',sysarg):
+        if hlp_opt.match(sysarg):
             os.system('yldoc ylmktbl')
             exit(0)
-        elif re.match(r'-v|--version',sysarg):
-            print('Version 2 Patch 1 in Python')
+        elif ver_opt.match(sysarg):
+            print('Version 2 Patch 2 in Python')
             exit(0)
         else:
             print("\033[31mERROR: Option "+sysarg+" invalid.\033[0m")

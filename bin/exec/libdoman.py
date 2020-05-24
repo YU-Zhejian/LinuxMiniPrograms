@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-# LIBDOMAN.py V1P1
-from LMP_Pylib.libs import isopt,mktemp
+# LIBDOMAN.py V1P2
+from LMP_Pylib.libisopt import *
+from LMP_Pylib.libmktemp import *
 import sys,os,re
 sstr=[]
 cmd=0
@@ -10,7 +11,7 @@ for sysarg in sys.argv[2:]:
             os.system('yldoc libdoman')
             exit(0)
         elif re.match(r'-v|--version',sysarg):
-            print('Version 1 Patch 1 in Python, compatiable with libdo Version 1.')
+            print('Version 1 Patch 2 in Python, compatiable with libdo Version 1.')
             exit(0)
         elif re.match(r'-o:.+|--output:.+',sysarg):
             cmd=int(re.search(r'-o:(.+)|--output:(.+)',sysarg).group(1))

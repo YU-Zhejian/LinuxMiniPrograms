@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-#PLS.py V1EP3
-from LMP_Pylib.libs import isopt
+#PLS.py V1P4
+from LMP_Pylib.libisopt import *
 import sys,os,re
 def mygrep(mylist:list,regxp:str)->list:
     for idx in range(len(mylist)-1,-1,-1):
@@ -36,11 +36,11 @@ sys.argv.pop(0)
 sstr=[]
 for sysarg in sys.argv:
     if isopt(sysarg):
-        if re.match(r'-h|--help',sysarg):
+        if hlp_opt.match(sysarg):
             os.system('yldoc pls')
             exit(0)
-        elif re.match(r'-v|--version',sysarg):
-            print('Version 1 Emergency Patch 3 in Python')
+        elif ver_opt.match(sysarg):
+            print('Version 1 Patch 4 in Python')
             exit(0)
         elif re.match(r'--no-x',sysarg):
             allow_x=False
