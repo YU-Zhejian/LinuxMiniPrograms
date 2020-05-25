@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# CONFIGPATH v1
+set -eu
+cd ../"$(dirname "${0}")"/etc
+if ! [ -f 'path.sh' ];then
+    touch path.sh
+fi
+. path.sh
+#=====path=====
+oldIFS=${IFS}
+i=0
+IFS=':'
+eachpath=($(echo "${PATH}" | tr ':' '\n' | sort -u | tr '\n' ':'))
+IFS=''
+echo -e "\e[33mValid path in \$PATH variable are printed as follows:\e[0m"
+for dir in "${eachpath[@]}"; do
+    if ! [ -d "${dir}" ]; then
+        unset eachpath[${i}]
+    else
+        i=$((${i}+1))
+        echo ${dir}
+    fi
+done
+unset i
+#=====ls=====
+if [ -z "${myls:-}" ];then
+    if ! ls --version &>>/dev/null;then
+        type="BSD version"
+    else
+        type="GNU version"
+    fi
+    echo "myls=\"$(which ls)\" #${type}">>path.sh
+    . path.sh
+fi
+echo -e "\e[33mls configured.\e[0m"
+#=====grep=====
+if [ -z "${mygrep:-}" ];then
+    grep_ver=$(grep --version 2>&1)
+    if [[ ${grep_ver}=~*"BSD"* ]];then
+        if [[ ${grep_ver}=~*"GNU"* ]];then
+            type="GNU version in BSD systems"
+        else
+            type="BSD version"
+        fi
+    else
+        type="GNU version"
+    fi
+    echo "mygrep=\"$(which grep)\" #${type}">>path.sh
+    unset grep_ver
+. path.sh
+fi
+echo -e "\e[33mgrep configured.\e[0m"
+#=====sed=====
+if [ -z "${mysed:-}" ];then
+    if ! sed --version &>>/dev/null;then
+        type="BSD version"
+    else
+        type="GNU version"
+    fi
+    echo "mysed=\"$(which sed)\" #${type}">>path.sh
+    . path.sh
+fi
+echo -e "\e[33msed configured.\e[0m"
+#=====python=====
+if [ -z "${mypython:-}" ];then
+    echo -e "\e[33mPython not found. We will search for it.\e[0m"
+    Out_V=3
+    for dir in "${eachpath[@]}"; do
+        tmpf=$(mktemp -t configpath.XXXXXX)
+        ${myls} -F -1 "${dir}" | grep '.\*$' | ${mysed} "s;\*\$;;" | grep '^python' | grep '^python\([3]\(\.[0-9]*\)*\)*\(\.exe\)*$' | ${mysed} "s;^;$(echo ${dir})/;" >"${tmpf}"
+        while read line; do
+            if ! [ -x "${line}" ];then continue;fi
+            curr_version=$("${line}" --version 2>&1 | cut -f 2 -d " ")
+            if [[ "${curr_version}" == 3* ]] && [ $(expr ${curr_version} \>= ${Out_V}) -eq 1 ]; then
+                Out_C="${line}"
+                Out_V=${curr_version}
+            fi
+            unset curr_version line
+        done <"${tmpf}"
+        rm "${tmpf}"
+        unset tmpf dir
+    done
+    if [ -n "${Out_C:-}" ];then
+        echo "mypython=\"${Out_C}\" #version ${Out_V}">>path.sh
+        unset Out_C
+    else
+        echo "mypython=\"\"">>path.sh
+        echo -e "\e[30mERROR: Python still not found. Please configure it manually in LMP_ROOT/etc/path.sh.\e[0m"
+    fi
+    unset Out_V
+fi
+. path.sh
+if [ -n "${mypython:-}" ];then
+   echo -e "\e[33mPython configured.\e[0m"
+fi
+echo -e "\e[33mAll configurations are printed as follows:\e[0m"
+cat path.sh|${mysed} 's/^my//'|${mysed} 's/=/\\\\e[33m in \\\\e[0m/ '|${mysed} 's/ #/\\\\e[33m, \\\\e[32m/'|${mysed} 's/$/.\\\\e[0m/'|while read line;do echo -e ${line};done
+

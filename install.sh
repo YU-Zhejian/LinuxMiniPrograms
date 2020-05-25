@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 # INSTALLER V2P7
+set -euo pipefail
 cd $(dirname "${0}")
 echo -e "\e[33mYuZJLab Installer"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 
-. lib/libisopt && echo -e "\e[33mlibisopt loaded.\e[0m" || {
-    echo -e "\e[31mFail to load libisopt.\e[0m"
-    exit 1
-}
+. lib/libisopt
+if [ -f "etc/path.sh" ];then
+    . etc/path.sh
+else
+    bash INSTALLER/configpath
+    . etc/path.sh
+fi
 # ========Def Var========
 VAR_install_config=false
 VAR_clear_history=false
@@ -162,25 +166,14 @@ if ${VAR_install_config}; then
     echo -e "\e[33mInstalling config...\e[32mPASSED\e[0m"
 fi
 #========Install Python========
-mypy=$(cat etc/python.conf)
-if ! [ -x "${mypy}" ];then
-    bash INSTALLER/FindPython 3 > etc/python.conf
-    if [ ${?} -eq 1 ]; then
-        echo -e "\e[33mConfiguring Python...\e[31mERROR\e[0m"
-        VAR_install_usage=false
-    else
-        echo -e "\e[33mConfiguring Python...\e[32mPASSED\e[0m"
 
-    fi
-fi
-echo -e "\e[33mPython found in $(cat etc/python.conf)\e[0m"
 #========Install VAR========
 if ${VAR_clear_history}; then
     mkdir -p var
     if [ ${VAR} -eq 1 ]; then
         tar czf var_backup.tgz var
         rm -rf var/*
-        echo -e "\e[33Backing up histories...\e[32mPASSED\e[0m"
+        echo -e "\e[33mBacking up histories...\e[32mPASSED\e[0m"
     fi
     cp -fr INSTALLER/var/* var/
 fi
@@ -264,8 +257,8 @@ function add_dir(){
 	done
 }
 echo -e "\e[33mModifying file permissions...\e[0m"
-chown $(id -u) * -R
-chmod +r+w * -R
+chown -R $(id -u) *
+chmod -R +r+w *
 add_dir
 chmod +x bin/*
 chmod +x *.sh
