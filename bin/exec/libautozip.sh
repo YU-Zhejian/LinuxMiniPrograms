@@ -3,10 +3,9 @@
 USESPLIT=false
 REMOVE=false
 #Load libopt
-{ . "${DN}"/../lib/libisopt && . "${DN}"/../lib/libdo; } && { echo -e "\e[33mlibisopt, libdo loaded.\e[0m"; } || {
-    echo -e "\e[31mFail to load libisopt, libdo.\e[0m"
-    exit 1
-}
+. "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libdo
+. "${DN}"/../etc/path.sh
 # Check for all compoments: backend.
 function TAR() {
     tar --help &>>/dev/null
