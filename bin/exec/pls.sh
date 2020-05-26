@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # PLS V3
-set -eu
 wd="${PWD}"
 oldifs="${IFS}"
 DN=$(dirname ${0})
@@ -20,6 +19,7 @@ IFS=''
 allow_x=true
 allow_d=false
 allow_o=true
+STDS=''
 for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in

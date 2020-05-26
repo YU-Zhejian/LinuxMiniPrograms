@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# LIBDOMAN V5
+# LIBDOMAN V6
 DN=$(dirname ${0})
 echo -e "\e[33mYuZJLab LibDO Manager."
 echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
-mypy=$(cat "${DN}"/../etc/python.conf)
-if [ -x "${mypy}" ];then
-    "${mypy}" "${DN}"/exec/libdoman.py "${PWD}" "${@}"
+. "${DN}"/../etc/path.sh
+if [ -f "${mypython}" ];then
+    "${mypython}" "${DN}"/exec/libdoman.py "${PWD}" "${@}"
 else
    . "${DN}"/exec/libdoman.sh
 fi
