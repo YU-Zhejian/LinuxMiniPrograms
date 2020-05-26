@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LIBPATH V1
+# LIBPATH V1EP1
 oldIFS=${IFS}
 IFS=':'
 eachpath=(${PATH})
@@ -9,7 +9,7 @@ invalid_path=':'
 duplicated_path=':'
 for dir in "${eachpath[@]}"; do
     dir_full=$(readlink -f "${dir}" || true)
-    if [ -z "${dir_full}" ]; then
+    if [ ! -d "${dir}" ]; then
         invalid_path="${invalid_path}${dir}:"
     elif [[ ${valid_path} =~ .*":${dir_full}:".* ]]; then
         duplicated_path="${duplicated_path}${dir_full}:"

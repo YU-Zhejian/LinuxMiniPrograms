@@ -41,18 +41,13 @@ for opt in "${@}"; do
             allow_o=false
             ;;
         "-l" | "--list")
-            for dir in "${eachpath[@]}"; do
-                echo "${dir}"
-            done
+            echo ${valid_path} | tr ':' '\n'
+            unset valid_path
             exit 0
             ;;
         "-i" | "--invalid")
-            IFS=':'
-            invalid_set=(${invalid_path})
-            for dir in "${invalid_set[@]}"; do
-                echo "${dir}"
-            done
-            unset invalid_set invalid_path
+            echo ${invalid_path} | tr ':' '\n'
+            unset invalid_set invalid_path valid_path
             exit 0
             ;;
         --more\:*)
@@ -67,7 +62,7 @@ for opt in "${@}"; do
         STDS="${STDS} ${opt}"
     fi
 done
-unset invalid_path
+unset invalid_path valid_path
 tmpf=$(mktemp -t pls.XXXXXX)
 echo -e "\e[33mReading database...\e[0m"
 for dir in "${eachpath[@]}"; do
