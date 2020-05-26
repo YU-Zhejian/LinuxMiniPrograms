@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CONFIGPATH v1
+# CONFIGPATH V1P1
 set -eu
 cd INSTALLER
 path_sh="../etc/path.sh"
@@ -49,10 +49,10 @@ unset valid_path
 . exec/bzip2.sh
 . exec/7z.sh
 . exec/zip.sh
-#. exec/rar.sh
+. exec/rar.sh
 . exec/unzip.sh
 . exec/unrar.sh
-#. exec/parallel.sh
+. exec/parallel.sh
 echo -e "\e[33mAll configurations are printed as follows:\e[0m"
 cat "${path_sh}" | ${mygrep} -v '^$' | ${mysed} 's/^my//' | ${mysed} 's/=/\\\\e[33m in \\\\e[0m/ ' | ${mysed} 's/ #/\\\\e[33m, \\\\e[32m/' | while read line; do echo -e "${line}\e[0m"; done
 cd ..
