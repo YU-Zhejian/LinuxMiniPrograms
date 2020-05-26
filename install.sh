@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# INSTALLER V3
+# INSTALLER V3P1
 set -euo pipefail
 cd $(dirname "${0}")
 echo -e "\e[33mYuZJLab Installer"
@@ -14,6 +14,7 @@ VAR_install_pdf=false
 VAR_install_usage=false
 VAR_update=false
 VAR_interactive=true
+VAR_update_path=false
 # ========Read Opt========
 for opt in "${@}"; do
     if isopt ${opt}; then
@@ -26,7 +27,10 @@ for opt in "${@}"; do
             echo \
                 "This is the installation script of LinuxMiniPrograms.
 
-SYNOPSIS: install.sh [opt]
+SYNOPSIS: bash install.sh [opt]
+
+FOR THE IMPATIENT:
+    NEW COMPLETE INSTALLATION: bash install.sh --all
 
 OPTIONS:
     -h|--help Display this help.
@@ -40,6 +44,7 @@ OPTIONS:
     --install-pdf Install doc in pdf, need 'asciidoctor-pdf'.
     --install-html Install doc in html, need 'asciidoctor'.
     --update Update an existing installation.
+    --update-path Update the etc/path.sh
 
     If no opt is given, the interactive mode will be used.
     "
@@ -89,6 +94,10 @@ OPTIONS:
             VAR_interactive=false
             VAR_update=false
             ;;
+        "--update-path")
+            VAR_update_path=true
+            VAR_interactive=false
+            ;;
         *)
             echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
             exit 1
@@ -97,8 +106,14 @@ OPTIONS:
     fi
 done
 # ========Check========
+echo -e "\e[33mChecking FileSystem...\e[0m"
+if ${VAR_update_path};then
+    rm 'etc/path.sh'
+fi
+if ! [ -f 'etc/path.sh' ];then
+    . INSTALLER/configpath
+fi
 if ${VAR_update};then
-    echo -e "\e[33mChecking FileSystem...\e[0m"
     ETC=$(
         [ -d "etc" ]
         echo ${?}
@@ -115,7 +130,6 @@ if ${VAR_update};then
         asciidoctor-pdf --help &>>/dev/null
         echo ${?}
     )
-    . INSTALLER/configpath
 else
     ADOC=0
     ADOC_PDF=0
