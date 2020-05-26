@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #PLS.py V1P5
 from LMP_Pylib.libisopt import *
+from LMP_Pylib.libpath import *
 import sys,os,re
 def mygrep(mylist:list,regxp:str)->list:
     for idx in range(len(mylist)-1,-1,-1):
@@ -24,11 +25,6 @@ def do_search(P:str)->list:
         ls_all=mygrep(ls_all,r'\*$')
     return ls_all
 
-mypaths=os.environ['PATH'].split(':')+[os.getcwd()]
-for i in range(len(mypaths)):
-    if not mypaths[i].endswith('/'):
-        mypaths[i]+='/'
-mypaths=list(set(mypaths))
 allow_x=True
 allow_d=False
 allow_o=True
@@ -49,14 +45,14 @@ for sysarg in sys.argv:
         elif sysarg=='--no-o':
             allow_o=False
         elif sysarg=='-l' or sysarg=='--list':
-            for mypath in mypaths:
+            for mypath in valid_path:
                 if os.path.isdir(mypath):
                     if not mypath.endswith('/'):
                         mypath+='/'
                     print(mypath)
             exit(0)
         elif sysarg=='-i' or sysarg=='--invalid':
-            for mypath in mypaths:
+            for mypath in valid_path:
                 if not os.path.isdir(mypath):
                     if not mypath.endswith('/'):
                         mypath+='/'
@@ -69,14 +65,14 @@ for sysarg in sys.argv:
         sstr.append(sysarg)
 
 if sstr==[]:
-    for mypath in mypaths:
+    for mypath in valid_path:
         ret_l=do_search(mypath)
         for item in ret_l:
             print(item)
 else:
     ret_l=[]
     out_l=[]
-    for mypath in mypaths:
+    for mypath in valid_path:
         ret_l+=do_search(mypath)
     for item in ret_l:
         for jtem in sstr:

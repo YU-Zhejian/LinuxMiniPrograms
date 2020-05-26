@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# PLS V2P2
+# PLS V3
+set -eu
 wd="${PWD}"
 oldifs="${IFS}"
 DN=$(dirname ${0})
@@ -10,16 +11,11 @@ function my_grep() {
     mv "${tmpffff}" "${tmpf}"
 }
 more="more"
-{
-    . "${DN}"/../lib/libisopt
-} && { echo -e "\e[33mlibisopt loaded\e[0m"; } || {
-    echo -e "\e[31mFail to load libisopt.\e[0m"
-    exit 1
-}
-mypath="${PATH}:${wd}"
+. "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libpath
 IFS=":"
-eachpath=(${mypath})
-unset mypath
+eachpath=(${valid_path})
+unset duplicated_path
 IFS=''
 allow_x=true
 allow_d=false
@@ -32,7 +28,7 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 2 patch 1"
+            echo "Version 3 in Bash"
             exit 0
             ;;
         "--no-x")
@@ -46,14 +42,17 @@ for opt in "${@}"; do
             ;;
         "-l" | "--list")
             for dir in "${eachpath[@]}"; do
-                if [ -d "${dir}" ]; then echo "${dir}/"; fi
+                echo "${dir}"
             done
             exit 0
             ;;
         "-i" | "--invalid")
-            for dir in "${eachpath[@]}"; do
-                if ! [ -d "${dir}" ]; then echo "${dir}/"; fi
+            IFS=':'
+            invalid_set=(${invalid_path})
+            for dir in "${invalid_set[@]}"; do
+                echo "${dir}"
             done
+            unset invalid_set invalid_path
             exit 0
             ;;
         --more\:*)
@@ -68,10 +67,11 @@ for opt in "${@}"; do
         STDS="${STDS} ${opt}"
     fi
 done
+unset invalid_path
 tmpf=$(mktemp -t pls.XXXXXX)
 echo -e "\e[33mReading database...\e[0m"
 for dir in "${eachpath[@]}"; do
-    if ! [ -d "${dir}" ]; then continue ; fi
+    if ! [ -d "${dir}" ]; then continue; fi
     ls -1 -F "${dir}" | sed "s;^;$(echo "${dir}")/;" >>${tmpf}
 done
 if ! ${allow_d}; then
@@ -83,7 +83,7 @@ fi
 if ! ${allow_o}; then
     my_grep '[^\*/]$'
 fi
-if [ -z "${STDS}" ]; then
+if [ -z "${STDS:-}" ]; then
     cat "${tmpf}" | ${more}
 else
     IFS=" "
