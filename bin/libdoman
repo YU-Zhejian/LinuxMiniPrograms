@@ -4,7 +4,7 @@ DN=$(dirname ${0})
 echo -e "\e[33mYuZJLab LibDO Manager."
 echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
 . "${DN}"/../etc/path.sh
-if [ -f "${mypython}" ];then
+if [ "${mypython}" != "ylukh" ];then
     "${mypython}" "${DN}"/exec/libdoman.py "${PWD}" "${@}"
 else
    . "${DN}"/exec/libdoman.sh

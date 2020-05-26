@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-# AD2U V2
+# AD2U V2P1
 . ${PWD}/../../etc/path.sh
-if [ -x "${mypython}" ];then
-    "${mypython}" "${PWD}"/../exec/adoc2usage.py "${@}"
-else
-   echo -e "\e[033mERROR: Python ${mypython} invalid!\e[0m"
-   exit 1
-fi
+"${mypython}" "${PWD}"/../exec/adoc2usage.py "${@}"
