@@ -5,8 +5,9 @@ cd INSTALLER
 path_sh="../etc/path.sh"
 if ! [ -f "${path_sh}" ]; then
     touch "${path_sh}"
+else
+    . "${path_sh}"
 fi
-. "${path_sh}"
 #=====os=====
 if [ -z "${myos:-}" ]; then
     os_type=$(uname -mrs)

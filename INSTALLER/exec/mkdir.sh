@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# MKDIR.sh V1
+# MKDIR.sh V1P1
 if [ -z "${mymkdir:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -33,7 +33,7 @@ if [ -z "${mymkdir:-}" ]; then
     . "${path_sh}"
     if [ -z "${mymkdir:-}" ]; then
         if [ -z "${line:-}" ]; then
-            echo "mymkdir=\"mkdir\" #UNKNOWN" >>"${path_sh}"
+            echo "mymkdir=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: mkdir still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD mkdir.\e[0m"

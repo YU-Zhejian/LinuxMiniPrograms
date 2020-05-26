@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# MV.sh V1
+# MV.sh V1P1
 if [ -z "${mymv:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -33,7 +33,7 @@ if [ -z "${mymv:-}" ]; then
     . "${path_sh}"
     if [ -z "${mymv:-}" ]; then
         if [ -z "${line:-}" ]; then
-            echo "mymv=\"mv\" #UNKNOWN" >>"${path_sh}"
+            echo "mymv=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: mv still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD mv.\e[0m"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LS.sh V1
+# LS.sh V1P1
 if [ -z "${myls:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -33,7 +33,7 @@ if [ -z "${myls:-}" ]; then
     . "${path_sh}"
     if [ -z "${myls:-}" ]; then
         if [ -z "${line:-}" ]; then
-            echo "myls=\"ls\" #UNKNOWN" >>path.sh
+            echo "myls=\"ylukh\" #UNKNOWN" >>path.sh
             echo -e "\e[30mERROR: ls still not found. Please configure it manually in LMP_ROOT/etc/path.sh.\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD ls.\e[0m"

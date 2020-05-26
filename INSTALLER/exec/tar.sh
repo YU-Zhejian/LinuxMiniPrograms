@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# TAR.sh V1
+# TAR.sh V1P1
 if [ -z "${mytar:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -33,7 +33,7 @@ if [ -z "${mytar:-}" ]; then
     . "${path_sh}"
     if [ -z "${mytar:-}" ]; then
         if [ -z "${line:-}" ]; then
-            echo "mytar=\"tar\" #UNKNOWN" >>"${path_sh}"
+            echo "mytar=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: tar still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD tar.\e[0m"

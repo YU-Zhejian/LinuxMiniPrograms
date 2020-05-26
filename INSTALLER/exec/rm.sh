@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# RM.sh V1
+# RM.sh V1P1
 if [ -z "${myrm:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -33,7 +33,7 @@ if [ -z "${myrm:-}" ]; then
     . "${path_sh}"
     if [ -z "${myrm:-}" ]; then
         if [ -z "${line:-}" ]; then
-            echo "myrm=\"rm\" #UNKNOWN" >>"${path_sh}"
+            echo "myrm=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: rm still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD rm.\e[0m"

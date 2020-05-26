@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CP.sh V1
+# CP.sh V1P1
 if [ -z "${mycp:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -33,7 +33,7 @@ if [ -z "${mycp:-}" ]; then
     . "${path_sh}"
     if [ -z "${mycp:-}" ]; then
         if [ -z "${line:-}" ]; then
-            echo "mycp=\"cp\" #UNKNOWN" >>"${path_sh}"
+            echo "mycp=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: cp still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD cp.\e[0m"

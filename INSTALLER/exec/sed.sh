@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SED.sh V1
+# SED.sh V1P1
 if [ -z "${mysed:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -33,7 +33,7 @@ if [ -z "${mysed:-}" ]; then
     . "${path_sh}"
     if [ -z "${mysed:-}" ]; then
         if [ -z "${line:-}" ]; then
-            echo "mysed=\"sed\" #UNKNOWN" >>"${path_sh}"
+            echo "mysed=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: sed still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD sed.\e[0m"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CHMOD.sh V1
+# CHMOD.sh V1P1
 if [ -z "${mychmod:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -33,7 +33,7 @@ if [ -z "${mychmod:-}" ]; then
     . "${path_sh}"
     if [ -z "${mychmod:-}" ]; then
         if [ -z "${line:-}" ]; then
-            echo "mychmod=\"chmod\" #UNKNOWN" >>"${path_sh}"
+            echo "mychmod=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: chmod still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD chmod.\e[0m"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# GZIP.sh V1
+# GZIP.sh V1P1
 if [ -z "${mygzip:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -29,7 +29,7 @@ if [ -z "${mygzip:-}" ]; then
     . "${path_sh}"
     if [ -z "${mygzip:-}" ]; then
         if [ -z "${line:-}" ]; then
-            echo "mygzip=\"gzip\" #UNKNOWN" >>"${path_sh}"
+            echo "mygzip=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: gzip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD gzip.\e[0m"

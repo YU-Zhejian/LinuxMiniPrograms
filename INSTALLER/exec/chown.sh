@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CHOWN.sh V1
+# CHOWN.sh V1P1
 if [ -z "${mychown:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -33,7 +33,7 @@ if [ -z "${mychown:-}" ]; then
     . "${path_sh}"
     if [ -z "${mychown:-}" ]; then
         if [ -z "${line:-}" ]; then
-            echo "mychown=\"chown\" #UNKNOWN" >>"${path_sh}"
+            echo "mychown=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: chown still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD chown.\e[0m"

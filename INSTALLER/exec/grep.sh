@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# GREP.sh V1
+# GREP.sh V1P1
 if [ -z "${mygrep:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -33,7 +33,7 @@ if [ -z "${mygrep:-}" ]; then
     done
     . "${path_sh}"
     if [ -z "${mygrep:-}" ]; then
-        echo "mygrep=\"grep\" #UNKNOWN" >>"${path_sh}"
+        echo "mygrep=\"ylukh\" #UNKNOWN" >>"${path_sh}"
         echo -e "\e[30mERROR: grep still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
     fi
 else
