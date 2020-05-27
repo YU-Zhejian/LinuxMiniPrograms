@@ -4,7 +4,7 @@ if [ -z "${mypython:-}" ]; then
     python_ver=3
     for dir in "${eachpath[@]}"; do
         tmpf=$(mktemp -t configpath.XXXXXX)
-        ${myls} -F -1 "${dir}" | ${mygrep} '.\*$' | ${mysed} "s;\*\$;;" | ${mygrep} -E '^(python(3|)(\.[[:digit:]]+)*(d|m|u|)(.exe|)$)' | ${mysed} "s;^;$(echo ${dir})/;" >"${tmpf}"
+        "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" -E '^(python(3|)(\.[[:digit:]]+)*(d|m|u|)(.exe|)$)' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
             echo "Python found in ${line}"
             curr_version=$("${line}" --version 2>&1 | cut -f 2 -d " ")
@@ -14,7 +14,7 @@ if [ -z "${mypython:-}" ]; then
             fi
             unset curr_version line
         done <"${tmpf}"
-        rm "${tmpf}"
+        "${myrm}" "${tmpf}"
         unset tmpf dir
     done
     if [ -n "${Out_C:-}" ]; then
@@ -28,5 +28,5 @@ if [ -z "${mypython:-}" ]; then
     unset python_ver
     . "${path_sh}"
 else
-     echo -e "\e[033mpython configured\e[0m"
+    echo -e "\e[033mpython configured\e[0m"
 fi

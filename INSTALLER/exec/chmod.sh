@@ -7,7 +7,7 @@ if [ -z "${mychmod:-}" ]; then
             break
         fi
         tmpf=$(mktemp -t configpath.XXXXXX)
-        ${myls} -F -1 "${dir}" | ${mygrep} '.\*$' | ${mysed} "s;\*\$;;" | ${mygrep} '^chmod\(\.exe\)*$' | ${mysed} "s;^;$(echo ${dir})/;" >"${tmpf}"
+        "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^chmod\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
             chmod_ver=$("${line}" --version 2>&1)
             if [[ "${chmod_ver}" =~ .*"GNU".* ]]; then
@@ -27,7 +27,7 @@ if [ -z "${mychmod:-}" ]; then
             fi
             unset type
         done <"${tmpf}"
-        rm "${tmpf}"
+        "${myrm}" "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"

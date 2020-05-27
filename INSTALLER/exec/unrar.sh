@@ -2,7 +2,7 @@
 # UNRAR.sh V1P1
 if [ -z "${myunrar:-}" ]; then
     if which unrar &>>/dev/null; then
-        line=$(which unrar)
+        line="$(which unrar)"
         echo "myunrar=\"${line}\" #UNIVERSE" >>"${path_sh}"
         echo "unrar found in ${line}"
     else

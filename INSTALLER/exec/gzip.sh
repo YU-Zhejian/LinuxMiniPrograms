@@ -7,7 +7,7 @@ if [ -z "${mygzip:-}" ]; then
             break
         fi
         tmpf=$(mktemp -t configpath.XXXXXX)
-        ${myls} -F -1 "${dir}" | ${mygrep} '.\*$' | ${mysed} "s;\*\$;;" | ${mygrep} '^gzip\(\.exe\)*$' | ${mysed} "s;^;$(echo ${dir})/;" >"${tmpf}"
+        "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^gzip\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
             gzip_ver=$("${line}" --version 2>&1)
             if [[ "${gzip_ver}" =~ .*"GNU".* ]]; then
@@ -23,7 +23,7 @@ if [ -z "${mygzip:-}" ]; then
             fi
             unset type
         done <"${tmpf}"
-        rm "${tmpf}"
+        "${myrm}" "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"

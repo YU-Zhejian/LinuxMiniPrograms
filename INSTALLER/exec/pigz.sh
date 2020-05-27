@@ -2,7 +2,7 @@
 # PIGZ.sh V1P1
 if [ -z "${mypigz:-}" ]; then
     if which pigz &>>/dev/null; then
-        line=$(which bzip2)
+        line="$(which bzip2)"
         echo "mypigz=\"${line}\" #UNIVERSE" >>"${path_sh}"
         echo "pigz found in ${line}"
     else

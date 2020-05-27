@@ -3,7 +3,6 @@
 REMOVE=false
 USEPARALLEL=false
 ISFORCE=false
-USESPLIT=false
 OPT=''
 STDS=''
 CONFN="${DN}"/../etc/autozip.conf
@@ -108,7 +107,7 @@ function autozipck() {
     echo -e "Available extension name on your computer:\n${availext}"
     echo "Configure file ${CONFN} are as follows:"
     echo -e "=====Begin ${CONFN}=====\e[0m"
-    cat "${CONFN}"
+    "${mycat}" "${CONFN}"
     echo -e "\e[33m=====End   ${CONFN}=====\e[0m"
 }
 #Makt temporaty resources
@@ -179,4 +178,69 @@ function ppopt() {
     if ! ${ISFORCE};then
         echo -e "\e[31mWARNING: Will rename the archive if exists.\e[0m"
     fi
+}
+# Make a number 3 digit
+function fixthree() {
+    local fout="${1}"
+    while [ ${#fout} -lt 3 ]; do
+        fout="0${fout}"
+    done
+    echo ${fout}
+}
+# Standard_C heads
+function stdc_h() {
+    local file_i=1
+    local in_i=001
+    if ${USEPARALLEL}; then
+        while [ -f "${fulln}".${in_i} ]; do
+            echo "${mycat} "${PWD}"/"${fulln}".${in_i}| "${*}">>${tempdir}/${in_i}" >>"${tempdir}"/"${in_i}".sh
+            file_i=$((${file_i} + 1))
+            in_i=$(fixthree ${file_i})
+        done
+        "${myfind}" "${tempdir}"/*.sh\|"${myparallel}" bash
+    else
+        while [ -f "${fulln}".${in_i} ]; do
+            "${mycat}" "${fulln}".${in_i} | "${*}" >>"${tempdir}"/${in_i}
+            file_i=$((${file_i} + 1))
+            in_i=$(fixthree ${file_i})
+        done
+    fi
+}
+# standard TAR creator
+function stdtc() {
+    stdc_h "${@}"
+    local file_i=1
+    local in_i=001
+    while [ -f "${fulln}".${in_i} ]; do
+        "${mycat}" "${tempdir}"/${in_i} >>"${tempf}"
+        file_i=$((${file_i} + 1))
+        in_i=$(fixthree ${file_i})
+    done
+    unset file_i in_1
+    "${mytar}" -xvf "${tempf}"
+}
+# standard TAR lister
+function stdtl() {
+    stdc_h "${@}"
+    local file_i=1
+    local in_i=001
+    while [ -f "${fulln}".${in_i} ]; do
+        "${mycat}" "${tempdir}"/${in_i} >>"${tempf}"
+        file_i=$((${file_i} + 1))
+        in_i=$(fixthree ${file_i})
+    done
+    unset file_i in_1
+    "${mytar}" -tvf "${tempf}"
+}
+# standard FILE creator
+function stdfc() {
+    stdc_h "${@}"
+    local file_i=1
+    local in_i=001
+    while [ -f "${fulln}".${in_i} ]; do
+        "${mycat}" "${tempdir}"/${in_i} >>"${fn}"
+        file_i=$((${file_i} + 1))
+        in_i=$(fixthree ${file_i})
+    done
+    unset file_i in_1
 }

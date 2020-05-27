@@ -7,7 +7,7 @@ if [ -z "${mytar:-}" ]; then
             break
         fi
         tmpf=$(mktemp -t configpath.XXXXXX)
-        ${myls} -F -1 "${dir}" | ${mygrep} '.\*$' | ${mysed} "s;\*\$;;" | ${mygrep} '^tar\(\.exe\)*$' | ${mysed} "s;^;$(echo ${dir})/;" >"${tmpf}"
+        "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^tar\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
             tar_ver=$("${line}" --version 2>&1)
             if [[ "${tar_ver}" =~ .*"GNU".* ]]; then
@@ -27,7 +27,7 @@ if [ -z "${mytar:-}" ]; then
             fi
             unset type
         done <"${tmpf}"
-        rm "${tmpf}"
+        "${myrm}" "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"

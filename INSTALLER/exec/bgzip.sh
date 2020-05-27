@@ -2,7 +2,7 @@
 # BGZIP.sh V1P1
 if [ -z "${mybgzip:-}" ]; then
     if which bgzip &>>/dev/null; then
-        line=$(which bgzip)
+        line="$(which bgzip)"
         echo "mybgzip=\"${line}\" #UNIVERSE" >>"${path_sh}"
         echo "bgzip found in ${line}"
     else

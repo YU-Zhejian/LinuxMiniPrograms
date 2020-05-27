@@ -2,7 +2,7 @@
 # XZIP.sh V1P1
 if [ -z "${myxzip:-}" ]; then
     if xz --help &>>/dev/null; then
-        line=$(which xz)
+        line="$(which xz)"
         echo "myxzip=\"${line}\" #UNIVERSE" >>"${path_sh}"
         echo "xzip found in ${line}"
     else

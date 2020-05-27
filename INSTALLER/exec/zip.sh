@@ -7,7 +7,7 @@ if [ -z "${myzip:-}" ]; then
             break
         fi
         tmpf=$(mktemp -t configpath.XXXXXX)
-        ${myls} -F -1 "${dir}" | ${mygrep} '.\*$' | ${mysed} "s;\*\$;;" | ${mygrep} '^zip\(\.exe\)*$' | ${mysed} "s;^;$(echo ${dir})/;" >"${tmpf}"
+        "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^zip\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
             zip_ver=$("${line}" --version 2>&1)
             if [[ "${zip_ver}" =~ .*"Linux".* ]]; then
@@ -26,7 +26,7 @@ if [ -z "${myzip:-}" ]; then
             fi
             unset type
         done <"${tmpf}"
-        rm "${tmpf}"
+        ${myrm} "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"

@@ -34,10 +34,10 @@ unset valid_path
 . exec/ls.sh
 . exec/grep.sh
 . exec/sed.sh
+. exec/rm.sh
 . exec/python.sh
 . exec/tar.sh
 . exec/gzip.sh
-. exec/rm.sh
 . exec/cp.sh
 . exec/mv.sh
 . exec/mkdir.sh
@@ -54,6 +54,9 @@ unset valid_path
 . exec/unrar.sh
 . exec/parallel.sh
 . exec/find.sh
+. exec/sort.sh
+. exec/cat.sh
+. exec/split.sh
 echo -e "\e[33mAll configurations are printed as follows:\e[0m"
 cat "${path_sh}" | ${mygrep} -v '^$' | ${mysed} 's/^my//' | ${mysed} 's/=/\\\\e[33m in \\\\e[0m/ ' | ${mysed} 's/ #/\\\\e[33m, \\\\e[32m/' | while read line; do echo -e "${line}\e[0m"; done
 cd ..

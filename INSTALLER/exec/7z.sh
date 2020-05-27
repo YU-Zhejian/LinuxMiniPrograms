@@ -2,7 +2,7 @@
 # 7Z.sh V1P1
 if [ -z "${my7z:-}" ]; then
     if which 7za&>>/dev/null; then
-        line=$(which 7za)
+        line="$(which 7za)"
         echo "my7z=\"${line}\" #UNIVERSE" >>"${path_sh}"
         echo "7z found in ${line}"
     else

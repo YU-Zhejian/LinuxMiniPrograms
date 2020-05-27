@@ -7,7 +7,7 @@ if [ -z "${mycp:-}" ]; then
             break
         fi
         tmpf=$(mktemp -t configpath.XXXXXX)
-        ${myls} -F -1 "${dir}" | ${mygrep} '.\*$' | ${mysed} "s;\*\$;;" | ${mygrep} '^cp\(\.exe\)*$' | ${mysed} "s;^;$(echo ${dir})/;" >"${tmpf}"
+        "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^cp\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
             cp_ver=$("${line}" --version 2>&1)
             if [[ "${cp_ver}" =~ .*"GNU".* ]]; then
@@ -27,7 +27,7 @@ if [ -z "${mycp:-}" ]; then
             fi
             unset type
         done <"${tmpf}"
-        rm "${tmpf}"
+        "${myrm}" "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"

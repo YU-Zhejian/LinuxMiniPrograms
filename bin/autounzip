@@ -2,66 +2,14 @@
 # AUTOUNZIP V3
 set -euo pipefail
 ISAOTOZIP=false
+USESPLIT=false
 DN=$(dirname ${0})
 . ${DN}/exec/libautozip.sh
-# ============ Functions ============
-# Make a number 3 digit
-function fixthree() {
-    local fout="${1}"
-    while [ ${#fout} -lt 3 ]; do
-        fout="0${fout}"
-    done
-    echo ${fout}
-}
-# Standard_C heads
-function stdc_h() {
-    local file_i=1
-    local in_i=001
-    if ${USEPARALLEL}; then
-        while [ -f "${fulln}".${in_i} ]; do
-            echo "cat "${PWD}"/"${fulln}".${in_i}|${@}>>${tempdir}/${in_i}" >>"${tempdir}"/"${in_i}".sh
-            file_i=$((${file_i} + 1))
-            in_i=$(fixthree ${file_i})
-        done
-        ${myfind} "${tempdir}"/*.sh\|"${myparallel}" bash
-    else
-        while [ -f "${fulln}".${in_i} ]; do
-            cat "${fulln}".${in_i} | ${@} >>"${tempdir}"/${in_i}
-            file_i=$((${file_i} + 1))
-            in_i=$(fixthree ${file_i})
-        done
-    fi
-}
-# standard TAR creator
-function stdtc() {
-    stdc_h "${@}"
-    local file_i=1
-    local in_i=001
-    while [ -f "${fulln}".${in_i} ]; do
-        cat "${tempdir}"/${in_i} >>"${tempf}"
-        file_i=$((${file_i} + 1))
-        in_i=$(fixthree ${file_i})
-    done
-    unset file_i in_1
-    "${mytar}" xvf "${tempf}"
-}
-# standard FILE creator
-function stdfc() {
-    stdc_h "${@}"
-    local file_i=1
-    local in_i=001
-    while [ -f "${fulln}".${in_i} ]; do
-        cat "${tempdir}"/${in_i} >>"${fn}"
-        file_i=$((${file_i} + 1))
-        in_i=$(fixthree ${file_i})
-    done
-    unset file_i in_1
-}
 # ============ Start ============
 echo -e "\e[33mYuZJLab AutoUnZip"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 preck
-ppopt ${@}
+ppopt "${@}"
 # ============ Possess arguments ============
 STDI=(${STDS})
 fulln="${STDI[0]:-}"
@@ -107,7 +55,7 @@ case ${ext} in
         file_i=1
         in_i=001
         while [ -f "${fulln}".${in_i} ]; do
-            cat "${fulln}".${in_i} >>"${tempf}"
+            "${mycat}" "${fulln}".${in_i} >>"${tempf}"
             file_i=$((${file_i} + 1))
             in_i=$(fixthree ${file_i})
         done
@@ -123,7 +71,7 @@ case ${ext} in
         exit 1
     fi
     if [ "${mytar}" = 'ylukh' ]; then
-        echo -e "\e[31mERROR: GNU Tar NO exist!\e[0m"
+        echo -e "\e[31mERROR: Tar NO exist!\e[0m"
         exit 1
     fi
     if ${USESPLIT}; then
@@ -138,7 +86,7 @@ case ${ext} in
         exit 1
     fi
     if [ "${mytar}" = 'ylukh' ]; then
-        echo -e "\e[31mERROR: GNU Tar NO exist!\e[0m"
+        echo -e "\e[31mERROR: Tar NO exist!\e[0m"
         exit 1
     fi
     if ${USESPLIT}; then
@@ -153,7 +101,7 @@ case ${ext} in
         exit 1
     fi
     if [ "${mytar}" = 'ylukh' ]; then
-        echo -e "\e[31mERROR: GNU Tar NO exist!\e[0m"
+        echo -e "\e[31mERROR: Tar NO exist!\e[0m"
         exit 1
     fi
     if ${USESPLIT}; then
@@ -168,13 +116,13 @@ case ${ext} in
         exit 1
     fi
     if [ "${mytar}" = 'ylukh' ]; then
-        echo -e "\e[31mERROR: GNU Tar NO exist!\e[0m"
+        echo -e "\e[31mERROR: Tar NO exist!\e[0m"
         exit 1
     fi
     if ${USESPLIT}; then
         stdtc "\"${myxz}\" -dk --format=lzma"
     else
-        "${myxz}" -dc "${fulln}" | "${mytar}" xv -f -
+        "${myxz}" -dc "${fulln}" | "${mytar}" -xv -f -
     fi
     ;;
 "gz" | "GZ") # ============ gz ============
@@ -186,9 +134,9 @@ case ${ext} in
         stdfc "\"${mygz}\" -dk"
     else
         if ${USEPARALLEL} && [ $PIGZ -eq 0 ]; then
-            cat "${fulln}" | "${mypigz}" -dc >"${fn}"
+            "${mycat}" "${fulln}" | "${mypigz}" -dc >"${fn}"
         else
-            cat "${fulln}" | "${mygzip}" -dc >"${fn}"
+            "${mycat}" "${fulln}" | "${mygzip}" -dc >"${fn}"
         fi
     fi
     ;;
@@ -245,7 +193,7 @@ case ${ext} in
             exit 1
         fi
         ${mycp} "${fn}".z* "${tempdir}"/
-        "${myzip}" zip -FF "${tempdir}"/"${fn}".zip --out "${tempdir}"/"${fn}".fzip
+        "${myzip}" -FF "${tempdir}"/"${fn}".zip --out "${tempdir}"/"${fn}".fzip
         "${myunzip}" "${tempdir}"/"${fn}".fzip
     else
         "${myunzip}" "${fulln}"

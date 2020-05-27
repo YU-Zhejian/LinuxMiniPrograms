@@ -2,7 +2,7 @@
 # BZIP2.sh V1P1
 if [ -z "${mybzip2:-}" ]; then
     if which bzip2 &>>/dev/null; then
-        line=$(which bzip2)
+        line="$(which bzip2)"
         echo "mybzip2=\"${line}\" #UNIVERSE" >>"${path_sh}"
         echo "bzip2 found in ${line}"
     else
