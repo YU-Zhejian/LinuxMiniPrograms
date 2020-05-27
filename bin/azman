@@ -1,154 +1,23 @@
 #!/usr/bin/env bash
-# AZMAN V2P10
+# AZMAN V3
 DN=$(dirname ${0})
 exec 1>&2
-ISAUTOZIP=True
-{ . ${DN}/exec/libautozip.sh; } && { echo -e "\e[33mlibautozip loaded.\e[0m"; } || {
-    echo -e "\e[31mFail to load libautozip.\e[0m"
-    exit 1
-}
-LIBDO_TOP_PID=${$}
-# ============ Start ============
+ISAUTOZIP=false
+. "${DN}"/exec/libautozip.sh
 echo -e "\e[33mYuZJLab AutoZipManager"
 echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
 preck
-# ============ Possess options ============
-ISAOTOZIP=false
 ppopt "${@}"
 # ============ Possess arguments ============
 STDI=(${STDS})
-azcmd=${STDI[0]}
-fulln=${STDI[1]}
-if [ -z ${fulln} ] || [ -z ${azcmd} ]; then
+azcmd=${STDI[0]:-}
+unset STDI[0]
+if [ -z ${azcmd} ]; then
     autozipck
     exit 0
-elif [ -e "${fulln}.001" ]; then
-    echo -e "\e[31mERROR: Splited file '${fulln}' not supported.\e[0m"
-    exit 1
-elif ! [ -e ${fulln} ]; then
-    echo -e "\e[31mERROR: Filename '${fulln}' invalid.\e[0m"
+elif [ -e "${DN}"/exec/azman_${azcmd}.sh ];then
+    . "${DN}"/exec/azman_${azcmd}.sh
+else
+    echo -e "\e[31mERROR: subcommand '${azcmd}' invalid!\e[0m"
     exit 1
 fi
-fulln=$(mfn ${fulln})
-fn=${fulln%.*}
-ext=${fulln##*.}
-if [ ${fn##*.} = "tar" ]; then
-    ext="tar.${ext}"
-    fn=${fn%.*}
-fi
-echo -e "\e[33mReceived: ${0} ${azcmd} ${fulln} ${OPT} ==>Extension=${ext}\e[0m"
-# ============ Start ============
-case ${azcmd} in
-"list")
-    case ${ext} in
-    "tar") # ============ tar ============
-        if ! [ $(TAR) -eq 0 ]; then
-            echo -e "\e[31mERROR: GNU Tar NO exist!\e[0m"
-            exit 1
-        fi
-        tar tvf ${fulln}
-        ;;
-    "tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
-        if ! [ $(GZIP) -eq 0 ]; then
-            echo -e "\e[31mERROR: GZip NO exist!\e[0m"
-            exit 1
-        fi
-        if ! [ $(TAR) -eq 0 ]; then
-            echo -e "\e[31mERROR: GNU Tar NO exist!\e[0m"
-            exit 1
-        fi
-        tar tzvf ${fulln}
-        ;;
-    "tar.xz" | "txz") # ============ txz ============
-        if ! [ $(XZIP) -eq 0 ]; then
-            echo -e "\e[31mERROR: XZ NO exist!\e[0m"
-            exit 1
-        fi
-        if ! [ $(TAR) -eq 0 ]; then
-            echo -e "\e[31mERROR: GNU Tar NO exist!\e[0m"
-            exit 1
-        fi
-        tar tJvf ${fulln}
-        ;;
-    "tar.bz2" | "tbz") # ============ tbz ============
-        if ! [ $(BZIP2) -eq 0 ]; then
-            echo -e "\e[31mERROR: BZip2 NO exist!\e[0m"
-            exit 1
-        fi
-        if ! [ $(TAR) -eq 0 ]; then
-            echo -e "\e[31mERROR: GNU Tar NO exist!\e[0m"
-            exit 1
-        fi
-        tar tjvf ${fulln}
-        ;;
-    "tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
-        if ! [ $(XZIP) -eq 0 ]; then
-            echo -e "\e[31mERROR: LZMA SDK NO exist!\e[0m"
-            exit 1
-        fi
-        if ! [ $(TAR) -eq 0 ]; then
-            echo -e "\e[31mERROR: GNU Tar NO exist!\e[0m"
-            exit 1
-        fi
-        echo -e "\e[31mWARNING: Unsupported under BSD!\e[0m"
-        tar tvf ${fulln} --lzma
-        ;;
-    "gz" | "GZ") # ============ gz ============
-        if ! [ $(GZIP) -eq 0 ]; then
-            echo -e "\e[31mERROR: GZip NO exist!\e[0m"
-            exit 1
-        fi
-        gzip -l ${fulln}
-        ;;
-    "xz") # ============ xz ============
-        if ! [ $(XZIP) -eq 0 ]; then
-            echo -e "\e[31mERROR: XZ NO exist!\e[0m"
-            exit 1
-        fi
-        xz -l ${fulln}
-        ;;
-    "bz2") # ============ bz2 ============
-        if ! [ $(BZIP2) -eq 0 ]; then
-            echo -e "\e[31mERROR: BZip2 NO exist!\e[0m"
-            exit 1
-        fi
-        echo -e "\e[31mERROR: BZip2 do not support this function!\e[0m"
-        ;;
-    "lz" | "lzma") # ============ lz ============
-        if ! [ $(XZIP) -eq 0 ]; then
-            echo -e "\e[31mERROR: XZ NO exist!\e[0m"
-            exit 1
-        fi
-        echo -e "\e[31mERROR: XZ Utils do not support this function!\e[0m"
-        ;;
-    "7z") # ============ 7z ============
-        if ! [ $(Z7) -eq 0 ]; then
-            echo -e "\e[31mERROR: p7zip NO exist!\e[0m"
-            exit 1
-        fi
-        7za l ${fulln}
-        ;;
-    "zip") # ============ zip ============
-        if ! [ $(UNZIP) -eq 0 ]; then
-            echo -e "\e[31mERROR: unzip NO exist!\e[0m"
-            exit 1
-        fi
-        unzip -v ${fulln}
-        ;;
-    "rar")
-        if ! [ $(RAR) -eq 0 ]; then
-            echo -e "\e[31mERROR: rar NO exist!\e[0m"
-            exit 1
-        fi
-        rar v ${fulln}
-        ;;
-    esac
-    # ============ Finished ============
-    echo -e "\e[33mFinished.\e[0m"
-    exit 0
-    ;;
-*)
-    echo -e "\e[31mERROR: subcommand '${azcmd}' not exist!\e[0m"
-    exit 1
-    ;;
-esac
