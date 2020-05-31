@@ -40,10 +40,10 @@ else
         fi
 
     else
-        if ! [[ "tar,tar.gz,tgz,tar.GZ,tar.xz,txz,tar.bz2,bz,tar.lzma,tar.lz,tlz" =~ .*"${ext}".* ]]; then
+        if ! [[ "tar,tar.gz,tgz,tar.GZ,tar.xz,txz,tar.bz2,tbz,tar.lzma,tar.lz,tlz" =~ .*"${ext}".* ]]; then
             echo -e "\e[31mERROR: You're about to compress FILE '${fn}' with extension '${ext}', which is designed for compressing FOLDERs.\e[0m"
             exit 1
-        elif ! [ ${mytar} = "ylukh" ]; then
+        elif [ ${mytar} = "ylukh" ]; then
             echo -e "\e[31mERROR: No tar available!\e[0m"
             exit 1
         fi
@@ -207,11 +207,11 @@ case ${ext} in
     fi
     if [ -n "${SPLIT:-}" ]; then
         "${mytar}" -f - -cv "${fn}" | split -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
-        for tfn in "${tempdir}"/"${fn}.*"; do
-            cat "${tfn}" | ${PAR} bzip2 ${LVL} >"${fn}".${ext}.${tfn:0-3}
+        for tfn in "${tempdir}"/"${fn}".*; do
+            cat "${tfn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}".${ext}.${tfn:0-3}
         done
     else
-        "${mytar}" -f - -cv "${fn}" | ${PAR} bzip2 ${LVL} >"${fn}"."${ext}"
+        "${mytar}" -f - -cv "${fn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}"."${ext}"
     fi
     ;;
 "tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============

@@ -58,7 +58,7 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdtl "\"${mygzip}\" -dk"
+        stdtl "\"${mygzip} -dk"
     else
         "${mytar}" -tzvf "${fulln}"
     fi
@@ -73,7 +73,7 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdtl "\"${myxz}\" -dk"
+        stdtl "${myxzip} -dk"
     else
         "${mytar}" -tJvf "${fulln}"
     fi
@@ -88,7 +88,7 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdtl "\"${mybzip2}\" -dk"
+        stdtl "${mybzip2} -dk"
     else
         "${mytar}" -xjvf "${fulln}"
     fi
@@ -103,9 +103,9 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdtl "\"${myxz}\" -dk --format=lzma"
+        stdtl "${myxzip} -dk --format=lzma"
     else
-        "${myxz}" -dc "${fulln}" | "${mytar}" -tv -f -
+        "${myxzip}" -dc "${fulln}" | "${mytar}" -tv -f -
     fi
     ;;
 "gz" | "GZ") # ============ gz ============

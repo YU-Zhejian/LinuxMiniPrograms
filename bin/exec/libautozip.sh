@@ -138,7 +138,7 @@ function ppopt() {
                 REMOVE=true
                 ;;
             "-s" | "--split")
-                if ! ${ISAOTOZIP}; then
+                if ! ${ISAUTOZIP}; then
                     echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
                     exit 1
                 fi
@@ -152,7 +152,7 @@ function ppopt() {
                 esac
                 ;;
             -s\:*)
-                if ! ${ISAOTOZIP}; then
+                if ! ${ISAUTOZIP}; then
                     echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
                     exit 1
                 fi
