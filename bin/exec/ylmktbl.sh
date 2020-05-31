@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
-# YLMKTNL.sh V3P2
-
-{ . "${DN}"/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded.\e[0m" >&2; } || {
-    echo -e "\e[31mFail to load libisopt.\e[0m" >&2
-    exit 1
-}
+# YLMKTNL.sh V3P3
+. "${DN}"/../lib/libisopt
 for opt in "${@}"; do
-    if isopt ${opt}; then
-        case ${opt} in
+    if isopt "${opt}"; then
+        case "${opt}" in
         "-h" | "--help")
             yldoc ylmktbl
             exit 0
@@ -25,7 +21,6 @@ for opt in "${@}"; do
         STDS="${opt}"
     fi
 done
-mypy=$(cat "${DN}"/../etc/python.conf)
 if ! [ -f "${STDS}" ]; then
     echo -e "\e[31mERROR: Table file ${STDS} invalid.\e[0m"
     exit 1

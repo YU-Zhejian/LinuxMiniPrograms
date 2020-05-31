@@ -1,26 +1,32 @@
 #!/usr/bin/env bash
-# BHS V1P3
+# BHS V1P4
+set -ue
 DN=$(dirname ${0})
-more="more"
+. "${DN}"/../etc/path.sh
+more="${mymore}"
 echo -e "\e[33mYuZJLab Bash History Searcher"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
-{ . ${DN}/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || {
-    echo -e "\e[31mFail to load libisopt.\e[0m"
-    exit 1
-}
+. "${DN}"/../lib/libisopt
+STDS=''
 for opt in "${@}"; do
-    if isopt ${opt}; then
-        case ${opt} in
+    if isopt "${opt}"; then
+        case "${opt}" in
         "-h" | "--help")
             yldoc bhs
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 1 patch 2"
+            echo "Version 1 patch 4"
             exit 0
             ;;
         --more\:*)
-            more=${opt:7}
+            more="${opt:7}"
+            if ! "${more}" --help &>/dev/null; then
+                echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
+                more="${mymore}"
+            else
+                echo -e "\e[33mWill use '${more}' as More.\e[0m"
+            fi
             ;;
         *)
             echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
@@ -33,7 +39,7 @@ for opt in "${@}"; do
 done
 if [ -n "${STDS}" ]; then
     echo \"${STDS}\"
-    cat -n ~/.bash_history | grep --color=auto -- ${STDS} | ${more}
+    "${mycat}" -n ~/.bash_history | "${mygrep}" --color=auto -- "${STDS}" | "${more}"
 else
-    cat -n ~/.bash_history | ${more}
+    "${mycat}" -n ~/.bash_history | "${more}"
 fi
