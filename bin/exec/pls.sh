@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# PLS V3
+# PLS V3P1
 wd="${PWD}"
 oldifs="${IFS}"
-DN=$(dirname ${0})
+DN="$(dirname ${0})"
 function my_grep() {
     regstr="${1}"
     local tmpffff=$(mktemp -t pls.XXXXXX)
-    cat "${tmpf}" | grep -v "${regstr}" >"${tmpffff}"
+    "${mycat}" "${tmpf}" | "${mygrep}" -v "${regstr}" >"${tmpffff}"
     mv "${tmpffff}" "${tmpf}"
 }
-more="more"
+more="${mymore}"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libpath
 IFS=":"
@@ -21,14 +21,14 @@ allow_d=false
 allow_o=true
 STDS=''
 for opt in "${@}"; do
-    if isopt ${opt}; then
-        case ${opt} in
+    if isopt "${opt}"; then
+        case "${opt}" in
         "-h" | "--help")
             yldoc pls
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 3 in Bash"
+            echo "Version 3 Patch 1 in Bash"
             exit 0
             ;;
         "--no-x")
@@ -51,7 +51,13 @@ for opt in "${@}"; do
             exit 0
             ;;
         --more\:*)
-            more=${opt:7}
+            more=$"{opt:7}"
+            if ! "${more}" --help &>/dev/null; then
+                echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
+                more="${mymore}"
+            else
+                echo -e "\e[33mWill use '${more}' as More.\e[0m"
+            fi
             ;;
         *)
             echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
@@ -63,11 +69,11 @@ for opt in "${@}"; do
     fi
 done
 unset invalid_path valid_path
-tmpf=$(mktemp -t pls.XXXXXX)
+tmpf="$(mktemp -t pls.XXXXXX)"
 echo -e "\e[33mReading database...\e[0m"
 for dir in "${eachpath[@]}"; do
     if ! [ -d "${dir}" ]; then continue; fi
-    ls -1 -F "${dir}" | sed "s;^;$(echo "${dir}")/;" >>${tmpf}
+    "${myls}" -1 -F "${dir}" | sed "s;^;$(echo "${dir}")/;" >>"${tmpf}"
 done
 if ! ${allow_d}; then
     my_grep '/$'
@@ -79,16 +85,16 @@ if ! ${allow_o}; then
     my_grep '[^\*/]$'
 fi
 if [ -z "${STDS:-}" ]; then
-    cat "${tmpf}" | ${more}
+    "${mycat}" "${tmpf}" | "${more}"
 else
     IFS=" "
     STDI=(${STDS})
     IFS=''
     grepstr=''
     for fn in "${STDI[@]}"; do
-        grepstr=${grepstr}" -e "${fn}
+        grepstr="${grepstr} -e ${fn}"
     done
-    eval cat \"${tmpf}\"\|grep ${grepstr}\|${more}
+    eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"\|"${more}"
 fi
 rm "${tmpf}"
 IFS="${oldifs}"

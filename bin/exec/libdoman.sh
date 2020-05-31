@@ -23,11 +23,8 @@ for opt in "${@}"; do
             cmd=${opt:9}
             ;;
         --more\:*)
-            more=${opt:7}
-            if [ $(
-                "${more}" --help &>/dev/null
-                echo ${?}
-            ) -ne 0 ]; then
+            more="${opt:7}"
+            if ! "${more}" --help &>/dev/null; then
                 echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
                 more="${mymore}"
             else
@@ -115,7 +112,7 @@ if [ ${cmd} -eq 0 ]; then
         for ((i = 1; i <= ${Proj}; i++)); do
             echo "${i};${Proj_CMD[${i}]};${Proj_Exit[${i}]};${Proj_Time[${i}]}" >>"${table}"
         done
-        ylmktbl "${table}" | ${more}
+        ylmktbl "${table}" | "${more}"
         "${myrm}" "${ffn}" "${table}"
         unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table ffn all_lines
     done
@@ -148,7 +145,6 @@ else
     unset line
     tmpprj="$(mktemp -t libdo_man.XXXXXX)"
     cat "${fn}" | "${myhead}" -n $((${ln_s} + 1)) | "${mytail}" -n 2 >"${tmpprj}"
-    echo aaa
     "${mycat}" "${fn}" | "${myhead}" -n ${ln_e} | "${mytail}" -n 2 >>"${tmpprj}"
     while read line; do
         all_lines=("${all_lines[@]}" "${line}")

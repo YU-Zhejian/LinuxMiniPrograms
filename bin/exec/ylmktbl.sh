@@ -40,6 +40,7 @@ function mktbl_GetLongestString_max_str() {
     return ${mitem}
 }
 function mktbl_GetLongestString() {
+    mktbl_GetLongestString_max_str=''
     for item in "${@}"; do
         if [ ${#item} -gt ${#mktbl_GetLongestString_max_str} ]; then
             mktbl_GetLongestString_max_str=${item}
@@ -55,7 +56,7 @@ while read line; do
         IFS=''
         j=0
         for item in "${curr_col_items[@]}"; do
-            row[${j}]="${row[${j}]}$item;"
+            row[${j}]="${row[${j}]:-}${item};"
             j=$((${j} + 1))
         done
         unset item curr_col_items j
@@ -64,6 +65,8 @@ while read line; do
     fi
     unset line
 done <"${STDS}"
+j=0
+total_col_len=0
 for row_tmp_str in "${row[@]}"; do
     IFS=";"
     row_tmp=(${row_tmp_str})
@@ -125,19 +128,16 @@ for row_tmp_str in "${row[@]}"; do
 done
 unset row row_len
 IFS=";"
-col_num_tmp=(${formatted_row[0]})
-col_num=${#row_num_tmp[@]}
 row_num=${#formatted_row[@]}
 IFS=''
-unset col_num_tmp
 for ((j = 0; j <= ${row_num}; j++)); do
-    curr_row=${formatted_row[${j}]}
+    curr_row=${formatted_row[${j}]:-}
     IFS=";"
     curr_row_items=(${curr_row})
     IFS=''
     curr_col_num=0
     for item in "${curr_row_items[@]}"; do
-        col[${curr_col_num}]="${col[${curr_col_num}]}$item;"
+        col[${curr_col_num}]="${col[${curr_col_num}]:-}${item};"
         curr_col_num=$((${curr_col_num} + 1))
     done
 done
@@ -147,7 +147,7 @@ SPB=''
 for ((i = 0; i <= ${col_len}; i++)); do
     SPB="${SPB}-"
 done
-unset col_num total_col_len col_len
+unset total_col_len col_len
 echo -e "\e[36m${SPB}\e[0m"
 for curr_col in "${col[@]}"; do
     IFS=";"
@@ -157,8 +157,8 @@ for curr_col in "${col[@]}"; do
     for item in "${curr_col_items[@]}"; do
         msg="${msg}${item}\e[36m|\e[0m"
     done
-    echo -e ${msg}
+    echo -e "${msg}"
     echo -e "\e[36m${SPB}\e[0m"
 done
-unset col curr_col msg SPB oldifs
+unset col curr_col msg SPB
 IFS=${oldifs}
