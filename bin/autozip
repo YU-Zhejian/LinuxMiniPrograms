@@ -105,7 +105,7 @@ ${lvl_able})
     ;;
 *)
     LVL=''
-    echo -e "\e[31mWARNING: Compression level '${STDI[2]}' undefined. You can use ${lvl_able} for ${ext} extension.\nWill use default value provided by corresponding algorism.\e[0m"
+    echo -e "\e[31mWARNING: Compression level '${STDI[2]:-}' undefined. You can use ${lvl_able} for ${ext} extension.\nWill use default value provided by corresponding algorism.\e[0m"
     unset lvl_able
     ;;
 esac
@@ -243,7 +243,7 @@ case ${ext} in
             cat "${tfn}" | ${cmd} ${LVL} >"${fn}".${ext}.${tfn:0-3}
         done
     else
-        cat "${tfn}" | ${cmd} ${LVL} >"${fn}".${ext}
+        cat "${fn}" | ${cmd} ${LVL} >"${fn}".${ext}
     fi
     ;;
 "bgz") # ============ bgz ============

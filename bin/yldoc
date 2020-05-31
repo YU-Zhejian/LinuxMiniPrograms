@@ -1,30 +1,36 @@
 #!/usr/bin/env bash
-# YLDOC V1P5
+# YLDOC V1P6
+set -ue
 DN=$(dirname ${0})
-more="more"
 echo -e "\e[33mYuZJLab Documentation System"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
-{ . $DN/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || {
-    echo -e "\e[31mFail to load libisopt.\e[0m"
-    exit 1
-}
+. ${DN}/../lib/libisopt
+. "${DN}"/../etc/path.sh
+more="${mymore}"
+STDS=''
 for opt in "${@}"; do
-    if isopt ${opt}; then
-        case ${opt} in
+    if isopt "${opt}"; then
+        case "${opt}" in
         "-h" | "--help")
             yldoc yldoc
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 1 patch 5"
+            echo "Version 1 Patch 6"
             exit 0
             ;;
         --more\:*)
-            more=${opt:7}
+            more="${opt:7}"
+            if ! "${more}" --help &>/dev/null; then
+                echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
+                more="${mymore}"
+            else
+                echo -e "\e[33mWill use '${more}' as More.\e[0m"
+            fi
             ;;
         "-l" | "--list")
             echo -e "\e[33mReading database...\e[0m"
-            ls -1 ${DN}/../doc | sort | sed 's/.usage//'|${more}
+            "${myls}" -1 "${DN}"/../doc | "${mysort}" | "${mysed}" 's/.usage//' | "${more}"
             exit 0
             ;;
         *)
@@ -36,12 +42,12 @@ for opt in "${@}"; do
         STDS="${STDS} ${opt}"
     fi
 done
-if [ -z ${STDS} ]; then
+if [ -z "${STDS}" ]; then
     yldoc yldoc
     exit 0
 fi
 STDI=(${STDS})
-if [ -f ${DN}/../etc/yldoc.conf ]; then
+if [ -f "${DN}"/../etc/yldoc.conf ]; then
     while read line; do
         li=(${line})
         for ((i = 0; i < ${#STDI[@]}; i++)); do
@@ -49,11 +55,11 @@ if [ -f ${DN}/../etc/yldoc.conf ]; then
                 STDI[${i}]=${li[1]}
             fi
         done
-    done <${DN}/../etc/yldoc.conf
+    done <"${DN}"/../etc/yldoc.conf
 fi
 for fn in "${STDI[@]}"; do
-    if [ -f ${DN}/../doc/${fn}.usage ]; then
-        cat ${DN}/../doc/${fn}.usage | ${more}
+    if [ -f "${DN}"/../doc/"${fn}".usage ]; then
+        "${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}"
     else
         echo -e "\e[31mERROR: ${DN}/../doc/${fn}.usage not found!\e[0m"
         exit 1
