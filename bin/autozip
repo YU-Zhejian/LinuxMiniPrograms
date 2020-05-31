@@ -34,16 +34,17 @@ else
         exit 1
     fi
     if [ -f "${fn}" ]; then
+        if ! [[ "gz,bgz,GZ,xz,bz2,lzma,lz" =~ .*"${ext}".* ]]; then
+            echo -e "\e[31mERROR: You're about to compress FOLDER '${fn}' with extension '${ext}', which is designed for compressing SINGLE FILE.\e[0m"
+            exit 1
+        fi
+
+    else
         if ! [[ "tar,tar.gz,tgz,tar.GZ,tar.xz,txz,tar.bz2,bz,tar.lzma,tar.lz,tlz" =~ .*"${ext}".* ]]; then
             echo -e "\e[31mERROR: You're about to compress FILE '${fn}' with extension '${ext}', which is designed for compressing FOLDERs.\e[0m"
             exit 1
         elif ! [ ${mytar} = "ylukh" ]; then
             echo -e "\e[31mERROR: No tar available!\e[0m"
-            exit 1
-        fi
-    else
-        if ! [[ "gz,bgz,GZ,xz,bz2,lzma,lz" =~ .*"${ext}".* ]]; then
-            echo -e "\e[31mERROR: You're about to compress FOLDER '${fn}' with extension '${ext}', which is designed for compressing SINGLE FILE.\e[0m"
             exit 1
         fi
     fi
@@ -266,7 +267,7 @@ case ${ext} in
     fi
     if ${USEPARALLEL}; then PAR="--threads=0"; fi
     if [ -n "${SPLIT:-}" ]; then
-        cat "${fn}" | split -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/$"{fn}".
+        cat "${fn}" | split -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
         for tfn in ${tempdir}/${fn}.*; do
             cat "${tfn}" | "${myxzip}" ${PAR} ${LVL} >"${fn}".${ext}.${tfn:0-3}
         done

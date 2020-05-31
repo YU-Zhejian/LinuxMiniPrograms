@@ -159,7 +159,7 @@ function ppopt() {
                 SPLIT=${opt:3}
                 ;;
             --split\:*)
-                if ! ${ISAOTOZIP}; then
+                if ! ${ISAUTOZIP}; then
                     echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
                     exit 1
                 fi
@@ -200,7 +200,7 @@ function stdc_h() {
         "${myfind}" "${tempdir}"/*.sh\|"${myparallel}" bash
     else
         while [ -f "${fulln}".${in_i} ]; do
-            "${mycat}" "${fulln}".${in_i} | "${*}" >>"${tempdir}"/${in_i}
+            "${mycat}" "${fulln}".${in_i} | ${*} >>"${tempdir}"/${in_i}
             file_i=$((${file_i} + 1))
             in_i=$(fixthree ${file_i})
         done

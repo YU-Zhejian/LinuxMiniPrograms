@@ -75,7 +75,7 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdtc "\"${mygzip}\" -dk"
+        stdtc "${mygzip} -dk"
     else
         "${mytar}" -xzvf "${fulln}"
     fi
@@ -90,7 +90,7 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdtc "\"${myxz}\" -dk"
+        stdtc "${myxzip} -dk"
     else
         "${mytar}" -xJvf "${fulln}"
     fi
@@ -105,7 +105,7 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdtc "\"${mybzip2}\" -dk"
+        stdtc "${mybzip2} -dk"
     else
         "${mytar}" -xjvf "${fulln}"
     fi
@@ -120,9 +120,9 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdtc "\"${myxz}\" -dk --format=lzma"
+        stdtc "${myxzip} -dk --format=lzma"
     else
-        "${myxz}" -dc "${fulln}" | "${mytar}" -xv -f -
+        "${myxzip}" -dc "${fulln}" | "${mytar}" -xv -f -
     fi
     ;;
 "gz" | "GZ") # ============ gz ============
@@ -131,7 +131,7 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdfc "\"${mygz}\" -dk"
+        stdfc "${mygzip} -dk"
     else
         if ${USEPARALLEL} && [ $PIGZ -eq 0 ]; then
             "${mycat}" "${fulln}" | "${mypigz}" -dc >"${fn}"
@@ -146,7 +146,7 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdfc "\"${myxz}\" -dk"
+        stdfc "${myxzip} -dk"
     else
         "${myxz}" -dk "${fulln}"
     fi
@@ -157,9 +157,9 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdfc "\"${mybzip2}\" -dk"
+        stdfc "${mybzip2} -dk"
     else
-        \"${mybzip2}\" -dk "${fulln}"
+        "${mybzip2}" -dk "${fulln}"
     fi
     ;;
 "lz" | "lzma") # ============ lz ============
@@ -168,7 +168,7 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdfc "\"${myxz}\" -dk --format=lzma"
+        stdfc "${myxz} -dk --format=lzma"
     else
         "${myxz}" -dk --format=lzma "${fulln}"
     fi
