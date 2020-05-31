@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
-#LIBDOMAN.sh V6P1
-{ . "${DN}"/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded.\e[0m" >&2; } || {
-    echo -e "\e[31mFail to load libisopt.\e[0m" >&2
-    exit 1
-}
-more="more"
+#LIBDOMAN.sh V6P2
+. "${DN}"/../lib/libisopt
+more="${mymore}"
 cmd=0
+OPT=''
+STDS=''
 for opt in "${@}"; do
     if isopt "${opt}"; then
-        case ${opt} in
+        case "${opt}" in
         "-h" | "--help")
             yldoc libdoman
             exit 0
             ;;
         "-v" | "--version")
-            echo -e "\e[33mVersion 6 Patch 1 in Bash, compatiable with libdo Version 1.\e[0m"
+            echo -e "\e[33mVersion 6 Patch 2 in Bash, compatiable with libdo Version 1.\e[0m"
             exit 0
             ;;
         -o\:*)
@@ -29,8 +28,8 @@ for opt in "${@}"; do
                 "${more}" --help &>/dev/null
                 echo ${?}
             ) -ne 0 ]; then
-                echo -e "\e[31mERROR! Invalid More '${more}'! Will use original 'more' instead.\e[0m"
-                more="more"
+                echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
+                more="${mymore}"
             else
                 echo -e "\e[33mWill use '${more}' as More.\e[0m"
             fi
@@ -47,10 +46,13 @@ for opt in "${@}"; do
 done
 STDI=(${STDS})
 if [ ${#STDI[@]} -gt 1 ]; then
-    echo -e "\e[33m More than one filename was received. Will disable -o option.\e[0m"
+    echo -e "\e[33mMore than one filename was received. Will disable -o option.\e[0m"
     cmd=0
+elif [ ${#STDI[@]} -lt 1 ]; then
+    echo -e "\e[33mNo file.\e[0m"
+    exit 1
 fi
-mypy=$(cat ${DN}/../etc/python.conf)
+
 if [ ${cmd} -eq 0 ]; then
     more="cat"
     echo -e "\e[33mWill use '${more}' as More.\e[0m"
@@ -61,24 +63,24 @@ if [ ${cmd} -eq 0 ]; then
         fi
         echo -e "\e[33mLoading ${fn}...0 item proceeded.\e[0m"
         Proj=0
-        ffn=$(mktemp -t libdo_man.XXXXXX)
-        cat "${fn}" | grep LIBDO >"${ffn}"
+        ffn="$(mktemp -t libdo_man.XXXXXX)"
+        "${mycat}" "${fn}" | "${mygrep}" LIBDO >"${ffn}"
         while read line; do
             all_lines=("${all_lines[@]}" "${line}")
         done <"${ffn}"
         i=0
         while [ ${#all_lines[@]} -gt ${i} ]; do
-            line=${all_lines[i]}
+            line="${all_lines[i]}"
             i=$((${i} + 1))
-            if [[ ${line} =~ "LIBDO IS GOING TO EXECUTE"* ]]; then
+            if [[ "${line}" =~ "LIBDO IS GOING TO EXECUTE"* ]]; then
                 Proj=$((${Proj} + 1))
                 echo -e "\e[33mLoading ${fn}...${Proj} item proceeded.\e[0m"
-                Proj_CMD[${Proj}]=${line:26}
-                line=${all_lines[i]}
-                if [[ ${line} =~ "LIBDO STARTED AT"* ]]; then
+                Proj_CMD[${Proj}]="${line:26}"
+                line="${all_lines[i]}"
+                if [[ "${line}" =~ "LIBDO STARTED AT"* ]]; then
                     Proj_Time_s[${Proj}]=$(echo ${line:17} | sed "s/.$//")
                     i=$((${i} + 2)) #Skip PID
-                    line=${all_lines[i]}
+                    line="${all_lines[i]}"
                 fi
                 if [ ${#all_lines[@]} -eq ${i} ]; then
                     Proj_Time_e[${Proj}]=0
@@ -86,23 +88,23 @@ if [ ${cmd} -eq 0 ]; then
                     Proj_Time[${Proj}]="ERR"
                     continue
                 fi
-                if [[ ${line} =~ "LIBDO STOPPED AT"* ]]; then
+                if [[ "${line}" =~ "LIBDO STOPPED AT"* ]]; then
                     Proj_Time_e[${Proj}]=$(echo ${line:17} | sed "s/.$//")
                     Proj_Time[${Proj}]=$(bash ${DN}/exec/datediff.sh "${Proj_Time_s[${Proj}]}" "${Proj_Time_e[${Proj}]}")
                     i=$((${i} + 1))
-                    line=${all_lines[i]}
-                elif [[ ${line} =~ "LIBDO IS GOING TO EXECUTE"* ]]; then
+                    line="${all_lines[i]}"
+                elif [[ "${line}" =~ "LIBDO IS GOING TO EXECUTE"* ]]; then
                     Proj_Time_e[${Proj}]=0
                     Proj_Exit[${Proj}]="-1"
                     Proj_Time[${Proj}]="ERR"
                     continue
                 fi
-                if [[ ${line} == "LIBDO EXITED SUCCESSFULLY." ]]; then
+                if [[ "${line}" == "LIBDO EXITED SUCCESSFULLY." ]]; then
                     i=$((${i} + 1))
                     Proj_Exit[${Proj}]="0"
-                elif [[ ${line} =~ "LIBDO FAILED, GOT"* ]]; then
+                elif [[ "${line}" =~ "LIBDO FAILED, GOT"* ]]; then
                     i=$((${i} + 1))
-                    Proj_Exit[${Proj}]=$(echo ${line:21} | sed "s/.$//")
+                    Proj_Exit[${Proj}]="$(echo ${line:21} | "${mysed}" "s/.$//")"
                 fi
             fi
         done
@@ -114,53 +116,55 @@ if [ ${cmd} -eq 0 ]; then
             echo "${i};${Proj_CMD[${i}]};${Proj_Exit[${i}]};${Proj_Time[${i}]}" >>"${table}"
         done
         ylmktbl "${table}" | ${more}
-        rm "${ffn}" "${table}"
+        "${myrm}" "${ffn}" "${table}"
         unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table ffn all_lines
     done
 else
     fn=${STDI[0]}
-    if ! [ -f "${fn}" ] || [ -z "${fn}" ]; then
+    if ! [ -f "${fn}" ]; then
         echo -e "\e[31mERROR: Filename '${fn}' invalid. Use libdoman -h for help.\e[0m"
         exit 1
     fi
     ln_s=0
     ln_e=0
-    tmps=$(mktemp -t libdo_man.XXXXXX)
-    cat -n "${fn}" | grep "LIBDO IS GOING TO EXECUTE" >"${tmps}"
+    tmps="$(mktemp -t libdo_man.XXXXXX)"
+    "${mycat}" -n "${fn}" | "${mygrep}" "LIBDO IS GOING TO EXECUTE" >"${tmps}"
+    ln=0
     while read line; do
         ln=$((${ln} + 1))
         if [ ${ln} -eq ${cmd} ]; then
-            ln_s=$(echo $line | cut -f 1 -d " ")
+            ln_s="$(echo ${line} | "${mycut}" -f 1 -d " ")"
         elif [ ${ln} -gt ${cmd} ]; then
-            ln_e=$(($(echo $line | cut -f 1 -d " ") - 1))
+            ln_e="$(($(echo ${line} | "${mycut}" -f 1 -d " ") - 1))"
             break
         fi
     done <"${tmps}"
-    rm "${tmps}"
+    "${myrm}" "${tmps}"
     if [ ${ln_s} -eq 0 ]; then
         echo -e "\e[31mERROR: ${cmd} invalid.\e[0m" >&2
         exit 1
     fi
-    if [ ${ln_e} -eq 0 ]; then ln_e=$(wc -l ${fn} | cut -f 1 -d " "); fi
+    if [ ${ln_e} -eq 0 ]; then ln_e=$(wc -l ${fn} | "${mycut}" -f 1 -d " "); fi
     unset line
-    tmpprj=$(mktemp -t libdo_man.XXXXXX)
-    cat ${fn} | head -n $((${ln_s} + 1)) | tail -n 2 >"${tmpprj}"
-    cat ${fn} | head -n ${ln_e} | tail -n 2 >>"${tmpprj}"
+    tmpprj="$(mktemp -t libdo_man.XXXXXX)"
+    cat "${fn}" | "${myhead}" -n $((${ln_s} + 1)) | "${mytail}" -n 2 >"${tmpprj}"
+    echo aaa
+    "${mycat}" "${fn}" | "${myhead}" -n ${ln_e} | "${mytail}" -n 2 >>"${tmpprj}"
     while read line; do
         all_lines=("${all_lines[@]}" "${line}")
     done <"${tmpprj}"
     CMD=${all_lines[0]:26}
-    Time_s=$(echo ${all_lines[1]:17} | sed "s/.$//")
+    Time_s=$(echo ${all_lines[1]:17} | "${mysed}" "s/.$//")
     if [ ${#all_lines[@]} -lt 4 ]; then
         Time_e=0
         Exit="-1"
         Time="ERR"
     else
         i=2
-        line=${all_lines[i]}
+        line="${all_lines[i]}"
         if [[ "${line}" =~ "LIBDO STOPPED AT"* ]]; then
-            Time_e=$(echo ${line:17} | sed "s/.$//")
-            Time=$(bash ${DN}/exec/datediff.sh "${Time_s}" "${Time_e}")
+            Time_e="$(echo ${line:17} | "${mysed}" "s/.$//")"
+            Time="$(bash ${DN}/exec/datediff.sh "${Time_s}" "${Time_e}")"
             i=$((${i} + 1))
             line=${all_lines[i]}
         fi
@@ -179,9 +183,9 @@ else
     if [ ${ln_e} -le ${tls} ]; then
         echo -e "\e[33mNO_OUTPUT\e[0m"
     elif [ "${Exit}" = "-1" ]; then
-        cat "${fn}" | head -n ${ln_e} | tail -n $((${tls} - ${ln_e})) | ${more}
+        "${mycat}" "${fn}" | "${myhead}" -n ${ln_e} | "${mytail}" -n $((${tls} - ${ln_e})) | "${more}"
     else
-        cat "${fn}" | head -n ${els} | tail -n $((${tls} - ${els})) | ${more}
+        "${mycat}" "${fn}" | "${myhead}" -n ${els} | "${mytail}" -n $((${tls} - ${els})) | "${more}"
     fi
     echo -e "\e[33m________________OUTPUT____FINISHED________________\e[0m" >&2
     rm "${tmpprj}"
