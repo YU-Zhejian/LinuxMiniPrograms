@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # GREP.sh V1P1
+. "${path_sh}"
 if [ -z "${mygrep:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -9,7 +10,7 @@ if [ -z "${mygrep:-}" ]; then
         tmpf=$(mktemp -t configpath.XXXXXX)
         "${myls}" -F -1 "${dir}" | grep '.\*$' | sed "s;\*\$;;" | grep '^grep\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
-            grep_ver=$("${line}" --version 2>&1)
+            grep_ver=$("${line}" --version 2>&1||true)
             if [[ "${grep_ver}" =~ .*"GNU".* ]]; then
                 if [[ "${grep_ver}" =~ .*"BSD".* ]]; then
                     type="GNU version in BSD systems"
@@ -29,7 +30,7 @@ if [ -z "${mygrep:-}" ]; then
     . "${path_sh}"
     if [ -z "${mygrep:-}" ]; then
         echo "mygrep=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-        echo -e "\e[30mERROR: grep still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+        echo -e "\e[31mERROR: grep still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
     fi
 else
     echo -e "\e[033mgrep configured\e[0m"

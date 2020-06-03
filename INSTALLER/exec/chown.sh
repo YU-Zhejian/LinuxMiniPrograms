@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # CHOWN.sh V1P1
+. "${path_sh}"
 if [ -z "${mychown:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -10,7 +11,7 @@ if [ -z "${mychown:-}" ]; then
         "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^chown\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
             lntmp="${line}"
-            chown_ver=$("${line}" --version 2>&1)
+            chown_ver=$("${line}" --version 2>&1||true)
             if [[ "${chown_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
                 if [[ "${chown_ver}" =~ .*"Cygwin".* ]]; then
@@ -34,9 +35,9 @@ if [ -z "${mychown:-}" ]; then
     if [ -z "${mychown:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "mychown=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[30mERROR: chown still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\e[31mERROR: chown still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
-            echo -e "\e[30mWARNING: Will use BSD chown.\e[0m"
+            echo -e "\e[31mWARNING: Will use BSD chown.\e[0m"
             echo "mychown=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi

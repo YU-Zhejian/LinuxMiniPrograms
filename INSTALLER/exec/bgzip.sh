@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # BGZIP.sh V1P1
+. "${path_sh}"
 if [ -z "${mybgzip:-}" ]; then
     if which bgzip &>>/dev/null; then
         line="$(which bgzip)"
@@ -7,7 +8,7 @@ if [ -z "${mybgzip:-}" ]; then
         echo "bgzip found in ${line}"
     else
         echo "mybgzip=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-        echo -e "\e[30mERROR: bgzip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+        echo -e "\e[31mERROR: bgzip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
     fi
     . "${path_sh}"
     unset line

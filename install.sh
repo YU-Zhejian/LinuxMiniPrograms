@@ -111,7 +111,7 @@ if ${VAR_update_path};then
     rm 'etc/path.sh'
 fi
 if ! [ -f 'etc/path.sh' ];then
-    . INSTALLER/configpath
+    bash INSTALLER/configpath
 fi
 if ${VAR_update};then
     ETC=$(

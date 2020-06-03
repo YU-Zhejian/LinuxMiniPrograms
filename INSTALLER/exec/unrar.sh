@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # UNRAR.sh V1P1
+. "${path_sh}"
 if [ -z "${myunrar:-}" ]; then
     if which unrar &>>/dev/null; then
         line="$(which unrar)"
@@ -7,7 +8,7 @@ if [ -z "${myunrar:-}" ]; then
         echo "unrar found in ${line}"
     else
         echo "myunrar=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-        echo -e "\e[30mERROR: unrar still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+        echo -e "\e[31mERROR: unrar still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
     fi
     . "${path_sh}"
     unset line

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # GZIP.sh V1P1
+. "${path_sh}"
 if [ -z "${mypython:-}" ]; then
     python_ver=3
     for dir in "${eachpath[@]}"; do
@@ -23,7 +24,7 @@ if [ -z "${mypython:-}" ]; then
         unset Out_C
     else
         echo "mypython=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-        echo -e "\e[30mERROR: Python still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+        echo -e "\e[31mERROR: Python still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
     fi
     unset python_ver
     . "${path_sh}"

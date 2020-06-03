@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # FIND.sh V1P1
+. "${path_sh}"
 if [ -z "${myfind:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
@@ -36,9 +37,9 @@ if [ -z "${myfind:-}" ]; then
     if [ -z "${myfind:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "myfind=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[30mERROR: find still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\e[31mERROR: find still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
-            echo -e "\e[30mWARNING: Will use BSD find.\e[0m"
+            echo -e "\e[31mWARNING: Will use BSD find.\e[0m"
             echo "myfind=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
