@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# AUTOUNZIP V3
+# AUTOUNZIP V3P2
 set -euo pipefail
 ISAOTOZIP=false
 USESPLIT=false
@@ -31,12 +31,8 @@ if [ "${fn##*.}" = "tar" ]; then
 elif [[ "${fulln}" =~ .*".part1.rar" ]]; then
     fn=$(echo ${fulln} | ${mysed} "s/.part1.rar//")
 fi
-if [[ "tar,tar.gz,tgz,tar.GZ,tar.xz,txz,tar.bz2,bz,tar.lzma,tar.lz,tlz,gz,bgz,GZ,xz,bz2,lzma,lz" =~ .*"ext".* ]]; then
-    echo -e "\e[31mERROR: Extension name '${ext}' invalid.\nYou can execute 'autozip' without any argument or option to check available method and extension.\e[0m"
-    exit 1
-else
-    echo -e "\e[33mReceived: ${0} ${fulln} ${OPT} ==>Extension=${ext}\e[0m"
-fi
+ckext
+echo -e "\e[33mReceived: ${0} ${fulln} ${OPT} ==>Extension=${ext}\e[0m"
 if [ -e "${fn}" ]; then
     if ${ISFORCE}; then
         ${myrm} -rf "${fn}"

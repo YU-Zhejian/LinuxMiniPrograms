@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LIBAUTOZIP V3
+# LIBAUTOZIP V3P2
 REMOVE=false
 USEPARALLEL=false
 ISFORCE=false
@@ -126,7 +126,7 @@ function ppopt() {
                 exit 0
                 ;;
             "-v" | "--version")
-                echo "Version 3"
+                echo "Version 3 Patch 2"
                 exit 0
                 ;;
             "--force")
@@ -243,4 +243,15 @@ function stdfc() {
         in_i=$(fixthree ${file_i})
     done
     unset file_i in_1
+}
+# Check extension name
+function ckext() {
+case "${ext}" in
+    "tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "bz" | "tar.lzma" | "tar.lz" | "tlz" | "gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz") ;;
+
+    *)
+        echo -e "\e[31mERROR: Extension name '${ext}' invalid.\nYou can execute 'autozip' without any argument or option to check available method and extension.\e[0m"
+        exit 1
+        ;;
+    esac
 }

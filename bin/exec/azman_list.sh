@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#AZMAN_LIST V1
+#AZMAN_LIST V1P1
 USESPLIT=false
 fulln="${STDI[1]:-}"
 fn="${fulln%.*}"
@@ -20,13 +20,8 @@ elif ! [ -e "${fulln}" ]; then
     echo -e "\e[31mERROR: Filename '"${fulln}"' invalid.\e[0m"
     exit 1
 fi
-if [[ "tar,tar.gz,tgz,tar.GZ,tar.xz,txz,tar.bz2,bz,tar.lzma,tar.lz,tlz,gz,bgz,GZ,xz,bz2,lzma,lz" =~ .*"ext".* ]]; then
-    echo -e "\e[31mERROR: Extension name '${ext}' invalid.\nYou can execute 'autozip' without any argument or option to check available method and extension.\e[0m"
-    exit 1
-else
-    echo -e "\e[33mReceived: ${0} ${STDS[0]} "${fulln}" ${OPT:-} ==>Extension=${ext}\e[0m"
-fi
-
+ckext
+echo -e "\e[33mReceived: ${0} ${STDS[0]} "${fulln}" ${OPT:-} ==>Extension=${ext}\e[0m"
 # ============ Start ============
 case ${ext} in
 "tar") # ============ tar ============

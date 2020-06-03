@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# AUTOZIP V3
+# AUTOZIP V3P2
 # ============ Functions ============
 set -euo pipefail
 DN=$(dirname ${0})
@@ -29,21 +29,27 @@ if [ -z "${STDI[1]:-}" ]; then
     fi
 else
     ext=${STDI[1]}
-    if [[ "tar,tar.gz,tgz,tar.GZ,tar.xz,txz,tar.bz2,bz,tar.lzma,tar.lz,tlz,gz,bgz,GZ,xz,bz2,lzma,lz" =~ .*"ext".* ]]; then
-        echo -e "\e[31mERROR: Extension name '${ext}' invalid.\nYou can execute 'autozip' without any argument or option to check available method and extension.\e[0m"
-        exit 1
-    fi
+    ckext
     if [ -f "${fn}" ]; then
-        if ! [[ "gz,bgz,GZ,xz,bz2,lzma,lz" =~ .*"${ext}".* ]]; then
+        case "${ext}" in
+        "gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz") ;;
+
+        *)
             echo -e "\e[31mERROR: You're about to compress FOLDER '${fn}' with extension '${ext}', which is designed for compressing SINGLE FILE.\e[0m"
             exit 1
-        fi
-
+            ;;
+        esac
     else
-        if ! [[ "tar,tar.gz,tgz,tar.GZ,tar.xz,txz,tar.bz2,tbz,tar.lzma,tar.lz,tlz" =~ .*"${ext}".* ]]; then
+        case "${ext}" in
+        "tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "tbz" | "tar.lzma" | "tar.lz" | "tlz") ;;
+
+        \
+            *)
             echo -e "\e[31mERROR: You're about to compress FILE '${fn}' with extension '${ext}', which is designed for compressing FOLDERs.\e[0m"
             exit 1
-        elif [ ${mytar} = "ylukh" ]; then
+            ;;
+        esac
+        if [ ${mytar} = "ylukh" ]; then
             echo -e "\e[31mERROR: No tar available!\e[0m"
             exit 1
         fi

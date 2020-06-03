@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-# PLS V3P2
+# MLS v1
+set -ue
+DN=$(dirname "${0}")
+echo -e "\e[33mYuZJLab MANPATH ls"
+echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 oldifs="${IFS}"
 function my_grep() {
     regstr="${1}"
@@ -7,17 +11,15 @@ function my_grep() {
     "${mycat}" "${tmpf}" | "${mygrep}" -v "${regstr}" >"${tmpffff}"
     mv "${tmpffff}" "${tmpf}"
 }
-more="${mymore}"
 . "${DN}"/../lib/libisopt
-INPATH="${PATH}"
+. "${DN}"/../etc/path.sh
+more="${mymore}"
+INPATH="$("${mycat}" /etc/man_db.conf | "${mygrep}" -v \# | "${mygrep}" MANDB_MAP | "${mycut}" -f 2 | tr '\n' ':')${MANPATH:-}"
 . "${DN}"/../lib/libpath
 IFS=":"
 eachpath=(${valid_path})
 unset duplicated_path
 IFS=''
-allow_x=true
-allow_d=false
-allow_o=true
 STDS=''
 for opt in "${@}"; do
     if isopt "${opt}"; then
@@ -29,15 +31,6 @@ for opt in "${@}"; do
         "-v" | "--version")
             echo "Version 3 Patch 1 in Bash"
             exit 0
-            ;;
-        "--no-x")
-            allow_x=false
-            ;;
-        "--allow-d")
-            allow_d=true
-            ;;
-        "--no-o")
-            allow_o=false
             ;;
         "-l" | "--list")
             echo ${valid_path} | tr ':' '\n'
@@ -72,17 +65,10 @@ tmpf="$(mktemp -t pls.XXXXXX)"
 echo -e "\e[33mReading database...\e[0m"
 for dir in "${eachpath[@]}"; do
     if ! [ -d "${dir}" ]; then continue; fi
-    "${myls}" -1 -F "${dir}" | "${mysed}" "s;^;$(echo "${dir}")/;" >>"${tmpf}"
+    "${myls}" -1 -F "${dir}" | "${mysed}" "s;^;$(echo "${dir}")/;" | "${mygrep}" man[^/]*/$ | while read line; do
+        "${myls}" -1 -F "${line}"|"${mysed}" "s;.gz;;"|"${mysed}" "s;^;$(echo "${line}");" >>"${tmpf}"
+    done
 done
-if ! ${allow_d}; then
-    my_grep '/$'
-fi
-if ! ${allow_x}; then
-    my_grep '\*$'
-fi
-if ! ${allow_o}; then
-    my_grep '[^\*/]$'
-fi
 if [ -z "${STDS:-}" ]; then
     "${mycat}" "${tmpf}" | "${more}"
 else

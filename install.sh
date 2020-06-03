@@ -240,7 +240,7 @@ if ${VAR_install_man}; then
     done
     ${myrm} -f ../../man/man1/*
     ${mymv} *.1 ../../man/man1
-    echo "export MANPATH=${PWD}/man/"':${MANPATH}' >>${HOME}/.bashrc
+    echo "export MANPATH=$(dirname "${0}")/man/"':${MANPATH}' >>${HOME}/.bashrc
 fi
 if ${VAR_install_usage}; then
     ${mymkdir} -p ../../doc

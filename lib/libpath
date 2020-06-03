@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# LIBPATH V1EP1
+# LIBPATH V2
 oldIFS=${IFS}
 IFS=':'
-eachpath=(${PATH})
+eachpath=(${INPATH})
 IFS=''
 valid_path=':'
 invalid_path=':'
@@ -18,7 +18,13 @@ for dir in "${eachpath[@]}"; do
     fi
     unset dir_full dir
 done
-duplicated_path=${duplicated_path:1:-1}
-valid_path=${valid_path:1:-1}
-invalid_path=${invalid_path:1:-1}
+if [ "${duplicated_path}" != ":" ]; then
+    duplicated_path=${duplicated_path:1:-1}
+fi
+if [ "${invalid_path}" != ":" ]; then
+    invalid_path=${invalid_path:1:-1}
+fi
+if [ "${valid_path}" != ":" ]; then
+    valid_path=${valid_path:1:-1}
+fi
 IFS="${oldIFS}"

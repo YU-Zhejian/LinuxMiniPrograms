@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# AZMAN V3
+# AZMAN V3P2
 DN=$(dirname ${0})
 exec 1>&2
 ISAUTOZIP=false
@@ -12,7 +12,7 @@ ppopt "${@}"
 STDI=(${STDS})
 azcmd=${STDI[0]:-}
 unset STDI[0]
-if [ -z ${azcmd} ]; then
+if [ -z "${azcmd}" ]; then
     autozipck
     exit 0
 elif [ -e "${DN}"/exec/azman_${azcmd}.sh ];then
