@@ -9,6 +9,7 @@ if [ -z "${mytar:-}" ]; then
         tmpf=$(mktemp -t configpath.XXXXXX)
         "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^tar\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
+            lntmp="${line}"
             tar_ver=$("${line}" --version 2>&1)
             if [[ "${tar_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
@@ -25,19 +26,18 @@ if [ -z "${mytar:-}" ]; then
                 echo "mytar=\"${line}\" #${type}" >>"${path_sh}"
                 break
             fi
-            unset type
         done <"${tmpf}"
         "${myrm}" "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"
     if [ -z "${mytar:-}" ]; then
-        if [ -z "${line:-}" ]; then
+        if [ -z "${lntmp:-}" ]; then
             echo "mytar=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: tar still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD tar.\e[0m"
-            echo "mytar=\"${line}\" #${type}" >>"${path_sh}"
+            echo "mytar=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset tar_ver line

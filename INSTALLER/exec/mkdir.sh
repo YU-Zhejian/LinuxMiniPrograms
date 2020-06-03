@@ -9,6 +9,7 @@ if [ -z "${mymkdir:-}" ]; then
         tmpf=$(mktemp -t configpath.XXXXXX)
         "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^mkdir\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
+            lntmp="${line}"
             mkdir_ver=$("${line}" --version 2>&1)
             if [[ "${mkdir_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
@@ -25,19 +26,18 @@ if [ -z "${mymkdir:-}" ]; then
                 echo "mymkdir=\"${line}\" #${type}" >>"${path_sh}"
                 break
             fi
-            unset type
         done <"${tmpf}"
         "${myrm}" "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"
     if [ -z "${mymkdir:-}" ]; then
-        if [ -z "${line:-}" ]; then
+        if [ -z "${lntmp:-}" ]; then
             echo "mymkdir=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: mkdir still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD mkdir.\e[0m"
-            echo "mymkdir=\"${line}\" #${type}" >>"${path_sh}"
+            echo "mymkdir=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset mkdir_ver line

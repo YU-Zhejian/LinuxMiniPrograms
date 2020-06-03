@@ -10,7 +10,6 @@ if [ -z "${myfind:-}" ]; then
         "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^find\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" > "${tmpf}"
         while read line; do
             find_ver=$("${line}" --version 2>&1 || true)
-            echo aaa
             if [[ "${find_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
                 if [[ "${find_ver}" =~ .*"Cygwin".* ]]; then
@@ -21,6 +20,7 @@ if [ -z "${myfind:-}" ]; then
             elif "${line}" /? &> /dev/null ;then
                 type="Windows version"
             else
+                lntmp="${line}"
                 type="BSD version"
             fi
             echo "find found in ${line}, ${type}"
@@ -28,19 +28,18 @@ if [ -z "${myfind:-}" ]; then
                 echo "myfind=\"${line}\" #${type}" >>"${path_sh}"
                 break
             fi
-            unset type
         done <"${tmpf}"
         "${myrm}" "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"
     if [ -z "${myfind:-}" ]; then
-        if [ -z "${line:-}" ]; then
+        if [ -z "${lntmp:-}" ]; then
             echo "myfind=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: find still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD find.\e[0m"
-            echo "myfind=\"${line}\" #${type}" >>"${path_sh}"
+            echo "myfind=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset find_ver line

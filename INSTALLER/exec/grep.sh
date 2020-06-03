@@ -11,7 +11,6 @@ if [ -z "${mygrep:-}" ]; then
         while read line; do
             grep_ver=$("${line}" --version 2>&1)
             if [[ "${grep_ver}" =~ .*"GNU".* ]]; then
-                GNU_found=true
                 if [[ "${grep_ver}" =~ .*"BSD".* ]]; then
                     type="GNU version in BSD systems"
                 elif [[ "${grep_ver}" =~ .*"Cygwin".* ]]; then
@@ -19,11 +18,7 @@ if [ -z "${mygrep:-}" ]; then
                 else
                     type="GNU version in GNU/Linux systems"
                 fi
-            else
-                type="UNKNOWN"
-            fi
-            echo "grep found in ${line}, ${type}"
-            if ${GNU_found}; then
+                echo "grep found in ${line}, ${type}"
                 echo "mygrep=\"${line}\" #${type}" >>"${path_sh}"
                 break
             fi

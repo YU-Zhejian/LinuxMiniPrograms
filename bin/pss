@@ -39,7 +39,7 @@ for opt in "${@}"; do
 done
 psstmp=$(mktemp -t psstmp.XXXXXX)
 pssstmp=$(mktemp -t psstmp.XXXXXX)
-if [[ ${OSTYPE} == *BSD ]]; then
+if ! "${myps}" --verion &>> /dev/null;then
     "${myps}" -a -l >"${psstmp}"
 elif [[ $("${myps}" --version) == *cygwin* ]]; then
     "${myps}" -W >"${psstmp}"

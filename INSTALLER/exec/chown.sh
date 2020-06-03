@@ -9,6 +9,7 @@ if [ -z "${mychown:-}" ]; then
         tmpf=$(mktemp -t configpath.XXXXXX)
         "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^chown\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
+            lntmp="${line}"
             chown_ver=$("${line}" --version 2>&1)
             if [[ "${chown_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
@@ -25,19 +26,18 @@ if [ -z "${mychown:-}" ]; then
                 echo "mychown=\"${line}\" #${type}" >>"${path_sh}"
                 break
             fi
-            unset type
         done <"${tmpf}"
         "${myrm}" "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"
     if [ -z "${mychown:-}" ]; then
-        if [ -z "${line:-}" ]; then
+        if [ -z "${lntmp:-}" ]; then
             echo "mychown=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: chown still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD chown.\e[0m"
-            echo "mychown=\"${line}\" #${type}" >>"${path_sh}"
+            echo "mychown=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset chown_ver line

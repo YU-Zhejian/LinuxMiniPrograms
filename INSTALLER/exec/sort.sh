@@ -9,6 +9,7 @@ if [ -z "${mysort:-}" ]; then
         tmpf=$(mktemp -t configpath.XXXXXX)
         "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^sort\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
+            lntmp="${line}"
             sort_ver=$("${line}" --version 2>&1||true)
             if [[ "${sort_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
@@ -34,12 +35,12 @@ if [ -z "${mysort:-}" ]; then
     done
     . "${path_sh}"
     if [ -z "${mysort:-}" ]; then
-        if [ -z "${line:-}" ]; then
+        if [ -z "${lntmp:-}" ]; then
             echo "mysort=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: sort still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD sort.\e[0m"
-            echo "mysort=\"${line}\" #${type}" >>"${path_sh}"
+            echo "mysort=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset sort_ver line

@@ -9,6 +9,7 @@ if [ -z "${mycp:-}" ]; then
         tmpf=$(mktemp -t configpath.XXXXXX)
         "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^cp\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
+            lntmp="${line}"
             cp_ver=$("${line}" --version 2>&1)
             if [[ "${cp_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
@@ -25,19 +26,18 @@ if [ -z "${mycp:-}" ]; then
                 echo "mycp=\"${line}\" #${type}" >>"${path_sh}"
                 break
             fi
-            unset type
         done <"${tmpf}"
         "${myrm}" "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"
     if [ -z "${mycp:-}" ]; then
-        if [ -z "${line:-}" ]; then
+        if [ -z "${lntmp:-}" ]; then
             echo "mycp=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: cp still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD cp.\e[0m"
-            echo "mycp=\"${line}\" #${type}" >>"${path_sh}"
+            echo "mycp=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset cp_ver line

@@ -9,6 +9,7 @@ if [ -z "${mycat:-}" ]; then
         tmpf=$(mktemp -t configpath.XXXXXX)
         "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^cat\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
+            lntmp="${line}"
             cat_ver=$("${line}" --version 2>&1)
             if [[ "${cat_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
@@ -25,19 +26,18 @@ if [ -z "${mycat:-}" ]; then
                 echo "mycat=\"${line}\" #${type}" >>"${path_sh}"
                 break
             fi
-            unset type
         done <"${tmpf}"
         "${myrm}" "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"
     if [ -z "${mycat:-}" ]; then
-        if [ -z "${line:-}" ]; then
+        if [ -z "${lntmp:-}" ]; then
             echo "mycat=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: cat still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD cat.\e[0m"
-            echo "mycat=\"${line}\" #${type}" >>"${path_sh}"
+            echo "mycat=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset cat_ver line

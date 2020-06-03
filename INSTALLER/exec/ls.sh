@@ -9,6 +9,7 @@ if [ -z "${myls:-}" ]; then
         tmpf=$(mktemp -t configpath.XXXXXX)
         ls -F -1 "${dir}" | grep '.\*$' | sed "s;\*\$;;" | grep '^ls\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
+            lntmp="${line}"
             ls_ver=$("${line}" --version 2>&1)
             if [[ "${ls_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
@@ -25,19 +26,18 @@ if [ -z "${myls:-}" ]; then
                 echo "myls=\"${line}\" #${type}" >>path.sh
                 break
             fi
-            unset type
         done <"${tmpf}"
         rm "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"
     if [ -z "${myls:-}" ]; then
-        if [ -z "${line:-}" ]; then
+        if [ -z "${lntmp:-}" ]; then
             echo "myls=\"ylukh\" #UNKNOWN" >>path.sh
             echo -e "\e[30mERROR: ls still not found. Please configure it manually in LMP_ROOT/etc/path.sh.\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD ls.\e[0m"
-            echo "myls=\"${line}\" #${type}" >>path.sh
+            echo "myls=\"${lntmp}\" #${type}" >>path.sh
         fi
     fi
     unset ls_ver line

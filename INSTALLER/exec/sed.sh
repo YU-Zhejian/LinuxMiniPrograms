@@ -9,6 +9,7 @@ if [ -z "${mysed:-}" ]; then
         tmpf=$(mktemp -t configpath.XXXXXX)
         "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | sed "s;\*\$;;" | "${mygrep}" '^sed\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
+            lntmp="${line}"
             sed_ver=$("${line}" --version 2>&1)
             if [[ "${sed_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
@@ -25,19 +26,18 @@ if [ -z "${mysed:-}" ]; then
                 echo "mysed=\"${line}\" #${type}" >>"${path_sh}"
                 break
             fi
-            unset type
         done <"${tmpf}"
         rm "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"
     if [ -z "${mysed:-}" ]; then
-        if [ -z "${line:-}" ]; then
+        if [ -z "${lntmp:-}" ]; then
             echo "mysed=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: sed still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD sed.\e[0m"
-            echo "mysed=\"${line}\" #${type}" >>"${path_sh}"
+            echo "mysed=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset sed_ver line

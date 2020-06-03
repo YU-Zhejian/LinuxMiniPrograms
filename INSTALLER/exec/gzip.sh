@@ -9,6 +9,7 @@ if [ -z "${mygzip:-}" ]; then
         tmpf=$(mktemp -t configpath.XXXXXX)
         "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^gzip\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
+            lntmp="${line}"
             gzip_ver=$("${line}" --version 2>&1)
             if [[ "${gzip_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
@@ -21,19 +22,18 @@ if [ -z "${mygzip:-}" ]; then
                 echo "mygzip=\"${line}\" #${type}" >>"${path_sh}"
                 break
             fi
-            unset type
         done <"${tmpf}"
         "${myrm}" "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"
     if [ -z "${mygzip:-}" ]; then
-        if [ -z "${line:-}" ]; then
+        if [ -z "${lntmp:-}" ]; then
             echo "mygzip=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: gzip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD gzip.\e[0m"
-            echo "mygzip=\"${line}\" #${type}" >>"${path_sh}"
+            echo "mygzip=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset gzip_ver line

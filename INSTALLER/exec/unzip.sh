@@ -9,6 +9,7 @@ if [ -z "${myunzip:-}" ]; then
         tmpf=$(mktemp -t configpath.XXXXXX)
         "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^unzip\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
+            lntmp="${line}"
             unzip_ver=$("${line}" -v 2>&1)
             if [[ "${unzip_ver}" =~ .*"Linux".* ]]; then
                 GNU_found=true
@@ -31,12 +32,12 @@ if [ -z "${myunzip:-}" ]; then
     done
     . "${path_sh}"
     if [ -z "${myunzip:-}" ]; then
-        if [ -z "${line:-}" ]; then
+        if [ -z "${lntmp:-}" ]; then
             echo "myunzip=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: unzip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD unzip.\e[0m"
-            echo "myunzip=\"${line}\" #${type}" >>"${path_sh}"
+            echo "myunzip=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset unzip_ver line

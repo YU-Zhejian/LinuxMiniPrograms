@@ -2,6 +2,7 @@
 # CONFIGPATH V1P1
 set -eu
 cd INSTALLER
+INPATH="${PATH}"
 path_sh="../etc/path.sh"
 if ! [ -f "${path_sh}" ]; then
     touch "${path_sh}"
@@ -57,11 +58,11 @@ unset valid_path
 . exec/sort.sh
 . exec/cat.sh
 . exec/split.sh
-#mymore
-#mycut
-#myhead
-#mytail
-#myps
+. exec/more.sh
+. exec/cut.sh
+. exec/head.sh
+. exec/tail.sh
+. exec/ps.sh
 echo -e "\e[33mAll configurations are printed as follows:\e[0m"
-cat "${path_sh}" | ${mygrep} -v '^$' | ${mysed} 's/^my//' | ${mysed} 's/=/\\\\e[33m in \\\\e[0m/ ' | ${mysed} 's/ #/\\\\e[33m, \\\\e[32m/' | while read line; do echo -e "${line}\e[0m"; done
+cat "${path_sh}" | "${mygrep}" -v '^$' |"${mygrep}" -v '^#' | "${mysed}" 's/^my//' | "${mysed}" 's/=/\\\\e[33m in \\\\e[0m/ ' | "${mysed}" 's/ #/\\\\e[33m, \\\\e[32m/' | while read line; do echo -e "${line}\e[0m"; done
 cd ..

@@ -9,6 +9,7 @@ if [ -z "${myzip:-}" ]; then
         tmpf=$(mktemp -t configpath.XXXXXX)
         "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^zip\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
+            lntmp="${line}"
             zip_ver=$("${line}" --version 2>&1)
             if [[ "${zip_ver}" =~ .*"Linux".* ]]; then
                 GNU_found=true
@@ -24,19 +25,18 @@ if [ -z "${myzip:-}" ]; then
                 echo "myzip=\"${line}\" #${type}" >>"${path_sh}"
                 break
             fi
-            unset type
         done <"${tmpf}"
-        ${myrm} "${tmpf}"
+        "${myrm}" "${tmpf}"
         unset tmpf dir
     done
     . "${path_sh}"
     if [ -z "${myzip:-}" ]; then
-        if [ -z "${line:-}" ]; then
+        if [ -z "${lntmp:-}" ]; then
             echo "myzip=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\e[30mERROR: zip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
         else
             echo -e "\e[30mWARNING: Will use BSD zip.\e[0m"
-            echo "myzip=\"${line}\" #${type}" >>"${path_sh}"
+            echo "myzip=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset zip_ver line
