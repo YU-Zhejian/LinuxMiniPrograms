@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # INSTALLER V3P1
 set -euo pipefail
-oldifs="${IFS}"
+OLDIFS="${IFS}"
 DN=$(readlink -f $(dirname "${0}"))
 cd "${DN}"
 echo -e "\e[33mYuZJLab Installer"
@@ -242,7 +242,7 @@ if ${VAR_install_man}; then
     done
     "${myrm}" -f ../../man/man1/*
     "${mymv}" *.1 ../../man/man1
-    INPATH="${MANPATH}"
+    INPATH="${MANPATH:-}"
     . "${DN}"/lib/libpath
     unset invalid_path duplicated_path
     IFS=':'
@@ -251,13 +251,13 @@ if ${VAR_install_man}; then
     MANCONF=false
     for item in ${eachpath}; do
         if [ "${item}" = "${DN}" ]; then
-            echo -e "\e[33mPYTHONPATH configured.\e[0m"
+            echo -e "\e[33mMANPATH configured.\e[0m"
             MANCONF=true
             break
         fi
     done
-    if ! ${PYCONF}; then
-        echo "export MANPATH=\"${DN}/man\"/"':${MANPATH}' >>${HOME}/.bashrc
+    if ! ${MANCONF}; then
+        echo "export MANPATH=\"${DN}/man/\""':${MANPATH}' >>"${HOME}"/.bashrc
         echo -e "\e[33mWill configure MANPATH...\e[32mPASSED\e[0m"
     fi
 fi
@@ -276,7 +276,7 @@ if ${VAR_install_usage}; then
 fi
 cd ../../
 #========Install PATH========
-INPATH="${PYTHONPATH}"
+INPATH="${PYTHONPATH:-}"
 . "${DN}"/lib/libpath
 unset invalid_path duplicated_path
 IFS=':'
@@ -284,6 +284,7 @@ eachpath=(${valid_path})
 IFS=''
 PYCONF=false
 for item in ${eachpath}; do
+    echo $item 
     if [ "${item}" = "${DN}" ]; then
         echo -e "\e[33mPYTHONPATH configured.\e[0m"
         PYCONF=true
@@ -291,7 +292,7 @@ for item in ${eachpath}; do
     fi
 done
 if ! ${PYCONF}; then
-    echo "export PYTHONPATH=\"${DN}\"/"':${PYTHONPATH}' >>${HOME}/.bashrc
+    echo "export PYTHONPATH=\"${DN}/\""':${PYTHONPATH}' >>"${HOME}"/.bashrc
     echo -e "\e[33mWill configure PYTHONPATH...\e[32mPASSED\e[0m"
 fi
 #========Install Permissions========
