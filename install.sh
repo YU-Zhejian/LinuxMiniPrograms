@@ -250,7 +250,7 @@ if ${VAR_install_man}; then
     IFS=''
     MANCONF=false
     for item in ${eachpath}; do
-        if [ "${item}" = "${DN}" ]; then
+        if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}/man")" ] ; then
             echo -e "\e[33mMANPATH configured.\e[0m"
             MANCONF=true
             break
@@ -284,8 +284,7 @@ eachpath=(${valid_path})
 IFS=''
 PYCONF=false
 for item in ${eachpath}; do
-    echo $item 
-    if [ "${item}" = "${DN}" ]; then
+    if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}")" ] ; then
         echo -e "\e[33mPYTHONPATH configured.\e[0m"
         PYCONF=true
         break
@@ -294,6 +293,25 @@ done
 if ! ${PYCONF}; then
     echo "export PYTHONPATH=\"${DN}/\""':${PYTHONPATH}' >>"${HOME}"/.bashrc
     echo -e "\e[33mWill configure PYTHONPATH...\e[32mPASSED\e[0m"
+fi
+
+INPATH="${PATH:-}"
+. "${DN}"/lib/libpath
+unset invalid_path duplicated_path
+IFS=':'
+eachpath=(${valid_path})
+IFS=''
+PACONF=false
+for item in ${eachpath}; do
+    if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}/bin")" ] ; then
+        echo -e "\e[33mPATH configured.\e[0m"
+        PACONF=true
+        break
+    fi
+done
+if ! ${PACONF}; then
+    echo "export PATH=\"${DN}/bin/\""':${PATH}' >>"${HOME}"/.bashrc
+    echo -e "\e[33mWill configure PATH...\e[32mPASSED\e[0m"
 fi
 #========Install Permissions========
 function add_dir() {

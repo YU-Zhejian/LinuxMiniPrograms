@@ -25,11 +25,6 @@ unset invalid_path duplicated_path
 IFS=':'
 eachpath=(${valid_path})
 IFS=''
-binpath=$(readlink -f "$(dirname "${0}")"/../bin)
-if [[ ${valid_path} =~ .*"${binpath}".* ]];then
-    echo "export PATH=\"${binpath}\":${PATH}" >>${HOME}/.bashrc
-    export PATH="${binpath}":${PATH}
-fi
 unset binpath
 echo ${valid_path} | tr ':' '\n'
 echo -e "\e[33mEnd locating valid path.\e[0m"
