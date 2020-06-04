@@ -8,7 +8,7 @@ if [ -z "${myparallel:-}" ]; then
             break
         fi
         tmpf=$(mktemp -t configpath.XXXXXX)
-        "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^parallel\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
+        "${myls}" -F -1 "${dir}" | "${mygrep}" '.[*@]$' | "${mysed}" 's;[*@]$;;' | "${mygrep}" '^parallel\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
             echo "will cite\n" | "${line}" --citation &>>/dev/null||true
             parallel_ver=$("${line}" --version 2>&1||true)

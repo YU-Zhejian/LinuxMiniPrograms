@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # RAR.sh V1P1
 . "${path_sh}"
-if [ -z "${rar:-}" ]; then
-    if which unrar &>>/dev/null; then
-        line="$(which unrar)"
+if [ -z "${myrar:-}" ]; then
+    if which rar &>>/dev/null; then
+        line="$(which rar)"
         echo "myrar=\"${line}\" #UNIVERSE" >>"${path_sh}"
         echo "rar found in ${line}"
     else

@@ -10,17 +10,12 @@ echo -e "\e[33mYuZJLab AutoZip"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 preck
 ppopt "${@}"
-STDI=(${STDS[@]})
-fn="${STDI[0]:-}"
+fn="${STDS[0]:-}"
 if [ -z "${fn}" ]; then
     autozipck
     exit 0
 fi
-if ! [ -e "${fn}" ]; then
-    echo -e "\e[31mERROR: Filename '${fn}' invalid.\e[0m"
-    exit 1
-fi
-if [ -z "${STDI[1]:-}" ]; then
+if [ -z "${STDS[1]:-}" ]; then
     if [ -f "${fn}" ]; then
         ext="gz"
     else
@@ -28,22 +23,21 @@ if [ -z "${STDI[1]:-}" ]; then
         ext="tar.gz"
     fi
 else
-    ext=${STDI[1]}
+    ext=${STDS[1]}
     ckext
-    if [ -f "${fn}" ]; then
+    if [ -d "${fn}" ]; then
+        fn=$(echo "${fn}"|"${mysed}" 's;/$;;')
         case "${ext}" in
-        "gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz") ;;
-
+        "tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "tbz" | "tar.lzma" | "tar.lz" | "tlz" |"rar"|"zip"|"7z") ;;
         *)
             echo -e "\e[31mERROR: You're about to compress FOLDER '${fn}' with extension '${ext}', which is designed for compressing SINGLE FILE.\e[0m"
             exit 1
             ;;
         esac
-    else
+    elif [ -f "${fn}" ];then
+        
         case "${ext}" in
-        "tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "tbz" | "tar.lzma" | "tar.lz" | "tlz") ;;
-
-        \
+        "gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz"|"rar"|"zip"|"7z") ;;
             *)
             echo -e "\e[31mERROR: You're about to compress FILE '${fn}' with extension '${ext}', which is designed for compressing FOLDERs.\e[0m"
             exit 1
@@ -53,6 +47,9 @@ else
             echo -e "\e[31mERROR: No tar available!\e[0m"
             exit 1
         fi
+    else
+        echo -e "\e[31mERROR: Filename '${fn}' invalid.\e[0m"
+        exit 1
     fi
 fi
 if [ -n "${SPLIT:-}" ]; then
@@ -105,30 +102,30 @@ case "${ext}" in
     lvl_able="[123456789]"
     ;;
 esac
-case "${STDI[2]:-}" in
+case "${STDS[2]:-}" in
 ${lvl_able})
-    LVL="-"${STDI[2]}
-    if [ ${ext} = "7z" ]; then LVL="-x=${STDI[2]}"; fi
+    LVL="-"${STDS[2]}
+    if [ ${ext} = "7z" ]; then LVL="-x=${STDS[2]}"; fi
     ;;
 *)
     LVL=''
-    echo -e "\e[31mWARNING: Compression level '${STDI[2]:-}' undefined. You can use ${lvl_able} for ${ext} extension.\nWill use default value provided by corresponding algorism.\e[0m"
+    echo -e "\e[31mWARNING: Compression level '${STDS[2]:-}' undefined. You can use ${lvl_able} for ${ext} extension.\nWill use default value provided by corresponding algorism.\e[0m"
     unset lvl_able
     ;;
 esac
-echo -e "\e[33mReceived: ${0} ${fn:-} ${ext:-} ${STDI[2]:-} ${OPT:-} \e[0m"
+echo -e "\e[33mReceived: ${0} ${fn:-} ${ext:-} ${STDS[2]:-} ${OPT:-} \e[0m"
 if ${ISFORCE}; then
     if [ -n "${SPLIT:-}" ]; then
         if [ -e "${fn}".part1.rar ] && [ ${ext} = "rar" ]; then
-            "${myrm}" -f "${fn}".part*.rar
+            "${myrm}" -rf "${fn}".part*.rar
         elif [ -e "${fn}".z01 ] && [ ${ext} = "zip" ]; then
-            "${myrm}" -f "${fn}".z[0-9][0-9] ${fn}.zip
+            "${myrm}" -rf "${fn}".z[0-9][0-9] ${fn}.zip
         elif [ -e "${fn}".${ext}.001 ]; then
-            "${myrm}" -f "${fn}".${ext}.[0-9][0-9][0-9]
+            "${myrm}" -rf "${fn}".${ext}.[0-9][0-9][0-9]
         fi
     else
         if [ -e "${fn}.${ext}" ]; then
-            "${myrm}" -f "${fn}.${ext}"
+            "${myrm}" -rf "${fn}.${ext}"
         fi
     fi
 else
@@ -162,6 +159,7 @@ if ${USEPARALLEL}; then
 else
     PAR=''
 fi
+SPL=''
 case ${ext} in
 "tar") # ============ tar ============
     if [ -n "${SPLIT:-}" ]; then
@@ -180,12 +178,14 @@ case ${ext} in
     else
         cmd="${PAR} ${mygzip}"
     fi
+    
     if [ -n "${SPLIT:-}" ]; then
         "${mytar}" -f - -cv "${fn}" | split -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
         for tfn in "${tempdir}"/"${fn}".*; do
-            cat "${tfn}" | ${cmd} ${LVL} >"${fn}".${ext}.${tfn:0-3}
+            "${mycat}" "${tfn}" | ${cmd} ${LVL} >"${fn}".${ext}.${tfn:0-3}
         done
     else
+    echo aaaaa
         "${mytar}" -f - -cv "${fn}" | ${cmd} ${LVL} >"${fn}".${ext}
     fi
     ;;

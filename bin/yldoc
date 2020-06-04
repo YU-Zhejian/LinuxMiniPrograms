@@ -7,7 +7,7 @@ echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../etc/path.sh
 more="${mymore}"
-STDS=''
+STDS=()
 for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
@@ -39,25 +39,25 @@ for opt in "${@}"; do
             ;;
         esac
     else
-        STDS="${STDS} ${opt}"
+        STDS=(${STDS[@]} "${opt}")
     fi
 done
-if [ -z "${STDS}" ]; then
+if [ ${#STDS[@]} -eq 0 ]; then
     yldoc yldoc
     exit 0
 fi
-STDI=(${STDS})
+
 if [ -f "${DN}"/../etc/yldoc.conf ]; then
     while read line; do
         li=(${line})
-        for ((i = 0; i < ${#STDI[@]}; i++)); do
-            if [ ${STDI[${i}]} = ${li[0]} ]; then
-                STDI[${i}]=${li[1]}
+        for ((i = 0; i < ${#STDS[@]}; i++)); do
+            if [ ${STDS[${i}]} = ${li[0]} ]; then
+                STDS[${i}]=${li[1]}
             fi
         done
     done <"${DN}"/../etc/yldoc.conf
 fi
-for fn in "${STDI[@]}"; do
+for fn in "${STDS[@]}"; do
     if [ -f "${DN}"/../doc/"${fn}".usage ]; then
         "${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}"
     else

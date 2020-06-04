@@ -8,7 +8,7 @@ if [ -z "${mycut:-}" ]; then
             break
         fi
         tmpf=$(mktemp -t configpath.XXXXXX)
-        "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^cut\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
+        "${myls}" -F -1 "${dir}" | "${mygrep}" '.[*@]$' | "${mysed}" 's;[*@]$;;' | "${mygrep}" '^cut\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
             lntmp="${line}"
             cut_ver=$("${line}" --version 2>&1||true)

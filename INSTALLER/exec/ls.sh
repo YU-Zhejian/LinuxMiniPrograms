@@ -12,7 +12,6 @@ if [ -z "${myls:-}" ]; then
         while read line; do
             lntmp="${line}"
             ls_ver=$("${line}" --version 2>&1||true)
-            echo aaa
             if [[ "${ls_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
                 if [[ "${ls_ver}" =~ .*"Cygwin".* ]]; then
@@ -32,7 +31,6 @@ if [ -z "${myls:-}" ]; then
         rm "${tmpf}"
         unset tmpf dir
     done
-    
     . "${path_sh}"
     if [ -z "${myls:-}" ]; then
         if [ -z "${lntmp:-}" ]; then

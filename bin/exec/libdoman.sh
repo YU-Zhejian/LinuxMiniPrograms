@@ -3,8 +3,8 @@
 . "${DN}"/../lib/libisopt
 more="${mymore}"
 cmd=0
-OPT=''
-STDS=''
+OPT=()
+STDS=()
 for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
@@ -36,23 +36,23 @@ for opt in "${@}"; do
             exit 1
             ;;
         esac
-        OPT="$OPT ${opt}"
+        OPT=(${OPT[@]} "${opt}")
     else
-        STDS="${STDS} ${opt}"
+        STDS=(${STDS[@]} "${opt}")
     fi
 done
-STDI=(${STDS})
-if [ ${#STDI[@]} -gt 1 ]; then
+
+if [ ${#STDS[@]} -gt 1 ]; then
     echo -e "\e[33mMore than one filename was received. Will disable -o option.\e[0m"
     cmd=0
-elif [ ${#STDI[@]} -lt 1 ]; then
+elif [ ${#STDS[@]} -lt 1 ]; then
     echo -e "\e[33mNo file.\e[0m"
     exit 1
 fi
 if [ ${cmd} -eq 0 ]; then
     more="${mycat}"
     echo -e "\e[33mWill use '${more}' as More.\e[0m"
-    for fn in "${STDI[@]}"; do
+    for fn in "${STDS[@]}"; do
         if ! [ -f "${fn}" ] || [ -z "${fn}" ]; then
             echo -e "\e[31mERROR: Filename '${fn}' invalid. Use libdoman -h for help.\e[0m"
             exit 1
@@ -117,7 +117,7 @@ if [ ${cmd} -eq 0 ]; then
     done
 else
     
-    fn="${STDI[0]}"
+    fn="${STDS[0]}"
     if ! [ -f "${fn}" ]; then
         echo -e "\e[31mERROR: Filename '${fn}' invalid. Use libdoman -h for help.\e[0m"
         exit 1

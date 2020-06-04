@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # YLMKTNL.sh V3P3
 . "${DN}"/../lib/libisopt
+STDS=''
 for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in

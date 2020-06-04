@@ -3,8 +3,8 @@
 REMOVE=false
 USEPARALLEL=false
 ISFORCE=false
-OPT=''
-STDS=''
+OPT=()
+STDS=()
 CONFN="${DN}"/../etc/autozip.conf
 . "${DN}"/../lib/libisopt
 . "${DN}"/../etc/path.sh
@@ -170,9 +170,9 @@ function ppopt() {
                 exit 1
                 ;;
             esac
-            OPT="${OPT} ${opt}"
+            OPT=(${OPT[@]} ${opt})
         else
-            STDS="${STDS} ${opt}"
+            STDS=(${STDS[@]} "${opt}")
         fi
     done
     if ! ${ISFORCE};then
@@ -247,7 +247,7 @@ function stdfc() {
 # Check extension name
 function ckext() {
 case "${ext}" in
-    "tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "bz" | "tar.lzma" | "tar.lz" | "tlz" | "gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz") ;;
+    "tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "tbz" | "tar.lzma" | "tar.lz" | "tlz" | "gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz"|"rar"|"zip"|"7z") ;;
 
     *)
         echo -e "\e[31mERROR: Extension name '${ext}' invalid.\nYou can execute 'autozip' without any argument or option to check available method and extension.\e[0m"

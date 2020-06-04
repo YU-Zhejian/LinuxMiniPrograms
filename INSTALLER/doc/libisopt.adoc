@@ -50,9 +50,9 @@ for opt in "${@}"; do
             exit 1
             ;;
         esac
-        OPT="${OPT} ${opt}"
+        OPT=(${OPT[@]} ${opt})
     else
-        STDS="${STDS} ${opt}"
+        
     fi
 done
 ```

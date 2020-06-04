@@ -9,9 +9,9 @@ echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
 preck
 ppopt "${@}"
 # ============ Possess arguments ============
-STDI=(${STDS})
-azcmd=${STDI[0]:-}
-unset STDI[0]
+
+azcmd=${STDS[0]:-}
+unset STDS[0]
 if [ -z "${azcmd}" ]; then
     autozipck
     exit 0

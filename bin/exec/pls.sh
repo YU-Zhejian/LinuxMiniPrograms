@@ -18,7 +18,7 @@ IFS=''
 allow_x=true
 allow_d=false
 allow_o=true
-STDS=''
+STDS=()
 for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
@@ -64,7 +64,7 @@ for opt in "${@}"; do
             ;;
         esac
     else
-        STDS="${STDS} ${opt}"
+        STDS=(${STDS[@]} "${opt}")
     fi
 done
 unset invalid_path valid_path
@@ -83,14 +83,14 @@ fi
 if ! ${allow_o}; then
     my_grep '[^\*/]$'
 fi
-if [ -z "${STDS:-}" ]; then
+if [ ${#STDS[@]} -eq 0 ]; then
     "${mycat}" "${tmpf}" | "${more}"
 else
     IFS=" "
-    STDI=(${STDS})
+    
     IFS=''
     grepstr=''
-    for fn in "${STDI[@]}"; do
+    for fn in "${STDS[@]}"; do
         grepstr="${grepstr} -e ${fn}"
     done
     eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"\|"${more}"

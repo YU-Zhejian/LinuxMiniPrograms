@@ -8,7 +8,7 @@ if [ -z "${mysed:-}" ]; then
             break
         fi
         tmpf=$(mktemp -t configpath.XXXXXX)
-        "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | sed "s;\*\$;;" | "${mygrep}" '^sed\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >"${tmpf}"
+        "${myls}" -F -1 "${dir}" | "${mygrep}" '.[*@]$' | sed "s;\*\$;;" | "${mygrep}" '^sed\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
             lntmp="${line}"
             sed_ver=$("${line}" --version 2>&1||true)

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #AZMAN_LIST V1P1
 USESPLIT=false
-fulln="${STDI[1]:-}"
+fulln="${STDS[1]:-}"
 fn="${fulln%.*}"
 ext="${fulln##*.}"
 if [ "${fn##*.}" = "tar" ]; then
@@ -85,7 +85,7 @@ case ${ext} in
     if ${USESPLIT}; then
         stdtl "${mybzip2} -dk"
     else
-        "${mytar}" -xjvf "${fulln}"
+        "${mytar}" -tjvf "${fulln}"
     fi
     ;;
 "tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============

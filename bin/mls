@@ -20,7 +20,7 @@ IFS=":"
 eachpath=(${valid_path})
 unset duplicated_path
 IFS=''
-STDS=''
+STDS=()
 for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
@@ -57,7 +57,7 @@ for opt in "${@}"; do
             ;;
         esac
     else
-        STDS="${STDS} ${opt}"
+        STDS=(${STDS[@]} "${opt}")
     fi
 done
 unset invalid_path valid_path
@@ -69,14 +69,12 @@ for dir in "${eachpath[@]}"; do
         "${myls}" -1 -F "${line}"|"${mysed}" "s;.gz;;"|"${mysed}" "s;^;$(echo "${line}");" >>"${tmpf}"
     done
 done
-if [ -z "${STDS:-}" ]; then
+if [ ${#STDS[@]} -eq 0 ]; then
     "${mycat}" "${tmpf}" | "${more}"
 else
-    IFS=" "
-    STDI=(${STDS})
     IFS=''
     grepstr=''
-    for fn in "${STDI[@]}"; do
+    for fn in "${STDS[@]}"; do
         grepstr="${grepstr} -e ${fn}"
     done
     eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"\|"${more}"

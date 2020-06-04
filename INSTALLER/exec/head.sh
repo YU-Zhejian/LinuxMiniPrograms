@@ -8,7 +8,7 @@ if [ -z "${myhead:-}" ]; then
             break
         fi
         tmpf=$(mktemp -t configpath.XXXXXX)
-        "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^head\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
+        "${myls}" -F -1 "${dir}" | "${mygrep}" '.[*@]$' | "${mysed}" 's;[*@]$;;' | "${mygrep}" '^head\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
             lntmp="${line}"
             head_ver=$("${line}" --version 2>&1||true)

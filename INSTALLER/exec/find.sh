@@ -8,7 +8,7 @@ if [ -z "${myfind:-}" ]; then
             break
         fi
         tmpf=$(mktemp -t configpath.XXXXXX)
-        "${myls}" -F -1 "${dir}" | "${mygrep}" '.\*$' | "${mysed}" "s;\*\$;;" | "${mygrep}" '^find\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" > "${tmpf}"
+        "${myls}" -F -1 "${dir}" | "${mygrep}" '.[*@]$' | "${mysed}" 's;[*@]$;;' | "${mygrep}" '^find\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" > "${tmpf}"
         while read line; do
             find_ver=$("${line}" --version 2>&1 || true)
             if [[ "${find_ver}" =~ .*"GNU".* ]]; then

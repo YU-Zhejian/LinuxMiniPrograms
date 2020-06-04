@@ -3,6 +3,8 @@
 set -euo pipefail
 ISAOTOZIP=false
 USESPLIT=false
+PAR=''
+SUFF=''
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/exec/libautozip.sh
 # ============ Start ============
@@ -11,8 +13,7 @@ echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 preck
 ppopt "${@}"
 # ============ Possess arguments ============
-STDI=(${STDS})
-fulln="${STDI[0]:-}"
+fulln="${STDS[0]:-}"
 if [ -z ${fulln} ]; then
     autozipck
     exit 0

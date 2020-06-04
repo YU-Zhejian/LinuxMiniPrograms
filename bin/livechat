@@ -37,7 +37,7 @@ unset LVCD
 echo -e "\e[33mWelcome to YuZJLab LiveChat"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 . "${DN}"/../lib/libisopt
-STDS=''
+STDS=""
 for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
@@ -59,12 +59,12 @@ for opt in "${@}"; do
     fi
 done
 
-if [ -z "${STDS[0]}" ]; then
+if [ -z "${STDS}" ]; then
     echo -e "\e[33mPlease key in your name/roomnumber:\e[0m"
     echo -e "\e[33mUse Ctrl-C to exit\e[0m"
     read LCUN
 else
-    LCUN="${STDS[0]}"
+    LCUN="${STDS}"
 fi
 while read line;do
     if [ "${line}" = "${LCUN}"];then
