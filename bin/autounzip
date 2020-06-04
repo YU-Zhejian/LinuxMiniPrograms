@@ -3,7 +3,7 @@
 set -euo pipefail
 ISAOTOZIP=false
 USESPLIT=false
-DN=$(dirname ${0})
+DN=$(readlink -f $(dirname "${0}"))
 . ${DN}/exec/libautozip.sh
 # ============ Start ============
 echo -e "\e[33mYuZJLab AutoUnZip"

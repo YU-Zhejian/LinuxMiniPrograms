@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # LIVECHAT V1P6
 set -ue
-DN=$(dirname ${0})
+DN=$(readlink -f $(dirname "${0}"))
 . "${DN}"/../etc/path.sh
 function sdmess() {
     echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${MESS_SD}" >>MESSAGES

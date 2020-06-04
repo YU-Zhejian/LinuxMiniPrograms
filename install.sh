@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # INSTALLER V3P1
 set -euo pipefail
-cd $(dirname "${0}")
+oldifs="${IFS}"
+DN=$(readlink -f $(dirname "${0}"))
+cd "${DN}"
 echo -e "\e[33mYuZJLab Installer"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 . lib/libisopt
@@ -19,7 +21,7 @@ VAR_update_path=false
 for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
-        "-v"|"--version")
+        "-v" | "--version")
             echo -e "\e[33mVersion 3.\e[0m"
             exit 0
             ;;
@@ -107,13 +109,13 @@ OPTIONS:
 done
 # ========Check========
 echo -e "\e[33mChecking FileSystem...\e[0m"
-if ${VAR_update_path};then
+if ${VAR_update_path}; then
     rm 'etc/path.sh'
 fi
-if ! [ -f 'etc/path.sh' ];then
+if ! [ -f 'etc/path.sh' ]; then
     bash INSTALLER/configpath
 fi
-if ${VAR_update};then
+if ${VAR_update}; then
     ETC=$(
         [ -d "etc" ]
         echo ${?}
@@ -174,24 +176,24 @@ fi
 #========Install ETC========
 echo -e "\e[33mInstalling...\e[0m"
 if ${VAR_install_config}; then
-    ${mymkdir} -p etc
+    "${mymkdir}" -p etc
     if [ ${ETC} -eq 1 ]; then
-        ${mytar} czf etc_backup.tgz etc
-        ${myrm} -rf etc/*
+        "${mytar}" czf etc_backup.tgz etc
+        "${myrm}" -rf etc/*
         echo -e "\e[33mBacking up settings...\e[32mPASSED\e[0m"
     fi
-    ${mycp} -fr INSTALLER/etc/* etc/
+    "${mycp}" -fr INSTALLER/etc/* etc/
     echo -e "\e[33mInstalling config...\e[32mPASSED\e[0m"
 fi
 #========Install VAR========
 if ${VAR_clear_history}; then
-    ${mymkdir} -p var
+    "${mymkdir}" -p var
     if [ ${VAR} -eq 1 ]; then
-        ${mytar} czf var_backup.tgz var
-        ${myrm} -rf var/*
+        "${mytar}" czf var_backup.tgz var
+        "${myrm}" -rf var/*
         echo -e "\e[33mBacking up histories...\e[32mPASSED\e[0m"
     fi
-    ${mycp} -fr INSTALLER/var/* var/
+    "${mycp}" -fr INSTALLER/var/* var/
 fi
 #========Install DOC========
 cd INSTALLER/doc
@@ -203,7 +205,7 @@ if ! [ ${ADOC_PDF} -eq 0 ]; then
     VAR_install_pdf=false
 fi
 if ${VAR_install_pdf}; then
-    ${mymkdir} -p ../../pdf
+    "${mymkdir}" -p ../../pdf
     for fn in *.adoc; do
         asciidoctor-pdf -a allow-uri-read ${fn}
         if [ ${?} -eq 0 ]; then
@@ -212,11 +214,11 @@ if ${VAR_install_pdf}; then
             echo -e "\e[33mCompiling ${fn} in pdf...\e[31mERROR\e[0m"
         fi
     done
-    ${myrm} -f ../../pdf/*
-    ${mymv} *.pdf ../../pdf
+    "${myrm}" -f ../../pdf/*
+    "${mymv}" *.pdf ../../pdf
 fi
 if ${VAR_install_html}; then
-    ${mymkdir} -p ../../html
+    "${mymkdir}" -p ../../html
     for fn in *.adoc; do
         asciidoctor -a allow-uri-read ${fn} -b html5
         if [ ${?} -eq 0 ]; then
@@ -225,11 +227,11 @@ if ${VAR_install_html}; then
             echo -e "\e[33mCompiling ${fn} in html5...\e[31mERROR\e[0m"
         fi
     done
-    ${myrm} -f ../../html/*
-    ${mymv} *.html ../../html
+    "${myrm}" -f ../../html/*
+    "${mymv}" *.html ../../html
 fi
 if ${VAR_install_man}; then
-    ${mymkdir} -p ../../man ../../man/man1
+    "${mymkdir}" -p ../../man ../../man/man1
     for fn in *.adoc; do
         asciidoctor -a allow-uri-read ${fn} -b manpage
         if [ ${?} -eq 0 ]; then
@@ -238,9 +240,26 @@ if ${VAR_install_man}; then
             echo -e "\e[33mCompiling ${fn} in Groff man...\e[31mERROR\e[0m"
         fi
     done
-    ${myrm} -f ../../man/man1/*
-    ${mymv} *.1 ../../man/man1
-    echo "export MANPATH=$(dirname "${0}")/man/"':${MANPATH}' >>${HOME}/.bashrc
+    "${myrm}" -f ../../man/man1/*
+    "${mymv}" *.1 ../../man/man1
+    INPATH="${MANPATH}"
+    . "${DN}"/lib/libpath
+    unset invalid_path duplicated_path
+    IFS=':'
+    eachpath=(${valid_path})
+    IFS=''
+    MANCONF=false
+    for item in ${eachpath}; do
+        if [ "${item}" = "${DN}" ]; then
+            echo -e "\e[33mPYTHONPATH configured.\e[0m"
+            MANCONF=true
+            break
+        fi
+    done
+    if ! ${PYCONF}; then
+        echo "export MANPATH=\"${DN}/man\"/"':${MANPATH}' >>${HOME}/.bashrc
+        echo -e "\e[33mWill configure MANPATH...\e[32mPASSED\e[0m"
+    fi
 fi
 if ${VAR_install_usage}; then
     ${mymkdir} -p ../../doc
@@ -252,19 +271,36 @@ if ${VAR_install_usage}; then
             echo -e "\e[33mCompiling ${fn} in YuZJLab Usage...\e[31mERROR\e[0m"
         fi
     done
-    ${myrm} -f ../../doc/*
-    ${mymv} *.usage ../../doc/
+    "${myrm}" -f ../../doc/*
+    "${mymv}" *.usage ../../doc/
 fi
 cd ../../
 #========Install PATH========
-echo "export PYTHONPATH=${PWD}/"':${PYTHONPATH}' >>${HOME}/.bashrc
+INPATH="${PYTHONPATH}"
+. "${DN}"/lib/libpath
+unset invalid_path duplicated_path
+IFS=':'
+eachpath=(${valid_path})
+IFS=''
+PYCONF=false
+for item in ${eachpath}; do
+    if [ "${item}" = "${DN}" ]; then
+        echo -e "\e[33mPYTHONPATH configured.\e[0m"
+        PYCONF=true
+        break
+    fi
+done
+if ! ${PYCONF}; then
+    echo "export PYTHONPATH=\"${DN}\"/"':${PYTHONPATH}' >>${HOME}/.bashrc
+    echo -e "\e[33mWill configure PYTHONPATH...\e[32mPASSED\e[0m"
+fi
 #========Install Permissions========
 function add_dir() {
-    ${myls} -1| while read file_name; do
-        if [ -f ${file_name} ];then
-            ${mychmod} -x ${file_name}
+    "${myls}" -1 | while read file_name; do
+        if [ -f ${file_name} ]; then
+            "${mychmod}" -x ${file_name}
         else
-            ${mychmod} +x ${file_name}
+            "${mychmod}" +x ${file_name}
             cd ${file_name}
             add_dir
             cd ..
@@ -272,9 +308,10 @@ function add_dir() {
     done
 }
 echo -e "\e[33mModifying file permissions...\e[0m"
-${mychown} -R $(id -u) *
-${mychmod} -R +r+w *
+"${mychown}" -R $(id -u) *
+"${mychmod}" -R +r+w *
 add_dir
-${mychmod} +x bin/*
-${mychmod} +x *.sh
+"${mychmod}" +x bin/*
+"${mychmod}" +x *.sh
+IFS="${OLDIFS}"
 echo -e "\e[33mFinished. Please execute 'exec bash' to restart bash.\e[0m"
