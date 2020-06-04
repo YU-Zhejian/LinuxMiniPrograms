@@ -3,8 +3,8 @@
 set -euo pipefail
 ISAOTOZIP=false
 USESPLIT=false
-DN=$(readlink -f $(dirname "${0}"))
-. ${DN}/exec/libautozip.sh
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/exec/libautozip.sh
 # ============ Start ============
 echo -e "\e[33mYuZJLab AutoUnZip"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"

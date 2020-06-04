@@ -1,20 +1,21 @@
 #!/usr/bin/env bash
-# LIVECHAT V1P6
+# LIVECHAT V1EP7
 set -ue
-DN=$(readlink -f $(dirname "${0}"))
+DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 function sdmess() {
     echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${MESS_SD}" >>MESSAGES
 }
 function F_REC() {
     while true; do
+    #echo a
         IFS=""
         sleep 1
-        local arr=$(wc -l MESSAGES | cut -d ' ' -f 1)
+        local arr=$(wc -l MESSAGES | awk '{print $1}')
         local en=$((${arr} - ${M_R}))
         if [ ${en} -ne 0 ]; then
             echo -ne "\007"
-            tail -n $((${arr} - ${M_R})) MESSAGES >"URM_${LCUN}"
+            "${mytail}" -n $((${arr} - ${M_R})) MESSAGES >"URM_${LCUN}"
             local M_R=${arr}
             IFS=";"
             while read line; do
@@ -45,7 +46,7 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 1 Patch 6"
+            echo "Version 1 Emergency Patch 7"
             exit 0
             ;;
         *)
@@ -65,10 +66,12 @@ if [ -z "${STDS[0]}" ]; then
 else
     LCUN="${STDS[0]}"
 fi
-if [ $("${mycat}" LCONLINE | "${mygrep}" "${LCUN}" | wc -l) != "0" ]; then
-    echo -e "\e[31m ERROR: There's a user with the same name.\e[0m"
+while read line;do
+    if [ "${line}" = "${LCUN}"];then
+    echo -e "\e[31mERROR: There's a user with the same name.\e[0m"
     exit 1
-fi
+    fi
+done < LCONLINE
 unset BOOLONLINE
 echo "${LCUN}" >>LCONLINE
 MESS_SD="${LCUN} is now on line."
@@ -83,15 +86,15 @@ echo -e "\e[33mPID of reciever: ${pid_rec}.\e[0m"
 while [ true ]; do
     read MESS_SD
     if [ "${MESS_SD}" != "logout" ]; then
-        sdmess ${LCUN}
+        sdmess "${LCUN}"
         printf "\e[1A"
     else
         MESS_SD="${LCUN} had quitted."
         sdmess "SYSTEM"
-        kill -9 $pid_rec &>>/dev/null
-        "${mycat}" LCONLINE | "${mygrep}" -v "${LCUN}" >tmp
-        "${mycat}" tmp >LCONLINE
-        ${myrm} tmp "URM_${LCUN}"
+        kill -9 ${pid_rec} &>>/dev/null
+        "${mycat}" LCONLINE |"${mygrep}" -v "^${LCUN}$" >tmp
+        "${mymv}" tmp LCONLINE
+        "${myrm}" "URM_${LCUN}"
         echo -e "\e[33mThanks for using this system.\e[0m"
         IFS="${OLD_IFS}"
         exit 0

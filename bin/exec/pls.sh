@@ -51,7 +51,7 @@ for opt in "${@}"; do
             ;;
         --more\:*)
             more=$"{opt:7}"
-            if ! "${more}" --help &>/dev/null; then
+            if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
                 echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
                 more="${mymore}"
             else

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # LIBDOMAN V6
 set -ue
-DN=$(readlink -f $(dirname "${0}"))
+DN="$(readlink -f "$(dirname "${0}")")"
 echo -e "\e[33mYuZJLab LibDO Manager."
 echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
 . "${DN}"/../etc/path.sh

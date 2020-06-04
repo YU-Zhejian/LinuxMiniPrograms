@@ -2,9 +2,9 @@
 # AUTOZIP V3P2
 # ============ Functions ============
 set -euo pipefail
-DN=$(readlink -f $(dirname "${0}"))
+DN="$(readlink -f "$(dirname "${0}")")"
 ISAUTOZIP=true
-. ${DN}/exec/libautozip.sh
+. "${DN}"/exec/libautozip.sh
 # ============ Start ============
 echo -e "\e[33mYuZJLab AutoZip"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"

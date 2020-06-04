@@ -3,7 +3,7 @@
 echo -e "\e[33mYuZJLab Process Snapshot Searcher"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 set -ue
-cd $(dirname ${0})
+cd ""$(readlink -f "$(dirname "${0}")")""
 . ../lib/libisopt
 . ../etc/path.sh
 more="${mymore}"
@@ -21,7 +21,7 @@ for opt in "${@}"; do
             ;;
         --more\:*)
             more="${opt:7}"
-            if ! "${more}" --help &>/dev/null; then
+            if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
                 echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
                 more="${mymore}"
             else

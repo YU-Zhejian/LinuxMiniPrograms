@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# BHS V1P4
+# BHS V1EP5
 set -ue
-DN=$(readlink -f $(dirname "${0}"))
+DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 more="${mymore}"
 echo -e "\e[33mYuZJLab Bash History Searcher"
@@ -16,12 +16,12 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 1 patch 4"
+            echo "Version 1 Emergency Patch 5"
             exit 0
             ;;
         --more\:*)
             more="${opt:7}"
-            if ! "${more}" --help &>/dev/null; then
+            if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
                 echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
                 more="${mymore}"
             else
@@ -34,9 +34,10 @@ for opt in "${@}"; do
             ;;
         esac
     else
-        STDS="${STDS} ${opt}"
+        STDS="${STDS}${opt} "
     fi
 done
+STDS=$(echo "${STDS}"|"${mysed}" "s/ $//")
 if [ -n "${STDS}" ]; then
     echo \"${STDS}\"
     "${mycat}" -n ~/.bash_history | "${mygrep}" --color=auto -- "${STDS}" | "${more}"

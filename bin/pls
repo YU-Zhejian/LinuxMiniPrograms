@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # PLS V3P2
 set -ue
-DN=$(readlink -f $(dirname "${0}"))
+DN="$(readlink -f "$(dirname "${0}")")"
 echo -e "\e[33mYuZJLab PATH ls"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 . "${DN}"/../etc/path.sh

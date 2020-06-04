@@ -1,16 +1,16 @@
 #!/usr/bin/env python
-# YLMKTBL.py V2P3
+# YLMKTBL.py V2EP4
 import sys,os
 from LMP_Pylib.libisopt import *
 sys.argv.pop(0)
 sstr=[]
-for sysarg in sys.argv:
+for sysarg in sys.argv[1:]:
     if isopt(sysarg):
         if sysarg=='-h' or sysarg=='--help':
             os.system('yldoc ylmktbl')
             exit(0)
         elif sysarg=='-v' or sysarg=='--version':
-            print('Version 2 Patch 3 in Python')
+            print('Version 2 Emergency Patch 4 in Python')
             exit(0)
         else:
             print("\033[31mERROR: Option "+sysarg+" invalid.\033[0m")

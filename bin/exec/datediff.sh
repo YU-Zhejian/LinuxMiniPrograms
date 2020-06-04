@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# DATEDIFF v1
-Start_Sec=$(date --date="${1}" +%s)
-End_Sec=$(date --date="${2}" +%s)
+# DATEDIFF V2
+Start_Sec=$(date -j -f "%Y-%m-%d-%H-%M-%S" "${1}" "+%s")
+End_Sec=$(date -j -f "%Y-%m-%d-%H-%M-%S" "${2}" "+%s")
 if [ ${Start_Sec} -ge ${End_Sec} ]; then
     Diff_Sec=$((${Start_Sec} - ${End_Sec}))
 else

@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
-# LCMAN V3P4
+# LCMAN V3EP5
 set -ue
-DN=$(readlink -f $(dirname "${0}"))
+DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 echo -e "\e[33mYuZJLab LiveChat Manager"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
+if [[ "${myos}" =~ .*"BSD".* ]];then
+    echo -e "\e[31mWARNING: Will use ${mycat} as more.\e[0m"
+    mymore="${mycat}"
+fi
+more="${mymore}"
 LVCD="${DN}/../var/livechat.d"
-if [ ! -e ${LVCD}/MESSAGES ]; then
+if [ ! -e "${LVCD}"/MESSAGES ]; then
     echo -e "\e[31mERROR: livechat.d/MESSAGES not exist.\e[0m"
     exit 1
 fi
@@ -14,7 +19,6 @@ OLD_IFS="${IFS}"
 IFS=";"
 tmpfff="$(mktemp -t lcman.XXXXXX)"
 . "${DN}"/../lib/libisopt
-more="${mymore}"
 STDS=''
 sf=()
 sm=()
@@ -23,7 +27,7 @@ for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
         "-v" | "--version")
-            echo -e "\e[33mVersion 3 patch 4, compatiable with LiveChat Version 1 & 2.\e[0m"
+            echo -e "\e[33mVersion 3 Emergency Patch 5, compatiable with LiveChat Version 1 & 2.\e[0m"
             exit 0
             ;;
         "-h" | "--help")
@@ -32,7 +36,7 @@ for opt in "${@}"; do
             ;;
         --more\:*)
             more="${opt:7}"
-            if ! "${more}" --help &>/dev/null; then
+            if [ $("${more}" --help &>/dev/null;echo ${?}) -eq 127 ]; then
                 echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
                 more="${mymore}"
             else

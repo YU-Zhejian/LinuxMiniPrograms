@@ -2,7 +2,7 @@
 # INSTALLER V3P1
 set -euo pipefail
 OLDIFS="${IFS}"
-DN=$(readlink -f $(dirname "${0}"))
+DN="$(readlink -f "$(dirname "${0}")")"
 cd "${DN}"
 echo -e "\e[33mYuZJLab Installer"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"

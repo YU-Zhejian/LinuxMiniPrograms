@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#PLS.py V1P6
+#PLS.py V1EP7
 from LMP_Pylib.libisopt import *
 from LMP_Pylib.libpath import *
 mylibpath=libpath("PATH")
@@ -17,7 +17,7 @@ def do_search(P:str)->list:
     ls_all=ls_ret.readlines()
     ls_ret.close()
     for n in range(len(ls_all)):
-        ls_all[n]=P+ls_all[n].strip()
+        ls_all[n]=P+"/"+ls_all[n].strip()
     if not allow_d:
         ls_all=mygrep(ls_all,r'/$')
     if not allow_o:
@@ -31,13 +31,13 @@ allow_d=False
 allow_o=True
 sys.argv.pop(0)
 sstr=[]
-for sysarg in sys.argv:
+for sysarg in sys.argv[1:]:
     if isopt(sysarg):
         if sysarg=='-h' or sysarg=='--help':
             os.system('yldoc pls')
             exit(0)
         elif sysarg=='-v' or sysarg=='--version':
-            print('Version 1 Patch 6 in Python')
+            print('Version 1 Emergency Patch 7 in Python')
             exit(0)
         elif sysarg=='--no-x':
             allow_x=False
