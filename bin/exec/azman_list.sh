@@ -2,7 +2,7 @@
 #AZMAN_LIST V1P1
 USESPLIT=false
 fulln="${STDS[1]:-}"
-fn="${fulln%.*}"
+fn="$(echo ${fulln%.*}|"${mysed}" "s;.part1;;"|"${mysed}" "s;.part01;;")"
 ext="${fulln##*.}"
 if [ "${fn##*.}" = "tar" ]; then
     ext="tar.${ext}"
@@ -11,9 +11,15 @@ fi
 if [ -z "${fulln}" ]; then
     echo -e "\e[31mERROR: Filename '' invalid.\e[0m"
     exit 1
-elif [ -e "${fulln}".part1.rar ] && [ ${ext} = 'rar' ]; then
-    fn=$(echo ${fulln} | ${mysed} "s/.part1.rar//")
-elif [ -e "${fulln}".001 ]; then
+elif ! [ -e "${fulln}" ]&&[ -e "${fulln}.001" ]; then
+    USESPLIT=true
+    mktmp
+elif ! [ -e "${fulln}" ]&&[ -e "$(echo ${fulln}|"${mysed}" "s;.rar;.part01.rar;")" ]&&[ ${ext} = "rar" ];then
+    fulln="$(echo ${fulln}|"${mysed}" "s;.rar;.part01.rar;")"
+    USESPLIT=true
+    mktmp
+elif ! [ -e "${fulln}" ]&&[ -e "$(echo ${fulln}|"${mysed}" "s;.rar;.part1.rar;")" ]&&[ ${ext} = "rar" ];then
+    fulln="$(echo ${fulln}|"${mysed}" "s;.rar;.part1.rar;")"
     USESPLIT=true
     mktmp
 elif ! [ -e "${fulln}" ]; then

@@ -14,17 +14,7 @@ preck
 ppopt "${@}"
 # ============ Possess arguments ============
 fulln="${STDS[0]:-}"
-if [ -z "${fulln}" ]; then
-    autozipck
-    exit 0
-elif [ -e "${fulln}.001" ]; then
-    USESPLIT=true
-    mktmp
-elif ! [ -e "${fulln}" ]; then
-    echo -e "\e[31mERROR: Filename '${fulln}' invalid.\e[0m"
-    exit 1
-fi
-fn="${fulln%.*}"
+fn="$(echo ${fulln%.*}|"${mysed}" "s;.part1;;"|"${mysed}" "s;.part01;;")"
 ext="${fulln##*.}"
 if [ "${fn##*.}" = "tar" ]; then
     case "${ext}" in
@@ -33,14 +23,31 @@ if [ "${fn##*.}" = "tar" ]; then
         fn="${fn%.*}"
     ;;
     esac
-elif [[ "${fulln}" =~ .*".part01.rar" ]]; then
-    fn=$(echo ${fulln} | "${mysed}" "s/.part01.rar//")
-    echo $fn
 fi
+if [ -z "${fulln}" ]; then
+    autozipck
+    exit 0
+elif ! [ -e "${fulln}" ]&&[ -e "${fulln}.001" ]; then
+    USESPLIT=true
+    mktmp
+elif ! [ -e "${fulln}" ]&&[ -e "$(echo ${fulln}|"${mysed}" "s;.rar;.part01.rar;")" ]&&[ ${ext} = "rar" ];then
+    fulln="$(echo ${fulln}|"${mysed}" "s;.rar;.part01.rar;")"
+    USESPLIT=true
+    mktmp
+elif ! [ -e "${fulln}" ]&&[ -e "$(echo ${fulln}|"${mysed}" "s;.rar;.part1.rar;")" ]&&[ ${ext} = "rar" ];then
+    fulln="$(echo ${fulln}|"${mysed}" "s;.rar;.part1.rar;")"
+    USESPLIT=true
+    mktmp
+elif ! [ -e "${fulln}" ]; then
+    echo -e "\e[31mERROR: Filename '${fulln}' invalid.\e[0m"
+    exit 1
+fi
+
 ckext
 echo -e "\e[33mReceived: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}\e[0m"
 if [ -e "${fn}" ]; then
     if ${ISFORCE}; then
+        echo "${fn}"
         ${myrm} -rf "${fn}"
     else
         ${mymv} -f "${fn}" "${fn}".bak
@@ -203,9 +210,8 @@ case ${ext} in
         echo -e "\e[31mERROR: unrar NO exist!\e[0m"
         exit 1
     fi
-    if 
     if ${USEPARALLEL}; then PAR="-mt8"; fi
-    "${myunrar}" ${PAR} x "${fulln}"
+        "${myunrar}" ${PAR} x "${fulln}"
     ;;
 esac
 # ============ Finished ============
@@ -219,7 +225,7 @@ if ${REMOVE}; then
         in_i=001
         case ${ext} in
         "rar")
-            "${myrm}" -rf "${fn}".part[0-9][0-9].rar
+            "${myrm}" -rf "${fn}".part[0-9][0-9].rar "${fn}".part[0-9].rar
         ;;
         "zip")
             "${myrm}" -rf "${fulln}".z[0-9][0-9] "${fulln}".zip

@@ -116,25 +116,28 @@ esac
 echo -e "\e[33mReceived: '${0}' '${fn:-}' ${ext:-} ${STDS[2]:-} ${OPT:-} \e[0m"
 if ${ISFORCE}; then
     if [ -n "${SPLIT:-}" ]; then
-        if [ -e "${fn}".part[0-9][0-9].rar ] && [ ${ext} = "rar" ]; then
-            "${myrm}" -rf "$(echo ${fn}|"${mysed}" "s;.part01.rar;;")".part[0-9][0-9].rar
-        elif [ -e "${fn}".z[0-9][0-9] ] && [ ${ext} = "zip" ]; then
+        if { "${myls}" "${fn}".part[0-9][0-9].rar &>>/dev/null || ls "${fn}".part[0-9].rar &>>/dev/null ; } && [ ${ext} = "rar" ]; then
+            "${myrm}" -rf "${fn}".part[0-9].rar "${fn}".part[0-9][0-9].rar
+        elif "${myls}" "${fn}".z[0-9][0-9]  &>>/dev/null && [ ${ext} = "zip" ]; then
             "${myrm}" -rf "${fn}".z[0-9][0-9] ${fn}.zip
-        elif [ -e "${fn}".${ext}.[0-9][0-9][0-9] ]; then
+        elif "${myls}" "${fn}".${ext}.[0-9][0-9][0-9] &>>/dev/null; then
             "${myrm}" -rf "${fn}".${ext}.[0-9][0-9][0-9]
         fi
-    else
-        if [ -e "${fn}.${ext}" ]; then
-            "${myrm}" -rf "${fn}.${ext}"
-        fi
+    fi
+    if [ -e "${fn}.${ext}" ]; then
+        "${myrm}" -rf "${fn}.${ext}"
     fi
 else
     if [ -n "${SPLIT:-}" ]; then
-        if [ -e "${fn}".part1.rar ] && [ ${ext} = 'rar' ]; then
-            for tfn in "${fn}".part*.rar; do
+        if "${myls}" "${fn}".part[0-9][0-9].rar &>>/dev/null  && [ ${ext} = "rar" ]; then
+            for tfn in "${fn}".part[0-9][0-9].rar; do
                 "${mymv}" -f "${tfn}" "${tfn}".bak
             done
-        elif [ -e "${fn}".z01 ] && [ ${ext} = 'zip' ]; then
+        elif "${myls}" "${fn}".part[0-9].rar &>>/dev/null  && [ ${ext} = "rar" ]; then
+            for tfn in "${fn}".part[0-9].rar; do
+                "${mymv}" -f "${tfn}" "${tfn}".bak
+            done
+        elif "${myls}" "${fn}".z[0-9][0-9]  &>>/dev/null && [ ${ext} = 'zip' ]; then
             for tfn in "${fn}".z[0-9][0-9]; do
                 "${mymv}" -f "${tfn}" "${tfn}".bak
             done
@@ -143,14 +146,11 @@ else
             for tfn in "${fn}".${ext}.[0-9][0-9][0-9]; do
                 "${mymv}" -f "${tfn}" "${tfn}".bak
             done
-        elif [ -e "${fn}".${ext} ]; then
-            "${mymv}" -f "${fn}".${ext} "${fn}".${ext}.bak
         fi
         unset tfn
-    else
-        if [ -e "${fn}".${ext} ]; then
-            "${mymv}" -f "${fn}".${ext} "${fn}".${ext}.bak
-        fi
+    fi
+    if [ -e "${fn}.${ext}" ]; then
+        "${mymv}" -f "${fn}.${ext}" "${fn}.${ext}".bak
     fi
 fi
 # ============ Start Compressing ============
