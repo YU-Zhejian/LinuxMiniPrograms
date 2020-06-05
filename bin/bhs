@@ -7,7 +7,7 @@ more="${mymore}"
 echo -e "\e[33mYuZJLab Bash History Searcher"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 . "${DN}"/../lib/libisopt
-STDS=()
+STDS=""
 for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
@@ -34,7 +34,7 @@ for opt in "${@}"; do
             ;;
         esac
     else
-        STDS=("${STDS}${opt} ")
+        STDS="${STDS}${opt} "
     fi
 done
 STDS=$(echo "${STDS}"|"${mysed}" "s/ $//")

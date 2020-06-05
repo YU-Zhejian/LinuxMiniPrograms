@@ -3,7 +3,6 @@
 . "${DN}"/../lib/libisopt
 more="${mymore}"
 cmd=0
-OPT=()
 STDS=()
 for opt in "${@}"; do
     if isopt "${opt}"; then
@@ -36,12 +35,10 @@ for opt in "${@}"; do
             exit 1
             ;;
         esac
-        OPT=(${OPT[@]} "${opt}")
     else
         STDS=(${STDS[@]} "${opt}")
     fi
 done
-
 if [ ${#STDS[@]} -gt 1 ]; then
     echo -e "\e[33mMore than one filename was received. Will disable -o option.\e[0m"
     cmd=0

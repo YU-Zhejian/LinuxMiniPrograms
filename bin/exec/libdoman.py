@@ -140,7 +140,7 @@ else:
             time_calc.close()
             i += 1
             line = grep_lns[i]
-        if line.startswith('LIBDO EXITED SUCCESSFULLY.'):
+        if line.startswith('LIBDO EXITED SUCCESSFULLY'):
             Exit="0"
         elif line.startswith('LIBDO FAILED, GOT'):
             Exit=line[21:]
