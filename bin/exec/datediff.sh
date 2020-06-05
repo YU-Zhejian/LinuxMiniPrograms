@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 # DATEDIFF V2
-Start_Sec=$(date -j -f "%Y-%m-%d-%H-%M-%S" "${1}" "+%s")
-End_Sec=$(date -j -f "%Y-%m-%d-%H-%M-%S" "${2}" "+%s")
+if [[ "$(date --version 2>&1||true)" =~ "GNU" ]];then
+    Start_Sec=$(date -d "${1}" "+%s")
+    End_Sec=$(date -d "${2}" "+%s")
+else
+    Start_Sec=$(date -j -f "%Y-%m-%d %H:%M:%S" "${1}" "+%s")
+    End_Sec=$(date -j -f "%Y-%m-%d %H:%M:%S" "${2}" "+%s")
+fi
 if [ ${Start_Sec} -ge ${End_Sec} ]; then
     Diff_Sec=$((${Start_Sec} - ${End_Sec}))
 else

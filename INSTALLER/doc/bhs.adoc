@@ -9,16 +9,63 @@ bhs - Bash History Searcher.
 
 == SYNOPSIS
 
-bhs [STRING] [OPTIONS]
+`bhs [STRING] [OPTIONS]`
 
 == DESCRIPTION
 
-Search [STRING] in ~/.bash_history with 'grep'.
+Search `[STRING]` in ~/.bash_history with 'grep'.
 
 == OPTIONS
 
 include::include/cmnopt.adoc[]
 
-* `--more:[program]` The GNU/Linux program 'more' will be used if there's too much output. Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
+* `--more:[program]` By default, the GNU/Linux program `more` will be used if there's too much output. Use `[program]` to replace `more`. e.g. `less`, `cat`, `head` or `tail` if you wish.
+
+== EXAMPLES
+
+These examples are tested under CYGWin.
+
+```
+admin@DESKTOP-FFEV0AF ~
+$ bhs
+YuZJLab Bash History Searcher
+Copyright (C) 2019-2020 YU Zhejian
+     1  git clone https://github.com/YuZJLab/LinuxMiniPrograms
+     2  cd LinuxMiniPrograms
+     3  ls
+     4  git status
+     5  git checkout origin/BSD
+     6  git switch -c BSD
+     7  ./install.sh --help
+     8  ./install.sh --all
+     9  exec bash
+[...]
+    29  git status
+```
+
+```
+admin@DESKTOP-FFEV0AF ~
+$ bhs 'git push'
+YuZJLab Bash History Searcher
+Copyright (C) 2019-2020 YU Zhejian
+"git push"
+    30  git push
+    31  git push
+   185  git push
+```
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== CYGWin
+
+Tested with all functions supported.
+
+== FILES
+
+. `~/.bash_history` The file containing all bash history.
 
 include::include/copy.adoc[]

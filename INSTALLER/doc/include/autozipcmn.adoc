@@ -1,48 +1,36 @@
 == NOTES
 
-=== USE OF GNU PARALLEL (REQUIRE ROOT PREVILEDGE)
-
-It is recommended to use GNU Parallel to accelerate the speed of compression. You can change the first line of autozip.conf to "PARALLEL" to enable this feature. GNU Parallel is not available on autounzip.
-
-When using XZ Utils, we will use argument "-T0" instead of GNU Parallel.
-    
-WARNING: GNU Parallel consumes lots of memory & CPU resources. NEVER USE IT ON CLUSTERS!!!
-
 === USE OF PIGZ
 
-When pigz, GNU parallel both exist and you have PARALLEL in autozip.conf, pigz will be used.
+When `pigz` and GNU parallel both exist and you have `PARALLEL` in `autozip.conf`, `pigz` will be used.
 
-=== USE OF GNU GZIP
+=== USE OF GZIP
 
-When processing bioinformatical data, please make sure that You should use GZIP to produce a GZIP COMPRESSED DATA instead of BGZIP to produce a BLOCKED GNU ZIP FORMAT before using this tool!
+When processing bioinformatical data, please make sure that You should use GZIP to produce a _GZIP COMPRESSED DATA_ instead of BGZIP to produce a _BLOCKED GNU ZIP FORMAT_ before using this tool!
 
 === USE OF BGZIP
 
-This is the right way to produce a BLOCKED GNU ZIP FORMAT with "gz" extension. Because it is capable of GNU GZip, we'll not distinguish them when extracting data. "tar.gz" is not supported in bgz format because it sounds weird.
+This is the right way to produce a _BLOCKED GNU ZIP FORMAT_ with `gz` extension. Because it is capable of GNU GZip, we'll not distinguish them when extracting data. `tar.gz` is not supported in bgz format because it sounds weird.
 
 === USE OF LZMA SDK AND XZ UTILS
 
-The core of the XZ Utils compression code is based on LZMA SDK. So when you're about to compress & decompress files with lz, lzma, tar.lzma, tlz extensions, we'll use XZ Utils.
+The core of the XZ Utils compression code is based on LZMA SDK. So when you're about to compress & decompress files with `lz`, `lzma`, `tar.lz`,`tar.lzma`, `tlz` extensions, we'll use XZ Utils.
 
 === USE OF 7ZIP
 
-WARNING: DO NOT USE the 7-zip format for backup purpose on Linux/Unix because 7-zip does not store the owner/group of the file.
+WARNING: DO NOT USE the 7-zip format for backup purpose on Unix-Like operating systems because 7-zip does not store the owner/group of the file.
 
 WARNING: Although 7-zip provided us with a handful of algorithms, we will only take default values.
 
 === USE OF RAR
 
-WARNING: 1. RAR is a PROPERTY software. 2. Use ABSOLUTE PATH.
+WARNING: RAR is a _PROPERTY_ software.
 
 == CONFIGURATION
 
-The configuration file of `autozip` and `autounzip` is `etc/autozip.conf`. There should be one line inside the file. If there're multiple lines, the lines behind line 1 will be ignored.
+The configuration file of program `autozip` is `etc/autozip.conf`. There should be one line inside the file. If there're multiple lines, the lines behind will be ignored.
 
-`PARALLEL` or `NOPARALLEL` (default) at line 1 indicates whether or not to use GNU Parallel. If you want to ise GNU Parallel, you should change line 1 to `PARALLEL`.
-
-== FILES
-
-`etc/autozip.conf`: The configuration file of `autozip` and `autounzip`.
+`PARALLEL` or `NOPARALLEL` (default) at line 1 indicates whether or not to use GNU Parallel.
 
 == EXAMPLE
 
@@ -93,19 +81,9 @@ Will use GNU Parallel if possible.
 WARNING: Compression level '' undefined. You can use [123456789] for tar.gz extension. Will use default value provided by corresponding algorism.
 Received: /d/Software/LinuxMiniPrograms/bin/autozip R tar.gz
 WARNING: R.tar.gz exists! Will rename R.tar.gz as R.tar.gz.bak.
-LIBDO IS GOING TO EXECUTE mv -f R.tar.gz R.tar.gz.bak
-LIBDO STARTED AT Sat May  2 14:36:58     2020.
-LIBDO PID 1805 with top_pid 1785
-LIBDO STOPPED AT Sat May  2 14:36:58     2020.
-LIBDO EXITED SUCCESSFULLY.
-LIBDO IS GOING TO EXECUTE tar -f - -cv R|pigz >R.tar.gz
-LIBDO STARTED AT Sat May  2 14:36:58     2020.
-LIBDO PID 1813 with top_pid 1785
 a R
 a R/win-library
 a R/win-library/3.6
-LIBDO STOPPED AT Sat May  2 14:36:59     2020.
-LIBDO EXITED SUCCESSFULLY.
 Removing temporary resources...
 Finished.
 ```
@@ -140,25 +118,10 @@ Will use GNU Parallel if possible.
 WARNING: Will remove  if success.
 Received: /d/Software/LinuxMiniPrograms/bin/autounzip R.tar.gz  --remove --force ==>Extension=tar.gz
 WARNING: R exists! Will remove R.
-LIBDO IS GOING TO EXECUTE rm -rf R
-LIBDO STARTED AT Sat May  2 15:00:23     2020.
-LIBDO PID 2127 with top_pid 2109
-LIBDO STOPPED AT Sat May  2 15:00:24     2020.
-LIBDO EXITED SUCCESSFULLY.
-LIBDO IS GOING TO EXECUTE tar xzvf R.tar.gz
-LIBDO STARTED AT Sat May  2 15:00:24     2020.
-LIBDO PID 2135 with top_pid 2109
 R
 R/win-library
 R/win-library/3.6
-LIBDO STOPPED AT Sat May  2 15:00:25     2020.
-LIBDO EXITED SUCCESSFULLY.
 Removing temporary resources...
-LIBDO IS GOING TO EXECUTE rm -rf R.tar.gz
-LIBDO STARTED AT Sat May  2 15:00:25     2020.
-LIBDO PID 2140 with top_pid 2109
-LIBDO STOPPED AT Sat May  2 15:00:25     2020.
-LIBDO EXITED SUCCESSFULLY.
 Finished.
 ```
 
@@ -178,35 +141,11 @@ Received: /d/Software/LinuxMiniPrograms/bin/autozip Desktop txz   -s:10M
 WARNING: Desktop.txz exists! Will rename Desktop.txz as Desktop.txz.bak.
 TEMP file '/tmp/autozip.Z9aUgI' and directory '/tmp/autozip.FsjMHB' made.
 LIBDO IS GOING TO EXECUTE tar -f - -cv Desktop|split -a 3 --numeric-suffixes=001 -b 10M - /tmp/autozip.FsjMHB/Desktop.
-LIBDO STARTED AT Sat May  2 15:06:25     2020.
-LIBDO PID 2172 with top_pid 2148
 Desktop/
 Desktop/1.reg.xz
 [..]
 Desktop/[Tim Hall, J-P Stacey ] Python3 For Absolute Beginners.pdf
 Desktop/\346\220\234\347\264\242 Everything.lnk
-LIBDO STOPPED AT Sat May  2 15:06:25     2020.
-LIBDO EXITED SUCCESSFULLY.
-LIBDO IS GOING TO EXECUTE cat /tmp/autozip.FsjMHB/Desktop.001|xz --threads=0 >Desktop.txz.001
-LIBDO STARTED AT Sat May  2 15:06:25     2020.
-LIBDO PID 2177 with top_pid 2148
-LIBDO STOPPED AT Sat May  2 15:06:30     2020.
-LIBDO EXITED SUCCESSFULLY.
-LIBDO IS GOING TO EXECUTE cat /tmp/autozip.FsjMHB/Desktop.002|xz --threads=0 >Desktop.txz.002
-LIBDO STARTED AT Sat May  2 15:06:30     2020.
-LIBDO PID 2182 with top_pid 2148
-LIBDO STOPPED AT Sat May  2 15:06:33     2020.
-LIBDO EXITED SUCCESSFULLY.
-LIBDO IS GOING TO EXECUTE cat /tmp/autozip.FsjMHB/Desktop.003|xz --threads=0 >Desktop.txz.003
-LIBDO STARTED AT Sat May  2 15:06:33     2020.
-LIBDO PID 2187 with top_pid 2148
-LIBDO STOPPED AT Sat May  2 15:06:37     2020.
-LIBDO EXITED SUCCESSFULLY.
-LIBDO IS GOING TO EXECUTE cat /tmp/autozip.FsjMHB/Desktop.004|xz --threads=0 >Desktop.txz.004
-LIBDO STARTED AT Sat May  2 15:06:37     2020.
-LIBDO PID 2192 with top_pid 2148
-LIBDO STOPPED AT Sat May  2 15:06:39     2020.
-LIBDO EXITED SUCCESSFULLY.
 Removing temporary resources...
 Finished.
 ```
@@ -221,45 +160,13 @@ Copyright (C) 2019-2020 YU Zhejian
 Will use GNU Parallel if possible.
 Received: /d/Software/LinuxMiniPrograms/bin/autounzip Desktop.txz  ==>Extension=txz
 TEMP file '/tmp/autozip.PV6RNx' and directory '/tmp/autozip.Ibs37M' made.
-Will execute: echo "cat /c/Users/admin/a/Desktop.txz.001|xz -dk>>/tmp/autozip.Ibs37M/001">>/tmp/autozip.Ibs37M/001.sh
-Will execute: echo "cat /c/Users/admin/a/Desktop.txz.002|xz -dk>>/tmp/autozip.Ibs37M/002">>/tmp/autozip.Ibs37M/002.sh
-Will execute: echo "cat /c/Users/admin/a/Desktop.txz.003|xz -dk>>/tmp/autozip.Ibs37M/003">>/tmp/autozip.Ibs37M/003.sh
-Will execute: echo "cat /c/Users/admin/a/Desktop.txz.004|xz -dk>>/tmp/autozip.Ibs37M/004">>/tmp/autozip.Ibs37M/004.sh
-LIBDO IS GOING TO EXECUTE find /tmp/autozip.Ibs37M/*.sh|/usr/bin/parallel bash
-LIBDO STARTED AT Sat May  2 15:12:54     2020.
-LIBDO PID 2402 with top_pid 2372
-LIBDO STOPPED AT Sat May  2 15:12:58     2020.
-LIBDO EXITED SUCCESSFULLY.
-LIBDO IS GOING TO EXECUTE cat /tmp/autozip.Ibs37M/001>>/tmp/autozip.PV6RNx
-LIBDO STARTED AT Sat May  2 15:12:58     2020.
-LIBDO PID 2429 with top_pid 2372
-LIBDO STOPPED AT Sat May  2 15:12:58     2020.
-LIBDO EXITED SUCCESSFULLY.
-LIBDO IS GOING TO EXECUTE cat /tmp/autozip.Ibs37M/002>>/tmp/autozip.PV6RNx
-LIBDO STARTED AT Sat May  2 15:12:58     2020.
-LIBDO PID 2434 with top_pid 2372
-LIBDO STOPPED AT Sat May  2 15:12:58     2020.
-LIBDO EXITED SUCCESSFULLY.
-LIBDO IS GOING TO EXECUTE cat /tmp/autozip.Ibs37M/003>>/tmp/autozip.PV6RNx
-LIBDO STARTED AT Sat May  2 15:12:58     2020.
-LIBDO PID 2439 with top_pid 2372
-LIBDO STOPPED AT Sat May  2 15:12:58     2020.
-LIBDO EXITED SUCCESSFULLY.
-LIBDO IS GOING TO EXECUTE cat /tmp/autozip.Ibs37M/004>>/tmp/autozip.PV6RNx
-LIBDO STARTED AT Sat May  2 15:12:58     2020.
-LIBDO PID 2444 with top_pid 2372
-LIBDO STOPPED AT Sat May  2 15:12:59     2020.
-LIBDO EXITED SUCCESSFULLY.
-LIBDO IS GOING TO EXECUTE tar xvf /tmp/autozip.PV6RNx
-LIBDO STARTED AT Sat May  2 15:12:59     2020.
-LIBDO PID 2449 with top_pid 2372
 Desktop/
 Desktop/1.reg.xz
 [..]
 Desktop/[Tim Hall, J-P Stacey ] Python3 For Absolute Beginners.pdf
 Desktop/\346\220\234\347\264\242 Everything.lnk
-LIBDO STOPPED AT Sat May  2 15:13:00     2020.
-LIBDO EXITED SUCCESSFULLY.
 Removing temporary resources...
 Finished.
 ```
+== FILES
+. `etc/autozip.conf` The main condiguration file of this program.

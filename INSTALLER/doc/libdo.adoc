@@ -8,21 +8,26 @@
 libdo - A library to monitor process.
 
 == SYNOPSIS
-
-source /PATH/TO/LIBDO
-
+```
+[VARIABLES]
+. /PATH/TO/LIBDO
 DO cmd
-
+```
 == DESCRIPTION
 
-Firstly, use `. /PATH/TO/LIBDO` to import libdo. (Command `source` is equal to command `.`)
+WARNING: We recently released an update of LibDO from V1* to V2. Please update all your previous files by `libdoman_update`
 
-Then, use `DO cmd` to `execute cmd`.
+Fistly, define variables like `LIBDO_LOG`.
 
-Please pay attention that program 'eval' is used to execute programs. So, if you want to use redirections or pipes, escape them first.
+Then, use `. /PATH/TO/LIBDO` to import libdo. (Command `source` is equal to command `.`)
+
+Lastly, use `DO cmd` to `execute `cmd`.
+
+Please pay attention that program `eval` is used to execute programs. So, if you want to use redirections, pipes or quotes, escape them first.
 
 == ENVIRONMENTAL VARIABLES
-* `LIBDO_TOP_PID` the pid to kill if failed. If blank, will not kill any process.
+
+* `LIBDO_TOP_PID` the `pid` to kill if failed. If blank, the program will not kill any process.
 
 * `LIBDO_PRIV` exit status.
 
@@ -39,5 +44,143 @@ Please pay attention that program 'eval' is used to execute programs. So, if you
 ** 3: Redirect STDOUT.
 
 ** 4: Redirect all.
+
+== LIBDO LOG SPECIFICATIONS
+
+WARNING: This specifications is based on version 2 of LibDO.
+
+The additional instructions are commented.
+
+```
+LIBDO IS GOING TO EXECUTE ls
+# Line 1 print out the command.
+LIBDO STARTED AT 2020-06-05-23-41-26
+# Line 2 print out starting time, which is produced by $(date "+%Y-%m-%d %H:%M:%S").
+LIBDO PID 1049
+# Line 3 print out the PID of the process.
+# Following are the output of the process.
+total 75K
+-rwxrwxr-x+ 1 admin None   96 Jun  3 20:37 BeforeAdd.sh*
+drwxrwxr-x+ 1 admin None    0 Jun  4 19:39 INSTALLER/
+-rwxrwxr-x+ 1 admin None   84 Jun  3 20:37 In_case_of_fire.sh*
+-rw-rw-r--+ 1 admin None  35K Jun  3 20:37 LICENSE.md
+drwxrwxr-x+ 1 admin None    0 Jun  3 21:14 LMP_Pylib/
+-rw-rw-r--+ 1 admin None 3.3K Jun  3 20:37 Readme.md
+drwxrwxr-x+ 1 admin None    0 Jun  5 22:34 bin/
+drwxrwxr-x+ 1 admin None    0 Jun  3 20:37 doc/
+drwxrwxr-x+ 1 admin None    0 Jun  5 21:39 etc/
+-rw-rw-r--+ 1 admin None   83 May 17 12:16 etc_backup.tgz
+drwxrwxr-x+ 1 admin None    0 Jun  3 20:37 html/
+-rwxrwxr-x+ 1 admin None 9.5K Jun  5 00:46 install.sh*
+drwxrwxr-x+ 1 admin None    0 Jun  5 00:46 lib/
+drwxrwxr-x+ 1 admin None    0 May 17 12:18 man/
+drwxrwxr-x+ 1 admin None    0 Jun  3 20:37 pdf/
+drwxrwxr-x+ 1 admin None    0 May 17 12:16 var/
+LIBDO STOPPED AT 2020-06-05-23-41-26
+# Line indicating the stopping time.
+LIBDO EXITED SUCCESSFULLY
+# Line indicating that the process is executed successfully.
+# If the exit status of the process is not 1, this line will be
+# "LIBDO FAILED, GOT $?=${LIBDO_PRIV}".
+# If you set ${LIBDO_TOP_PID}, it will be killed and print
+# "LIBDO WILL KILL ${LIBDO_TOP_PID}"
+```
+
+== EXAMPLES
+
+These examples are tested under CYGWin.
+
+Please be aware that we __DO NOT__ recommend using LibDO interactively. You may use it in a shell script.
+
+```
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ . lib/libdo
+
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ DO ls
+LIBDO IS GOING TO EXECUTE ls
+LIBDO STARTED AT 2020-06-06 00:27:38
+[1] 1491
+LIBDO PID 1491
+total 77K
+-rwxrwxr-x+ 1 admin None   96 Jun  3 20:37 BeforeAdd.sh*
+drwxrwxr-x+ 1 admin None    0 Jun  4 19:39 INSTALLER/
+-rwxrwxr-x+ 1 admin None   84 Jun  3 20:37 In_case_of_fire.sh*
+-rw-rw-r--+ 1 admin None  35K Jun  3 20:37 LICENSE.md
+drwxrwxr-x+ 1 admin None    0 Jun  3 21:14 LMP_Pylib/
+-rw-rw-r--+ 1 admin None 3.3K Jun  3 20:37 Readme.md
+drwxrwxr-x+ 1 admin None    0 Jun  6 00:25 bin/
+drwxrwxr-x+ 1 admin None    0 Jun  3 20:37 doc/
+drwxrwxr-x+ 1 admin None    0 Jun  6 00:10 etc/
+-rw-rw-r--+ 1 admin None   83 May 17 12:16 etc_backup.tgz
+drwxrwxr-x+ 1 admin None    0 Jun  3 20:37 html/
+-rwxrwxr-x+ 1 admin None 9.5K Jun  5 00:46 install.sh*
+drwxrwxr-x+ 1 admin None    0 Jun  6 00:23 lib/
+-rw-rw-r--+ 1 admin None  289 Jun  6 00:26 ls.log
+-rwxrwxr-x+ 1 admin None   52 Jun  5 23:44 ls.sh*
+drwxrwxr-x+ 1 admin None    0 May 17 12:18 man/
+drwxrwxr-x+ 1 admin None    0 Jun  3 20:37 pdf/
+drwxrwxr-x+ 1 admin None    0 May 17 12:16 var/
+[1]+  Done                    eval ${LIBDO_CMD}
+LIBDO STOPPED AT 2020-06-06 00:27:38
+LIBDO EXITED SUCCESSFULLY
+```
+
+Using a script:
+
+```
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ code ls.sh
+
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ cat ls.sh
+LIBDO_LOG_MODE=4
+LIBDO_LOG=ls.log
+. lib/libdo
+DO ls
+
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ bash ls.sh
+
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ cat ls.log
+LIBDO IS GOING TO EXECUTE ls
+LIBDO STARTED AT 2020-06-06 00:26:18
+LIBDO PID 1463
+BeforeAdd.sh
+INSTALLER
+In_case_of_fire.sh
+LICENSE.md
+LMP_Pylib
+Readme.md
+bin
+doc
+etc
+etc_backup.tgz
+html
+install.sh
+lib
+ls.log
+ls.sh
+man
+pdf
+var
+LIBDO STOPPED AT 2020-06-06 00:26:18
+LIBDO EXITED SUCCESSFULLY
+```
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== CYGWin
+
+Tested with all functions supported.
+
+== SEE ALSO
+
+libdoman, libdoman_update
 
 include::include/copy.adoc[]

@@ -9,23 +9,35 @@ autounzip - An automatic file decompression tool.
 
 == SYNOPSIS
 
-autounzip [source] [options]
+`autounzip [source] [options]`
 
 == DESCRIPTION
 
-Extract [source]. If the archive is SPLITTED by `autozip`, suffix like "001" or "z01" should not be added. HOWEVER, for rar you should indicate the FIRST part. For example,  "r1.part1.rar". If [source] is omitted, the prgram will check the algorithms installed on your computer and give back a list of available extension name.
+Extract `[source]`. If the archive is SPLITTED by `autozip`, suffix like "001" or "z01" should not be added. If `[source]` is omitted, the program will check the algorithms installed on your computer and display a list of available extension name.
+
+== KNOWN BUGS
+
+Cannot extract splitted zip files which contains only 1 file. When extracting zip format, we'll use `zip -FF` to merge the files.
 
 == OPTIONS
 
 include::include/cmnopt.adoc[]
-
-* `--force-parallel:[location]` Force to use GUN parallel at [location]. This will not affect pgzip, XZ Utils or other algorithms which do not require GNU Parallel.
 
 * `--force` Remove the target if exists.
 
 * `--remove` Remove [sorce] if success.
 
 include::include/autozipcmn.adoc[]
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== CYGWin
+
+Tested with all functions supported.
 
 == SEE ALSO
 

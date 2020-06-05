@@ -9,9 +9,9 @@ libisopt - A library to check whether a parameter is a legal YuZJLab option.
 
 == SYNOPSIS
 
-source /PATH/TO/LIBISOPT
+`. /PATH/TO/LIBISOPT`
 
-isopt ${OPT}
+`isopt ${OPT}`
 
 == DESCRIPTION
 
@@ -34,6 +34,8 @@ That is, those parameter which matches the regular expression `-[^-\s]|--\S+|-[^
 == EXAMPLE
 
 ```
+OPT=()
+STDS=()
 for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
@@ -50,9 +52,9 @@ for opt in "${@}"; do
             exit 1
             ;;
         esac
-        OPT=(${OPT[@]} ${opt})
+        OPT=(${OPT[@]} "${opt}")
     else
-        
+        STDS=(${STDS[@]} "${opt}")
     fi
 done
 ```

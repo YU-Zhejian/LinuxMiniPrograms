@@ -85,12 +85,11 @@ if cmd==0:
         tmpf_hand = open(tmpf, 'w')
         tmpf_hand.write('#1\n#S90\n#1\n#1\nNO.;COMMAND;EXIT;TIME\n')
         for i in range(Proj+1):
-            tmpf_hand.write(str(i) + ';' + Proj_cmd[i] + ';' + Proj_exit[i] + ';' + Proj_time[i]+'\n')
+            tmpf_hand.write(str(i+1) + ';' + Proj_cmd[i] + ';' + Proj_exit[i] + ';' + Proj_time[i]+'\n')
         tmpf_hand.close()
         os.system('ylmktbl "' + tmpf+'"')
         os.system('rm "' + tmpf+'"')
 else:
-    cmd=cmd-1
     fn = sys.argv[1].strip() + '/' + sstr[0]
     if not os.path.isfile(fn):
         print("\033[31mERROR: Filename ", fn, "invalid. Use libdoman -h for help.\033[0m")
@@ -98,25 +97,29 @@ else:
     ln_s=0
     ln_e=0
     tmpf=mktemp("libdo_man.XXXXXX")
-    os.system('cat -n "' + fn + '" | grep "LIBDO IS GOING TO EXECUTE" >' + tmpf)
+    os.system('cat -n "' + fn + '" | grep "LIBDO IS GOING TO EXECUTE" >"' + tmpf + '"')
     ffn = open(tmpf)
     grep_lns = ffn.readlines()
     ffn.close()
     os.system("rm " + tmpf)
-    if len(grep_lns)<cmd or cmd<0:
+    ln=0
+    for line in grep_lns:
+        ln=ln+1
+        if ln==cmd:
+            ln_s = int(line.strip().split("\t")[0])
+        elif ln>cmd:
+            ln_e = int(line.strip().split("\t")[0])-1
+            break
+    if ln_s==0:
         print("\033[31mERROR: "+str(cmd)+" invalid.\033[0m")
-    ln_e_hand = os.popen('wc -l "' + fn+'"')
-    total = int(ln_e_hand.read().strip().split(" ")[0])
-    ln_e_hand.close()
-    ln_s = int(grep_lns[cmd].strip().split("\t")[0])
-    if len(grep_lns)==cmd:
-        ln_e=total-1
-    else:
-        ln_e = int(grep_lns[cmd+1].strip().split("\t")[0])
+    if ln_e==0:
+        ln_e_hand = os.popen('wc -l "' + fn+'"')
+        ln_e = int(ln_e_hand.read().strip().split(" ")[0])
+        ln_e_hand.close()
     ffn=open(fn)
     tmpf = mktemp("libdo_man.XXXXXX")
     os.system("head -n "+str(ln_s+1)+' "'+fn+ '" | tail -n 2 > "' + tmpf+'"')
-    os.system("head -n " + str(ln_e-1) +' "'+fn+ '" | tail -n 2 >> "' + tmpf+'"')
+    os.system("head -n " + str(ln_e) +' "'+fn+ '" | tail -n 2 >> "' + tmpf+'"')
     tmpf_hand=open(tmpf)
     grep_lns=tmpf_hand.readlines()
     for i in range(len(grep_lns)):
@@ -130,9 +133,7 @@ else:
     else:
         i=2
         line=grep_lns[i]
-        
         if line.startswith('LIBDO STOPPED AT'):
-            
             Time_e=line[17:]
             line = grep_lns[i]
             time_calc = os.popen(os.path.dirname('bash "' + sys.argv[0]) + '"/datediff.sh ' + ' "' + Time_s + '" "' + Time_e + '"')

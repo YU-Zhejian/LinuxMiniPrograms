@@ -31,6 +31,70 @@ include::include/cmnopt.adoc[]
 
 * `-i|--invalid` List all invalid path variable.
 
+== EXAMPLES
+
+These examples are tested under CYGWin.
+
+```
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ pls -l
+YuZJLab PATH ls
+Copyright (C) 2019-2020 YU Zhejian
+/d/Software/LinuxMiniPrograms/bin
+/d/Software/conda
+/d/Software/conda/Library/bin
+[...]
+/c/Users/admin/AppData/Local/Programs/Microsoft VS Code/bin
+/c/Users/admin/bin
+/usr/sbin
+```
+
+```
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ pls -i
+YuZJLab PATH ls
+Copyright (C) 2019-2020 YU Zhejian
+/d/Software/conda/Library/mingw-w64/bin
+/d/Software/conda/Library/usr/bin
+/d/Software/conda/bin
+[...]
+/c/Program Files/R/R-5.6.3/bin/x64
+/c/Program Files/Typora/
+~/bin
+```
+
+```
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ pls
+YuZJLab PATH ls
+Copyright (C) 2019-2020 YU Zhejian
+Reading database...
+/d/Software/LinuxMiniPrograms/bin/autounzip*
+/d/Software/LinuxMiniPrograms/bin/autozip*
+/d/Software/LinuxMiniPrograms/bin/azman*
+/d/Software/LinuxMiniPrograms/bin/bhs*
+/d/Software/LinuxMiniPrograms/bin/lcman*
+/d/Software/LinuxMiniPrograms/bin/libdoman*
+/d/Software/LinuxMiniPrograms/bin/libdoman_upgrade*
+[...]
+```
+
+```
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ pls --allow-d --no-x --no-o
+YuZJLab PATH ls
+Copyright (C) 2019-2020 YU Zhejian
+Reading database...
+/d/Software/LinuxMiniPrograms/bin/exec/
+/d/Software/conda/DLLs/
+/d/Software/conda/Lib/
+/d/Software/conda/Library/
+/d/Software/conda/Menu/
+/d/Software/conda/Scripts/
+/d/Software/conda/Tools/
+[...]
+```
+
 == COMPATIBILITY
 
 === BSD

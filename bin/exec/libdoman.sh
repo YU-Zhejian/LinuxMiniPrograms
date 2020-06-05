@@ -113,7 +113,6 @@ if [ ${cmd} -eq 0 ]; then
         unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table ffn all_lines
     done
 else
-    
     fn="${STDS[0]}"
     if ! [ -f "${fn}" ]; then
         echo -e "\e[31mERROR: Filename '${fn}' invalid. Use libdoman -h for help.\e[0m"
@@ -156,12 +155,12 @@ else
         i=2
         line="${all_lines[i]}"
         if [[ "${line}" =~ "LIBDO STOPPED AT"* ]]; then
-            Time_e="${line:17})"
+            Time_e="${line:17}"
             Time="$(bash "${DN}"/exec/datediff.sh "${Time_s}" "${Time_e}")"
             i=$((${i} + 1))
             line=${all_lines[i]}
         fi
-        if [[ "${line}" == "LIBDO EXITED SUCCESSFULLY." ]]; then
+        if [[ "${line}" == "LIBDO EXITED SUCCESSFULLY" ]]; then
             Exit="0"
         elif [[ "${line}" =~ "LIBDO FAILED, GOT"* ]]; then
             Exit="${line:21}"

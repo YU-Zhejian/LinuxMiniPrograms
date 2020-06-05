@@ -43,4 +43,8 @@ Tested with all functions supported.
 
 Tested with all functions supported.
 
+== FILE
+
+`doc/*.usage`
+
 include::include/copy.adoc[]
