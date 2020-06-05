@@ -64,7 +64,7 @@ for opt in "${@}"; do
             ;;
         esac
     else
-        STDS=(${STDS[@]} "${opt}")
+        STDS=("${STDS[@]}" "${opt}")
     fi
 done
 unset invalid_path valid_path

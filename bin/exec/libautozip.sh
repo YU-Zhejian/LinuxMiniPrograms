@@ -170,9 +170,9 @@ function ppopt() {
                 exit 1
                 ;;
             esac
-            OPT=(${OPT[@]} ${opt})
+            OPT=("${OPT[@]}" "${opt}")
         else
-            STDS=(${STDS[@]} "${opt}")
+            STDS=("${STDS[@]}" "${opt}")
         fi
     done
     if ! ${ISFORCE};then

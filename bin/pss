@@ -34,7 +34,7 @@ for opt in "${@}"; do
             ;;
         esac
     else
-        STDS=(${STDS[@]} "${opt}")
+        STDS=("${STDS[@]}" "${opt}")
     fi
 done
 psstmp=$(mktemp -t psstmp.XXXXXX)

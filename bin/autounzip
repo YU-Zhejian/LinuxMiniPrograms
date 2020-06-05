@@ -14,26 +14,30 @@ preck
 ppopt "${@}"
 # ============ Possess arguments ============
 fulln="${STDS[0]:-}"
-if [ -z ${fulln} ]; then
+if [ -z "${fulln}" ]; then
     autozipck
     exit 0
 elif [ -e "${fulln}.001" ]; then
     USESPLIT=true
     mktmp
-elif ! [ -e ${fulln} ]; then
+elif ! [ -e "${fulln}" ]; then
     echo -e "\e[31mERROR: Filename '${fulln}' invalid.\e[0m"
     exit 1
 fi
 fn="${fulln%.*}"
 ext="${fulln##*.}"
 if [ "${fn##*.}" = "tar" ]; then
-    ext="tar.${ext}"
-    fn="${fn%.*}"
+    case "${ext}" in
+    "gz" | "GZ" | "xz" | "bz2" | "lzma" | "lz")
+        ext="tar.${ext}"
+        fn="${fn%.*}"
+    ;;
+    esac
 elif [[ "${fulln}" =~ .*".part1.rar" ]]; then
-    fn=$(echo ${fulln} | ${mysed} "s/.part1.rar//")
+    fn=$(echo ${fulln} | aut${mysed} "s/.part1.rar//")
 fi
 ckext
-echo -e "\e[33mReceived: ${0} ${fulln} ${OPT} ==>Extension=${ext}\e[0m"
+echo -e "\e[33mReceived: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}\e[0m"
 if [ -e "${fn}" ]; then
     if ${ISFORCE}; then
         ${myrm} -rf "${fn}"
@@ -123,7 +127,7 @@ case ${ext} in
     fi
     ;;
 "gz" | "GZ") # ============ gz ============
-    if [ "${myzgip}" = 'ylukh' ]; then
+    if [ "${mygzip}" = 'ylukh' ]; then
         echo -e "\e[31mERROR: GZip NO exist!\e[0m"
         exit 1
     fi
@@ -145,7 +149,7 @@ case ${ext} in
     if ${USESPLIT}; then
         stdfc "${myxzip} -dk"
     else
-        "${myxz}" -dk "${fulln}"
+        "${myxzip}" -dk "${fulln}"
     fi
     ;;
 "bz2") # ============ bz2 ============
@@ -165,9 +169,9 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdfc "${myxz} -dk --format=lzma"
+        stdfc "${myxzip} -dk --format=lzma"
     else
-        "${myxz}" -dk --format=lzma "${fulln}"
+        "${myxzip}" -dk --format=lzma "${fulln}"
     fi
     ;;
 "7z") # ============ 7z ============

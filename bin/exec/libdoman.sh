@@ -36,7 +36,7 @@ for opt in "${@}"; do
             ;;
         esac
     else
-        STDS=(${STDS[@]} "${opt}")
+        STDS=("${STDS[@]}" "${opt}")
     fi
 done
 if [ ${#STDS[@]} -gt 1 ]; then
