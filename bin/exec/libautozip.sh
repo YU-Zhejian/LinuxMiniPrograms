@@ -193,11 +193,11 @@ function stdc_h() {
     local in_i=001
     if ${USEPARALLEL}; then
         while [ -f "${fulln}".${in_i} ]; do
-            echo "${mycat} "${PWD}"/"${fulln}".${in_i}| "${*}">>${tempdir}/${in_i}" >>"${tempdir}"/"${in_i}".sh
+            echo "\"${mycat}\" \"${PWD}/${fulln}\".${in_i} | ${*}>>\"${tempdir}\"/${in_i}" >>"${tempdir}"/"${in_i}".sh
             file_i=$((${file_i} + 1))
             in_i=$(fixthree ${file_i})
         done
-        "${myfind}" "${tempdir}"/*.sh\|"${myparallel}" bash
+        "${myfind}" "${tempdir}"/*.sh|"${myparallel}" bash
     else
         while [ -f "${fulln}".${in_i} ]; do
             "${mycat}" "${fulln}".${in_i} | ${*} >>"${tempdir}"/${in_i}

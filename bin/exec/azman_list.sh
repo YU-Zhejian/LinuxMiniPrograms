@@ -53,7 +53,7 @@ case ${ext} in
         exit 1
     fi
     if ${USESPLIT}; then
-        stdtl "\"${mygzip} -dk"
+        stdtl "${mygzip} -dk"
     else
         "${mytar}" -tzvf "${fulln}"
     fi
@@ -108,15 +108,15 @@ case ${ext} in
         echo -e "\e[31mERROR: GZip NO exist!\e[0m"
         exit 1
     fi
-    if ${USESPLIT};then echo -e "\e[31mERROR: Splitted archive not supported!\e[0m";fi
-    "${myzgip}" -l "${fulln}"
+    if ${USESPLIT};then echo -e "\e[31mERROR: Splitted archive not supported!\e[0m";exit 1;fi
+    "${mygzip}" -l "${fulln}"
     ;;
 "xz") # ============ xz ============
     if [ "${myxzip}" = 'ylukh' ]; then
         echo -e "\e[31mERROR: XZ NO exist!\e[0m"
         exit 1
     fi
-    if ${USESPLIT};then echo -e "\e[31mERROR: Splitted archive not supported!\e[0m";fi
+    if ${USESPLIT};then echo -e "\e[31mERROR: Splitted archive not supported!\e[0m";exit 1;fi
     "${myxzip}" -l "${fulln}"
     ;;
 "bz2") # ============ bz2 ============
@@ -145,7 +145,8 @@ case ${ext} in
             echo -e "\e[31mERROR: zip NO exist!\e[0m"
             exit 1
         fi
-        ${mycp} "${fn}".z* "${tempdir}"/
+        mktmp
+        "${mycp}" "${fn}".z* "${tempdir}"/
         "${myzip}" -FF "${tempdir}"/"${fn}".zip --out "${tempdir}"/"${fn}".fzip
         "${myunzip}" -v "${tempdir}"/"${fn}".fzip
     else

@@ -33,8 +33,9 @@ if [ "${fn##*.}" = "tar" ]; then
         fn="${fn%.*}"
     ;;
     esac
-elif [[ "${fulln}" =~ .*".part1.rar" ]]; then
-    fn=$(echo ${fulln} | aut${mysed} "s/.part1.rar//")
+elif [[ "${fulln}" =~ .*".part01.rar" ]]; then
+    fn=$(echo ${fulln} | "${mysed}" "s/.part01.rar//")
+    echo $fn
 fi
 ckext
 echo -e "\e[33mReceived: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}\e[0m"
@@ -134,11 +135,7 @@ case ${ext} in
     if ${USESPLIT}; then
         stdfc "${mygzip} -dk"
     else
-        if ${USEPARALLEL} && [ $PIGZ -eq 0 ]; then
-            "${mycat}" "${fulln}" | "${mypigz}" -dc >"${fn}"
-        else
-            "${mycat}" "${fulln}" | "${mygzip}" -dc >"${fn}"
-        fi
+        "${mycat}" "${fulln}" | "${mygzip}" -dc >"${fn}"
     fi
     ;;
 "xz") # ============ xz ============
@@ -171,7 +168,7 @@ case ${ext} in
     if ${USESPLIT}; then
         stdfc "${myxzip} -dk --format=lzma"
     else
-        "${myxzip}" -dk --format=lzma "${fulln}"
+        "${mycat}" "${fulln}"|"${myxzip}" -dk --format=lzma >"${fn}"
     fi
     ;;
 "7z") # ============ 7z ============
@@ -189,6 +186,7 @@ case ${ext} in
         exit 1
     fi
     if [ -f "${fn}".z01 ]; then
+        mktmp
         if [ "${myzip}" = 'ylukh' ]; then
             echo -e "\e[31mERROR: zip NO exist!\e[0m"
             exit 1
@@ -205,6 +203,7 @@ case ${ext} in
         echo -e "\e[31mERROR: unrar NO exist!\e[0m"
         exit 1
     fi
+    if 
     if ${USEPARALLEL}; then PAR="-mt8"; fi
     "${myunrar}" ${PAR} x "${fulln}"
     ;;
@@ -218,11 +217,21 @@ if ${REMOVE}; then
     if ${USESPLIT}; then
         file_i=1
         in_i=001
-        while [ -f "${fulln}".${in_i} ]; do
-            "${myrm}" -rf "${fulln}".${in_i}
-            file_i=$((${file_i} + 1))
-            in_i=$(fixthree ${file_i})
-        done
+        case ${ext} in
+        "rar")
+            "${myrm}" -rf "${fn}".part[0-9][0-9].rar
+        ;;
+        "zip")
+            "${myrm}" -rf "${fulln}".z[0-9][0-9] "${fulln}".zip
+        ;;
+        *)
+            while [ -f "${fulln}".${in_i} ]; do
+                "${myrm}" -rf "${fulln}".${in_i}
+                file_i=$((${file_i} + 1))
+                in_i=$(fixthree ${file_i})
+            done
+        ;;
+        esac
     else
         "${myrm}" -rf "${fulln}"
     fi

@@ -35,7 +35,6 @@ else
             ;;
         esac
     elif [ -f "${fn}" ];then
-        
         case "${ext}" in
         "gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz"|"rar"|"zip"|"7z") ;;
             *)
@@ -114,14 +113,14 @@ ${lvl_able})
     unset lvl_able
     ;;
 esac
-echo -e "\e[33mReceived: ${0} ${fn:-} ${ext:-} ${STDS[2]:-} ${OPT:-} \e[0m"
+echo -e "\e[33mReceived: '${0}' '${fn:-}' ${ext:-} ${STDS[2]:-} ${OPT:-} \e[0m"
 if ${ISFORCE}; then
     if [ -n "${SPLIT:-}" ]; then
-        if [ -e "${fn}".part1.rar ] && [ ${ext} = "rar" ]; then
-            "${myrm}" -rf "${fn}".part*.rar
-        elif [ -e "${fn}".z01 ] && [ ${ext} = "zip" ]; then
+        if [ -e "${fn}".part[0-9][0-9].rar ] && [ ${ext} = "rar" ]; then
+            "${myrm}" -rf "$(echo ${fn}|"${mysed}" "s;.part01.rar;;")".part[0-9][0-9].rar
+        elif [ -e "${fn}".z[0-9][0-9] ] && [ ${ext} = "zip" ]; then
             "${myrm}" -rf "${fn}".z[0-9][0-9] ${fn}.zip
-        elif [ -e "${fn}".${ext}.001 ]; then
+        elif [ -e "${fn}".${ext}.[0-9][0-9][0-9] ]; then
             "${myrm}" -rf "${fn}".${ext}.[0-9][0-9][0-9]
         fi
     else
@@ -179,7 +178,6 @@ case ${ext} in
     else
         cmd="${PAR} ${mygzip}"
     fi
-    
     if [ -n "${SPLIT:-}" ]; then
         "${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
         for tfn in "${tempdir}"/"${fn}".*; do
@@ -201,7 +199,7 @@ case ${ext} in
     if [ -n "${SPLIT:-}" ]; then
         "${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
         for tfn in "${tempdir}"/"${fn}".*; do
-            cat "${tfn}" | "${myxzip}" ${PAR} ${LVL} >"${fn}".${ext}.${tfn:0-3}
+            "${mycat}" "${tfn}" | "${myxzip}" ${PAR} ${LVL} >"${fn}".${ext}.${tfn:0-3}
         done
     else
         "${mytar}" -f - -cv "${fn}" | "${myxzip}" ${PAR} ${LVL} >"${fn}".${ext}
@@ -215,7 +213,7 @@ case ${ext} in
     if [ -n "${SPLIT:-}" ]; then
         "${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
         for tfn in "${tempdir}"/"${fn}".*; do
-            cat "${tfn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}".${ext}.${tfn:0-3}
+            "${mycat}" "${tfn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}".${ext}.${tfn:0-3}
         done
     else
         "${mytar}" -f - -cv "${fn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}"."${ext}"
@@ -229,7 +227,7 @@ case ${ext} in
     if [ -n "${SPLIT:-}" ]; then
         "${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
         for tfn in "${tempdir}"/"${fn}".*; do
-            cat "${tfn}" | ${PAR} "${myxzip}" --format=lzma ${LVL} >"${fn}".${ext}.${tfn:0-3}
+            "${mycat}" "${tfn}" | ${PAR} "${myxzip}" --format=lzma ${LVL} >"${fn}".${ext}.${tfn:0-3}
         done
     else
         "${mytar}" -f - -cv "${fn}" | ${PAR} "${myxzip}" --format=lzma ${LVL} >"${fn}".${ext}
@@ -240,18 +238,18 @@ case ${ext} in
         echo -e "\e[31mERROR: GZip NO exist!\e[0m"
         exit 1
     fi
-    if [ "${mypigz}" = 'ylukh' ] && ${USEPARALLEL}; then
+    if [ "${mypigz}" != 'ylukh' ] && ${USEPARALLEL}; then
         cmd="${mypigz}"
     else
         cmd="${PAR} ${mygzip}"
     fi
     if [ -n "${SPLIT:-}" ]; then
-        cat "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
+        "${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
         for tfn in "${tempdir}"/"${fn}".*; do
-            cat "${tfn}" | ${cmd} ${LVL} >"${fn}".${ext}.${tfn:0-3}
+            "${mycat}" "${tfn}" | ${cmd} ${LVL} >"${fn}".${ext}.${tfn:0-3}
         done
     else
-        cat "${fn}" | ${cmd} ${LVL} >"${fn}".${ext}
+        "${mycat}" "${fn}" | ${cmd} ${LVL} >"${fn}".${ext}
     fi
     ;;
 "bgz") # ============ bgz ============
@@ -264,7 +262,7 @@ case ${ext} in
         echo -e "\e[31mERROR: BGZip do not support split!\e[0m"
         exit 1
     else
-        cat "${fn}" | ${PAR} "${mybgzip}" ${LVL} >"${fn}".${ext}
+        "${mycat}" "${fn}" | ${PAR} "${mybgzip}" ${LVL} >"${fn}".${ext}
     fi
     ;;
 "xz") # ============ xz ============
@@ -274,12 +272,12 @@ case ${ext} in
     fi
     if ${USEPARALLEL}; then PAR="--threads=0"; fi
     if [ -n "${SPLIT:-}" ]; then
-        cat "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
-        for tfn in ${tempdir}/${fn}.*; do
-            cat "${tfn}" | "${myxzip}" ${PAR} ${LVL} >"${fn}".${ext}.${tfn:0-3}
+        "${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
+        for tfn in "${tempdir}"/"${fn}".*; do
+            "${mycat}" "${tfn}" | "${myxzip}" ${PAR} ${LVL} >"${fn}".${ext}.${tfn:0-3}
         done
     else
-        cat "${fn}" | "${myxzip}" ${PAR} ${LVL} >"${fn}".${ext}
+        "${mycat}" "${fn}" | "${myxzip}" ${PAR} ${LVL} >"${fn}".${ext}
     fi
     ;;
 "bz2") # ============ bz2 ============
@@ -288,12 +286,12 @@ case ${ext} in
         exit 1
     fi
     if [ -n "${SPLIT:-}" ]; then
-        cat "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
+        "${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
         for tfn in "${tempdir}"/"${fn}".*; do
-            cat "${tfn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}".${ext}.${tfn:0-3}
+            "${mycat}" "${tfn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}".${ext}.${tfn:0-3}
         done
     else
-        cat "${fn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}".${ext}
+        "${mycat}" "${fn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}".${ext}
     fi
     ;;
 "lz" | "lzma") # ============ lz ============
@@ -302,12 +300,12 @@ case ${ext} in
         exit 1
     fi
     if [ -n "${SPLIT:-}" ]; then
-        cat "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
+        "${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
         for tfn in "${tempdir}"/"${fn}".*; do
-            cat "${tfn}" | ${PAR} "${myxzip}" --format=lzma ${LVL} >"${fn}".${ext}.${tfn:0-3}
+            "${mycat}" "${tfn}" | ${PAR} "${myxzip}" --format=lzma ${LVL} >"${fn}".${ext}.${tfn:0-3}
         done
     else
-        cat "${fn}" | ${PAR} "${myxzip}" --format=lzma ${LVL} >"${fn}".${ext}
+        "${mycat}" "${fn}" | ${PAR} "${myxzip}" --format=lzma ${LVL} >"${fn}".${ext}
     fi
     ;;
 "7z") # ============ 7z ============
