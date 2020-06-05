@@ -27,7 +27,9 @@ Tested and fully supported.
 
 === BSD
 
-The colouring support of `more` in programs that support `--more:[more]`. Not and will not be fixed. Please use `--more:cat` to get the right colour.
+* The `more` program in FreeBSD is actually `less`. To avoid problems, `cat` will be used by fefault in `lcman`.
+
+* The `split` program in FreeBSD is incompatiable with GNU `split`. Please install GNU CoreUtils if you want to use the splitting function in `autozip`.
 
 == CYGWin
 

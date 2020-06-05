@@ -5,7 +5,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 echo -e "\e[33mYuZJLab LiveChat Manager"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
-if [[ "${myos}" =~ .*"BSD".* ]];then
+if ! [[ "$("${mymore}" --version 2>&1||true)" =~ .*"util-linux".* ]]; then
     echo -e "\e[31mWARNING: Will use ${mycat} as more.\e[0m"
     mymore="${mycat}"
 fi
