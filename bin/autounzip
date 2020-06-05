@@ -47,7 +47,6 @@ ckext
 echo -e "\e[33mReceived: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}\e[0m"
 if [ -e "${fn}" ]; then
     if ${ISFORCE}; then
-        echo "${fn}"
         ${myrm} -rf "${fn}"
     else
         ${mymv} -f "${fn}" "${fn}".bak
@@ -193,6 +192,8 @@ case ${ext} in
         exit 1
     fi
     if [ -f "${fn}".z01 ]; then
+        #TODO: unknow bug in single file.
+        USESPLIT=true
         mktmp
         if [ "${myzip}" = 'ylukh' ]; then
             echo -e "\e[31mERROR: zip NO exist!\e[0m"
@@ -228,7 +229,7 @@ if ${REMOVE}; then
             "${myrm}" -rf "${fn}".part[0-9][0-9].rar "${fn}".part[0-9].rar
         ;;
         "zip")
-            "${myrm}" -rf "${fulln}".z[0-9][0-9] "${fulln}".zip
+            "${myrm}" -rf "${fn}".z[0-9][0-9] "${fn}".zip
         ;;
         *)
             while [ -f "${fulln}".${in_i} ]; do

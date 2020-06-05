@@ -9,7 +9,6 @@ echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
 preck
 ppopt "${@}"
 # ============ Possess arguments ============
-
 azcmd=${STDS[0]:-}
 unset STDS[0]
 if [ -z "${azcmd}" ]; then
