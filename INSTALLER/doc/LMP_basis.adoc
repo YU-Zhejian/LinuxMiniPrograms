@@ -9,15 +9,21 @@ LMP_Basis - The basic configuration of LinuxMiniPrograms.
 
 == SYNOPSIS
 
-yldoc LMP_basis
+`yldoc LMP_basis`
 
 == DESCRIPTION
 
 This is a descriptional manual; it shows you the basic configuration in LinuxMiniPrograms.
 
+== Executables
+
+When installing the program, the installer will seach for some executables inside the `$PATH` variable and locate the GNU version as the default program of the LMP. All path information will be recorded in `etc/path.sh`.
+
 == PYTHON IN LMP
 
-Although the frmework of LMP is written in Shell, we use Python to accelerate some processes. When installing the program, the installer will seach for all Python 3 inside the `$PATH` variable and locate the newest Python as the default Python of the LMP. However, you can modify this by editting the first line of `etc/python.conf` to specific your own Python which should be executable.
+Although the frmework of LMP is written in Shell, we use Python to accelerate some processes. When installing the program, the installer will seach for all Python 3 inside the `$PATH` variable and locate the newest Python as the default Python of the LMP. However, you can modify this by editting `etc/path.sh` to specific your own Python.
+
+WARNING: For those wo use Windows, please use `python3` in CygWin & MSY2.
 
 == COMPABILITY PROBLEMS
 
