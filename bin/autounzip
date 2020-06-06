@@ -5,7 +5,7 @@ ISAOTOZIP=false
 USESPLIT=false
 PAR=''
 SUFF=''
-DN="$(readlink -f "$(dirname "${0}")")"
+DN="$("${myreadlink}" -f "$(dirname "${0}")")"
 . "${DN}"/exec/libautozip.sh
 # ============ Start ============
 echo -e "\e[33mYuZJLab AutoUnZip"

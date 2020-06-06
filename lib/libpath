@@ -8,7 +8,7 @@ valid_path=':'
 invalid_path=':'
 duplicated_path=':'
 for dir in "${eachpath[@]}"; do
-    dir_full=$(readlink -f "${dir}" || true)
+    dir_full=$("${myreadlink}" -f "${dir}" || true)
     if [ ! -d "${dir}" ]; then
         invalid_path="${invalid_path}${dir}:"
     elif [[ ${valid_path} =~ .*":${dir_full}:".* ]]; then

@@ -3,7 +3,7 @@
 echo -e "\e[33mYuZJLab Process Snapshot Searcher"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 set -ue
-cd "$(readlink -f "$(dirname "${0}")")"
+cd "$("${myreadlink}" -f "$(dirname "${0}")")"
 . ../lib/libisopt
 . ../etc/path.sh
 more="${mymore}"
