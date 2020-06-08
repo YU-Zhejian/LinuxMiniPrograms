@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
-# INSTALLER V3P1
+# INSTALLER V3EP2
 set -euo pipefail
 OLDIFS="${IFS}"
+if readlink -f . &>/dev/null;then
+    myreadlink="$(which readlink)"
+elif greadlink -f . &>/dev/null;then
+    myreadlink="$(which greadlink)"
+else
+    echo -e "\e[31mERROR! NO readlink available.\e[0m"
+    exit 1
+fi
 DN="$("${myreadlink}" -f "$(dirname "${0}")")"
 cd "${DN}"
 echo -e "\e[33mYuZJLab Installer"
@@ -22,7 +30,7 @@ for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
         "-v" | "--version")
-            echo -e "\e[33mVersion 3.\e[0m"
+            echo -e "\e[33mVersion 3 Emergency Patch 2.\e[0m"
             exit 0
             ;;
         "-h" | "--help")
@@ -114,13 +122,6 @@ if ${VAR_update_path}; then
     rm 'etc/path.sh'
 fi
 if ! [ -f 'etc/path.sh' ]; then
-    if readlink -f &>>/dev/null;then
-        myreadlink="readlink"
-    elif greadlink -f &>>/dev/null;then
-        myreadlink="greadlink"
-    else
-        echo -e "\031m[ERROR: Invalid readlink! Please install greadlink.\e[0m"
-    fi
     echo "myreadlink=\"${myreadlink}\"" >>etc/path.sh
     bash INSTALLER/configpath
 fi
