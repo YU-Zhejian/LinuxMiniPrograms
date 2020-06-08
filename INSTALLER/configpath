@@ -5,6 +5,7 @@ cd INSTALLER
 INPATH="${PATH}"
 path_sh="../etc/path.sh"
 if ! [ -f "${path_sh}" ]; then
+    mkdir -p ../etc
     touch "${path_sh}"
 else
     . "${path_sh}"
