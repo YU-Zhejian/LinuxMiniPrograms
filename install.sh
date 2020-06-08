@@ -2,15 +2,11 @@
 # INSTALLER V3EP2
 set -euo pipefail
 OLDIFS="${IFS}"
-if readlink -f . &>/dev/null;then
-    myreadlink="$(which readlink)"
-elif greadlink -f . &>/dev/null;then
-    myreadlink="$(which greadlink)"
-else
+if ！ readlink -f . &>/dev/null;then
     echo -e "\e[31mERROR! NO readlink available.\e[0m"
     exit 1
 fi
-DN="$("${myreadlink}" -f "$(dirname "${0}")")"
+DN="$(readlink -f "$(dirname "${0}")")"
 cd "${DN}"
 echo -e "\e[33mYuZJLab Installer"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
@@ -116,13 +112,11 @@ OPTIONS:
     fi
 done
 # ========Check========
-mkdir -p etc
 echo -e "\e[33mChecking FileSystem...\e[0m"
 if ${VAR_update_path}; then
     rm 'etc/path.sh'
 fi
 if ! [ -f 'etc/path.sh' ]; then
-    echo "myreadlink=\"${myreadlink}\"" >>etc/path.sh
     bash INSTALLER/configpath
 fi
 if ${VAR_update}; then
@@ -260,7 +254,7 @@ if ${VAR_install_man}; then
     IFS=''
     MANCONF=false
     for item in ${eachpath}; do
-        if [ "$("${myreadlink}" -f "${item}"||true)" = "$("${myreadlink}" -f "${DN}/man")" ] ; then
+        if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}/man")" ] ; then
             echo -e "\e[33mMANPATH configured.\e[0m"
             MANCONF=true
             break
@@ -294,7 +288,7 @@ eachpath=(${valid_path})
 IFS=''
 PYCONF=false
 for item in ${eachpath}; do
-    if [ "$("${myreadlink}" -f "${item}"||true)" = "$("${myreadlink}" -f "${DN}")" ] ; then
+    if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}")" ] ; then
         echo -e "\e[33mPYTHONPATH configured.\e[0m"
         PYCONF=true
         break
@@ -313,7 +307,7 @@ eachpath=(${valid_path})
 IFS=''
 PACONF=false
 for item in ${eachpath}; do
-    if [ "$("${myreadlink}" -f "${item}"||true)" = "$("${myreadlink}" -f "${DN}/bin")" ] ; then
+    if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}/bin")" ] ; then
         echo -e "\e[33mPATH configured.\e[0m"
         PACONF=true
         break

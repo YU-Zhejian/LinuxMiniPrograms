@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -ue
-DN="$("${myreadlink}" -f "$(dirname "${0}")")"
+DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 for fn in "${@}"; do
     if ! [ -f "${fn}" ]; then

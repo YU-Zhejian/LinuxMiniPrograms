@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # YLDOC V1P6
 set -ue
-DN="$("${myreadlink}" -f "$(dirname "${0}")")"
+DN="$(readlink -f "$(dirname "${0}")")"
 echo -e "\e[33mYuZJLab Documentation System"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 . "${DN}"/../lib/libisopt

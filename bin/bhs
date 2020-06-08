@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # BHS V1EP5
 set -ue
-DN="$("${myreadlink}" -f "$(dirname "${0}")")"
+DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 more="${mymore}"
 echo -e "\e[33mYuZJLab Bash History Searcher"

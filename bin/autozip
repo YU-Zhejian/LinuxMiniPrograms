@@ -2,7 +2,7 @@
 # AUTOZIP V3P2
 # ============ Functions ============
 set -euo pipefail
-DN="$("${myreadlink}" -f "$(dirname "${0}")")"
+DN="$(readlink -f "$(dirname "${0}")")"
 ISAUTOZIP=true
 . "${DN}"/exec/libautozip.sh
 # ============ Start ============
