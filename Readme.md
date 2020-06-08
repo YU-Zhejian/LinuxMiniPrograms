@@ -15,7 +15,9 @@ You should have received a copy of the GNU General Public License along with thi
 
 ### Dependencies
 
-"Package manager" refers to software such as `apt` on Ubuntu Linux, `CYGWin installer` in CYGWin or  `ports` under FreeBSD.
+"Package manager" refers to software such as `apt` on Ubuntu Linux, `CYGWin installer` in CYGWin, `homebrew` under MacOS or  `ports` under FreeBSD.
+
+All the program relies on `bash >= 4.4.12(3)`. For MacOS users, please update them by `brew`. For users using CentOS or other obsolete/"Stable" distributions, please upgrade it by compiling the source code.
 
 The entire system needs `git` to be downloaded, installed or upgraded. `git` can be installed by your package manager or by compiling its source code. If there's no `git` on your target machine, please download a zipped archive from GitHub and use `scp` to transport it to your target machine. However, you may unable to get updates in this way.
 
