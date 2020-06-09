@@ -1,13 +1,13 @@
-#!/bin/bash
-# PSS V1P5
+#!/usr/bin/env bash
+# PSS V1P8
 echo -e "\e[33mYuZJLab Process Snapshot Searcher"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
-cd $(dirname ${0})
-{ . ../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || {
-    echo -e "\e[31mFail to load libisopt.\e[0m"
-    exit 1
-}
-more="more"
+set -ue
+cd "$(readlink -f "$(dirname "${0}")")"
+. ../lib/libisopt
+. ../etc/path.sh
+more="${mymore}"
+STDS=()
 for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
@@ -16,11 +16,17 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 1 patch 5"
+            echo "Version 1 patch 8"
             exit 0
             ;;
         --more\:*)
-            more=${opt:7}
+            more="${opt:7}"
+            if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
+                echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
+                more="${mymore}"
+            else
+                echo -e "\e[33mWill use '${more}' as More.\e[0m"
+            fi
             ;;
         *)
             echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
@@ -28,26 +34,25 @@ for opt in "${@}"; do
             ;;
         esac
     else
-        STDS="${STDS} ${opt}"
+        STDS=("${STDS[@]}" "${opt}")
     fi
 done
 psstmp=$(mktemp -t psstmp.XXXXXX)
 pssstmp=$(mktemp -t psstmp.XXXXXX)
-if [[ ${OSTYPE} = *BSD ]];then
-    /bin/ps -a -l >${psstmp}
-elif [[ ${OSTYPE} = cygwin ]];then
-    /usr/bin/ps >${psstmp}
+if ! "${myps}" --version &>> /dev/null;then
+    "${myps}" -a -l &>"${psstmp}"
+elif [[ $("${myps}" --version) == *cygwin* ]]; then
+    "${myps}" -W &>"${psstmp}"
 else
-    /bin/ps -A all >${psstmp}
+    "${myps}" -A all &>"${psstmp}"
 fi
-if [ -z "${STDS}" ]; then
-    cat ${psstmp} | ${more}
+if [ ${#STDS[@]} -eq 0 ]; then
+    "${mycat}" "${psstmp}" | "${more}"
 else
-    head -n 1 ${psstmp}
-    STDI=(${STDS})
-    for fn in "${STDI[@]}"; do
-        cat ${psstmp} | grep -- ${fn} >>${pssstmp}
+    ${myhead} -n 1 ${psstmp}
+    for fn in "${STDS[@]}"; do
+        "${mycat}" "${psstmp}" | "${mygrep}" -- "${fn}" >>"${pssstmp}"
     done
-    cat ${pssstmp} | ${more}
+    "${mycat}" "${pssstmp}" | "${more}"
 fi
-rm ${psstmp} ${pssstmp}
+"${myrm}" "${psstmp}" "${pssstmp}"

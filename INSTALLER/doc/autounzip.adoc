@@ -9,53 +9,38 @@ autounzip - An automatic file decompression tool.
 
 == SYNOPSIS
 
-autounzip [source] [options]
+`autounzip [SOURCE1] [[SOURCE2]...] [options]`
 
 == DESCRIPTION
 
-Extract [source]. If the archive is SPLITTED, suffix like "001" or "z01" should not be added. HOWEVER, for rar you should indicate the FIRST part. For example,  "r1.part1.rar". If [source] is omitted, will check the algorithms installed on your computer and give back a list of available extension name.
+Extract `[SOURCE]`. If the archive is SPLITTED by `autozip`, suffix like "001" or "z01" should not be added. If `[SOURCE]` is omitted, the program will check the algorithms installed on your computer and display a list of available extension name.
+
+== KNOWN BUGS
+
+Cannot extract splitted zip files which contains only 1 file. When extracting zip format, we'll use `zip -FF` to merge the files.
 
 == OPTIONS
+
 include::include/cmnopt.adoc[]
 
-`--force-parallel:[location]` Force to use GUN parallel at [location]. This will not affect pgzip, XZ Utils or other algorithms which do not require GNU Parallel.
+* `--force` Remove the target if exists.
 
-`--force` Remove the target if exists.
-`--remove` Remove [sorce] if success.
+* `--remove` Remove [sorce] if success.
 
-== USE OF GNU PARALLEL (REQUIRE ROOT PREVILEDGE)
-It is recommended to use GNU Parallel to accelerate the speed of compression. You can change the first line of autozip.conf to "PARALLEL" to enable this feature. GNU Parallel is not available on autounzip.
+include::include/autozipcmn.adoc[]
 
-When using XZ Utils, we will use argument "-T0" instead of GNU Parallel.
+== COMPATIBILITY
 
-WARNING: GNU Parallel consumes lots of memory & CPU resources. NEVER USE IT ON CLUSTERS!!!
+=== BSD
 
-== USE OF PIGZ
-When pigz, GNU parallel both exist and you have PARALLEL in autozip.conf, pigz will be used.
+Tested with all functions supported.
 
-== USE OF GNU GZIP
-When processing bioinformatical data, please make sure that You should use GZIP to produce a GZIP COMPRESSED DATA instead of BGZIP to produce a BLOCKED GNU ZIP FORMAT before using this tool!
+=== CYGWin
 
-== USE OF BGZIP
-This is the right way to produce a BLOCKED GNU ZIP FORMAT with "gz" extension. Because it is capable of GNU GZip, we'll not distinguish them when extracting data. "tar.gz" is not supported in bgz format because it sounds weird.
+Tested with all functions supported.
 
-== USE OF LZMA SDK AND XZ UTILS
+== SEE ALSO
 
-The core of the XZ Utils compression code is based on LZMA SDK. So when you're about to compress & decompress files with lz, lzma, tar.lzma, tlz extensions, we'll use XZ Utils.
-
-== USE OF 7ZIP
-WARNING: DO NOT USE the 7-zip format for backup purpose on Linux/Unix because 7-zip does not store the owner/group of the file.
-
-WARNING: Although 7-zip provided us with a handful of algorithms, we will only take default values.
-
-== USE OF RAR
-WARNING: 1. RAR is a PROPERTY software. 2. Use ABSOLUTE PATH.
-
-
-== EXIT STATUS
-`0` OK
-
-`1` ERROR
-
+autounzip, autozip
 
 include::include/copy.adoc[]

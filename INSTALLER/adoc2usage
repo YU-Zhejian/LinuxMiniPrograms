@@ -1,27 +1,4 @@
-#!/bin/bash
-# AD2U V1P2
-DN=$(dirname ${0})
-
-function getfullasciidoc() {
-    while read line; do
-        if [[ ${line} =~ include::.*\[\] ]]; then
-            local deepfn=$(echo ${line} | sed "s/^include\:\://" | sed "s/\[\]$//")
-            getfullasciidoc ${DN}/doc/${deepfn}
-        else
-            echo ${line}
-        fi
-    done <"${1}"
-}
-
-pypath=${DN}/../etc/py
-if [ -z ${pypath} ];then
-    exit 1
-fi
-rm -f ./*.im ../doc/*.usage
-for fn in ${DN}/doc/*.adoc; do
-    fn_base=$(basename ${fn%.*})
-    getfullasciidoc ${fn} | sed 's/^==*/#/' | sed 's/^\:.*\:.*$//' |grep -v '^#.*([0-9])$'| grep -v '^$' >${fn_base}.im
-    ${pypath} adoc2usage_phase2.py ${fn_base}.im
-done
-rm -f ./*.im ../doc/*.usage
-mv *.usage ../doc/
+#!/usr/bin/env bash
+# AD2U V2P1
+. "${PWD}"/../../etc/path.sh
+"${mypython}" "${PWD}"/../exec/adoc2usage.py "${@}"

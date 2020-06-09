@@ -11,14 +11,81 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-## Please Pay Attention
-
-As we're developing programs mostly under Microsoft Windows, we **DO NOT** pay attention to file permissions. You can execute `git config core.filemode false` to make your own copy of repository ignore them as well.
-
 ## Installation
 
+**PLEASE READ THE *DEPENDENCOES* SECTION WITH EXTRA CARE. YOU CAN SKIP THIS SECTION ONLY IF YOU'RE USING THE NEWEST VERSION OF A POPULAR GNU/LINUX DISTRIBUTION.**
+
+**FOR MACOS USERS: CURRENTLY WE DO NOT SUPPORT MACOS. PLEASE WAIT FOR LONGER TIME.**
+
+### Dependencies
+
+"Package manager" refers to software such as `apt` on Ubuntu Linux, `CYGWin installer` in CYGWin, `homebrew` under MacOS or  `pkg` under FreeBSD.
+
+All the program relies on `bash >= 4.4.12(3)`. For MacOS users, please update them by `brew`. For users using CentOS or other obsolete/"Stable" distributions, please upgrade it by compiling the source code.
+
+We need some "standard" GNU executables.
+
+- `GNU CoreUtils>=8.22` , including:
+
+  - `[`
+  - `cat`
+  - `chmod`
+  - `chown`
+  - `cp`
+  - `cut`
+  - `date`
+  - `echo`
+  - `head`
+  - `kill`
+  - `ls`
+  - `mkdir`
+  - `readlink`
+  - `rm`
+  - `sleep`
+  - `sort`
+  - `split`
+  - `tail`
+  - `tr`
+  - `wc`
+  - `uniq`
+
+  Mandatory for BSD or MacOS. It can be installed by compiling the source code (BSD) or `brew` (MacOS).
+
+  For MacOS users, please add the original binaries without "`g`" to `$PATH` environment variable. If you install them by `brew`, there should be instructions.
+
+- `grep>=2.20`
+
+- `sed>=4.4`
+
+- `parallel>=20200122`
+
+- `GNU ps>= procps-ng version 3.3.10` or `ps - process status` or `ps (cygwin) 3.1.4`.
+
+The entire system needs `git` to be downloaded, installed or upgraded. `git` can be installed by your package manager or by compiling its source code. If there's no `git` on your target machine, please download a zipped archive from GitHub and use `scp` to transport it to your target machine. However, you may unable to get updates in this way.
+
+All documentations are written in `asciidoctor`.If you wish to compile them into Groff man, PDF, HTML and YuZJLab Usage, please install the following dependencies:
+
+* `python>=3.6` (Python 3) can be installed by your package manager or `conda`.
+* Ruby, at least `ruby-gems>=3.0.3`, can be installed by your package manager or by compiling the source code.
+* `Ruby gems` package `asciidoctor>=2.0.10` and `asciidoctor-pdf>=1.5.3` can be installed by `gem`.
+
+To enable all archive utilities in `autozip` series, please install the following packages:
+
+* `gzip>=1.8` can be installed by compiling the source code.
+* `pigz`
+* `bsdtar>=3.3.2` or `gtar>=1.26` can be installed by compiling the source code.
+* `xz>=5.2.4` can be installed by compiling the source code.
+* `bzip2>=1.0.8` can be installed by compiling the source code.
+* `zip>=3.0` and `unzip>=6.0.0` can be installed by your package manager or `conda`.
+* `unrar>=5.80` can be installed by your package manager but can be downloaded from https://www.rarlab.com/ in binary form.
+* `p7zip` or `p7zip-full` with `7za>=15.14` can be installed by your package manager or `conda`.
+* `rar>=5.80` is property software, but can be downloaded from https://www.rarlab.com/ in binary form.
+* `bgzip>=1.10.2-23-g6b72368` is a part of `htslib` which is available from https://github.com/samtools/htslib. You may also install `htslib` by your package manager.
+
+Some packages such as `libmktbl` have its Python version, which is more faster than Shell version. Please read `LMP_basis` to configure Python.
+
 ### General Guide
-You can now execute `install.sh` to install all the programs for yourself. You can also run this script to change your settings to the defaults.
+After downloading, you can now execute `install.sh` to install all the programs for yourself. You can also run this script to change your settings to the defaults.
 
 Detailed code:
 
@@ -29,55 +96,14 @@ chmod +x install.sh
 ./install.sh --all
 ```
 
-### Dependencies
-
-Package manager refers to software such as `apt` on Ubuntu Linux, `CYGWin installer` in CYGWin or  `ports` under FreeBSD.
-
-The entire system needs `git` to be downloaded and installed. If there's no `git`, download a zipped archive from GitHub and use `scp` to transport it to your target machine. `git` can be installed by your package manager or by compiling its source code.
-
-All documentations are written in `asciidoctor`.If you wish to compile them into Groff man, PDF, HTML and YuZJLab Usage, please install the following dependencies:
-
-* `python` (Python3) can be installed by your package manager or `conda`.
-* Ruby, at least `ruby-gems`, can be installed by your package manager.
-* `Ruby gems` package `asciidoctor` and `asciidoctor-pdf` can be installed by `gem`.
-
-To install all archive utilities in `autozip` series, please install the following packages:
-
-* `zip` and `unzip` can be installed by your package manager or `conda`.
-* `unrar` can be installed by your package manager but can be downloaded from https://www.rarlab.com/ in binary form.
-* `p7zip` or `p7zip-full` can be installed by your package manager or `conda`.
-* `rar` is property software, but can be downloaded from https://www.rarlab.com/ in binary form.
-* `bgzip` is a part of `htslib` which is available from https://github.com/samtools/htslib. You may also install `htslib` by your package manager.
+You can execute `./install.sh -h` to get help about the installer.
 
 ## Compatibility
 
-* GNU/Linux distributions: Tested and fully supported.
-* BSD and MacOS: Currently, the program does not support BSD and other BSD-based systems (such as MacOS). We're working on this in branch BSD. The source of these problems are due to different syntax of the following programs:
-
-    * `ps` `in bin/pss`. Fixed.
-    * `sed` in `install.sh`. Fixed.
-    * The colouring support of `more` in programs that support `--more:[more]`. Not and will not be fixed. Please use `--more:cat` to get the right colour.
-    * `xz` in `bin/autozip` `bin/autounzip`. Fixed.
-    * `tar` in `bin/autozip` `bin/autounzip`. Fixed.
-    * `ls` in `bin/pls` `lib/libfindpython` `installer.sh`. Fixed.
-
-The following programs on branch BSD have been tested:
-
-    * `pls` All functions can be used.
-    * `pss` All functions can be used.
-    * `livechat`  All functions can be used.
-    * `lcman` All functions, except colouring support, can be used. To avoid this question, use `--more:cat`
-
-* CYGWin and Git Bash: Tested. We provide full support for CYGWin but some of the programs may fail on Git Bash.
-
-    * `ps` in CYGWin's `bin/pss`. Not and will not be fixed. 
-
-* Windows Subsystem of Linux: Have not been tested.
-
-## Branches on GitHub
-
-There are two main branches on GitHub: `master` and `NEW`. `master` branch is a stable releasing branch and `NEW` branch is cutting-edge developing branch. Other branches should be considered as unstable.
+Please read the documents of each program and `LMP_basis` to check if the program supports your system.
 
 ## Help & Documentation
-After installation, you can execute `yldoc --list` to get a complete list of all available documentations and view them by using `yldoc [name]`. You can also find PDF, HTML and other documentation format in corresponding folder.
 
+After installation, you can execute `yldoc -l` to get a complete list of all available documentations and view them by using `yldoc [name]`. You can also find PDF, HTML and other documentation format in corresponding folder.
+
+It is recommended to read the `LMP_basis` to know the basic configurations to Linux Mini Programs.
