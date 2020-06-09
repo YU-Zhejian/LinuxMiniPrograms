@@ -9,11 +9,11 @@ autounzip - An automatic file decompression tool.
 
 == SYNOPSIS
 
-`autounzip [source] [options]`
+`autounzip [SOURCE1] [[SOURCE2]...] [options]`
 
 == DESCRIPTION
 
-Extract `[source]`. If the archive is SPLITTED by `autozip`, suffix like "001" or "z01" should not be added. If `[source]` is omitted, the program will check the algorithms installed on your computer and display a list of available extension name.
+Extract `[SOURCE]`. If the archive is SPLITTED by `autozip`, suffix like "001" or "z01" should not be added. If `[SOURCE]` is omitted, the program will check the algorithms installed on your computer and display a list of available extension name.
 
 == KNOWN BUGS
 

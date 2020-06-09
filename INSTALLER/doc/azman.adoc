@@ -23,7 +23,7 @@ include::include/cmnopt.adoc[]
 
 == SUBCOMMANDS
 
-`list [SOURCE]` List all files and folders inside `[SOURCE]` in a verbose format.
+`list [SOURCE1] [[SOURCE2]...]` List all files and folders inside `[SOURCE]` in a verbose format.
 
 include::include/autozipcmn.adoc[]
 
