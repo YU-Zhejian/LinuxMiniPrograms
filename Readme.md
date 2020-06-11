@@ -80,7 +80,7 @@ To enable all archive utilities in `autozip` series, please install the followin
 * `unrar>=5.80` can be installed by your package manager but can be downloaded from https://www.rarlab.com/ in binary form.
 * `p7zip` or `p7zip-full` with `7za>=15.14` can be installed by your package manager or `conda`.
 * `rar>=5.80` is property software, but can be downloaded from https://www.rarlab.com/ in binary form.
-* `bgzip>=1.10.2-23-g6b72368` is a part of `htslib` which is available from https://github.com/samtools/htslib. You may also install `htslib` by your package manager.
+* `bgzip>=1.10.2-23-g6b72368` is a part of `htslib` (originally `tabix`) which is available from https://github.com/samtools/htslib. You may also install `htslib` (or `tabix`) by your package manager.
 
 Some packages such as `libmktbl` have its Python version, which is more faster than Shell version. Please read `LMP_basis` to configure Python.
 
