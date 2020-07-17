@@ -13,3 +13,6 @@ __pycache__
 *.stackdump
 /gnome-keyring-daemo.core
 .vscode
+/usr
+*ylsjs*
+*ylacd*

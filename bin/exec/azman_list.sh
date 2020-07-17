@@ -11,18 +11,18 @@ for fulln in "${STDS[@]}"; do
         ext="tar.${ext}"
         fn="${fn%.*}"
     fi
-    if ! [ -e "${fulln}" ] && [ -e "${fulln}.001" ]; then
+    if ! [ -f "${fulln}" ] && [ -f "${fulln}.001" ]; then
         USESPLIT=true
         mktmp
-    elif ! [ -e "${fulln}" ] && [ -e "$(echo ${fulln} | "${mysed}" "s;.rar;.part01.rar;")" ] && [ ${ext} = "rar" ]; then
+    elif ! [ -f "${fulln}" ] && [ -f "$(echo ${fulln} | "${mysed}" "s;.rar;.part01.rar;")" ] && [ ${ext} = "rar" ]; then
         fulln="$(echo ${fulln} | "${mysed}" "s;.rar;.part01.rar;")"
         USESPLIT=true
         mktmp
-    elif ! [ -e "${fulln}" ] && [ -e "$(echo ${fulln} | "${mysed}" "s;.rar;.part1.rar;")" ] && [ ${ext} = "rar" ]; then
+    elif ! [ -f "${fulln}" ] && [ -f "$(echo ${fulln} | "${mysed}" "s;.rar;.part1.rar;")" ] && [ ${ext} = "rar" ]; then
         fulln="$(echo ${fulln} | "${mysed}" "s;.rar;.part1.rar;")"
         USESPLIT=true
         mktmp
-    elif ! [ -e "${fulln}" ]; then
+    elif ! [ -f "${fulln}" ]; then
         echo -e "\e[31mERROR: Filename '"${fulln}"' invalid.\e[0m"
         exit 1
     fi
