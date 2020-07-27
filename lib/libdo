@@ -5,7 +5,7 @@ function DO_ECHO(){
     if ! [ -z "${LIBDO_LOG}" ];then
         echo "${@}">>"${LIBDO_LOG}"
     else
-        echo -e "\e[33m${*}\e[0m">&2
+        echo -e "\033[33m${*}\033[0m">&2
     fi
 }
 function DO(){

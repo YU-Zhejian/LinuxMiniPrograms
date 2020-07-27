@@ -35,13 +35,13 @@ if [ -z "${mymkdir:-}" ]; then
     if [ -z "${mymkdir:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "mymkdir=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: mkdir still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\033[31mERROR: mkdir still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use BSD mkdir.\e[0m"
+            echo -e "\033[31mWARNING: Will use BSD mkdir.\033[0m"
             echo "mymkdir=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset mkdir_ver line
 else
-    echo -e "\e[033mmkdir configured\e[0m"
+    echo -e "\033[033mmkdir configured\033[0m"
 fi

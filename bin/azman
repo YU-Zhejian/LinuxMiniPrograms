@@ -4,8 +4,8 @@ DN="$(readlink -f "$(dirname "${0}")")"
 exec 1>&2
 ISAUTOZIP=false
 . "${DN}"/exec/libautozip.sh
-echo -e "\e[33mYuZJLab AutoZipManager"
-echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
+echo -e "\033[33mYuZJLab AutoZipManager"
+echo -e "Copyright (C) 2020 YU Zhejian\033[0m"
 preck
 ppopt "${@}"
 # ============ Possess arguments ============
@@ -17,6 +17,6 @@ if [ -z "${azcmd}" ]; then
 elif [ -f "${DN}"/exec/azman_"${azcmd}".sh ];then
     . "${DN}"/exec/azman_"${azcmd}".sh
 else
-    echo -e "\e[31mERROR: subcommand '${azcmd}' invalid!\e[0m"
+    echo -e "\033[31mERROR: subcommand '${azcmd}' invalid! \033[0m"
     exit 1
 fi

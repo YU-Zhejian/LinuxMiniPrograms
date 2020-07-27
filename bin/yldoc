@@ -2,8 +2,8 @@
 # YLDOC V1P6
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-echo -e "\e[33mYuZJLab Documentation System"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
+echo -e "\033[33mYuZJLab Documentation System"
+echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../etc/path.sh
 more="${mymore}"
@@ -22,19 +22,19 @@ for opt in "${@}"; do
         --more\:*)
             more="${opt:7}"
             if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-                echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
+                echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
                 more="${mymore}"
             else
-                echo -e "\e[33mWill use '${more}' as More.\e[0m"
+                echo -e "\033[33mWill use '${more}' as More.\033[0m"
             fi
             ;;
         "-l" | "--list")
-            echo -e "\e[33mReading database...\e[0m"
+            echo -e "\033[33mReading database...\033[0m"
             "${myls}" -1 "${DN}"/../doc | "${mysort}" | "${mysed}" 's/.usage//' | "${more}"
             exit 0
             ;;
         *)
-            echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
+            echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
             exit 1
             ;;
         esac
@@ -61,7 +61,7 @@ for fn in "${STDS[@]}"; do
     if [ -f "${DN}"/../doc/"${fn}".usage ]; then
         "${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}"
     else
-        echo -e "\e[31mERROR: ${DN}/../doc/${fn}.usage not found!\e[0m"
+        echo -e "\033[31mERROR: ${DN}/../doc/${fn}.usage not found! \033[0m"
         exit 1
     fi
 done

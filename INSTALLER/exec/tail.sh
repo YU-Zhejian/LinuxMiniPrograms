@@ -35,13 +35,13 @@ if [ -z "${mytail:-}" ]; then
     if [ -z "${mytail:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "mytail=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: tail still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\033[31mERROR: tail still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use BSD tail.\e[0m"
+            echo -e "\033[31mWARNING: Will use BSD tail.\033[0m"
             echo "mytail=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset tail_ver line
 else
-    echo -e "\e[033mtail configured\e[0m"
+    echo -e "\033[033mtail configured\033[0m"
 fi

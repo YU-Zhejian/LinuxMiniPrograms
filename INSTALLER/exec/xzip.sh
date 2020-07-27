@@ -8,10 +8,10 @@ if [ -z "${myxzip:-}" ]; then
         echo "xzip found in ${line}"
     else
         echo "myxzip=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-        echo -e "\e[31mERROR: xzip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+        echo -e "\033[31mERROR: xzip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
     fi
     . "${path_sh}"
     unset line
 else
-    echo -e "\e[033mxzip configured\e[0m"
+    echo -e "\033[033mxzip configured\033[0m"
 fi

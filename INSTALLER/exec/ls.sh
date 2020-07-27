@@ -35,13 +35,13 @@ if [ -z "${myls:-}" ]; then
     if [ -z "${myls:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "myls=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: ls still not found. Please configure it manually in ${path_sh}.\e[0m"
+            echo -e "\033[31mERROR: ls still not found. Please configure it manually in ${path_sh}.\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use BSD ls.\e[0m"
+            echo -e "\033[31mWARNING: Will use BSD ls.\033[0m"
             echo "myls=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset ls_ver line
 else
-    echo -e "\e[33mls configured\e[0m"
+    echo -e "\033[33mls configured\033[0m"
 fi

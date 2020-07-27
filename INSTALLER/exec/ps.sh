@@ -33,13 +33,13 @@ if [ -z "${myps:-}" ]; then
     if [ -z "${myps:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "myps=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: ps still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\033[31mERROR: ps still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use None-GNU ps.\e[0m"
+            echo -e "\033[31mWARNING: Will use None-GNU ps.\033[0m"
             echo "myps=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset ps_ver line
 else
-    echo -e "\e[033mps configured\e[0m"
+    echo -e "\033[033mps configured\033[0m"
 fi

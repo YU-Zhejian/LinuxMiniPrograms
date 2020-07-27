@@ -52,14 +52,14 @@ for opt in "${@}"; do
         --more\:*)
             more=$"{opt:7}"
             if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-                echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
+                echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
                 more="${mymore}"
             else
-                echo -e "\e[33mWill use '${more}' as More.\e[0m"
+                echo -e "\033[33mWill use '${more}' as More.\033[0m"
             fi
             ;;
         *)
-            echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
+            echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
             exit 1
             ;;
         esac
@@ -69,7 +69,7 @@ for opt in "${@}"; do
 done
 unset invalid_path valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
-echo -e "\e[33mReading database...\e[0m"
+echo -e "\033[33mReading database...\033[0m"
 for dir in "${eachpath[@]}"; do
     if ! [ -d "${dir}" ]; then continue; fi
     "${myls}" -1 -F "${dir}" | "${mysed}" "s;^;$(echo "${dir}")/;" >>"${tmpf}"

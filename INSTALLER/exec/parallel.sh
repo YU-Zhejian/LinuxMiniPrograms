@@ -27,9 +27,9 @@ if [ -z "${myparallel:-}" ]; then
     . "${path_sh}"
     if [ -z "${myparallel:-}" ]; then
         echo "myparallel=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-        echo -e "\e[31mERROR: parallel still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+        echo -e "\033[31mERROR: parallel still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
     fi
     unset parallel_ver line
 else
-    echo -e "\e[033mparallel configured\e[0m"
+    echo -e "\033[033mparallel configured\033[0m"
 fi

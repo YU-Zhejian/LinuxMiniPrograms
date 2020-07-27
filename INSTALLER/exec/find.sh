@@ -37,13 +37,13 @@ if [ -z "${myfind:-}" ]; then
     if [ -z "${myfind:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "myfind=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: find still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\033[31mERROR: find still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use BSD find.\e[0m"
+            echo -e "\033[31mWARNING: Will use BSD find.\033[0m"
             echo "myfind=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset find_ver line
 else
-    echo -e "\e[033mfind configured\e[0m"
+    echo -e "\033[033mfind configured\033[0m"
 fi

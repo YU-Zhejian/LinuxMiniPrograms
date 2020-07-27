@@ -8,8 +8,8 @@ SUFF=''
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/exec/libautozip.sh
 # ============ Start ============
-echo -e "\e[33mYuZJLab AutoUnZip"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
+echo -e "\033[33mYuZJLab AutoUnZip"
+echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
 preck
 ppopt "${@}"
 # ============ Possess arguments ============
@@ -41,12 +41,12 @@ for fulln in "${STDS[@]}"; do
         USESPLIT=true
         mktmp
     elif ! [ -f "${fulln}" ]; then
-        echo -e "\e[31mERROR: Filename '${fulln}' invalid.\e[0m"
+        echo -e "\033[31mERROR: Filename '${fulln}' invalid.\033[0m"
         exit 1
     fi
 
     ckext
-    echo -e "\e[33mReceived: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}\e[0m"
+    echo -e "\033[33mReceived: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}\033[0m"
     if [ -e "${fn}" ]; then
         if ${ISFORCE}; then
             ${myrm} -rf "${fn}"
@@ -58,7 +58,7 @@ for fulln in "${STDS[@]}"; do
     case ${ext} in
     "tar") # ============ tar ============
         if [ "${mytar}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: Tar NO exist!\e[0m"
+            echo -e "\033[31mERROR: Tar NO exist! \033[0m"
             exit 1
         fi
         if ${USESPLIT}; then
@@ -77,11 +77,11 @@ for fulln in "${STDS[@]}"; do
         ;;
     "tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
         if [ "${mygzip}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: GZip NO exist!\e[0m"
+            echo -e "\033[31mERROR: GZip NO exist! \033[0m"
             exit 1
         fi
         if [ "${mytar}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: Tar NO exist!\e[0m"
+            echo -e "\033[31mERROR: Tar NO exist! \033[0m"
             exit 1
         fi
         if ${USESPLIT}; then
@@ -92,11 +92,11 @@ for fulln in "${STDS[@]}"; do
         ;;
     "tar.xz" | "txz") # ============ txz ============
         if [ "${myxzip}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: XZ NO exist!\e[0m"
+            echo -e "\033[31mERROR: XZ NO exist! \033[0m"
             exit 1
         fi
         if [ "${mytar}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: Tar NO exist!\e[0m"
+            echo -e "\033[31mERROR: Tar NO exist! \033[0m"
             exit 1
         fi
         if ${USESPLIT}; then
@@ -107,11 +107,11 @@ for fulln in "${STDS[@]}"; do
         ;;
     "tar.bz2" | "tbz") # ============ tbz ============
         if [ "${mybzip2}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: BZip2 NO exist!\e[0m"
+            echo -e "\033[31mERROR: BZip2 NO exist! \033[0m"
             exit 1
         fi
         if [ "${mytar}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: Tar NO exist!\e[0m"
+            echo -e "\033[31mERROR: Tar NO exist! \033[0m"
             exit 1
         fi
         if ${USESPLIT}; then
@@ -122,11 +122,11 @@ for fulln in "${STDS[@]}"; do
         ;;
     "tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
         if [ "${myxzip}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: LZMA SDK NO exist!\e[0m"
+            echo -e "\033[31mERROR: LZMA SDK NO exist! \033[0m"
             exit 1
         fi
         if [ "${mytar}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: Tar NO exist!\e[0m"
+            echo -e "\033[31mERROR: Tar NO exist! \033[0m"
             exit 1
         fi
         if ${USESPLIT}; then
@@ -137,7 +137,7 @@ for fulln in "${STDS[@]}"; do
         ;;
     "gz" | "GZ") # ============ gz ============
         if [ "${mygzip}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: GZip NO exist!\e[0m"
+            echo -e "\033[31mERROR: GZip NO exist! \033[0m"
             exit 1
         fi
         if ${USESPLIT}; then
@@ -148,7 +148,7 @@ for fulln in "${STDS[@]}"; do
         ;;
     "xz") # ============ xz ============
         if [ "${myxzip}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: XZ NO exist!\e[0m"
+            echo -e "\033[31mERROR: XZ NO exist! \033[0m"
             exit 1
         fi
         if ${USESPLIT}; then
@@ -159,7 +159,7 @@ for fulln in "${STDS[@]}"; do
         ;;
     "bz2") # ============ bz2 ============
         if [ "${mybzip2}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: BZip2 NO exist!\e[0m"
+            echo -e "\033[31mERROR: BZip2 NO exist! \033[0m"
             exit 1
         fi
         if ${USESPLIT}; then
@@ -170,7 +170,7 @@ for fulln in "${STDS[@]}"; do
         ;;
     "lz" | "lzma") # ============ lz ============
         if [ "${myxzip}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: XZ NO exist!\e[0m"
+            echo -e "\033[31mERROR: XZ NO exist! \033[0m"
             exit 1
         fi
         if ${USESPLIT}; then
@@ -181,7 +181,7 @@ for fulln in "${STDS[@]}"; do
         ;;
     "7z") # ============ 7z ============
         if [ "${my7z}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: p7zip NO exist!\e[0m"
+            echo -e "\033[31mERROR: p7zip NO exist! \033[0m"
             exit 1
         fi
         if ${USESPLIT}; then SUFF=".001"; fi
@@ -190,7 +190,7 @@ for fulln in "${STDS[@]}"; do
         ;;
     "zip") # ============ zip ============
         if [ "${myunzip}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: unzip NO exist!\e[0m"
+            echo -e "\033[31mERROR: unzip NO exist! \033[0m"
             exit 1
         fi
         if [ -f "${fn}".z01 ]; then
@@ -198,7 +198,7 @@ for fulln in "${STDS[@]}"; do
             USESPLIT=true
             mktmp
             if [ "${myzip}" = 'ylukh' ]; then
-                echo -e "\e[31mERROR: zip NO exist!\e[0m"
+                echo -e "\033[31mERROR: zip NO exist! \033[0m"
                 exit 1
             fi
             ${mycp} "${fn}".z* "${tempdir}"/
@@ -210,7 +210,7 @@ for fulln in "${STDS[@]}"; do
         ;;
     "rar")
         if [ "${myunrar}" = 'ylukh' ]; then
-            echo -e "\e[31mERROR: unrar NO exist!\e[0m"
+            echo -e "\033[31mERROR: unrar NO exist! \033[0m"
             exit 1
         fi
         if ${USEPARALLEL}; then PAR="-mt8"; fi
@@ -218,7 +218,7 @@ for fulln in "${STDS[@]}"; do
         ;;
     esac
     # ============ Finished ============
-    echo -e "\e[33mRemoving temporary resources...\e[0m"
+    echo -e "\033[33mRemoving temporary resources...\033[0m"
     if ${USESPLIT}; then
         "${myrm}" -rf "${tempdir}" "${tempf}"
     fi
@@ -248,8 +248,8 @@ for fulln in "${STDS[@]}"; do
 done
 # ============ Finished ============
 if ${ISBLANK}; then
-    echo -e "\e[31mERROR: NO FILENAME.\e[0m"
+    echo -e "\033[31mERROR: NO FILENAME.\033[0m"
     exit 1
 fi
-echo -e "\e[33mFinished.\e[0m"
+echo -e "\033[33mFinished.\033[0m"
 exit 0

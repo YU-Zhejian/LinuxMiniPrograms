@@ -31,13 +31,13 @@ if [ -z "${mygzip:-}" ]; then
     if [ -z "${mygzip:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "mygzip=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: gzip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\033[31mERROR: gzip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use BSD gzip.\e[0m"
+            echo -e "\033[31mWARNING: Will use BSD gzip.\033[0m"
             echo "mygzip=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset gzip_ver line
 else
-    echo -e "\e[033mgzip configured\e[0m"
+    echo -e "\033[033mgzip configured\033[0m"
 fi

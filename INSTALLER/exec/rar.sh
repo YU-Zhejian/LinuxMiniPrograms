@@ -8,10 +8,10 @@ if [ -z "${myrar:-}" ]; then
         echo "rar found in ${line}"
     else
         echo "myrar=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-        echo -e "\e[31mERROR: rar still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+        echo -e "\033[31mERROR: rar still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
     fi
     . "${path_sh}"
     unset line
 else
-    echo -e "\e[033mrar configured\e[0m"
+    echo -e "\033[033mrar configured\033[0m"
 fi
