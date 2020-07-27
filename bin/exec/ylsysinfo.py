@@ -64,7 +64,7 @@ if not os.system("id -a &>> /dev/null || id &>> /dev/null"):
     tbl.append("User major group ID;"+re.findall(r'=.+?\(',verstrs[1])[0][1:-1])
     ylwrite(tmpf,'\n'.join(tbl))
     mktbl(tmpf)
-    verstrs=' '.join(verstrs[3:]).split(',')[1:]
+    verstrs=' '.join(verstrs[3]).split(',')[1:]
     tbl = ["#1", "#1",'User minor group name;User minor group ID']
     for id in verstrs:
         tbl.append(re.findall(r'\(.+?\)',id)[0][1:-1]+';'+re.findall(r'^.+?\(',id)[0][0:-1])

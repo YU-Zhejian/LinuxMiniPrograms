@@ -77,9 +77,8 @@ if id -a &>>/dev/null || id &>>/dev/null; then
     echo "User major group ID;$(echo ${verstrs[1]} | "${mysed}" 's;^.*=;;' | "${mysed}" 's;(.*$;;')" >> "${tmpf}"
     ylmktbl "${tmpf}"
     echo -e '#1\n#1\nUser minor group name;User minor group ID' > "${tmpf}"
-    unset verstrs[0] verstrs[1]
     IFS=' '
-    verstr="${verstrs[*]}"
+    verstr="${verstrs[3]}"
     IFS=','
     verstrs=(${verstr})
     IFS=''
