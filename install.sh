@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# INSTALLER V3EP2
+# INSTALLER V3P3
 set -euo pipefail
 OLDIFS="${IFS}"
 if ！ readlink -f . &>/dev/null;then
@@ -26,7 +26,7 @@ for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
         "-v" | "--version")
-            echo -e "\e[33mVersion 3 Emergency Patch 2.\e[0m"
+            echo -e "\e[33mVersion 3 Patch 3.\e[0m"
             exit 0
             ;;
         "-h" | "--help")
@@ -268,7 +268,7 @@ fi
 if ${VAR_install_usage}; then
     ${mymkdir} -p ../../doc
     for fn in *.adoc; do
-        bash ../adoc2usage ${fn}
+        "${mypython}" ../exec/adoc2usage.py "${fn}"
         if [ ${?} -eq 0 ]; then
             echo -e "\e[33mCompiling ${fn} in YuZJLab Usage...\e[32mPASSED\e[0m"
         else

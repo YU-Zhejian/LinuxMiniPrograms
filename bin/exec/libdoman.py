@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-# LIBDOMAN.py V2
+# LIBDOMAN.py V2P1
 from LMP_Pylib.libisopt import *
-from LMP_Pylib.libmktemp import *
+from LMP_Pylib.libmktbl import *
 import sys,os
 sstr=[]
 cmd=0
@@ -11,7 +11,7 @@ for sysarg in sys.argv[2:]:
             os.system('yldoc libdoman')
             exit(0)
         elif sysarg=='-v' or sysarg=='--version':
-            print('Version 2, compatiable with libdo Version 2.')
+            print('Version 2 patch 1, compatiable with libdo Version 2.')
             exit(0)
         elif sysarg.startswith('-o:'):
             cmd=int(sysarg[3:])
@@ -33,12 +33,8 @@ if cmd==0:
         Proj = -1
         tmpf=mktemp("libdo_man.XXXXXX")
         os.system('cat "'+fn+'" | grep LIBDO >'+tmpf)
-        ffn = open(tmpf)
-        grep_lns = ffn.readlines()
-        for i in range(len(grep_lns)):
-            grep_lns[i]=grep_lns[i].strip()
-        ffn.close()
-        os.system('rm "'+tmpf+'"')
+        grep_lns = ylreadline(tmpf)
+        os.remove(tmpf)
         i = 0
         ln = len(grep_lns)
         Proj_cmd = []
@@ -67,9 +63,8 @@ if cmd==0:
                     Proj_time_e.append(line.replace('.', '')[17:])
                     i += 1
                     line = grep_lns[i]
-                    time_calc = os.popen(os.path.dirname('bash "'+sys.argv[0])+'"/datediff.sh ' + ' "' + Proj_time_s[Proj] + '" "' + Proj_time_e[Proj] + '"')
-                    Proj_time.append(time_calc.read().strip())
-                    time_calc.close()
+                    time_calc = yldo(os.path.dirname('bash "'+sys.argv[0])+'"/datediff.sh ' + ' "' + Proj_time_s[Proj] + '" "' + Proj_time_e[Proj] + '"')
+                    Proj_time.append(time_calc)
                 elif line.startswith('LIBDO IS GOING TO EXECUTE'):
                     Proj_time_e.append('0')
                     Proj_exit.append('-1')
@@ -87,8 +82,8 @@ if cmd==0:
         for i in range(Proj+1):
             tmpf_hand.write(str(i+1) + ';' + Proj_cmd[i] + ';' + Proj_exit[i] + ';' + Proj_time[i]+'\n')
         tmpf_hand.close()
-        os.system('ylmktbl "' + tmpf+'"')
-        os.system('rm "' + tmpf+'"')
+        mktbl(tmpf)
+        os.remove(tmpf)
 else:
     fn = sys.argv[1].strip() + '/' + sstr[0]
     if not os.path.isfile(fn):
@@ -98,10 +93,8 @@ else:
     ln_e=0
     tmpf=mktemp("libdo_man.XXXXXX")
     os.system('cat -n "' + fn + '" | grep "LIBDO IS GOING TO EXECUTE" >"' + tmpf + '"')
-    ffn = open(tmpf)
-    grep_lns = ffn.readlines()
-    ffn.close()
-    os.system("rm " + tmpf)
+    grep_lns = ylreadline(tmpf)
+    os.remove(tmpf)
     ln=0
     for line in grep_lns:
         ln=ln+1
@@ -113,17 +106,11 @@ else:
     if ln_s==0:
         print("\033[31mERROR: "+str(cmd)+" invalid.\033[0m")
     if ln_e==0:
-        ln_e_hand = os.popen('wc -l "' + fn+'"')
-        ln_e = int(ln_e_hand.read().strip().split(" ")[0])
-        ln_e_hand.close()
-    ffn=open(fn)
+        ln_e = pywcl(fn)
     tmpf = mktemp("libdo_man.XXXXXX")
     os.system("head -n "+str(ln_s+1)+' "'+fn+ '" | tail -n 2 > "' + tmpf+'"')
     os.system("head -n " + str(ln_e) +' "'+fn+ '" | tail -n 2 >> "' + tmpf+'"')
-    tmpf_hand=open(tmpf)
-    grep_lns=tmpf_hand.readlines()
-    for i in range(len(grep_lns)):
-        grep_lns[i]=grep_lns[i].strip()
+    grep_lns = ylreadline(tmpf)
     CMD=grep_lns[0][26:]
     Time_s=grep_lns[1][17:]
     if len(grep_lns)<4:
@@ -136,9 +123,7 @@ else:
         if line.startswith('LIBDO STOPPED AT'):
             Time_e=line[17:]
             line = grep_lns[i]
-            time_calc = os.popen(os.path.dirname('bash "' + sys.argv[0]) + '"/datediff.sh ' + ' "' + Time_s + '" "' + Time_e + '"')
-            Time=time_calc.read().strip()
-            time_calc.close()
+            Time = yldo(os.path.dirname('bash "' + sys.argv[0]) + '"/datediff.sh ' + ' "' + Time_s + '" "' + Time_e + '"')
             i += 1
             line = grep_lns[i]
         if line.startswith('LIBDO EXITED SUCCESSFULLY'):
