@@ -35,13 +35,13 @@ if [ -z "${mychmod:-}" ]; then
     if [ -z "${mychmod:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "mychmod=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: chmod still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\033[31mERROR: chmod still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use BSD chmod.\e[0m"
+            echo -e "\033[31mWARNING: Will use BSD chmod.\033[0m"
             echo "mychmod=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset chmod_ver line
 else
-    echo -e "\e[033mchmod configured\e[0m"
+    echo -e "\033[033mchmod configured\033[0m"
 fi

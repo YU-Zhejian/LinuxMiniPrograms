@@ -8,10 +8,10 @@ if [ -z "${myunrar:-}" ]; then
         echo "unrar found in ${line}"
     else
         echo "myunrar=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-        echo -e "\e[31mERROR: unrar still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+        echo -e "\033[31mERROR: unrar still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
     fi
     . "${path_sh}"
     unset line
 else
-    echo -e "\e[033munrar configured\e[0m"
+    echo -e "\033[033munrar configured\033[0m"
 fi

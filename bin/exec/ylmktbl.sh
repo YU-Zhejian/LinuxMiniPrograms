@@ -14,7 +14,7 @@ for opt in "${@}"; do
             exit 0
             ;;
         *)
-            echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
+            echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
             exit 1
             ;;
         esac
@@ -23,7 +23,7 @@ for opt in "${@}"; do
     fi
 done
 if ! [ -f "${STDS}" ]; then
-    echo -e "\e[31mERROR: Table file ${STDS} invalid.\e[0m"
+    echo -e "\033[31mERROR: Table file ${STDS} invalid.\033[0m"
     exit 1
 fi
 function mktbl_GetLongestString_max_str() {
@@ -144,17 +144,17 @@ for ((i = 0; i <= ${col_len}; i++)); do
     SPB="${SPB}-"
 done
 unset total_col_len col_len
-echo -e "\e[36m${SPB}\e[0m"
+echo -e "\033[36m${SPB}\033[0m"
 for curr_col in "${col[@]}"; do
     IFS=";"
     curr_col_items=(${curr_col})
     IFS=''
-    msg="\e[36m|\e[0m"
+    msg="\033[36m|\033[0m"
     for item in "${curr_col_items[@]}"; do
-        msg="${msg}${item}\e[36m|\e[0m"
+        msg="${msg}${item}\033[36m|\033[0m"
     done
     echo -e "${msg}"
-    echo -e "\e[36m${SPB}\e[0m"
+    echo -e "\033[36m${SPB}\033[0m"
 done
 unset col curr_col msg SPB
 IFS=${oldifs}

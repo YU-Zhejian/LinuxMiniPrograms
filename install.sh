@@ -3,13 +3,13 @@
 set -euo pipefail
 OLDIFS="${IFS}"
 if ！ readlink -f . &>/dev/null;then
-    echo -e "\e[31mERROR! NO readlink available.\e[0m"
+    echo -e "\033[31mERROR! NO readlink available.\033[0m"
     exit 1
 fi
 DN="$(readlink -f "$(dirname "${0}")")"
 cd "${DN}"
-echo -e "\e[33mYuZJLab Installer"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
+echo -e "\033[33mYuZJLab Installer"
+echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
 . lib/libisopt
 # ========Def Var========
 VAR_install_config=false
@@ -26,7 +26,7 @@ for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
         "-v" | "--version")
-            echo -e "\e[33mVersion 3 Patch 3.\e[0m"
+            echo -e "\033[33mVersion 3 Patch 3.\033[0m"
             exit 0
             ;;
         "-h" | "--help")
@@ -105,14 +105,14 @@ OPTIONS:
             VAR_interactive=false
             ;;
         *)
-            echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
+            echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
             exit 1
             ;;
         esac
     fi
 done
 # ========Check========
-echo -e "\e[33mChecking FileSystem...\e[0m"
+echo -e "\033[33mChecking FileSystem...\033[0m"
 if ${VAR_update_path}; then
     rm 'etc/path.sh'
 fi
@@ -145,49 +145,49 @@ fi
 . etc/path.sh
 # ========Prompt========
 if ${VAR_interactive}; then
-    echo -e "\e[33mWellcome to install YuZJLab LinuxMiniPrograms! Before installation, please agree to our License:\e[0m"
+    echo -e "\033[33mWellcome to install YuZJLab LinuxMiniPrograms! Before installation, please agree to our License:\033[0m"
     cat LICENSE.md
     read -p "Answer Y/N:>" VAR_Ans
     if ! [ "${VAR_Ans}" = "Y" ]; then
         exit 1
     fi
     if [ ${ETC} -eq 0 ]; then
-        echo -e "\e[33mDo you want to reinstall the config in 'etc'?\e[0m"
+        echo -e "\033[33mDo you want to reinstall the config in 'etc'?\033[0m"
         read -p "Answer Y/N:>" VAR_Ans
         if [ "${VAR_Ans}" = "Y" ]; then
             VAR_install_config=true
         fi
     else
-        echo -e "\e[33mWill install the config in 'etc'\e[0m"
+        echo -e "\033[33mWill install the config in 'etc'\033[0m"
         VAR_install_config=true
     fi
     if [ ${VAR} -eq 0 ]; then
-        echo -e "\e[33mDo you want to clear the history in 'var'?\e[0m"
+        echo -e "\033[33mDo you want to clear the history in 'var'?\033[0m"
         read -p "Answer Y/N:>" VAR_Ans
         if [ "${VAR_Ans}" = "Y" ]; then
             VAR_clear_history=true
         fi
     else
-        echo -e "\e[33mWill install history to 'var'\e[0m"
+        echo -e "\033[33mWill install history to 'var'\033[0m"
         VAR_clear_history=true
     fi
-    echo -e "\e[33mDo you want to install documentations in Groff man, pdf, YuZJLab Usage and HTML? This need command 'asciidoctor' and 'asciidoctor-pdf' (available from Ruby pem) and Python 3.\e[0m"
+    echo -e "\033[33mDo you want to install documentations in Groff man, pdf, YuZJLab Usage and HTML? This need command 'asciidoctor' and 'asciidoctor-pdf' (available from Ruby pem) and Python 3.\033[0m"
     read -p "Answer Y/N:>" VAR_Ans
     if [ "${VAR_Ans}" = "Y" ]; then
         VAR_install_doc=true
     fi
 fi
 #========Install ETC========
-echo -e "\e[33mInstalling...\e[0m"
+echo -e "\033[33mInstalling...\033[0m"
 if ${VAR_install_config}; then
     "${mymkdir}" -p etc
     if [ ${ETC} -eq 1 ]; then
         "${mytar}" czf etc_backup.tgz etc
         "${myrm}" -rf etc/*
-        echo -e "\e[33mBacking up settings...\e[32mPASSED\e[0m"
+        echo -e "\033[33mBacking up settings...\033[32mPASSED\033[0m"
     fi
     "${mycp}" -fr INSTALLER/etc/* etc/
-    echo -e "\e[33mInstalling config...\e[32mPASSED\e[0m"
+    echo -e "\033[33mInstalling config...\033[32mPASSED\033[0m"
 fi
 #========Install VAR========
 if ${VAR_clear_history}; then
@@ -195,7 +195,7 @@ if ${VAR_clear_history}; then
     if [ ${VAR} -eq 1 ]; then
         "${mytar}" czf var_backup.tgz var
         "${myrm}" -rf var/*
-        echo -e "\e[33mBacking up histories...\e[32mPASSED\e[0m"
+        echo -e "\033[33mBacking up histories...\033[32mPASSED\033[0m"
     fi
     "${mycp}" -fr INSTALLER/var/* var/
 fi
@@ -213,9 +213,9 @@ if ${VAR_install_pdf}; then
     for fn in *.adoc; do
         asciidoctor-pdf -a allow-uri-read ${fn}
         if [ ${?} -eq 0 ]; then
-            echo -e "\e[33mCompiling ${fn} in pdf...\e[32mPASSED\e[0m"
+            echo -e "\033[33mCompiling ${fn} in pdf...\033[32mPASSED\033[0m"
         else
-            echo -e "\e[33mCompiling ${fn} in pdf...\e[31mERROR\e[0m"
+            echo -e "\033[33mCompiling ${fn} in pdf...\033[31mERROR\033[0m"
         fi
     done
     "${myrm}" -f ../../pdf/*
@@ -226,9 +226,9 @@ if ${VAR_install_html}; then
     for fn in *.adoc; do
         asciidoctor -a allow-uri-read ${fn} -b html5
         if [ ${?} -eq 0 ]; then
-            echo -e "\e[33mCompiling ${fn} in html5...\e[32mPASSED\e[0m"
+            echo -e "\033[33mCompiling ${fn} in html5...\033[32mPASSED\033[0m"
         else
-            echo -e "\e[33mCompiling ${fn} in html5...\e[31mERROR\e[0m"
+            echo -e "\033[33mCompiling ${fn} in html5...\033[31mERROR\033[0m"
         fi
     done
     "${myrm}" -f ../../html/*
@@ -239,9 +239,9 @@ if ${VAR_install_man}; then
     for fn in *.adoc; do
         asciidoctor -a allow-uri-read ${fn} -b manpage
         if [ ${?} -eq 0 ]; then
-            echo -e "\e[33mCompiling ${fn} in Groff man...\e[32mPASSED\e[0m"
+            echo -e "\033[33mCompiling ${fn} in Groff man...\033[32mPASSED\033[0m"
         else
-            echo -e "\e[33mCompiling ${fn} in Groff man...\e[31mERROR\e[0m"
+            echo -e "\033[33mCompiling ${fn} in Groff man...\033[31mERROR\033[0m"
         fi
     done
     "${myrm}" -f ../../man/man1/*
@@ -255,14 +255,14 @@ if ${VAR_install_man}; then
     MANCONF=false
     for item in ${eachpath}; do
         if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}/man")" ] ; then
-            echo -e "\e[33mMANPATH configured.\e[0m"
+            echo -e "\033[33mMANPATH configured.\033[0m"
             MANCONF=true
             break
         fi
     done
     if ! ${MANCONF}; then
         echo "export MANPATH=\"${DN}/man/\""':${MANPATH}' >>"${HOME}"/.bashrc
-        echo -e "\e[33mWill configure MANPATH...\e[32mPASSED\e[0m"
+        echo -e "\033[33mWill configure MANPATH...\033[32mPASSED\033[0m"
     fi
 fi
 if ${VAR_install_usage}; then
@@ -270,9 +270,9 @@ if ${VAR_install_usage}; then
     for fn in *.adoc; do
         "${mypython}" ../exec/adoc2usage.py "${fn}"
         if [ ${?} -eq 0 ]; then
-            echo -e "\e[33mCompiling ${fn} in YuZJLab Usage...\e[32mPASSED\e[0m"
+            echo -e "\033[33mCompiling ${fn} in YuZJLab Usage...\033[32mPASSED\033[0m"
         else
-            echo -e "\e[33mCompiling ${fn} in YuZJLab Usage...\e[31mERROR\e[0m"
+            echo -e "\033[33mCompiling ${fn} in YuZJLab Usage...\033[31mERROR\033[0m"
         fi
     done
     "${myrm}" -f ../../doc/*
@@ -289,14 +289,14 @@ IFS=''
 PYCONF=false
 for item in ${eachpath}; do
     if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}")" ] ; then
-        echo -e "\e[33mPYTHONPATH configured.\e[0m"
+        echo -e "\033[33mPYTHONPATH configured.\033[0m"
         PYCONF=true
         break
     fi
 done
 if ! ${PYCONF}; then
     echo "export PYTHONPATH=\"${DN}/\""':${PYTHONPATH}' >>"${HOME}"/.bashrc
-    echo -e "\e[33mWill configure PYTHONPATH...\e[32mPASSED\e[0m"
+    echo -e "\033[33mWill configure PYTHONPATH...\033[32mPASSED\033[0m"
 fi
 
 INPATH="${PATH:-}"
@@ -308,14 +308,14 @@ IFS=''
 PACONF=false
 for item in ${eachpath}; do
     if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}/bin")" ] ; then
-        echo -e "\e[33mPATH configured.\e[0m"
+        echo -e "\033[33mPATH configured.\033[0m"
         PACONF=true
         break
     fi
 done
 if ! ${PACONF}; then
     echo "export PATH=\"${DN}/bin/\""':${PATH}' >>"${HOME}"/.bashrc
-    echo -e "\e[33mWill configure PATH...\e[32mPASSED\e[0m"
+    echo -e "\033[33mWill configure PATH...\033[32mPASSED\033[0m"
 fi
 #========Install Permissions========
 function add_dir() {
@@ -330,11 +330,11 @@ function add_dir() {
         fi
     done
 }
-echo -e "\e[33mModifying file permissions...\e[0m"
+echo -e "\033[33mModifying file permissions...\033[0m"
 "${mychown}" -R $(id -u) *
 "${mychmod}" -R +r+w *
 add_dir
 "${mychmod}" +x bin/*
 "${mychmod}" +x *.sh
 IFS="${OLDIFS}"
-echo -e "\e[33mFinished. Please execute 'exec bash' to restart bash.\e[0m"
+echo -e "\033[33mFinished. Please execute 'exec bash' to restart bash.\033[0m"

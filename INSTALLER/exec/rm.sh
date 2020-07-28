@@ -35,13 +35,13 @@ if [ -z "${myrm:-}" ]; then
     if [ -z "${myrm:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "myrm=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: rm still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\033[31mERROR: rm still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use BSD rm.\e[0m"
+            echo -e "\033[31mWARNING: Will use BSD rm.\033[0m"
             echo "myrm=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset rm_ver line
 else
-    echo -e "\e[033mrm configured\e[0m"
+    echo -e "\033[033mrm configured\033[0m"
 fi

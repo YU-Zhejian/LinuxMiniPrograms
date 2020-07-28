@@ -35,13 +35,13 @@ if [ -z "${mycut:-}" ]; then
     if [ -z "${mycut:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "mycut=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: cut still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\033[31mERROR: cut still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use BSD cut.\e[0m"
+            echo -e "\033[31mWARNING: Will use BSD cut.\033[0m"
             echo "mycut=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset cut_ver line
 else
-    echo -e "\e[033mcut configured\e[0m"
+    echo -e "\033[033mcut configured\033[0m"
 fi

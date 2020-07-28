@@ -35,13 +35,13 @@ if [ -z "${myhead:-}" ]; then
     if [ -z "${myhead:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "myhead=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: head still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\033[31mERROR: head still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use BSD head.\e[0m"
+            echo -e "\033[31mWARNING: Will use BSD head.\033[0m"
             echo "myhead=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset head_ver line
 else
-    echo -e "\e[033mhead configured\e[0m"
+    echo -e "\033[033mhead configured\033[0m"
 fi

@@ -8,10 +8,10 @@ if [ -z "${my7z:-}" ]; then
         echo "7z found in ${line}"
     else
         echo "my7z=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-        echo -e "\e[31mERROR: 7z still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+        echo -e "\033[31mERROR: 7z still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
     fi
     . "${path_sh}"
     unset line
 else
-    echo -e "\e[033m7z configured\e[0m"
+    echo -e "\033[033m7z configured\033[0m"
 fi

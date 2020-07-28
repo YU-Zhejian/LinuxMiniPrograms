@@ -35,13 +35,13 @@ if [ -z "${mysplit:-}" ]; then
     if [ -z "${mysplit:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "mysplit=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: split still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\033[31mERROR: split still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use BSD split.\e[0m"
+            echo -e "\033[31mWARNING: Will use BSD split.\033[0m"
             echo "mysplit=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset split_ver line
 else
-    echo -e "\e[033msplit configured\e[0m"
+    echo -e "\033[033msplit configured\033[0m"
 fi

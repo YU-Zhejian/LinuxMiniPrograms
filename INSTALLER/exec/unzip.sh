@@ -34,13 +34,13 @@ if [ -z "${myunzip:-}" ]; then
     if [ -z "${myunzip:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "myunzip=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: unzip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\033[31mERROR: unzip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use BSD unzip.\e[0m"
+            echo -e "\033[31mWARNING: Will use BSD unzip.\033[0m"
             echo "myunzip=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset unzip_ver line
 else
-    echo -e "\e[033munzip configured\e[0m"
+    echo -e "\033[033munzip configured\033[0m"
 fi

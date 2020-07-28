@@ -8,10 +8,10 @@ if [ -z "${mybgzip:-}" ]; then
         echo "bgzip found in ${line}"
     else
         echo "mybgzip=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-        echo -e "\e[31mERROR: bgzip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+        echo -e "\033[31mERROR: bgzip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
     fi
     . "${path_sh}"
     unset line
 else
-    echo -e "\e[033mbgzip configured\e[0m"
+    echo -e "\033[033mbgzip configured\033[0m"
 fi

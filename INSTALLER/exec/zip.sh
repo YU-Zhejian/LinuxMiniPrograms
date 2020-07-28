@@ -34,13 +34,13 @@ if [ -z "${myzip:-}" ]; then
     if [ -z "${myzip:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "myzip=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: zip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\033[31mERROR: zip still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use BSD zip.\e[0m"
+            echo -e "\033[31mWARNING: Will use BSD zip.\033[0m"
             echo "myzip=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset zip_ver line
 else
-    echo -e "\e[033mzip configured\e[0m"
+    echo -e "\033[033mzip configured\033[0m"
 fi

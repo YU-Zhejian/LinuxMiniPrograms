@@ -2,8 +2,8 @@
 # MLS v1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-echo -e "\e[33mYuZJLab MANPATH ls"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
+echo -e "\033[33mYuZJLab MANPATH ls"
+echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
 oldifs="${IFS}"
 function my_grep() {
     regstr="${1}"
@@ -51,14 +51,14 @@ for opt in "${@}"; do
         --more\:*)
             more=$"{opt:7}"
             if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-                echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
+                echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
                 more="${mymore}"
             else
-                echo -e "\e[33mWill use '${more}' as More.\e[0m"
+                echo -e "\033[33mWill use '${more}' as More.\033[0m"
             fi
             ;;
         *)
-            echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
+            echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
             exit 1
             ;;
         esac
@@ -68,7 +68,7 @@ for opt in "${@}"; do
 done
 unset invalid_path valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
-echo -e "\e[33mReading database...\e[0m"
+echo -e "\033[33mReading database...\033[0m"
 for dir in "${eachpath[@]}"; do
     if ! [ -d "${dir}" ]; then continue; fi
     "${myls}" -1 -F "${dir}" | "${mysed}" "s;^;$(echo "${dir}")/;" | "${mygrep}" man[^/]*/$ | while read line; do

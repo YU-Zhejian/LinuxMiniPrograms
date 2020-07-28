@@ -34,7 +34,7 @@ Logon as [USER] and start chatting! There's no need to register.
 . Modify the `.bashrc` file as follows:
 
 ```
-echo -e "\e[33mChatting server on LAN ***.\e[0m"
+echo -e "\033[33mChatting server on LAN ***.\033[0m"
 livechat
 exit
 ```

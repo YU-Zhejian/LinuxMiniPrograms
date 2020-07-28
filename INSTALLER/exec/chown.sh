@@ -35,13 +35,13 @@ if [ -z "${mychown:-}" ]; then
     if [ -z "${mychown:-}" ]; then
         if [ -z "${lntmp:-}" ]; then
             echo "mychown=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: chown still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
+            echo -e "\033[31mERROR: chown still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
         else
-            echo -e "\e[31mWARNING: Will use BSD chown.\e[0m"
+            echo -e "\033[31mWARNING: Will use BSD chown.\033[0m"
             echo "mychown=\"${lntmp}\" #${type}" >>"${path_sh}"
         fi
     fi
     unset chown_ver line
 else
-    echo -e "\e[033mchown configured\e[0m"
+    echo -e "\033[033mchown configured\033[0m"
 fi
