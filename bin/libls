@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# LIBLS v1
+set -ue
+DN="$(readlink -f "$(dirname "${0}")")"
+echo -e "\033[33mYuZJLab LIB ls"
+echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
+oldifs="${IFS}"
+function my_grep() {
+	regstr="${1}"
+	"${mycat}" "${tmpf}" | "${mygrep}" "${regstr}" >> "${tmpff}"
+}
+. "${DN}"/../lib/libisopt
+. "${DN}"/../etc/path.sh
+more="${mymore}"
+locallib=$(for dir in /lib \
+/lib* \
+/usr/lib*/ \
+"${HOME}"/usr/lib*/ \
+"${HOME}"/usr/local/lib*/; do echo ${dir}; done | tr '\n' ':')
+INPATH="${locallib}:${LD_LIBRARY_PATH:-}"${LIBRARY_PATH:-}
+. "${DN}"/../lib/libpath
+IFS=":"
+eachpath=(${valid_path})
+unset duplicated_path invalid_path
+IFS=''
+STDS=()
+allow_s=true
+allow_a=true
+for opt in "${@}"; do
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-h" | "--help")
+			yldoc pls
+			exit 0
+			;;
+		"-v" | "--version")
+			echo "Version 1"
+			exit 0
+			;;
+		"-l" | "--list")
+			echo ${valid_path} | tr ':' '\n'
+			unset valid_path
+			exit 0
+			;;
+		"-a"|"--static-only")
+			allow_a=true
+			allow_s=false
+			;;
+		"-s"|"--dynamic-only")
+			allow_s=true
+			allow_a=false
+			;;
+		--more\:*)
+			more=$"{opt:7}"
+			if $(
+				"${more}" --help &>/dev/null
+				echo ${?}
+			) -eq 127; then
+				echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
+				more="${mymore}"
+			else
+				echo -e "\033[33mWill use '${more}' as More.\033[0m"
+			fi
+			;;
+		*)
+			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
+			exit 1
+			;;
+		esac
+	else
+		STDS=(${STDS[@]} "${opt}")
+	fi
+done
+unset valid_path
+tmpf="$(mktemp -t pls.XXXXXX)"
+echo -e "\033[33mReading database...\033[0m"
+for dir in "${eachpath[@]}"; do
+	"${myfind}" "${dir}" 2> /dev/null >>"${tmpf}" || true
+done
+tmpff=$(mktemp -t pls.XXXXXX)
+${allow_s} && my_grep '\.so\(\..*\)*$' || true
+${allow_a} && my_grep '\.a\(\..*\)*$' || true
+"${mymv}" "${tmpff}" "${tmpf}"
+if [ ${#STDS[@]} -eq 0 ]; then
+	"${mycat}" "${tmpf}"| "${more}"
+else
+	IFS=''
+	grepstr=''
+	for fn in "${STDS[@]}"; do
+		grepstr="${grepstr} -e ${fn}"
+	done
+	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"\|"${more}"
+fi
+rm "${tmpf}"
+IFS="${oldifs}"

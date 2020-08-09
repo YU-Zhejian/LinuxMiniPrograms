@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # FINDCOREUTILS.sh V2
-if ! "${mygrep}" ^"${PROGNAME}"= "${path_sh}";then
+if ! "${mygrep}" ^"my${PROGNAME}"= "${path_sh}";then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
         ${GNU_found} && break || true
@@ -24,7 +24,7 @@ if ! "${mygrep}" ^"${PROGNAME}"= "${path_sh}";then
         "${myrm}" "${tmpf}"
         unset tmpf dir
     done
-    if "${mygrep}" ^"${PROGNAME}"= "${path_sh}";then
+    if ! "${mygrep}" ^"my${PROGNAME}"= "${path_sh}";then
         if [ -z "${lntmp:-}" ]; then
             echo "my${PROGNAME}=\"ylukh\" #UNKNOWN" >>"${path_sh}"
             echo -e "\033[31mERROR: ${PROGNAME} still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"

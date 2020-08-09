@@ -1,26 +1,23 @@
 #!/usr/bin/env bash
-# MLS v1
-set -ue
-DN="$(readlink -f "$(dirname "${0}")")"
-echo -e "\033[33mYuZJLab MANPATH ls"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
+# PLS.sh V3P2
 oldifs="${IFS}"
 function my_grep() {
     regstr="${1}"
-    local tmpffff=$(mktemp -t pls.XXXXXX)
-    "${mycat}" "${tmpf}" | "${mygrep}" -v "${regstr}" >"${tmpffff}"
-    mv "${tmpffff}" "${tmpf}"
+    local tmpff=$(mktemp -t pls.XXXXXX)
+    "${mycat}" "${tmpf}" | "${mygrep}" -v "${regstr}" >"${tmpff}"
+    mv "${tmpff}" "${tmpf}"
 }
-. "${DN}"/../lib/libisopt
-. "${DN}"/../etc/path.sh
 more="${mymore}"
-[[ "${myos}" =~ .*"BSD".* ]] && INPATH="/usr/share/man:/usr/local/man:$("${mycat}" /usr/local/etc/man.d/*.conf | "${mygrep}" -v \# | "${mygrep}" MANPATH | "${mycut}" -f 2 -d ' ' | tr '\n' ':')${MANPATH:-}" || INPATH="$("${mycat}" /etc/man_db.conf | "${mygrep}" -v \# | "${mygrep}" MANDB_MAP | "${mycut}" -f 2 | tr '\n' ':')${MANPATH:-}"
-# TODO: locate man.conf. Not appearing under '/etc/'.
+. "${DN}"/../lib/libisopt
+INPATH="${PATH}"
 . "${DN}"/../lib/libpath
 IFS=":"
 eachpath=(${valid_path})
 unset duplicated_path
 IFS=''
+allow_x=true
+allow_d=false
+allow_o=true
 STDS=()
 for opt in "${@}"; do
     if isopt "${opt}"; then
@@ -30,8 +27,17 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 3 Patch 1 in Bash"
+            echo "Version 3 Patch 2 in Bash"
             exit 0
+            ;;
+        "--no-x")
+            allow_x=false
+            ;;
+        "--allow-d")
+            allow_d=true
+            ;;
+        "--no-o")
+            allow_o=false
             ;;
         "-l" | "--list")
             echo ${valid_path} | tr ':' '\n'
@@ -58,18 +64,18 @@ for opt in "${@}"; do
             ;;
         esac
     else
-        STDS=(${STDS[@]} "${opt}")
+        STDS=("${STDS[@]}" "${opt}")
     fi
 done
 unset invalid_path valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 echo -e "\033[33mReading database...\033[0m"
 for dir in "${eachpath[@]}"; do
-    if ! [ -d "${dir}" ]; then continue; fi
-    "${myls}" -1 -F "${dir}" | "${mysed}" "s;^;$(echo "${dir}")/;" | "${mygrep}" man[^/]*/$ | while read line; do
-        "${myls}" -1 -F "${line}"|"${mysed}" "s;.gz;;"|"${mysed}" "s;^;$(echo "${line}");" >>"${tmpf}"
-    done
+    "${myls}" -1 -F "${dir}" 2>/dev/null | "${mysed}" "s;^;$(echo "${dir}")/;" >>"${tmpf}" || true
 done
+! ${allow_d} && my_grep '/$' || true
+! ${allow_x} && my_grep '\*$' || true
+! ${allow_o} && my_grep '[^\*/]$' || true
 if [ ${#STDS[@]} -eq 0 ]; then
     "${mycat}" "${tmpf}" | "${more}"
 else
