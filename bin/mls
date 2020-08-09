@@ -14,13 +14,8 @@ function my_grep() {
 . "${DN}"/../lib/libisopt
 . "${DN}"/../etc/path.sh
 more="${mymore}"
-if [[ "${myos}" =~ .*"BSD".* ]];then
-    INPATH="/usr/share/man:/usr/local/man:$("${mycat}" /usr/local/etc/man.d/*.conf | "${mygrep}" -v \# | "${mygrep}" MANPATH | "${mycut}" -f 2 -d ' ' | tr '\n' ':')${MANPATH:-}"
-    # TODO: locate man.conf. Not appearing under '/etc/'.
-else
-    INPATH="$("${mycat}" /etc/man_db.conf | "${mygrep}" -v \# | "${mygrep}" MANDB_MAP | "${mycut}" -f 2 | tr '\n' ':')${MANPATH:-}"
-fi
-echo $INPATH
+[[ "${myos}" =~ .*"BSD".* ]] && INPATH="/usr/share/man:/usr/local/man:$("${mycat}" /usr/local/etc/man.d/*.conf | "${mygrep}" -v \# | "${mygrep}" MANPATH | "${mycut}" -f 2 -d ' ' | tr '\n' ':')${MANPATH:-}" || INPATH="$("${mycat}" /etc/man_db.conf | "${mygrep}" -v \# | "${mygrep}" MANDB_MAP | "${mycut}" -f 2 | tr '\n' ':')${MANPATH:-}"
+# TODO: locate man.conf. Not appearing under '/etc/'.
 . "${DN}"/../lib/libpath
 IFS=":"
 eachpath=(${valid_path})

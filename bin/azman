@@ -6,7 +6,6 @@ ISAUTOZIP=false
 . "${DN}"/exec/libautozip.sh
 echo -e "\033[33mYuZJLab AutoZipManager"
 echo -e "Copyright (C) 2020 YU Zhejian\033[0m"
-preck
 ppopt "${@}"
 # ============ Possess arguments ============
 azcmd=${STDS[0]:-}

@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
 # LIBDO V2
 function DO_ECHO(){
-    if [ "${LIBDO_LOG_MODEL-}" = "S" ];then return;fi
-    if ! [ -z "${LIBDO_LOG}" ];then
-        echo "${@}">>"${LIBDO_LOG}"
-    else
-        echo -e "\033[33m${*}\033[0m">&2
-    fi
+    [ "${LIBDO_LOG_MODEL-}" = "S" ] && retur || true
+    ! [ -z "${LIBDO_LOG}" ] && echo "${@}">>"${LIBDO_LOG}" || echo -e "\033[33m${*}\033[0m">&2
 }
 function DO(){
     local LIBDO_CMD="${@}"
@@ -35,11 +31,7 @@ function DO(){
                 LIBDO_PID=${!}
         esac
     fi
-    if [ -z "${LIBDO_TOP_PID:-}" ];then
-       DO_ECHO "LIBDO PID ${LIBDO_PID}"
-       else
-	   DO_ECHO "LIBDO PID ${LIBDO_PID} with top_pid ${LIBDO_TOP_PID}"
-	   fi
+    [ -z "${LIBDO_TOP_PID:-}" ] && DO_ECHO "LIBDO PID ${LIBDO_PID}" || DO_ECHO "LIBDO PID ${LIBDO_PID} with top_pid ${LIBDO_TOP_PID}"
     wait ${LIBDO_PID}
     LIBDO_PRIV=${?}
     DO_ECHO "LIBDO STOPPED AT $(date "+%Y-%m-%d %H:%M:%S")"

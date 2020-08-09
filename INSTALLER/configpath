@@ -35,32 +35,16 @@ unset valid_path
 . exec/sed.sh
 . exec/rm.sh
 . exec/python.sh
-. exec/tar.sh
-. exec/gzip.sh
-. exec/cp.sh
-. exec/mv.sh
-. exec/mkdir.sh
-. exec/chmod.sh
-. exec/chown.sh
-. exec/bgzip.sh
-. exec/pigz.sh
-. exec/xzip.sh
-. exec/bzip2.sh
-. exec/7z.sh
-. exec/zip.sh
-. exec/rar.sh
-. exec/unzip.sh
-. exec/unrar.sh
-. exec/parallel.sh
-. exec/find.sh
-. exec/sort.sh
-. exec/cat.sh
-. exec/split.sh
-. exec/more.sh
-. exec/cut.sh
-. exec/head.sh
-. exec/tail.sh
 . exec/ps.sh
+. exec/parallel.sh
+for PROGNAME in tar gtar gzip cp mv mkdir chmod chown zip unzip find sort cat split more cut head tail;do
+	. exec/findcoreutils.sh
+done
+"${mysed}" -i 's;^gtar;tar;' "${path_sh}"
+for PROGNAME in bgzip pigz xz bzip2 7z rar unrar ;do
+	. exec/findornot.sh
+done
+. "${path_sh}"
 echo -e "\033[33mAll configurations are printed as follows:\033[0m"
-cat "${path_sh}" | "${mygrep}" -v '^$' |"${mygrep}" -v '^#' | "${mysed}" 's/^my//' | "${mysed}" 's/=/\\\\033[33m in \\\\033[0m/ ' | "${mysed}" 's/ #/\\\\033[33m, \\\\033[32m/' | while read line; do echo -e "${line}\033[0m"; done
+"${mycat}" "${path_sh}" | "${mygrep}" -v '^$' |"${mygrep}" -v '^#' | "${mysed}" 's/^my//' | "${mysed}" 's/=/\\\\033[33m in \\\\033[0m/ ' | "${mysed}" 's/ #/\\\\033[33m, \\\\033[32m/'| "${mysort}" | while read line; do echo -e "${line}\033[0m"; done
 cd ..

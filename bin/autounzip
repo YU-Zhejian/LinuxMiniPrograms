@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # AUTOUNZIP V3P3
-set -euo pipefail
+set -eu
 ISAOTOZIP=false
 USESPLIT=false
 PAR=''
@@ -10,246 +10,203 @@ DN="$(readlink -f "$(dirname "${0}")")"
 # ============ Start ============
 echo -e "\033[33mYuZJLab AutoUnZip"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
-preck
 ppopt "${@}"
 # ============ Possess arguments ============
 ISBLANK=true
 for fulln in "${STDS[@]}"; do
-    ISBLANK=false
-    fn="$(echo ${fulln%.*} | "${mysed}" "s;.part1;;" | "${mysed}" "s;.part01;;")"
-    ext="${fulln##*.}"
-    if [ "${fn##*.}" = "tar" ]; then
-        case "${ext}" in
-        "gz" | "GZ" | "xz" | "bz2" | "lzma" | "lz")
-            ext="tar.${ext}"
-            fn="${fn%.*}"
-            ;;
-        esac
-    fi
-    if [ -z "${fulln}" ]; then
-        autozipck
-        exit 0
-    elif ! [ -f "${fulln}" ] && [ -f "${fulln}.001" ]; then
-        USESPLIT=true
-        mktmp
-    elif ! [ -f "${fulln}" ] && [ fe "$(echo ${fulln} | "${mysed}" "s;.rar;.part01.rar;")" ] && [ ${ext} = "rar" ]; then
-        fulln="$(echo ${fulln} | "${mysed}" "s;.rar;.part01.rar;")"
-        USESPLIT=true
-        mktmp
-    elif ! [ -f "${fulln}" ] && [ -f "$(echo ${fulln} | "${mysed}" "s;.rar;.part1.rar;")" ] && [ ${ext} = "rar" ]; then
-        fulln="$(echo ${fulln} | "${mysed}" "s;.rar;.part1.rar;")"
-        USESPLIT=true
-        mktmp
-    elif ! [ -f "${fulln}" ]; then
-        echo -e "\033[31mERROR: Filename '${fulln}' invalid.\033[0m"
-        exit 1
-    fi
-
-    ckext
-    echo -e "\033[33mReceived: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}\033[0m"
-    if [ -e "${fn}" ]; then
-        if ${ISFORCE}; then
-            ${myrm} -rf "${fn}"
-        else
-            ${mymv} -f "${fn}" "${fn}".bak
-        fi
-    fi
-    # ============ Start Decompressing ============
-    case ${ext} in
-    "tar") # ============ tar ============
-        if [ "${mytar}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: Tar NO exist! \033[0m"
-            exit 1
-        fi
-        if ${USESPLIT}; then
-            file_i=1
-            in_i=001
-            while [ -f "${fulln}".${in_i} ]; do
-                "${mycat}" "${fulln}".${in_i} >>"${tempf}"
-                file_i=$((${file_i} + 1))
-                in_i=$(fixthree ${file_i})
-            done
-            unset file_i in_1
-            "${mytar}" -xvf "${tempf}"
-        else
-            "${mytar}" -xvf "${fulln}"
-        fi
-        ;;
-    "tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
-        if [ "${mygzip}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: GZip NO exist! \033[0m"
-            exit 1
-        fi
-        if [ "${mytar}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: Tar NO exist! \033[0m"
-            exit 1
-        fi
-        if ${USESPLIT}; then
-            stdtc "${mygzip} -dk"
-        else
-            "${mytar}" -xzvf "${fulln}"
-        fi
-        ;;
-    "tar.xz" | "txz") # ============ txz ============
-        if [ "${myxzip}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: XZ NO exist! \033[0m"
-            exit 1
-        fi
-        if [ "${mytar}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: Tar NO exist! \033[0m"
-            exit 1
-        fi
-        if ${USESPLIT}; then
-            stdtc "${myxzip} -dk"
-        else
-            "${mytar}" -xJvf "${fulln}"
-        fi
-        ;;
-    "tar.bz2" | "tbz") # ============ tbz ============
-        if [ "${mybzip2}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: BZip2 NO exist! \033[0m"
-            exit 1
-        fi
-        if [ "${mytar}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: Tar NO exist! \033[0m"
-            exit 1
-        fi
-        if ${USESPLIT}; then
-            stdtc "${mybzip2} -dk"
-        else
-            "${mytar}" -xjvf "${fulln}"
-        fi
-        ;;
-    "tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
-        if [ "${myxzip}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: LZMA SDK NO exist! \033[0m"
-            exit 1
-        fi
-        if [ "${mytar}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: Tar NO exist! \033[0m"
-            exit 1
-        fi
-        if ${USESPLIT}; then
-            stdtc "${myxzip} -dk --format=lzma"
-        else
-            "${myxzip}" -dc "${fulln}" | "${mytar}" -xv -f -
-        fi
-        ;;
-    "gz" | "GZ") # ============ gz ============
-        if [ "${mygzip}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: GZip NO exist! \033[0m"
-            exit 1
-        fi
-        if ${USESPLIT}; then
-            stdfc "${mygzip} -dk"
-        else
-            "${mycat}" "${fulln}" | "${mygzip}" -dc >"${fn}"
-        fi
-        ;;
-    "xz") # ============ xz ============
-        if [ "${myxzip}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: XZ NO exist! \033[0m"
-            exit 1
-        fi
-        if ${USESPLIT}; then
-            stdfc "${myxzip} -dk"
-        else
-            "${myxzip}" -dk "${fulln}"
-        fi
-        ;;
-    "bz2") # ============ bz2 ============
-        if [ "${mybzip2}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: BZip2 NO exist! \033[0m"
-            exit 1
-        fi
-        if ${USESPLIT}; then
-            stdfc "${mybzip2} -dk"
-        else
-            "${mybzip2}" -dk "${fulln}"
-        fi
-        ;;
-    "lz" | "lzma") # ============ lz ============
-        if [ "${myxzip}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: XZ NO exist! \033[0m"
-            exit 1
-        fi
-        if ${USESPLIT}; then
-            stdfc "${myxzip} -dk --format=lzma"
-        else
-            "${mycat}" "${fulln}" | "${myxzip}" -dk --format=lzma >"${fn}"
-        fi
-        ;;
-    "7z") # ============ 7z ============
-        if [ "${my7z}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: p7zip NO exist! \033[0m"
-            exit 1
-        fi
-        if ${USESPLIT}; then SUFF=".001"; fi
-        if ${USEPARALLEL}; then PAR="-mmt0"; fi
-        "${my7z}" -y ${PAR} x "${fulln}"${SUFF}
-        ;;
-    "zip") # ============ zip ============
-        if [ "${myunzip}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: unzip NO exist! \033[0m"
-            exit 1
-        fi
-        if [ -f "${fn}".z01 ]; then
-            #TODO: unknow bug in single file.
-            USESPLIT=true
-            mktmp
-            if [ "${myzip}" = 'ylukh' ]; then
-                echo -e "\033[31mERROR: zip NO exist! \033[0m"
-                exit 1
-            fi
-            ${mycp} "${fn}".z* "${tempdir}"/
-            "${myzip}" -FF "${tempdir}"/"${fn}".zip --out "${tempdir}"/"${fn}".fzip
-            "${myunzip}" "${tempdir}"/"${fn}".fzip
-        else
-            "${myunzip}" "${fulln}"
-        fi
-        ;;
-    "rar")
-        if [ "${myunrar}" = 'ylukh' ]; then
-            echo -e "\033[31mERROR: unrar NO exist! \033[0m"
-            exit 1
-        fi
-        if ${USEPARALLEL}; then PAR="-mt8"; fi
-        "${myunrar}" ${PAR} x "${fulln}"
-        ;;
-    esac
-    # ============ Finished ============
-    echo -e "\033[33mRemoving temporary resources...\033[0m"
-    if ${USESPLIT}; then
-        "${myrm}" -rf "${tempdir}" "${tempf}"
-    fi
-    if ${REMOVE}; then
-        if ${USESPLIT}; then
-            file_i=1
-            in_i=001
-            case ${ext} in
-            "rar")
-                "${myrm}" -rf "${fn}".part[0-9][0-9].rar "${fn}".part[0-9].rar
-                ;;
-            "zip")
-                "${myrm}" -rf "${fn}".z[0-9][0-9] "${fn}".zip
-                ;;
-            *)
-                while [ -f "${fulln}".${in_i} ]; do
-                    "${myrm}" -rf "${fulln}".${in_i}
-                    file_i=$((${file_i} + 1))
-                    in_i=$(fixthree ${file_i})
-                done
-                ;;
-            esac
-        else
-            "${myrm}" -rf "${fulln}"
-        fi
-    fi
+	ISBLANK=false
+	fn="$(echo ${fulln%.*} | "${mysed}" "s;.part1;;" | "${mysed}" "s;.part01;;")"
+	ext="${fulln##*.}"
+	if [ "${fn##*.}" = "tar" ]; then
+		case "${ext}" in
+		"gz" | "GZ" | "xz" | "bz2" | "lzma" | "lz")
+			ext="tar.${ext}"
+			fn="${fn%.*}"
+			;;
+		esac
+	fi
+	if [ -z "${fulln}" ]; then
+		autozipck
+	elif ! [ -f "${fulln}" ] && [ -f "${fulln}.001" ]; then
+		USESPLIT=true
+	elif ! [ -f "${fulln}" ] && [ fe "$(echo ${fulln} | "${mysed}" "s;.rar;.part01.rar;")" ] && [ ${ext} = "rar" ]; then
+		fulln="$(echo ${fulln} | "${mysed}" "s;.rar;.part01.rar;")"
+		USESPLIT=true
+	elif ! [ -f "${fulln}" ] && [ -f "$(echo ${fulln} | "${mysed}" "s;.rar;.part1.rar;")" ] && [ ${ext} = "rar" ]; then
+		fulln="$(echo ${fulln} | "${mysed}" "s;.rar;.part1.rar;")"
+		USESPLIT=true
+	elif ! [ -f "${fulln}" ]; then
+		echo -e "\033[31mERROR: Filename '${fulln}' invalid.\033[0m"
+		exit 1
+	fi
+	${USESPLIT} && mktmp || true
+	ckext
+	echo -e "\033[33mReceived: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}\033[0m"
+	if [ -e "${fn}" ]; then
+		${ISFORCE} && ${myrm} -rf "${fn}" || ${mymv} -f "${fn}" "${fn}".bak
+	fi
+	# ============ Start Decompressing ============
+	case ${ext} in
+	"tar") # ============ tar ============
+		if [ "${mytar}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: Tar NO exist! \033[0m"
+			exit 1
+		fi
+		if ${USESPLIT}; then
+			file_i=1
+			in_i=001
+			while [ -f "${fulln}".${in_i} ]; do
+				"${mycat}" "${fulln}".${in_i} >>"${tempf}"
+				file_i=$((${file_i} + 1))
+				in_i=$(fixthree ${file_i})
+			done
+			unset file_i in_1
+			"${mytar}" -xvf "${tempf}"
+		else
+			"${mytar}" -xvf "${fulln}"
+		fi
+		;;
+	"tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
+		if [ "${mygzip}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: GZip NO exist! \033[0m"
+			exit 1
+		fi
+		if [ "${mytar}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: Tar NO exist! \033[0m"
+			exit 1
+		fi
+		${USESPLIT} && stdtc "${mygzip} -dk" || "${mytar}" -xzvf "${fulln}"
+		;;
+	"tar.xz" | "txz") # ============ txz ============
+		if [ "${myxz}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: XZ NO exist! \033[0m"
+			exit 1
+		fi
+		if [ "${mytar}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: Tar NO exist! \033[0m"
+			exit 1
+		fi
+		${USESPLIT} && stdtc "${myxz} -dk" || "${mytar}" -xJvf "${fulln}"
+		;;
+	"tar.bz2" | "tbz") # ============ tbz ============
+		if [ "${mybzip2}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: BZip2 NO exist! \033[0m"
+			exit 1
+		fi
+		if [ "${mytar}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: Tar NO exist! \033[0m"
+			exit 1
+		fi
+		${USESPLIT} && stdtc "${mybzip2} -dk" || "${mytar}" -xjvf "${fulln}"
+		;;
+	"tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
+		if [ "${myxz}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: LZMA SDK NO exist! \033[0m"
+			exit 1
+		fi
+		if [ "${mytar}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: Tar NO exist! \033[0m"
+			exit 1
+		fi
+		${USESPLIT} && stdtc "${myxz} -dk --format=lzma" || "${myxz}" -dc "${fulln}" | "${mytar}" -xv -f -
+		;;
+	"gz" | "GZ") # ============ gz ============
+		if [ "${mygzip}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: GZip NO exist! \033[0m"
+			exit 1
+		fi
+		${USESPLIT} && stdfc "${mygzip} -dk" || "${mycat}" "${fulln}" | "${mygzip}" -dc >"${fn}"
+		;;
+	"xz") # ============ xz ============
+		if [ "${myxz}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: XZ NO exist! \033[0m"
+			exit 1
+		fi
+		${USESPLIT} && stdfc "${myxz} -dk" || "${myxz}" -dk "${fulln}"
+		;;
+	"bz2") # ============ bz2 ============
+		if [ "${mybzip2}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: BZip2 NO exist! \033[0m"
+			exit 1
+		fi
+		${USESPLIT} && stdfc "${mybzip2} -dk" || "${mybzip2}" -dk "${fulln}"
+		;;
+	"lz" | "lzma") # ============ lz ============
+		if [ "${myxz}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: XZ NO exist! \033[0m"
+			exit 1
+		fi
+		${USESPLIT} && stdfc "${myxz} -dk --format=lzma" || "${mycat}" "${fulln}" | "${myxz}" -dk --format=lzma >"${fn}"
+		;;
+	"7z") # ============ 7z ============
+		if [ "${my7z}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: p7zip NO exist! \033[0m"
+			exit 1
+		fi
+		${USESPLIT} && SUFF=".001" || true
+		[ ${THREAD} -gt 0 ] && PAR="-mmt${THREAD}" || true
+		"${my7z}" -y ${PAR} x "${fulln}"${SUFF}
+		;;
+	"zip") # ============ zip ============
+		if [ "${myunzip}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: unzip NO exist! \033[0m"
+			exit 1
+		fi
+		if [ -f "${fn}".z01 ]; then
+			#TODO: unknow bug in single file.
+			USESPLIT=true
+			mktmp
+			if [ "${myzip}" = 'ylukh' ]; then
+				echo -e "\033[31mERROR: zip NO exist! \033[0m"
+				exit 1
+			fi
+			${mycp} "${fn}".z* "${tempdir}"/
+			"${myzip}" -FF "${tempdir}"/"${fn}".zip --out "${tempdir}"/"${fn}".fzip
+			"${myunzip}" "${tempdir}"/"${fn}".fzip
+		else
+			"${myunzip}" "${fulln}"
+		fi
+		;;
+	"rar")
+		if [ "${myunrar}" = 'ylukh' ]; then
+			echo -e "\033[31mERROR: unrar NO exist! \033[0m"
+			exit 1
+		fi
+		[ ${THREAD} -gt 0 ] && PAR="-mt${THREAD}" || true
+		"${myunrar}" ${PAR} x "${fulln}"
+		;;
+	esac
+	# ============ Finished ============
+	echo -e "\033[33mRemoving temporary resources...\033[0m"
+	${USESPLIT} && "${myrm}" -rf "${tempdir}" "${tempf}" || true
+	if ${REMOVE}; then
+		if ${USESPLIT}; then
+			file_i=1
+			in_i=001
+			case ${ext} in
+			"rar")
+				"${myrm}" -rf "${fn}".part[0-9][0-9].rar "${fn}".part[0-9].rar
+				;;
+			"zip")
+				"${myrm}" -rf "${fn}".z[0-9][0-9] "${fn}".zip
+				;;
+			*)
+				while [ -f "${fulln}".${in_i} ]; do
+					"${myrm}" -rf "${fulln}".${in_i}
+					file_i=$((${file_i} + 1))
+					in_i=$(fixthree ${file_i})
+				done
+				;;
+			esac
+		else
+			"${myrm}" -rf "${fulln}"
+		fi
+	fi
 done
 # ============ Finished ============
 if ${ISBLANK}; then
-    echo -e "\033[31mERROR: NO FILENAME.\033[0m"
-    exit 1
+	echo -e "\033[31mERROR: NO FILENAME.\033[0m"
+	exit 1
 fi
 echo -e "\033[33mFinished.\033[0m"
 exit 0

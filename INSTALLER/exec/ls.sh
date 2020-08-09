@@ -4,9 +4,7 @@
 if [ -z "${myls:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
-        if ${GNU_found}; then
-            break
-        fi
+        ${GNU_found} && break || true
         tmpf=$(mktemp -t configpath.XXXXXX)
         ls -F -1 "${dir}" | grep '.\*$' | sed "s;\*\$;;" | grep '^ls\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
@@ -14,11 +12,7 @@ if [ -z "${myls:-}" ]; then
             ls_ver=$("${line}" --version 2>&1||true)
             if [[ "${ls_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
-                if [[ "${ls_ver}" =~ .*"Cygwin".* ]]; then
-                    type="GNU version in Cygwin systems"
-                else
-                    type="GNU version in GNU/Linux systems"
-                fi
+                [[ "${ls_ver}" =~ .*"Cygwin".* ]] && type="GNU version in Cygwin systems" || type="GNU version in GNU/Linux systems"
             else
                 type="BSD version"
             fi

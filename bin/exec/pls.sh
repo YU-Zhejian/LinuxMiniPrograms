@@ -71,23 +71,15 @@ unset invalid_path valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 echo -e "\033[33mReading database...\033[0m"
 for dir in "${eachpath[@]}"; do
-    if ! [ -d "${dir}" ]; then continue; fi
+    ! [ -d "${dir}" ] && continue || true
     "${myls}" -1 -F "${dir}" | "${mysed}" "s;^;$(echo "${dir}")/;" >>"${tmpf}"
 done
-if ! ${allow_d}; then
-    my_grep '/$'
-fi
-if ! ${allow_x}; then
-    my_grep '\*$'
-fi
-if ! ${allow_o}; then
-    my_grep '[^\*/]$'
-fi
+! ${allow_d} && my_grep '/$' || true
+! ${allow_x} && my_grep '\*$' || true
+! ${allow_o} && my_grep '[^\*/]$' || true
 if [ ${#STDS[@]} -eq 0 ]; then
     "${mycat}" "${tmpf}" | "${more}"
 else
-    IFS=" "
-    
     IFS=''
     grepstr=''
     for fn in "${STDS[@]}"; do

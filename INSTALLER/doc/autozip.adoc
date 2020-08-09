@@ -23,7 +23,9 @@ include::include/cmnopt.adoc[]
 
 * `--remove` Remove [sorce] if success.
 
-* `-s[:[split]]|-split[:[split]]` Split the archive by [split]. This is realized by using GNU CoreUtils `split` or those provided by corresponding algorithms like 7zip, zip or rar. If `[split]` is omitted, it will be treated as 1G. legal [split] are those which can be recognized by GNU CoreUtils `split` or corresponding algorithms.
+* `-s[:[split]]|-split[:[split]]` Split the archive by `[split]`. This is realized by using GNU CoreUtils `split` or those provided by corresponding algorithms like 7zip, zip or rar. If `[split]` is omitted, it will be treated as 1G. legal [split] are those which can be recognized by GNU CoreUtils `split` or corresponding algorithms.
+
+* `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when creating the archive. `[thread]` should not be higher than the number of cores installed. If `[thread]` is omitted, will use the number of cores installed.
 
 Please be aware that __WE DO NOT SUPPORT BSD SPLIT__.
 

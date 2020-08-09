@@ -61,11 +61,6 @@ Checking for 'unrar'...OK
 Checking for 'parallel' in /usr/bin...OK
 Available extension name on your computer:
 tar, gz, GZ, tar.gz, tar.GZ, tgz, xz, lzma, lz, tar.xz, txz, tar.lzma, tlz, bz2, tar.bz2, tbz, 7z, zip, rar
-Configure file /d/Software/LinuxMiniPrograms/bin/../etc/autozip.conf are as follows:
-=====Begin /d/Software/LinuxMiniPrograms/bin/../etc/autozip.conf=====
-PARALLEL
-
-=====End   /d/Software/LinuxMiniPrograms/bin/../etc/autozip.conf=====
 ```
 
 The following example is to archive folder `R` with all default settings and an existing archive:

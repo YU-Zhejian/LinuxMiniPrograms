@@ -4,9 +4,7 @@
 if [ -z "${mysed:-}" ]; then
     GNU_found=false
     for dir in "${eachpath[@]}"; do
-        if ${GNU_found}; then
-            break
-        fi
+        ${GNU_found} && break || true
         tmpf=$(mktemp -t configpath.XXXXXX)
         "${myls}" -F -1 "${dir}" | "${mygrep}" '.[*@]$' | sed "s;\*\$;;" | "${mygrep}" '^sed\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >"${tmpf}"
         while read line; do
@@ -14,11 +12,7 @@ if [ -z "${mysed:-}" ]; then
             sed_ver=$("${line}" --version 2>&1||true)
             if [[ "${sed_ver}" =~ .*"GNU".* ]]; then
                 GNU_found=true
-                if [[ "${sed_ver}" =~ .*"Cygwin".* ]]; then
-                    type="GNU version in Cygwin systems"
-                else
-                    type="GNU version in GNU/Linux systems"
-                fi
+                [[ "${sed_ver}" =~ .*"Cygwin".* ]] && type="GNU version in Cygwin systems" || type="GNU version in GNU/Linux systems"
             else
                 type="BSD version"
             fi

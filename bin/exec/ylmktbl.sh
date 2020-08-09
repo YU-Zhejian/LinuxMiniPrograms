@@ -38,9 +38,7 @@ function mktbl_GetLongestString_max_str() {
 function mktbl_GetLongestString() {
     mktbl_GetLongestString_max_str=''
     for item in "${@}"; do
-        if [ ${#item} -gt ${#mktbl_GetLongestString_max_str} ]; then
-            mktbl_GetLongestString_max_str=${item}
-        fi
+        [ ${#item} -gt ${#mktbl_GetLongestString_max_str} ] && mktbl_GetLongestString_max_str=${item} || true
     done
     echo ${mktbl_GetLongestString_max_str}
 }
@@ -99,9 +97,7 @@ for row_tmp_str in "${row[@]}"; do
         shrinked=$(($shrink - 3))
         if [ ${row_len} -gt ${shrink} ]; then row_len=${shrink}; fi
         for item in "${row_tmp[@]}"; do
-            if [ ${#item} -gt ${shrink} ]; then
-                item="${item:0:$shrinked}..."
-            fi
+            [ ${#item} -gt ${shrink} ] && item="${item:0:$shrinked}..." || true
             while [ ${#item} -lt ${row_len} ]; do
                 item=${item}' '
             done

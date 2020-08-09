@@ -67,7 +67,7 @@ else
     LCUN="${STDS}"
 fi
 while read line;do
-    if [ "${line}" = "${LCUN}"];then
+    if [ "${line}" = "${LCUN}" ];then
     echo -e "\033[31mERROR: There's a user with the same name.\033[0m"
     exit 1
     fi
@@ -83,7 +83,7 @@ export M_R=0
 (F_REC) &
 pid_rec=${!}
 echo -e "\033[33mPID of reciever: ${pid_rec}.\033[0m"
-while [ true ]; do
+while true; do
     read MESS_SD
     if [ "${MESS_SD}" != "logout" ]; then
         sdmess "${LCUN}"

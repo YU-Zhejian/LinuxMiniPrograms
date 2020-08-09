@@ -5,8 +5,4 @@ DN="$(readlink -f "$(dirname "${0}")")"
 echo -e "\033[33mYuZJLab LibDO Manager."
 echo -e "Copyright (C) 2020 YU Zhejian\033[0m"
 . "${DN}"/../etc/path.sh
-if [ "${mypython}" != "ylukh" ];then
-    "${mypython}" "${DN}"/exec/libdoman.py "${PWD}" "${@}"
-else
-   . "${DN}"/exec/libdoman.sh
-fi
+[ "${mypython}" != "ylukh" ] && "${mypython}" "${DN}"/exec/libdoman.py "${PWD}" "${@}" || . "${DN}"/exec/libdoman.sh

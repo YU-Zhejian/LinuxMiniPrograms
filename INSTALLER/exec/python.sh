@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# GZIP.sh V1P1
+# PYTHON.sh V1P1
 . "${path_sh}"
 if [ -z "${mypython:-}" ]; then
     python_ver=3

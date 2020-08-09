@@ -19,6 +19,8 @@ WARNING: This program do not support archives with extension `.lzma`, `.lz` and 
 
 == OPTIONS
 
+* `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when extracting the archive. `[thread]` should not be higher than the number of cores installed. If `[thread]` is omitted, will use the number of cores installed.
+
 include::include/cmnopt.adoc[]
 
 == SUBCOMMANDS
