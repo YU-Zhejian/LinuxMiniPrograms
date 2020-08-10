@@ -2,7 +2,7 @@
 # LIBLS v1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-echo -e "\033[33mYuZJLab LIB ls"
+echo -e "\033[33mYuZJLab LIBRARY ls"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
 oldifs="${IFS}"
 function my_grep() {
@@ -26,6 +26,7 @@ IFS=''
 STDS=()
 allow_s=true
 allow_a=true
+WINDOWS=false
 for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
@@ -50,6 +51,9 @@ for opt in "${@}"; do
 			allow_s=true
 			allow_a=false
 			;;
+        "-w"|"--windows")
+            WINDOWS=true
+            ;;
 		--more\:*)
 			more=$"{opt:7}"
 			if $(
@@ -78,8 +82,15 @@ for dir in "${eachpath[@]}"; do
 	"${myfind}" "${dir}" 2> /dev/null >>"${tmpf}" || true
 done
 tmpff=$(mktemp -t pls.XXXXXX)
-${allow_s} && my_grep '\.so\(\..*\)*$' || true
-${allow_a} && my_grep '\.a\(\..*\)*$' || true
+if ${WINDOWS};then
+    ${allow_s} && my_grep '\.dll$' || true
+    ${allow_s} && my_grep '\.DLL$' || true
+    ${allow_a} && my_grep '\.lib$' || true
+    ${allow_a} && my_grep '\.LIB$' || true
+else
+    ${allow_s} && my_grep '\.so\(\..*\)*$' || true
+    ${allow_a} && my_grep '\.a\(\..*\)*$' || true
+fi
 "${mymv}" "${tmpff}" "${tmpf}"
 if [ ${#STDS[@]} -eq 0 ]; then
 	"${mycat}" "${tmpf}"| "${more}"
