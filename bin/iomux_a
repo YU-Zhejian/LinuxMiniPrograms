@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#IOMUX_ATTACHER V1
+
+cat out  &
+cat /dev/tty >> in

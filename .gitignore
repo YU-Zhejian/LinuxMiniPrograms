@@ -16,3 +16,5 @@ __pycache__
 /usr
 *ylsjs*
 *ylacd*
+*log
+*tmp*

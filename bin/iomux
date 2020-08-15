@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#IOMUX V1
+
+mkfifo in out
+
+cat in|bash -li &>> out
+
