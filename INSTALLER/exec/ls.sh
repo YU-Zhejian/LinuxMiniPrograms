@@ -29,9 +29,9 @@ if [ -z "${myls:-}" ]; then
 	if [ -z "${myls:-}" ]; then
 		if [ -z "${lntmp:-}" ]; then
 			echo "myls=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-			warnh "ls still not found. Please configure it manually in ${path_sh}."
+			warnh "ls still not found. Please configure it manually in ${path_sh}"
 		else
-			warnh "Will use BSD ls."
+			warnh "Will use BSD ls"
 			echo "myls=\"${lntmp}\" #${type}" >>"${path_sh}"
 		fi
 	fi

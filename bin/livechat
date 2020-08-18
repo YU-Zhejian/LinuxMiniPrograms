@@ -30,7 +30,7 @@ OLD_IFS="${IFS}"
 LVCD="${DN}/../var/livechat.d"
 mkdir -p "${LVCD}"
 if [ ! -e "${LVCD}"/LCONLINE ]; then
-	warnh "livechat.d/LCONLINE not exist."
+	warnh "livechat.d/LCONLINE not exist"
 	touch "${LVCD}"/LCONLINE
 fi
 cd "${LVCD}"
@@ -51,7 +51,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		*)
-			errh "Option '${opt}' invalid."
+			errh "Option '${opt}' invalid"
 			;;
 		esac
 	else
@@ -68,34 +68,34 @@ else
 fi
 while read line;do
 	if [ "${line}" = "${LCUN}" ];then
-	errh "There's a user with the same name."
+	errh "There's a user with the same name"
 	exit 1
 	fi
 done < LCONLINE
 unset BOOLONLINE
 echo "${LCUN}" >>LCONLINE
-MESS_SD="${LCUN} is now on line."
+MESS_SD="${LCUN} is now on line"
 sdmess SYSTEM
 infoh "The following users are now online:"
 cat LCONLINE
-infoh "Please use 'logout' instead of Ctrl-C to exit."
+infoh "Please use 'logout' instead of Ctrl-C to exit"
 export M_R=0
 (F_REC) &
 pid_rec=${!}
-infoh "PID of reciever: ${pid_rec}."
+infoh "PID of reciever: ${pid_rec}"
 while true; do
 	read MESS_SD
 	if [ "${MESS_SD}" != "logout" ]; then
 		sdmess "${LCUN}"
 		printf "\033[1A"
 	else
-		MESS_SD="${LCUN} had quitted."
+		MESS_SD="${LCUN} had quitted"
 		sdmess "SYSTEM"
 		kill -9 ${pid_rec} &>>/dev/null
 		"${mycat}" LCONLINE |"${mygrep}" -v "^${LCUN}$" >tmp
 		"${mymv}" tmp LCONLINE
 		"${myrm}" "URM_${LCUN}"
-		infoh "Thanks for using this system."
+		infoh "Thanks for using this system"
 		IFS="${OLD_IFS}"
 		exit 0
 	fi

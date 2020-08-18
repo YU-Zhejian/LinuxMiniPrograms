@@ -23,10 +23,10 @@ for opt in "${@}"; do
 		--more\:*)
 			more="${opt:7}"
 			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-				warnh "Invalid More '${more}'! Will use original '${mymore}' instead."
+				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
 				more="${mymore}"
 			else
-				infoh "Will use '${more}' as More."
+				infoh "Will use '${more}' as More"
 			fi
 			;;
 		"-l" | "--list")
@@ -35,7 +35,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		*)
-			errh "Option '${opt}' invalid."
+			errh "Option '${opt}' invalid"
 			;;
 		esac
 	else
@@ -57,5 +57,5 @@ if [ -f "${DN}"/../etc/yldoc.conf ]; then
 	done <"${DN}"/../etc/yldoc.conf
 fi
 for fn in "${STDS[@]}"; do
-	[ -f "${DN}"/../doc/"${fn}".usage ] && "${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}" || errh "${DN}/../doc/${fn}.usage not found!"
+	[ -f "${DN}"/../doc/"${fn}".usage ] && "${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}" || errh "${DN}/../doc/${fn}.usage not found"
 done

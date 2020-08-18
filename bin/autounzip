@@ -36,7 +36,7 @@ for fulln in "${STDS[@]}"; do
 		fulln="$(echo ${fulln} | "${mysed}" "s;.rar;.part1.rar;")"
 		USESPLIT=true
 	elif ! [ -f "${fulln}" ]; then
-		errh "Filename '${fulln}' invalid."
+		errh "Filename '${fulln}' invalid"
 	fi
 	${USESPLIT} && mktmp || true
 	ckext
@@ -47,7 +47,7 @@ for fulln in "${STDS[@]}"; do
 	# ============ Start Decompressing ============
 	case ${ext} in
 	"tar") # ============ tar ============
-		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist!"
+		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 		if ${USESPLIT}; then
 			file_i=1
 			in_i=001
@@ -63,54 +63,54 @@ for fulln in "${STDS[@]}"; do
 		fi
 		;;
 	"tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
-		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist!"
-		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist!"
+		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist"
+		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 		${USESPLIT} && stdtc "${mygzip} -dk" || "${mytar}" -xzvf "${fulln}"
 		;;
 	"tar.xz" | "txz") # ============ txz ============
-		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist!"
-		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist!"
+		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
+		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 		${USESPLIT} && stdtc "${myxz} -dk" || "${mytar}" -xJvf "${fulln}"
 		;;
 	"tar.bz2" | "tbz") # ============ tbz ============
-		[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist!"
-		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist!"
+		[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist"
+		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 		${USESPLIT} && stdtc "${mybzip2} -dk" || "${mytar}" -xjvf "${fulln}"
 		;;
 	"tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
-		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist!"
-		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist!"
+		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
+		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 		${USESPLIT} && stdtc "${myxz} -dk --format=lzma" || "${myxz}" -dc "${fulln}" | "${mytar}" -xv -f -
 		;;
 	"gz" | "GZ") # ============ gz ============
-		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist!"
+		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist"
 		${USESPLIT} && stdfc "${mygzip} -dk" || "${mycat}" "${fulln}" | "${mygzip}" -dc >"${fn}"
 		;;
 	"xz") # ============ xz ============
-		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist!"
+		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 		${USESPLIT} && stdfc "${myxz} -dk" || "${myxz}" -dk "${fulln}"
 		;;
 	"bz2") # ============ bz2 ============
-		[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist!"
+		[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist"
 		${USESPLIT} && stdfc "${mybzip2} -dk" || "${mybzip2}" -dk "${fulln}"
 		;;
 	"lz" | "lzma") # ============ lz ============
-		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist!"
+		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 		${USESPLIT} && stdfc "${myxz} -dk --format=lzma" || "${mycat}" "${fulln}" | "${myxz}" -dk --format=lzma >"${fn}"
 		;;
 	"7z") # ============ 7z ============
-		[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist!"
+		[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
 		${USESPLIT} && SUFF=".001" || true
 		[ ${THREAD} -gt 0 ] && PAR="-mmt${THREAD}" || true
 		"${my7z}" -y ${PAR} x "${fulln}"${SUFF}
 		;;
 	"zip") # ============ zip ============
-		[ "${myunzip}" != 'ylukh' ] || errh "unzip NO exist!"
+		[ "${myunzip}" != 'ylukh' ] || errh "unzip NO exist"
 		if [ -f "${fn}".z01 ]; then
 			#TODO: unknow bug in single file.
 			USESPLIT=true
 			mktmp
-			[ "${myzip}" != 'ylukh' ] || errh "zip NO exist!"
+			[ "${myzip}" != 'ylukh' ] || errh "zip NO exist"
 			${mycp} "${fn}".z* "${tempdir}"/
 			"${myzip}" -FF "${tempdir}"/"${fn}".zip --out "${tempdir}"/"${fn}".fzip
 			"${myunzip}" "${tempdir}"/"${fn}".fzip
@@ -119,7 +119,7 @@ for fulln in "${STDS[@]}"; do
 		fi
 		;;
 	"rar")
-		[ "${myunrar}" != 'ylukh' ] || errh "unrar NO exist!"
+		[ "${myunrar}" != 'ylukh' ] || errh "unrar NO exist"
 		[ ${THREAD} -gt 0 ] && PAR="-mt${THREAD}" || true
 		"${myunrar}" ${PAR} x "${fulln}"
 		;;
@@ -153,5 +153,5 @@ for fulln in "${STDS[@]}"; do
 done
 # ============ Finished ============
 ! ${ISBLANK} || errh "NO FILENAME"
-infoh "Finished."
+infoh "Finished"
 exit 0

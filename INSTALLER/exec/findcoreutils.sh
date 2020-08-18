@@ -29,7 +29,7 @@ if ! "${mygrep}" ^"my${PROGNAME}"= "${path_sh}";then
 			echo "my${PROGNAME}=\"ylukh\" #UNKNOWN" >>"${path_sh}"
 			warnh "${PROGNAME} still not found. Please configure it manually in $(readlink -f "${path_sh}")"
 		else
-			warnh "Will use BSD ${PROGNAME}."
+			warnh "Will use BSD ${PROGNAME}"
 			echo "my${PROGNAME}=\"${lntmp}\" #${type}" >>"${path_sh}"
 		fi
 	fi

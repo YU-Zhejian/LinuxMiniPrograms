@@ -31,7 +31,7 @@ if [ -z "${myrm:-}" ]; then
 			echo "myrm=\"ylukh\" #UNKNOWN" >>"${path_sh}"
 			warnh "rm still not found. Please configure it manually in $(readlink -f "${path_sh}")"
 		else
-			warnh "Will use BSD rm."
+			warnh "Will use BSD rm"
 			echo "myrm=\"${lntmp}\" #${type}" >>"${path_sh}"
 		fi
 	fi

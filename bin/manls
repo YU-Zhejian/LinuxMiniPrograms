@@ -35,14 +35,14 @@ for opt in "${@}"; do
 		--more\:*)
 			more=$"{opt:7}"
 			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-				warnh "Invalid More '${more}'! Will use original '${mymore}' instead."
+				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
 				more="${mymore}"
 			else
-				infoh "Will use '${more}' as More."
+				infoh "Will use '${more}' as More"
 			fi
 			;;
 		*)
-			errh "Option '${opt}' invalid."
+			errh "Option '${opt}' invalid"
 			;;
 		esac
 	else

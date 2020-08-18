@@ -8,12 +8,12 @@ DN="$(readlink -f "$(dirname "${0}")")"
 infoh "YuZJLab LiveChat Manager"
 infoh "Copyright (C) 2019-2020 YU Zhejian"
 if ! [[ "$("${mymore}" --version 2>&1||true)" =~ .*"util-linux".* ]]; then
-	warnh "Will use ${mycat} as more."
+	warnh "Will use ${mycat} as more"
 	mymore="${mycat}"
 fi
 more="${mymore}"
 LVCD="${DN}/../var/livechat.d"
-[ -e "${LVCD}"/MESSAGES ] || errh "livechat.d/MESSAGES not exist."
+[ -e "${LVCD}"/MESSAGES ] || errh "livechat.d/MESSAGES not exist"
 OLD_IFS="${IFS}"
 IFS=";"
 tmpfff="$(mktemp -t lcman.XXXXXX)"
@@ -25,7 +25,7 @@ for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
 		"-v" | "--version")
-			infoh "Version 3 Emergency Patch 5, compatiable with LiveChat Version 1 & 2."
+			infoh "Version 3 Emergency Patch 5, compatiable with LiveChat Version 1 & 2"
 			exit 0
 			;;
 		"-h" | "--help")
@@ -35,10 +35,10 @@ for opt in "${@}"; do
 		--more\:*)
 			more="${opt:7}"
 			if [ $("${more}" --help &>/dev/null;echo ${?}) -eq 127 ]; then
-				warnh "Invalid More '${more}'! Will use original '${mymore}' instead."
+				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
 				more="${mymore}"
 			else
-				infoh "Will use '${more}' as More."
+				infoh "Will use '${more}' as More"
 			fi
 			;;
 		-f\:*)
@@ -63,7 +63,7 @@ for opt in "${@}"; do
 			se=(${se[@]} "SYSTEM")
 			;;
 		*)
-			errh "Option '${opt}' invalid."
+			errh "Option '${opt}' invalid"
 			;;
 		esac
 	else

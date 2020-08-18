@@ -13,7 +13,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			infoh "Version 7 in Bash, compatiable with libdo Version 2."
+			infoh "Version 7 in Bash, compatiable with libdo Version 2"
 			exit 0
 			;;
 		-o\:*)
@@ -172,5 +172,5 @@ else
 	infoh "________________OUTPUT____FINISHED________________" >&2
 	rm "${tmpprj}"
 fi
-infoh "Finished." >&2
+infoh "Finished."
 exit 0

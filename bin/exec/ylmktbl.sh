@@ -15,14 +15,14 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		*)
-			errh "Option '${opt}' invalid."
+			errh "Option '${opt}' invalid"
 			;;
 		esac
 	else
 		STDS="${opt}"
 	fi
 done
-[ -f "${STDS}" ] || errh "Table file ${STDS} invalid."
+[ -f "${STDS}" ] || errh "Table file ${STDS} invalid"
 
 function mktbl_GetLongestString_max_str() {
 	for item in "${@}"; do
@@ -69,7 +69,7 @@ for row_tmp_str in "${row[@]}"; do
 	unset row_tmp_len
 	curr_row=''
 	if [[ ${row_instruction[${j}]} =~ ^W.* ]]; then #Wrap
-		echo "Still Testing."
+		echo "Still Testing"
 		exit
 		wrap=${row_instruction[${j}]:1}
 		wrap_s=0

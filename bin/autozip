@@ -18,7 +18,7 @@ if [ -z "${STDS[1]:-}" ]; then
 		fn=$(echo ${fn} | ${mysed} "s:/$::")
 		ext="tar.gz"
 	else
-		errh "Filename '${fn}' invalid."
+		errh "Filename '${fn}' invalid"
 	fi
 else
 	ext=${STDS[1]}
@@ -28,19 +28,19 @@ else
 		case "${ext}" in
 		"tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "tbz" | "tar.lzma" | "tar.lz" | "tlz" |"rar"|"zip"|"7z") ;;
 		*)
-			errh "You're about to compress FOLDER '${fn}' with extension '${ext}', which is designed for compressing SINGLE FILE."
+			errh "You're about to compress FOLDER '${fn}' with extension '${ext}', which is designed for compressing SINGLE FILE"
 			;;
 		esac
 	elif [ -f "${fn}" ];then
 		case "${ext}" in
 		"gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz"|"rar"|"zip"|"7z") ;;
 			*)
-			errh "You're about to compress FILE '${fn}' with extension '${ext}', which is designed for compressing FOLDERs."
+			errh "You're about to compress FILE '${fn}' with extension '${ext}', which is designed for compressing FOLDERs"
 			;;
 		esac
-		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist!"
+		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 	else
-		errh "Filename '${fn}' invalid."
+		errh "Filename '${fn}' invalid"
 	fi
 fi
 if [ -n "${SPLIT:-}" ]; then
@@ -65,17 +65,17 @@ if [ -n "${SPLIT:-}" ]; then
 		mktmp
 		infoh "Will split the archive to ${SPLIT} "
 	else
-		errh "SPLIT value '${SPLIT}' invalid."
+		errh "SPLIT value '${SPLIT}' invalid"
 	fi
 fi
-"${mysplit}" --help&>>/dev/null || errh "'${mysplit}' is BSD split, which is not supported."
+"${mysplit}" --help&>>/dev/null || errh "'${mysplit}' is BSD split, which is not supported"
 unset VALIDSPLIT
 if [ ${THREAD} -gt 0 ] ;then
 	if [ "${myparallel}" = 'ylukh' ] && [[ ! "${ext}" =~ .*"gz".* ]] && [[ ! "${ext}" =~ .*"GZ".* ]];then
-		errh "NO parallel found."
+		errh "NO parallel found"
 	elif [[ "${ext}" =~ .*"gz".* ]] || [[ "${ext}" =~ .*"GZ".* ]] ;then
 		if [ "${myparallel}" = 'ylukh' ] && [ "${mypigz}" = 'ylukh' ];then
-			errh "NO parallel or pigz found."
+			errh "NO parallel or pigz found"
 		fi
 	fi
 fi
@@ -100,7 +100,7 @@ ${lvl_able})
 	;;
 *)
 	LVL=''
-	warnh "Compression level '${STDS[2]:-}' undefined. You can use ${lvl_able} for ${ext} extension.\nWill use default value provided by corresponding algorism."
+	warnh "Compression level '${STDS[2]:-}' undefined. You can use ${lvl_able} for ${ext} extension.\nWill use default value provided by corresponding algorism"
 	unset lvl_able
 	;;
 esac
@@ -149,7 +149,7 @@ case ${ext} in
 	;;
 "tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
 	if [ "${mygzip}" = 'ylukh' ] && [ "${mypigz}" != 'ylukh' ]; then
-		errh "GZip NO exist!"
+		errh "GZip NO exist"
 	fi
 	if [ "${mypigz}" != 'ylukh' ] && [ ${THREAD} -gt 0 ]; then
 		cmd="${mypigz} -p ${THREAD}"
@@ -166,7 +166,7 @@ case ${ext} in
 	fi
 	;;
 "tar.xz" | "txz") # ============ txz ============
-	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist!"
+	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 	[ ${THREAD} -gt 0 ] && PAR="--threads=${THREAD}" || true
 	if [ -n "${SPLIT:-}" ]; then
 		"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
@@ -178,18 +178,18 @@ case ${ext} in
 	fi
 	;;
 "tar.bz2" | "tbz") # ============ tbz ============
-	[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist!"
+	[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist"
 	if [ -n "${SPLIT:-}" ]; then
 		"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
 		for tfn in "${tempdir}"/"${fn}".*; do
 			"${mycat}" "${tfn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}".${ext}.${tfn:0-3}
 		done
 	else
-		"${mytar}" -f - -cv "${fn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}"."${ext}"
+		"${mytar}" -f - -cv "${fn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}""${ext}"
 	fi
 	;;
 "tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
-	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist!"
+	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 	if [ -n "${SPLIT:-}" ]; then
 		"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
 		for tfn in "${tempdir}"/"${fn}".*; do
@@ -201,7 +201,7 @@ case ${ext} in
 	;;
 "gz" | "GZ") # ============ gz ============
 	if [ "${mygzip}" = 'ylukh' ] && [ "${mypigz}" = 'ylukh' ]; then
-		errh "GZip NO exist!"
+		errh "GZip NO exist"
 	fi
 	if [ "${mypigz}" != 'ylukh' ] &&  [ ${THREAD} -gt 0 ]; then
 		cmd="${mypigz} -p ${THREAD}"
@@ -218,15 +218,15 @@ case ${ext} in
 	fi
 	;;
 "bgz") # ============ bgz ============
-	[ "${mybgzip}" != 'ylukh' ] || errh "BGZip NO exist!"
+	[ "${mybgzip}" != 'ylukh' ] || errh "BGZip NO exist"
 	ext="gz"
-	[ ! -n "${SPLIT:-}" ] || errh "BGZip do not support split!"
+	[ ! -n "${SPLIT:-}" ] || errh "BGZip do not support split"
 	else
 		"${mycat}" "${fn}" | ${PAR} "${mybgzip}" ${LVL} >"${fn}".${ext}
 	fi
 	;;
 "xz") # ============ xz ============
-	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist!"
+	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 	[ ${THREAD} -gt 0 ] && PAR="--threads=${THREAD}" || true
 	if [ -n "${SPLIT:-}" ]; then
 		"${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
@@ -238,7 +238,7 @@ case ${ext} in
 	fi
 	;;
 "bz2") # ============ bz2 ============
-	[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist!"
+	[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist"
 	if [ -n "${SPLIT:-}" ]; then
 		"${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
 		for tfn in "${tempdir}"/"${fn}".*; do
@@ -249,7 +249,7 @@ case ${ext} in
 	fi
 	;;
 "lz" | "lzma") # ============ lz ============
-	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist!"
+	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 	if [ -n "${SPLIT:-}" ]; then
 		"${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
 		for tfn in "${tempdir}"/"${fn}".*; do
@@ -260,18 +260,18 @@ case ${ext} in
 	fi
 	;;
 "7z") # ============ 7z ============
-	[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist!"
+	[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
 	[ -n "${SPLIT:-}" ] && SPL="-v${SPLIT}" || true
 	[ ${THREAD} -gt 0 ] && PAR="-mmt${THREAD}" || true
 	"${my7z}" -y ${PAR} u "${fn}".${ext} "${fn}" ${LVL} ${SPL}
 	;;
 "zip") # ============ zip ============
-	[ "${myzip}" != 'ylukh' ] || errh "zip NO exist!"
+	[ "${myzip}" != 'ylukh' ] || errh "zip NO exist"
 	[ -n "${SPLIT:-}" ] && SPL="-s ${SPLIT}" || true
 	"${myzip}" ${SPL} -r "${fn}".${ext} "${fn}" ${LVL}
 	;;
 "rar") # ============ rar ============
-	[ "${myrar}" != 'ylukh' ] || errh "rar NO exist!"
+	[ "${myrar}" != 'ylukh' ] || errh "rar NO exist"
 	[ ${THREAD} -gt 0 ] && PAR="-mt${THREAD}" || true
 	[ -n "${SPLIT:-}" ] && SPL="-v${SPLIT}" || true
 	"${myrar}" ${PAR} ${SPL} a "${fn}".${ext} "${fn}"
@@ -281,5 +281,5 @@ esac
 infoh "Removing temporary resources..."
 [ -n "${SPLIT:-}" ] && "${myrm}" -rf "${tempdir}" "${tempf}" || true
 ! ${REMOVE} || "${myrm}" -rf ${fn}
-infoh "Finished."
+infoh "Finished"
 exit 0

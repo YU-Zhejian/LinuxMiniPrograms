@@ -16,5 +16,5 @@ if [ -z "${azcmd}" ]; then
 elif [ -f "${DN}"/exec/azman_"${azcmd}".sh ];then
 	. "${DN}"/exec/azman_"${azcmd}".sh
 else
-	errh "subcommand '${azcmd}' invalid!"
+	errh "subcommand '${azcmd}' invalid"
 fi

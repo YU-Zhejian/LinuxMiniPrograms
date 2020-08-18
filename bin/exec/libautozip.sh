@@ -85,7 +85,7 @@ function autozipck() {
 function mktmp() {
 	tempdir="$(mktemp -dt autozip.XXXXXX)"
 	tempf="$(mktemp -t autozip.XXXXXX)"
-	infoh "TEMP file '${tempf}' and directory '${tempdir}' made."
+	infoh "TEMP file '${tempf}' and directory '${tempdir}' made"
 }
 # Check opt
 function ppopt() {
@@ -101,11 +101,11 @@ function ppopt() {
 				exit 0
 				;;
 			"--force")
-				warnh "Will remove the archive if exists."
+				warnh "Will remove the archive if exists"
 				ISFORCE=true
 				;;
 			"--remove")
-				warnh "Will remove the original file if success."
+				warnh "Will remove the original file if success"
 				REMOVE=true
 				;;
 			-p\:*)
@@ -118,7 +118,7 @@ function ppopt() {
 				THREAD=${MAXTHREAD}
 				;;
 			"-s" | "--split")
-				${ISAUTOZIP} || errh "Option '${opt}' invalid."
+				${ISAUTOZIP} || errh "Option '${opt}' invalid"
 				case ${ext} in
 				"rar" | "zip" | "7z")
 					SPLIT=1024m
@@ -129,15 +129,15 @@ function ppopt() {
 				esac
 				;;
 			-s\:*)
-				${ISAUTOZIP} || errh "Option '${opt}' invalid."
+				${ISAUTOZIP} || errh "Option '${opt}' invalid"
 				SPLIT=${opt:3}
 				;;
 			--split\:*)
-				${ISAUTOZIP} || errh "Option '${opt}' invalid."
+				${ISAUTOZIP} || errh "Option '${opt}' invalid"
 				SPLIT=${opt:8}
 				;;
 			*)
-				errh "Option '${opt}' invalid."
+				errh "Option '${opt}' invalid"
 				;;
 			esac
 			OPT=("${OPT[@]}" "${opt}")
@@ -145,7 +145,7 @@ function ppopt() {
 			STDS=("${STDS[@]}" "${opt}")
 		fi
 	done
-	! ${ISFORCE} && warnh "Will rename the archive if exists."
+	! ${ISFORCE} && warnh "Will rename the archive if exists"
 	if [ ${THREAD} -gt ${MAXTHREAD} ]; then
 		warnh "Too many threads. Will be resetted to ${MAXTHREAD}"
 		THREAD=${MAXTHREAD}
@@ -221,7 +221,7 @@ function ckext() {
 	case "${ext}" in
 	"tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "tbz" | "tar.lzma" | "tar.lz" | "tlz" | "gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz" | "rar" | "zip" | "7z") ;;
 	*)
-		errh "Extension name '${ext}' invalid.\nYou can execute 'autozip' without any argument or option to check available method and extension."
+		errh "Extension name '${ext}' invalid.\nYou can execute 'autozip' without any argument or option to check available method and extension"
 		;;
 	esac
 }

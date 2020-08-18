@@ -33,7 +33,7 @@ if [ -z "${myps:-}" ]; then
 			echo "myps=\"ylukh\" #UNKNOWN" >>"${path_sh}"
 			warnh "ps still not found. Please configure it manually in $(readlink -f "${path_sh}")"
 		else
-			warnh "Will use None-GNU ps."
+			warnh "Will use None-GNU ps"
 			echo "myps=\"${lntmp}\" #${type}" >>"${path_sh}"
 		fi
 	fi

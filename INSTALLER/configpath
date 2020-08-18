@@ -29,7 +29,7 @@ eachpath=(${valid_path})
 IFS=''
 unset binpath
 echo ${valid_path} | tr ':' '\n'
-infoh "End locating valid path."
+infoh "End locating valid path"
 unset valid_path
 for PROGNAME in ls grep sed rm python ps parallel;do
 	. exec/${PROGNAME}.sh

@@ -27,7 +27,7 @@ for opt in "${@}"; do
 	if isopt ${opt}; then
 		case ${opt} in
 		"-v" | "--version")
-			echo "Version 3 Patch 3."
+			echo "Version 3 Patch 3"
 			exit 0
 			;;
 		"-h" | "--help")
@@ -162,7 +162,7 @@ if ${VAR_interactive}; then
 		infoh "Will install history to 'var'"
 		VAR_clear_history=true
 	fi
-	infoh "Do you want to install documentations in Groff man, pdf, YuZJLab Usage and HTML? This need command 'asciidoctor' and 'asciidoctor-pdf' (available from Ruby pem) and Python 3."
+	infoh "Do you want to install documentations in Groff man, pdf, YuZJLab Usage and HTML? This need command 'asciidoctor' and 'asciidoctor-pdf' (available from Ruby pem) and Python 3"
 	read -p "Answer Y/N:>" VAR_Ans
 	[ "${VAR_Ans}" = "Y" ] && VAR_install_doc=true
 fi

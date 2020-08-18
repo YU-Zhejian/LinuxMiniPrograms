@@ -31,7 +31,7 @@ if [ -z "${mysed:-}" ]; then
 			echo "mysed=\"ylukh\" #UNKNOWN" >>"${path_sh}"
 			warnh "sed still not found. Please configure it manually in $(readlink -f "${path_sh}")"
 		else
-			warnh "Will use BSD sed."
+			warnh "Will use BSD sed"
 			echo "mysed=\"${lntmp}\" #${type}" >>"${path_sh}"
 		fi
 	fi

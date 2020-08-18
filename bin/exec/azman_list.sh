@@ -20,7 +20,7 @@ for fulln in "${STDS[@]}"; do
 		fulln="$(echo ${fulln} | "${mysed}" "s;.rar;.part1.rar;")"
 		USESPLIT=true
 	elif ! [ -f "${fulln}" ]; then
-		errh "Filename '${fulln}' invalid."
+		errh "Filename '${fulln}' invalid"
 	fi
 	${USESPLIT} && mktmp || true
 	ckext
@@ -28,7 +28,7 @@ for fulln in "${STDS[@]}"; do
 	# ============ Start ============
 	case ${ext} in
 	"tar") # ============ tar ============
-		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist!"
+		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 		if ${USESPLIT}; then
 			file_i=1
 			in_i=001
@@ -44,53 +44,53 @@ for fulln in "${STDS[@]}"; do
 		fi
 		;;
 	"tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
-		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist!"
-		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist!"
+		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist"
+		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 		${USESPLIT} && stdtl "${mygzip} -dk" || "${mytar}" -tzvf "${fulln}"
 		;;
 	"tar.xz" | "txz") # ============ txz ============
-		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist!"
-		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist!"
+		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
+		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 		${USESPLIT} && sdtl "${myxz} -dk" || "${mytar}" -tJvf "${fulln}"
 		;;
 	"tar.bz2" | "tbz") # ============ tbz ============
-		[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist!"
-		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist!"
+		[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist"
+		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 		${USESPLIT} && stdtl "${mybzip2} -dk" || "${mytar}" -tjvf "${fulln}"
 		;;
 	"tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
-		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist!"
-		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist!"
+		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
+		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 		${USESPLIT} && stdtl "${myxz} -dk --format=lzma" || "${myxz}" -dc "${fulln}" | "${mytar}" -tv -f -
 		;;
 	"gz" | "GZ") # ============ gz ============
-		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist!"
-		! ${USESPLIT} || errh "Splitted archive not supported!"
+		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist"
+		! ${USESPLIT} || errh "Splitted archive not supported"
 		fi
 		"${mygzip}" -l "${fulln}"
 		;;
 	"xz") # ============ xz ============
-		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist!"
-		! ${USESPLIT} || errh "Splitted archive not supported!"
+		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
+		! ${USESPLIT} || errh "Splitted archive not supported"
 		"${myxz}" -l "${fulln}"
 		;;
 	"bz2") # ============ bz2 ============
-		errh "BZip2 do not support this function!"
+		errh "BZip2 do not support this function"
 		;;
 	"lz" | "lzma") # ============ lz ============
-		errh "XZ Utils do not support this function!"
+		errh "XZ Utils do not support this function"
 		;;
 	"7z") # ============ 7z ============
-		[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist!"
+		[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
 		if [ ! -f "${fulln}" ] && [ -f "${fulln}.001" ]; then
 			fulln="${fulln}.001"
 		fi
 		"${my7z}" l "${fulln}"
 		;;
 	"zip") # ============ zip ============
-		[ "${myunzip}" != 'ylukh' ] || errh "unzip NO exist!"
+		[ "${myunzip}" != 'ylukh' ] || errh "unzip NO exist"
 		if [ -f "${fn}".z01 ]; then
-			[ "${myzip}" != 'ylukh' ] || errh "zip NO exist!"
+			[ "${myzip}" != 'ylukh' ] || errh "zip NO exist"
 			mktmp
 			"${mycp}" "${fn}".z* "${tempdir}"/
 			"${myzip}" -FF "${tempdir}"/"${fn}".zip --out "${tempdir}"/"${fn}".fzip
@@ -100,12 +100,12 @@ for fulln in "${STDS[@]}"; do
 		fi
 		;;
 	"rar")
-		[ "${myunrar}" != 'ylukh' ] || errh "unrar NO exist!"
+		[ "${myunrar}" != 'ylukh' ] || errh "unrar NO exist"
 		"${myunrar}" v "${fulln}"
 		;;
 	esac
 done
 # ============ Finished ============
 ! ${ISBLANK} || errh "NO FILENAME"
-infoh "Finished."
+infoh "Finished"
 exit 0
