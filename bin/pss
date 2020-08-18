@@ -9,50 +9,50 @@ cd "$(readlink -f "$(dirname "${0}")")"
 more="${mymore}"
 STDS=()
 for opt in "${@}"; do
-    if isopt ${opt}; then
-        case ${opt} in
-        "-h" | "--help")
-            yldoc pss
-            exit 0
-            ;;
-        "-v" | "--version")
-            echo "Version 1 patch 8"
-            exit 0
-            ;;
-        --more\:*)
-            more="${opt:7}"
-            if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-                echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
-                more="${mymore}"
-            else
-                echo -e "\033[33mWill use '${more}' as More.\033[0m"
-            fi
-            ;;
-        *)
-            echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-            exit 1
-            ;;
-        esac
-    else
-        STDS=("${STDS[@]}" "${opt}")
-    fi
+	if isopt ${opt}; then
+		case ${opt} in
+		"-h" | "--help")
+			yldoc pss
+			exit 0
+			;;
+		"-v" | "--version")
+			echo "Version 1 patch 8"
+			exit 0
+			;;
+		--more\:*)
+			more="${opt:7}"
+			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
+				echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
+				more="${mymore}"
+			else
+				echo -e "\033[33mWill use '${more}' as More.\033[0m"
+			fi
+			;;
+		*)
+			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
+			exit 1
+			;;
+		esac
+	else
+		STDS=("${STDS[@]}" "${opt}")
+	fi
 done
 psstmp=$(mktemp -t psstmp.XXXXXX)
 pssstmp=$(mktemp -t psstmp.XXXXXX)
 if ! "${myps}" --version &>> /dev/null;then
-    "${myps}" -a -l &>"${psstmp}"
+	"${myps}" -a -l &>"${psstmp}"
 elif [[ $("${myps}" --version) == *cygwin* ]]; then
-    "${myps}" -W &>"${psstmp}"
+	"${myps}" -W &>"${psstmp}"
 else
-    "${myps}" -A all &>"${psstmp}"
+	"${myps}" -A all &>"${psstmp}"
 fi
 if [ ${#STDS[@]} -eq 0 ]; then
-    "${mycat}" "${psstmp}" | "${more}"
+	"${mycat}" "${psstmp}" | "${more}"
 else
-    ${myhead} -n 1 ${psstmp}
-    for fn in "${STDS[@]}"; do
-        "${mycat}" "${psstmp}" | "${mygrep}" -- "${fn}" >>"${pssstmp}"
-    done
-    "${mycat}" "${pssstmp}" | "${more}"
+	${myhead} -n 1 ${psstmp}
+	for fn in "${STDS[@]}"; do
+		"${mycat}" "${psstmp}" | "${mygrep}" -- "${fn}" >>"${pssstmp}"
+	done
+	"${mycat}" "${pssstmp}" | "${more}"
 fi
 "${myrm}" "${psstmp}" "${pssstmp}"

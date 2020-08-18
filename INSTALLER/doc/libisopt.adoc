@@ -37,25 +37,25 @@ That is, those parameter which matches the regular expression `-[^-\s]|--\S+|-[^
 OPT=()
 STDS=()
 for opt in "${@}"; do
-    if isopt ${opt}; then
-        case ${opt} in
-        "-h" | "--help")
-            # DOC command
-            exit 0
-            ;;
-        "-v" | "--version")
-            # VERSION command
-            exit 0
-            ;;
-        *)
-            echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-            exit 1
-            ;;
-        esac
-        OPT=(${OPT[@]} "${opt}")
-    else
-        STDS=(${STDS[@]} "${opt}")
-    fi
+	if isopt ${opt}; then
+		case ${opt} in
+		"-h" | "--help")
+			# DOC command
+			exit 0
+			;;
+		"-v" | "--version")
+			# VERSION command
+			exit 0
+			;;
+		*)
+			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
+			exit 1
+			;;
+		esac
+		OPT=(${OPT[@]} "${opt}")
+	else
+		STDS=(${STDS[@]} "${opt}")
+	fi
 done
 ```
 

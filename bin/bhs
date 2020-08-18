@@ -9,38 +9,38 @@ echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
 . "${DN}"/../lib/libisopt
 STDS=""
 for opt in "${@}"; do
-    if isopt "${opt}"; then
-        case "${opt}" in
-        "-h" | "--help")
-            yldoc bhs
-            exit 0
-            ;;
-        "-v" | "--version")
-            echo "Version 1 Emergency Patch 5"
-            exit 0
-            ;;
-        --more\:*)
-            more="${opt:7}"
-            if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-                echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
-                more="${mymore}"
-            else
-                echo -e "\033[33mWill use '${more}' as More.\033[0m"
-            fi
-            ;;
-        *)
-            echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-            exit 1
-            ;;
-        esac
-    else
-        STDS="${STDS}${opt} "
-    fi
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-h" | "--help")
+			yldoc bhs
+			exit 0
+			;;
+		"-v" | "--version")
+			echo "Version 1 Emergency Patch 5"
+			exit 0
+			;;
+		--more\:*)
+			more="${opt:7}"
+			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
+				echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
+				more="${mymore}"
+			else
+				echo -e "\033[33mWill use '${more}' as More.\033[0m"
+			fi
+			;;
+		*)
+			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
+			exit 1
+			;;
+		esac
+	else
+		STDS="${STDS}${opt} "
+	fi
 done
 STDS=$(echo "${STDS}"|"${mysed}" "s/ $//")
 if [ -n "${STDS}" ]; then
-    echo \"${STDS}\"
-    "${mycat}" -n ~/.bash_history | "${mygrep}" --color=auto -- "${STDS}" | "${more}"
+	echo \"${STDS}\"
+	"${mycat}" -n ~/.bash_history | "${mygrep}" --color=auto -- "${STDS}" | "${more}"
 else
-    "${mycat}" -n ~/.bash_history | "${more}"
+	"${mycat}" -n ~/.bash_history | "${more}"
 fi

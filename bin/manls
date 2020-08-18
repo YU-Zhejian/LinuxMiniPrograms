@@ -16,56 +16,56 @@ unset duplicated_path
 IFS=''
 STDS=()
 for opt in "${@}"; do
-    if isopt "${opt}"; then
-        case "${opt}" in
-        "-h" | "--help")
-            yldoc pls
-            exit 0
-            ;;
-        "-v" | "--version")
-            echo "Version 1 Patch 1 in Bash"
-            exit 0
-            ;;
-        "-l" | "--list")
-            echo ${valid_path} | tr ':' '\n'
-            unset valid_path
-            exit 0
-            ;;
-        --more\:*)
-            more=$"{opt:7}"
-            if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-                echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
-                more="${mymore}"
-            else
-                echo -e "\033[33mWill use '${more}' as More.\033[0m"
-            fi
-            ;;
-        *)
-            echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-            exit 1
-            ;;
-        esac
-    else
-        STDS=(${STDS[@]} "${opt}")
-    fi
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-h" | "--help")
+			yldoc pls
+			exit 0
+			;;
+		"-v" | "--version")
+			echo "Version 1 Patch 1 in Bash"
+			exit 0
+			;;
+		"-l" | "--list")
+			echo ${valid_path} | tr ':' '\n'
+			unset valid_path
+			exit 0
+			;;
+		--more\:*)
+			more=$"{opt:7}"
+			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
+				echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
+				more="${mymore}"
+			else
+				echo -e "\033[33mWill use '${more}' as More.\033[0m"
+			fi
+			;;
+		*)
+			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
+			exit 1
+			;;
+		esac
+	else
+		STDS=(${STDS[@]} "${opt}")
+	fi
 done
 unset invalid_path valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 echo -e "\033[33mReading database...\033[0m"
 for dir in "${eachpath[@]}"; do
-    "${myls}" -1 -F "${dir}" | "${mysed}" "s;^;$(echo "${dir}")/;" | "${mygrep}" man[^/]*/$ | while read line; do
-        "${myls}" -1 -F "${line}"|"${mysed}" "s;.gz;;"|"${mysed}" "s;^;$(echo "${line}");" >>"${tmpf}"
-    done
+	"${myls}" -1 -F "${dir}" | "${mysed}" "s;^;$(echo "${dir}")/;" | "${mygrep}" man[^/]*/$ | while read line; do
+		"${myls}" -1 -F "${line}"|"${mysed}" "s;.gz;;"|"${mysed}" "s;^;$(echo "${line}");" >>"${tmpf}"
+	done
 done
 if [ ${#STDS[@]} -eq 0 ]; then
-    "${mycat}" "${tmpf}" | "${more}"
+	"${mycat}" "${tmpf}" | "${more}"
 else
-    IFS=''
-    grepstr=''
-    for fn in "${STDS[@]}"; do
-        grepstr="${grepstr} -e ${fn}"
-    done
-    eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"\|"${more}"
+	IFS=''
+	grepstr=''
+	for fn in "${STDS[@]}"; do
+		grepstr="${grepstr} -e ${fn}"
+	done
+	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"\|"${more}"
 fi
 rm "${tmpf}"
 IFS="${oldifs}"

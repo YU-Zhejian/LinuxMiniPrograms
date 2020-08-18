@@ -3,19 +3,19 @@ set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 for fn in "${@}"; do
-    if ! [ -f "${fn}" ]; then
-        echo -e "\033[31mERROR! Invalid file '${fn}' will be ignored.\033[0m"
-        continue
-    fi
-    "${mycat}" "${fn}" | while read line; do
-        if [[ "${line}" =~ "LIBDO STARTED AT"* ]] || [[ "${line}" =~ "LIBDO STOPPED AT"* ]]; then
-            mytime="$(echo ${line:17} | "${mysed}" "s/.$//")"
-            [[ "$(date --version 2>&1 || true)" =~ "GNU" ]] && newtime="$(date -d "${mytime}" +'%Y-%m-%d %H:%M:%S')" || newtime="$(date -j -f '%a %b %d %T %Z %Y' "${mytime}" +'%Y-%m-%d %H:%M:%S')"
-            echo "${line:0:17}${newtime}" >>"${fn}.2"
-        elif [[ "${line}" =~ "LIBDO FAILED, GOT"* ]]||[[ "${line}" =~ "LIBDO EXITED SUCCESSFULLY"* ]]; then
-            echo "${line}" | "${mysed}" "s/.$//" >>"${fn}.2"
-        else
-            echo "${line}" >>"${fn}.2"
-        fi
-    done
+	if ! [ -f "${fn}" ]; then
+		echo -e "\033[31mERROR! Invalid file '${fn}' will be ignored.\033[0m"
+		continue
+	fi
+	"${mycat}" "${fn}" | while read line; do
+		if [[ "${line}" =~ "LIBDO STARTED AT"* ]] || [[ "${line}" =~ "LIBDO STOPPED AT"* ]]; then
+			mytime="$(echo ${line:17} | "${mysed}" "s/.$//")"
+			[[ "$(date --version 2>&1 || true)" =~ "GNU" ]] && newtime="$(date -d "${mytime}" +'%Y-%m-%d %H:%M:%S')" || newtime="$(date -j -f '%a %b %d %T %Z %Y' "${mytime}" +'%Y-%m-%d %H:%M:%S')"
+			echo "${line:0:17}${newtime}" >>"${fn}.2"
+		elif [[ "${line}" =~ "LIBDO FAILED, GOT"* ]]||[[ "${line}" =~ "LIBDO EXITED SUCCESSFULLY"* ]]; then
+			echo "${line}" | "${mysed}" "s/.$//" >>"${fn}.2"
+		else
+			echo "${line}" >>"${fn}.2"
+		fi
+	done
 done

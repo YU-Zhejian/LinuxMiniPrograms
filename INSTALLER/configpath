@@ -5,19 +5,19 @@ cd INSTALLER
 INPATH="${PATH}"
 path_sh="../etc/path.sh"
 if ! [ -f "${path_sh}" ]; then
-    mkdir -p ../etc
-    touch "${path_sh}"
+	mkdir -p ../etc
+	touch "${path_sh}"
 else
-    . "${path_sh}"
+	. "${path_sh}"
 fi
 #=====os=====
 if [ -z "${myos:-}" ]; then
-    os_type=$(uname -mrs)
-    echo "Current OS: ${os_type}"
-    os_type_main=$(echo ${os_type} | cut -f 1 -d ' ')
-    os_type_version=$(echo ${os_type} | cut -f 2 -d ' ')
-    echo "myos=\"${os_type_main}\" #${os_type_version}" >>"${path_sh}"
-    unset os_type os_type_main os_type_version
+	os_type=$(uname -mrs)
+	echo "Current OS: ${os_type}"
+	os_type_main=$(echo ${os_type} | cut -f 1 -d ' ')
+	os_type_version=$(echo ${os_type} | cut -f 2 -d ' ')
+	echo "myos=\"${os_type_main}\" #${os_type_version}" >>"${path_sh}"
+	unset os_type os_type_main os_type_version
 fi
 #=====path=====
 echo -e "\033[33mEnumerating valid path...\033[0m"

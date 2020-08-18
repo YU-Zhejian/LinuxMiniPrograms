@@ -34,7 +34,7 @@ When making a tar.?z archive, this will split the tar file and compress them ord
 == USEING GNU PARALLEL
 
 It is recommended to use GNU Parallel to accelerate the speed of compression. You can change the first line of `etc/autozip.conf` to `PARALLEL` to enable this feature.
-    
+
 WARNING: GNU Parallel consumes lots of memory & CPU resources. __NEVER USE IT ON CLUSTERS__!!!
 
 include::include/autozipcmn.adoc[]

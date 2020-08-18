@@ -11,11 +11,11 @@ ppopt "${@}"
 azcmd=${STDS[0]:-}
 unset STDS[0]
 if [ -z "${azcmd}" ]; then
-    autozipck
-    exit 0
+	autozipck
+	exit 0
 elif [ -f "${DN}"/exec/azman_"${azcmd}".sh ];then
-    . "${DN}"/exec/azman_"${azcmd}".sh
+	. "${DN}"/exec/azman_"${azcmd}".sh
 else
-    echo -e "\033[31mERROR: subcommand '${azcmd}' invalid! \033[0m"
-    exit 1
+	echo -e "\033[31mERROR: subcommand '${azcmd}' invalid! \033[0m"
+	exit 1
 fi
