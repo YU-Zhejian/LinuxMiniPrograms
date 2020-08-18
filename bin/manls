@@ -2,11 +2,12 @@
 # MLS V1P1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-echo -e "\033[33mYuZJLab MANPATH ls"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
+infoh "YuZJLab MANPATH ls"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
 oldifs="${IFS}"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../etc/path.sh
+. "${DN}"/../lib/libstr
 more="${mymore}"
 INPATH="/usr/share/man:/usr/local/man:$("${mycat}" /usr/local/etc/man.d/*.conf | "${mygrep}" -v \# | "${mygrep}" MANPATH | "${mycut}" -f 2 -d ' ' | tr '\n' ':')${MANPATH:-}"
 . "${DN}"/../lib/libpath
@@ -34,15 +35,14 @@ for opt in "${@}"; do
 		--more\:*)
 			more=$"{opt:7}"
 			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-				echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
+				warnh "Invalid More '${more}'! Will use original '${mymore}' instead."
 				more="${mymore}"
 			else
-				echo -e "\033[33mWill use '${more}' as More.\033[0m"
+				infoh "Will use '${more}' as More."
 			fi
 			;;
 		*)
-			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-			exit 1
+			errh "Option '${opt}' invalid."
 			;;
 		esac
 	else
@@ -51,7 +51,7 @@ for opt in "${@}"; do
 done
 unset invalid_path valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
-echo -e "\033[33mReading database...\033[0m"
+infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
 	"${myls}" -1 -F "${dir}" | "${mysed}" "s;^;$(echo "${dir}")/;" | "${mygrep}" man[^/]*/$ | while read line; do
 		"${myls}" -1 -F "${line}"|"${mysed}" "s;.gz;;"|"${mysed}" "s;^;$(echo "${line}");" >>"${tmpf}"

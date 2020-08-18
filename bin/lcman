@@ -3,22 +3,20 @@
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
-echo -e "\033[33mYuZJLab LiveChat Manager"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
+. "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libstr
+infoh "YuZJLab LiveChat Manager"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
 if ! [[ "$("${mymore}" --version 2>&1||true)" =~ .*"util-linux".* ]]; then
-	echo -e "\033[31mWARNING: Will use ${mycat} as more.\033[0m"
+	warnh "Will use ${mycat} as more."
 	mymore="${mycat}"
 fi
 more="${mymore}"
 LVCD="${DN}/../var/livechat.d"
-if [ ! -e "${LVCD}"/MESSAGES ]; then
-	echo -e "\033[31mERROR: livechat.d/MESSAGES not exist.\033[0m"
-	exit 1
-fi
+[ -e "${LVCD}"/MESSAGES ] || errh "livechat.d/MESSAGES not exist."
 OLD_IFS="${IFS}"
 IFS=";"
 tmpfff="$(mktemp -t lcman.XXXXXX)"
-. "${DN}"/../lib/libisopt
 STDS=()
 sf=()
 sm=()
@@ -27,7 +25,7 @@ for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
 		"-v" | "--version")
-			echo -e "\033[33mVersion 3 Emergency Patch 5, compatiable with LiveChat Version 1 & 2.\033[0m"
+			infoh "Version 3 Emergency Patch 5, compatiable with LiveChat Version 1 & 2."
 			exit 0
 			;;
 		"-h" | "--help")
@@ -37,10 +35,10 @@ for opt in "${@}"; do
 		--more\:*)
 			more="${opt:7}"
 			if [ $("${more}" --help &>/dev/null;echo ${?}) -eq 127 ]; then
-				echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
+				warnh "Invalid More '${more}'! Will use original '${mymore}' instead."
 				more="${mymore}"
 			else
-				echo -e "\033[33mWill use '${more}' as More.\033[0m"
+				infoh "Will use '${more}' as More."
 			fi
 			;;
 		-f\:*)
@@ -65,15 +63,14 @@ for opt in "${@}"; do
 			se=(${se[@]} "SYSTEM")
 			;;
 		*)
-			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-			exit 1
+			errh "Option '${opt}' invalid."
 			;;
 		esac
 	else
 		STDS=("${STDS[@]}" "${opt}")
 	fi
 done
-echo -e "\033[33mReading Databases...\033[0m"
+infoh "Reading Databases..."
 i=0
 while read line; do
 	msg_tmp=(${line})
@@ -84,7 +81,7 @@ while read line; do
 	unset msg_tmp
 	i=$(($i + 1))
 done <"${LVCD}"/MESSAGES
-echo -e "\033[33mFiltering...\033[0m"
+infoh "Filtering..."
 if [ ${#sf[@]} -eq 0 ]; then
 	for ((n = 0; n <= i; n++)); do
 		uf[${n}]=true

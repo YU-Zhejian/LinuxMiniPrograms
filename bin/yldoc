@@ -2,10 +2,11 @@
 # YLDOC V1P6
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-echo -e "\033[33mYuZJLab Documentation System"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
+infoh "YuZJLab Documentation System"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../etc/path.sh
+. "${DN}"/../lib/libstr
 more="${mymore}"
 STDS=()
 for opt in "${@}"; do
@@ -22,20 +23,19 @@ for opt in "${@}"; do
 		--more\:*)
 			more="${opt:7}"
 			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-				echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
+				warnh "Invalid More '${more}'! Will use original '${mymore}' instead."
 				more="${mymore}"
 			else
-				echo -e "\033[33mWill use '${more}' as More.\033[0m"
+				infoh "Will use '${more}' as More."
 			fi
 			;;
 		"-l" | "--list")
-			echo -e "\033[33mReading database...\033[0m"
+			infoh "Reading database..."
 			"${myls}" -1 "${DN}"/../doc | "${mysort}" | "${mysed}" 's/.usage//' | "${more}"
 			exit 0
 			;;
 		*)
-			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-			exit 1
+			errh "Option '${opt}' invalid."
 			;;
 		esac
 	else
@@ -57,10 +57,5 @@ if [ -f "${DN}"/../etc/yldoc.conf ]; then
 	done <"${DN}"/../etc/yldoc.conf
 fi
 for fn in "${STDS[@]}"; do
-	if [ -f "${DN}"/../doc/"${fn}".usage ]; then
-		"${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}"
-	else
-		echo -e "\033[31mERROR: ${DN}/../doc/${fn}.usage not found! \033[0m"
-		exit 1
-	fi
+	[ -f "${DN}"/../doc/"${fn}".usage ] && "${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}" || errh "${DN}/../doc/${fn}.usage not found!"
 done

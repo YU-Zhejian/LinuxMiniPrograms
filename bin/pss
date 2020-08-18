@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # PSS V1P8
-echo -e "\033[33mYuZJLab Process Snapshot Searcher"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
+infoh "YuZJLab Process Snapshot Searcher"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
 set -ue
 cd "$(readlink -f "$(dirname "${0}")")"
 . ../lib/libisopt
-. ../etc/path.sh
+. "${DN}"/../lib/libstr
+. "${DN}"/../etc/path.sh
 more="${mymore}"
 STDS=()
 for opt in "${@}"; do
@@ -22,15 +23,14 @@ for opt in "${@}"; do
 		--more\:*)
 			more="${opt:7}"
 			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-				echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
+				warnh "Invalid More '${more}'! Will use original '${mymore}' instead."
 				more="${mymore}"
 			else
-				echo -e "\033[33mWill use '${more}' as More.\033[0m"
+				infoh "Will use '${more}' as More."
 			fi
 			;;
 		*)
-			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-			exit 1
+			errh "Option '${opt}' invalid."
 			;;
 		esac
 	else

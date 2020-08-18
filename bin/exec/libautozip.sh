@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # LIBAUTOZIP V3P3
 . "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.sh
 REMOVE=false
 declare -i MAXTHREAD
@@ -84,7 +85,7 @@ function autozipck() {
 function mktmp() {
 	tempdir="$(mktemp -dt autozip.XXXXXX)"
 	tempf="$(mktemp -t autozip.XXXXXX)"
-	echo -e "\033[33mTEMP file '${tempf}' and directory '${tempdir}' made.\033[0m"
+	infoh "TEMP file '${tempf}' and directory '${tempdir}' made."
 }
 # Check opt
 function ppopt() {
@@ -100,11 +101,11 @@ function ppopt() {
 				exit 0
 				;;
 			"--force")
-				echo -e "\033[31mWARNING: Will remove the archive if exists.\033[0m"
+				warnh "Will remove the archive if exists."
 				ISFORCE=true
 				;;
 			"--remove")
-				echo -e "\033[31mWARNING: Will remove the original file if success.\033[0m"
+				warnh "Will remove the original file if success."
 				REMOVE=true
 				;;
 			-p\:*)
@@ -117,10 +118,7 @@ function ppopt() {
 				THREAD=${MAXTHREAD}
 				;;
 			"-s" | "--split")
-				if ! ${ISAUTOZIP}; then
-					echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-					exit 1
-				fi
+				${ISAUTOZIP} || errh "Option '${opt}' invalid."
 				case ${ext} in
 				"rar" | "zip" | "7z")
 					SPLIT=1024m
@@ -131,22 +129,15 @@ function ppopt() {
 				esac
 				;;
 			-s\:*)
-				if ! ${ISAUTOZIP}; then
-					echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-					exit 1
-				fi
+				${ISAUTOZIP} || errh "Option '${opt}' invalid."
 				SPLIT=${opt:3}
 				;;
 			--split\:*)
-				if ! ${ISAUTOZIP}; then
-					echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-					exit 1
-				fi
+				${ISAUTOZIP} || errh "Option '${opt}' invalid."
 				SPLIT=${opt:8}
 				;;
 			*)
-				echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-				exit 1
+				errh "Option '${opt}' invalid."
 				;;
 			esac
 			OPT=("${OPT[@]}" "${opt}")
@@ -154,9 +145,9 @@ function ppopt() {
 			STDS=("${STDS[@]}" "${opt}")
 		fi
 	done
-	! ${ISFORCE} && echo -e "\033[31mWARNING: Will rename the archive if exists.\033[0m" || true
+	! ${ISFORCE} && warnh "Will rename the archive if exists."
 	if [ ${THREAD} -gt ${MAXTHREAD} ]; then
-		echo -e "\033[31mWARNING: Too many threads. Will be resetted to ${MAXTHREAD}\033[0m"
+		warnh "Too many threads. Will be resetted to ${MAXTHREAD}"
 		THREAD=${MAXTHREAD}
 	fi
 }
@@ -230,8 +221,7 @@ function ckext() {
 	case "${ext}" in
 	"tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "tbz" | "tar.lzma" | "tar.lz" | "tlz" | "gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz" | "rar" | "zip" | "7z") ;;
 	*)
-		echo -e "\033[31mERROR: Extension name '${ext}' invalid.\nYou can execute 'autozip' without any argument or option to check available method and extension.\033[0m"
-		exit 1
+		errh "Extension name '${ext}' invalid.\nYou can execute 'autozip' without any argument or option to check available method and extension."
 		;;
 	esac
 }

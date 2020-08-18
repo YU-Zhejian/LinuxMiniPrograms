@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # LIBDOSH v1
 set +ue
-echo -e "\033[33mYuZJLab libDO Shell"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
+infoh "YuZJLab libDO Shell"
+echo -e "Copyright (C) 2019-2020 YU Zhejian"
 
 [ ${UID} -eq 0 ] && ps1_ed="#" || ps1_ed="$"
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -46,7 +46,7 @@ while read -p "$(getps1)" line; do
 		for str in "${builtins[@]}"; do
 			if [[ "${buffer}" =~ "${str} ".* ]]; then
 				tmpf="$(mktemp -t libdosh.XXXXX)"
-				echo -e "\033[33mBuiltin\033[0m"
+				infoh "Builtin"
 				echo "${buffer}"' 2>&1 | tee -a "${log}" && prev_out=0 || prev_out=${?}' > "${tmpf}"
 				cat "${tmpf}"
 				. "${tmpf}"

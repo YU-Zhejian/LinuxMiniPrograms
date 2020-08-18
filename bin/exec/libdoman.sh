@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #LIBDOMAN.sh V7
 . "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libstr
 more="${mymore}"
 cmd=0
 STDS=()
@@ -12,7 +13,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo -e "\033[33mVersion 7 in Bash, compatiable with libdo Version 2.\033[0m"
+			infoh "Version 7 in Bash, compatiable with libdo Version 2."
 			exit 0
 			;;
 		-o\:*)
@@ -24,15 +25,14 @@ for opt in "${@}"; do
 		--more\:*)
 			more="${opt:7}"
 			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-				echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
+				warnh "Invalid More '${more}'! Will use original '${mymore}' instead."
 				more="${mymore}"
 			else
-				echo -e "\033[33mWill use '${more}' as More.\033[0m"
+				infoh "Will use '${more}' as More."
 			fi
 			;;
 		*)
-			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-			exit 1
+			errh "Option '${opt}' invalid."
 			;;
 		esac
 	else
@@ -40,21 +40,17 @@ for opt in "${@}"; do
 	fi
 done
 if [ ${#STDS[@]} -gt 1 ]; then
-	echo -e "\033[33mMore than one filename was received. Will disable -o option.\033[0m"
+	infoh "More than one filename was received. Will disable -o option."
 	cmd=0
 elif [ ${#STDS[@]} -lt 1 ]; then
-	echo -e "\033[33mNo file.\033[0m"
-	exit 1
+	errh "No file."
 fi
 if [ ${cmd} -eq 0 ]; then
 	more="${mycat}"
-	echo -e "\033[33mWill use '${more}' as More.\033[0m"
+	infoh "Will use '${more}' as More."
 	for fn in "${STDS[@]}"; do
-		if ! [ -f "${fn}" ] || [ -z "${fn}" ]; then
-			echo -e "\033[31mERROR: Filename '${fn}' invalid. Use libdoman -h for help.\033[0m"
-			exit 1
-		fi
-		echo -e "\033[33mLoading ${fn}...0 item proceeded.\033[0m"
+		[ -f "${fn}" ] || errh "Filename '${fn}' invalid."
+		infoh "Loading ${fn}...0 item proceeded."
 		ffn="$(mktemp -t libdo_man.XXXXXX)"
 		"${mycat}" "${fn}" | "${mygrep}" LIBDO >"${ffn}"
 		while read line; do
@@ -67,7 +63,7 @@ if [ ${cmd} -eq 0 ]; then
 			i=$((${i} + 1))
 			if [[ "${line}" =~ "LIBDO IS GOING TO EXECUTE"* ]]; then
 				Proj=$((${Proj} + 1))
-				echo -e "\033[33mLoading ${fn}...${Proj} item proceeded.\033[0m"
+				infoh "Loading ${fn}...${Proj} item proceeded."
 				Proj_CMD[${Proj}]="${line:26}"
 				line="${all_lines[i]}"
 				if [[ "${line}" =~ "LIBDO STARTED AT"* ]]; then
@@ -101,7 +97,7 @@ if [ ${cmd} -eq 0 ]; then
 				fi
 			fi
 		done
-		echo -e "\033[33mFile ${fn} loaded. Making table...\033[0m"
+		infoh "File ${fn} loaded. Making table..."
 		table=$(mktemp -t libdo_man.XXXXXX)
 		echo -e "#1\n#S90\n#1\n#1" >"${table}"
 		echo "NO.;COMMAND;EXIT;TIME" >>"${table}"
@@ -114,10 +110,7 @@ if [ ${cmd} -eq 0 ]; then
 	done
 else
 	fn="${STDS[0]}"
-	if ! [ -f "${fn}" ]; then
-		echo -e "\033[31mERROR: Filename '${fn}' invalid. Use libdoman -h for help.\033[0m"
-		exit 1
-	fi
+	[ -f "${fn}" ] || errh "Filename '${fn}' invalid."
 	ln_s=0
 	ln_e=0
 	tmps="$(mktemp -t libdo_man.XXXXXX)"
@@ -133,11 +126,8 @@ else
 		fi
 	done <"${tmps}"
 	"${myrm}" "${tmps}"
-	if [ ${ln_s} -eq 0 ]; then
-		echo -e "\033[31mERROR: ${cmd} invalid.\033[0m" >&2
-		exit 1
-	fi
-	if [ ${ln_e} -eq 0 ]; then ln_e=$(wc -l ${fn} | awk '{print $1}'); fi
+	[ ${ln_s} -ne 0 ] || echo -e "${cmd} invalid."
+	[ ${ln_e} -ne 0 ] || ln_e=$(wc -l ${fn} | awk '{print $1}')
 	unset line
 	tmpprj="$(mktemp -t libdo_man.XXXXXX)"
 	"${myhead}" -n $((${ln_s} + 1)) "${fn}" | "${mytail}" -n 2 > "${tmpprj}"
@@ -166,21 +156,21 @@ else
 			Exit="${line:21}"
 		fi
 	fi
-	echo -e "\033[33mJOB_CMD	  \033[36m: ${CMD}\033[0m" >&2
-	echo -e "\033[33mELAPSED_TIME \033[36m: ${Time_s} to ${Time_e}, Total ${Time}\033[0m" >&2
-	echo -e "\033[33mEXIT_STATUS  \033[36m: ${Exit}\033[0m" >&2
-	echo -e "\033[33m________________JOB_________OUTPUT________________\033[0m" >&2
+	infoh "JOB_CMD	  \033[36m: ${CMD}" >&2
+	infoh "ELAPSED_TIME \033[36m: ${Time_s} to ${Time_e}, Total ${Time}" >&2
+	infoh "EXIT_STATUS  \033[36m: ${Exit}" >&2
+	infoh "________________JOB_________OUTPUT________________" >&2
 	tls=$((${ln_s} + 2))
 	els=$((${ln_e} - 2))
 	if [ ${ln_e} -le ${tls} ]; then
-		echo -e "\033[33mNO_OUTPUT\033[0m"
+		infoh "NO_OUTPUT"
 	elif [ "${Exit}" = "-1" ]; then
 		"${myhead}" -n ${ln_e} "${fn}" | "${mytail}" -n $((${tls} - ${ln_e})) | "${more}"
 	else
 		"${myhead}" -n ${els} "${fn}" | "${mytail}" -n $((${tls} - ${els})) | "${more}"
 	fi
-	echo -e "\033[33m________________OUTPUT____FINISHED________________\033[0m" >&2
+	infoh "________________OUTPUT____FINISHED________________" >&2
 	rm "${tmpprj}"
 fi
-echo -e "\033[33mFinished.\033[0m" >&2
+infoh "Finished." >&2
 exit 0

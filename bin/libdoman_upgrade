@@ -4,7 +4,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 for fn in "${@}"; do
 	if ! [ -f "${fn}" ]; then
-		echo -e "\033[31mERROR! Invalid file '${fn}' will be ignored.\033[0m"
+		warnh "Invalid file '${fn}' ignored"
 		continue
 	fi
 	"${mycat}" "${fn}" | while read line; do

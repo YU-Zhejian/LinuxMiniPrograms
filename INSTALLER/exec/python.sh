@@ -24,10 +24,10 @@ if [ -z "${mypython:-}" ]; then
 		unset Out_C
 	else
 		echo "mypython=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-		echo -e "\033[31mERROR: Python still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
+		warnh "Python still not found. Please configure it manually in $(readlink -f "${path_sh}")"
 	fi
 	unset python_ver
 	. "${path_sh}"
 else
-	echo -e "\033[033mpython configured\033[0m"
+	infoh "python configured"
 fi

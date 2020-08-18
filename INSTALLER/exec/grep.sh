@@ -28,8 +28,8 @@ if [ -z "${mygrep:-}" ]; then
 	. "${path_sh}"
 	if [ -z "${mygrep:-}" ]; then
 		echo "mygrep=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-		echo -e "\033[31mERROR: grep still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
+		warnh "grep still not found. Please configure it manually in $(readlink -f "${path_sh}")"
 	fi
 else
-	echo -e "\033[033mgrep configured\033[0m"
+	infoh "grep configured"
 fi

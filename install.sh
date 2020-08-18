@@ -3,14 +3,15 @@
 set -eu
 OLDIFS="${IFS}"
 if ！ readlink -f . &>/dev/null;then
-	echo -e "\033[31mERROR! NO readlink available.\033[0m"
+	echo -e "\033[31mERROR: NO readlink available.\033[0m"
 	exit 1
 fi
 DN="$(readlink -f "$(dirname "${0}")")"
 cd "${DN}"
-echo -e "\033[33mYuZJLab Installer"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
 . lib/libisopt
+. lib/libstr
+infoh "YuZJLab Installer"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
 # ========Def Var========
 VAR_install_config=false
 VAR_clear_history=false
@@ -26,7 +27,7 @@ for opt in "${@}"; do
 	if isopt ${opt}; then
 		case ${opt} in
 		"-v" | "--version")
-			echo -e "\033[33mVersion 3 Patch 3.\033[0m"
+			echo "Version 3 Patch 3."
 			exit 0
 			;;
 		"-h" | "--help")
@@ -64,6 +65,7 @@ OPTIONS:
 			VAR_install_pdf=true
 			VAR_install_usage=true
 			VAR_interactive=false
+			VAR_update_path=true
 			;;
 		"--install-config")
 			VAR_install_config=true
@@ -105,14 +107,13 @@ OPTIONS:
 			VAR_interactive=false
 			;;
 		*)
-			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-			exit 1
+			errh "Option '${opt}' invalid."
 			;;
 		esac
 	fi
 done
 # ========Check========
-echo -e "\033[33mChecking FileSystem...\033[0m"
+infoh "Checking FileSystem..."
 ${VAR_update_path} && rm 'etc/path.sh' || true
 ! [ -f 'etc/path.sh' ] && bash INSTALLER/configpath || true
 if ${VAR_update}; then
@@ -141,41 +142,41 @@ fi
 . etc/path.sh
 # ========Prompt========
 if ${VAR_interactive}; then
-	echo -e "\033[33mWellcome to install YuZJLab LinuxMiniPrograms! Before installation, please agree to our License:\033[0m"
+	infoh "Wellcome to install YuZJLab LinuxMiniPrograms! Before installation, please agree to our License:\033[0m"
 	cat LICENSE.md
 	read -p "Answer Y/N:>" VAR_Ans
 	! [ "${VAR_Ans}" = "Y" ]
 	if [ ${ETC} -eq 0 ]; then
-		echo -e "\033[33mDo you want to reinstall the config in 'etc'?\033[0m"
+		infoh "Do you want to reinstall the config in 'etc'?"
 		read -p "Answer Y/N:>" VAR_Ans
 		[ "${VAR_Ans}" = "Y" ] && VAR_install_config=true || true
 	else
-		echo -e "\033[33mWill install the config in 'etc'\033[0m"
+		infoh "Will install the config in 'etc'"
 		VAR_install_config=true
 	fi
 	if [ ${VAR} -eq 0 ]; then
-		echo -e "\033[33mDo you want to clear the history in 'var'?\033[0m"
+		infoh "Do you want to clear the history in 'var'?"
 		read -p "Answer Y/N:>" VAR_Ans
 		[ "${VAR_Ans}" = "Y" ] && VAR_clear_history=true
 	else
-		echo -e "\033[33mWill install history to 'var'\033[0m"
+		infoh "Will install history to 'var'"
 		VAR_clear_history=true
 	fi
-	echo -e "\033[33mDo you want to install documentations in Groff man, pdf, YuZJLab Usage and HTML? This need command 'asciidoctor' and 'asciidoctor-pdf' (available from Ruby pem) and Python 3.\033[0m"
+	infoh "Do you want to install documentations in Groff man, pdf, YuZJLab Usage and HTML? This need command 'asciidoctor' and 'asciidoctor-pdf' (available from Ruby pem) and Python 3."
 	read -p "Answer Y/N:>" VAR_Ans
 	[ "${VAR_Ans}" = "Y" ] && VAR_install_doc=true
 fi
 #========Install ETC========
-echo -e "\033[33mInstalling...\033[0m"
+infoh "Installing..."
 if ${VAR_install_config}; then
 	"${mymkdir}" -p etc
 	if [ ${ETC} -eq 1 ]; then
 		"${mytar}" czf etc_backup.tgz etc
 		"${myrm}" -rf etc/*
-		echo -e "\033[33mBacking up settings...\033[32mPASSED\033[0m"
+		infoh "Backing up settings...\033[32mPASSED"
 	fi
 	"${mycp}" -fr INSTALLER/etc/* etc/
-	echo -e "\033[33mInstalling config...\033[32mPASSED\033[0m"
+	infoh "Installing config...\033[32mPASSED"
 fi
 #========Install VAR========
 if ${VAR_clear_history}; then
@@ -183,7 +184,7 @@ if ${VAR_clear_history}; then
 	if [ ${VAR} -eq 1 ]; then
 		"${mytar}" czf var_backup.tgz var
 		"${myrm}" -rf var/*
-		echo -e "\033[33mBacking up histories...\033[32mPASSED\033[0m"
+		infoh "Backing up histories...\033[32mPASSED"
 	fi
 	"${mycp}" -fr INSTALLER/var/* var/
 fi
@@ -198,7 +199,7 @@ if ${VAR_install_pdf}; then
 	"${mymkdir}" -p ../../pdf
 	for fn in *.adoc; do
 		asciidoctor-pdf -a allow-uri-read ${fn}
-		[ ${?} -eq 0 ] && echo -e "\033[33mCompiling ${fn} in pdf...\033[32mPASSED\033[0m" || echo -e "\033[33mCompiling ${fn} in pdf...\033[31mERROR\033[0m"
+		[ ${?} -eq 0 ] && infoh "Compiling ${fn} in pdf...\033[32mPASSED" || infoh "Compiling ${fn} in pdf...\033[31mFAILED"
 	done
 	"${myrm}" -f ../../pdf/*
 	"${mymv}" *.pdf ../../pdf
@@ -207,7 +208,7 @@ if ${VAR_install_html}; then
 	"${mymkdir}" -p ../../html
 	for fn in *.adoc; do
 		asciidoctor -a allow-uri-read ${fn} -b html5
-		[ ${?} -eq 0 ] && echo -e "\033[33mCompiling ${fn} in html5...\033[32mPASSED\033[0m" || echo -e "\033[33mCompiling ${fn} in html5...\033[31mERROR\033[0m"
+		[ ${?} -eq 0 ] && infoh "Compiling ${fn} in html5...\033[32mPASSED" || infoh "Compiling ${fn} in html5...\033[31mFAILED"
 	done
 	"${myrm}" -f ../../html/*
 	"${mymv}" *.html ../../html
@@ -216,7 +217,7 @@ if ${VAR_install_man}; then
 	"${mymkdir}" -p ../../man ../../man/man1
 	for fn in *.adoc; do
 		asciidoctor -a allow-uri-read ${fn} -b manpage
-		[ ${?} -eq 0 ] && echo -e "\033[33mCompiling ${fn} in Groff man...\033[32mPASSED\033[0m" || echo -e "\033[33mCompiling ${fn} in Groff man...\033[31mERROR\033[0m"
+		[ ${?} -eq 0 ] && infoh "Compiling ${fn} in Groff man...\033[32mPASSED" || infoh "Compiling ${fn} in Groff man...\033[31mFAILED"
 	done
 	"${myrm}" -f ../../man/man1/*
 	"${mymv}" *.1 ../../man/man1
@@ -229,21 +230,21 @@ if ${VAR_install_man}; then
 	MANCONF=false
 	for item in ${eachpath}; do
 		if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}/man")" ] ; then
-			echo -e "\033[33mMANPATH configured.\033[0m"
+			infoh "MANPATH configured."
 			MANCONF=true
 			break
 		fi
 	done
 	if ! ${MANCONF}; then
 		echo "export MANPATH=\"${DN}/man/\""':${MANPATH}' >>"${HOME}"/.bashrc
-		echo -e "\033[33mWill configure MANPATH...\033[32mPASSED\033[0m"
+		infoh "Will configure MANPATH...\033[32mPASSED"
 	fi
 fi
 if ${VAR_install_usage}; then
 	${mymkdir} -p ../../doc
 	for fn in *.adoc; do
 		"${mypython}" ../exec/adoc2usage.py "${fn}"
-		[ ${?} -eq 0 ] && echo -e "\033[33mCompiling ${fn} in YuZJLab Usage...\033[32mPASSED\033[0m" || echo -e "\033[33mCompiling ${fn} in YuZJLab Usage...\033[31mERROR\033[0m"
+		[ ${?} -eq 0 ] && infoh "Compiling ${fn} in YuZJLab Usage...\033[32mPASSED" || infoh "Compiling ${fn} in YuZJLab Usage...\033[31mFAILED"
 	done
 	"${myrm}" -f ../../doc/*
 	"${mymv}" *.usage ../../doc/
@@ -259,14 +260,14 @@ IFS=''
 PYCONF=false
 for item in ${eachpath}; do
 	if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}")" ] ; then
-		echo -e "\033[33mPYTHONPATH configured.\033[0m"
+		infoh "PYTHONPATH configured."
 		PYCONF=true
 		break
 	fi
 done
 if ! ${PYCONF}; then
 	echo "export PYTHONPATH=\"${DN}/\""':${PYTHONPATH}' >>"${HOME}"/.bashrc
-	echo -e "\033[33mWill configure PYTHONPATH...\033[32mPASSED\033[0m"
+	infoh "Will configure PYTHONPATH...\033[32mPASSED"
 fi
 
 INPATH="${PATH:-}"
@@ -278,14 +279,14 @@ IFS=''
 PACONF=false
 for item in ${eachpath}; do
 	if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}/bin")" ] ; then
-		echo -e "\033[33mPATH configured.\033[0m"
+		infoh "PATH configured."
 		PACONF=true
 		break
 	fi
 done
 if ! ${PACONF}; then
 	echo "export PATH=\"${DN}/bin/\""':${PATH}' >>"${HOME}"/.bashrc
-	echo -e "\033[33mWill configure PATH...\033[32mPASSED\033[0m"
+	infoh "Will configure PATH...\033[32mPASSED"
 fi
 #========Install Permissions========
 function add_dir() {
@@ -300,11 +301,11 @@ function add_dir() {
 		fi
 	done
 }
-echo -e "\033[33mModifying file permissions...\033[0m"
+infoh "Modifying file permissions..."
 "${mychown}" -R $(id -u) *
 "${mychmod}" -R +r+w *
 add_dir
 "${mychmod}" +x bin/*
 "${mychmod}" +x *.sh
 IFS="${OLDIFS}"
-echo -e "\033[33mFinished. Please execute 'exec bash' to restart bash.\033[0m"
+infoh "Finished. Please execute 'exec bash' to restart bash."

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # YLMKTNL.sh V3P3
 . "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libstr
 STDS=''
 for opt in "${@}"; do
 	if isopt "${opt}"; then
@@ -14,18 +15,15 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		*)
-			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-			exit 1
+			errh "Option '${opt}' invalid."
 			;;
 		esac
 	else
 		STDS="${opt}"
 	fi
 done
-if ! [ -f "${STDS}" ]; then
-	echo -e "\033[31mERROR: Table file ${STDS} invalid.\033[0m"
-	exit 1
-fi
+[ -f "${STDS}" ] || errh "Table file ${STDS} invalid."
+
 function mktbl_GetLongestString_max_str() {
 	for item in "${@}"; do
 		if [ ${#item} -gt ${mlen} ]; then

@@ -2,7 +2,7 @@
 # PLS V3P2
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-echo -e "\033[33mYuZJLab PATH ls"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
+infoh "YuZJLab PATH ls"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
 . "${DN}"/../etc/path.sh
 [ "${mypython}" != "ylukh" ] && "${mypython}" "${DN}"/exec/pathls.py "${PWD}" "${@}" || . "${DN}"/exec/pathls.sh

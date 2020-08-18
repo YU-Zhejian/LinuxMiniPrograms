@@ -29,13 +29,13 @@ if [ -z "${mysed:-}" ]; then
 	if [ -z "${mysed:-}" ]; then
 		if [ -z "${lntmp:-}" ]; then
 			echo "mysed=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-			echo -e "\033[31mERROR: sed still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
+			warnh "sed still not found. Please configure it manually in $(readlink -f "${path_sh}")"
 		else
-			echo -e "\033[31mWARNING: Will use BSD sed.\033[0m"
+			warnh "Will use BSD sed."
 			echo "mysed=\"${lntmp}\" #${type}" >>"${path_sh}"
 		fi
 	fi
 	unset sed_ver line
 else
-	echo -e "\033[033msed configured\033[0m"
+	infoh "sed configured"
 fi

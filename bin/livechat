@@ -3,6 +3,7 @@
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
+. "${DN}"/../lib/libstr
 function sdmess() {
 	echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${MESS_SD}" >>MESSAGES
 }
@@ -29,13 +30,13 @@ OLD_IFS="${IFS}"
 LVCD="${DN}/../var/livechat.d"
 mkdir -p "${LVCD}"
 if [ ! -e "${LVCD}"/LCONLINE ]; then
-	echo -e "\033[31mWARNING: livechat.d/LCONLINE not exist.\033[0m"
+	warnh "livechat.d/LCONLINE not exist."
 	touch "${LVCD}"/LCONLINE
 fi
 cd "${LVCD}"
 unset LVCD
-echo -e "\033[33mWelcome to YuZJLab LiveChat"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
+infoh "Welcome to YuZJLab LiveChat"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
 . "${DN}"/../lib/libisopt
 STDS=""
 for opt in "${@}"; do
@@ -50,8 +51,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		*)
-			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-			exit 1
+			errh "Option '${opt}' invalid."
 			;;
 		esac
 	else
@@ -60,15 +60,15 @@ for opt in "${@}"; do
 done
 
 if [ -z "${STDS}" ]; then
-	echo -e "\033[33mPlease key in your name/roomnumber:\033[0m"
-	echo -e "\033[33mUse Ctrl-C to exit\033[0m"
+	infoh "Please key in your name/roomnumber:"
+	infoh "Use Ctrl-C to exit"
 	read LCUN
 else
 	LCUN="${STDS}"
 fi
 while read line;do
 	if [ "${line}" = "${LCUN}" ];then
-	echo -e "\033[31mERROR: There's a user with the same name.\033[0m"
+	errh "There's a user with the same name."
 	exit 1
 	fi
 done < LCONLINE
@@ -76,13 +76,13 @@ unset BOOLONLINE
 echo "${LCUN}" >>LCONLINE
 MESS_SD="${LCUN} is now on line."
 sdmess SYSTEM
-echo -e "\033[33mThe following users are now online:\033[0m"
+infoh "The following users are now online:"
 cat LCONLINE
-echo -e "\033[33mPlease use 'logout' instead of Ctrl-C to exit.\033[0m"
+infoh "Please use 'logout' instead of Ctrl-C to exit."
 export M_R=0
 (F_REC) &
 pid_rec=${!}
-echo -e "\033[33mPID of reciever: ${pid_rec}.\033[0m"
+infoh "PID of reciever: ${pid_rec}."
 while true; do
 	read MESS_SD
 	if [ "${MESS_SD}" != "logout" ]; then
@@ -95,7 +95,7 @@ while true; do
 		"${mycat}" LCONLINE |"${mygrep}" -v "^${LCUN}$" >tmp
 		"${mymv}" tmp LCONLINE
 		"${myrm}" "URM_${LCUN}"
-		echo -e "\033[33mThanks for using this system.\033[0m"
+		infoh "Thanks for using this system."
 		IFS="${OLD_IFS}"
 		exit 0
 	fi

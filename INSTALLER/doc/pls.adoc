@@ -4,6 +4,7 @@
 = pls(1)
 
 == NAME
-pls was renamed to `pathls`.
+
+pls - renamed to `pathls`.
 
 include::include/copy.adoc[]
