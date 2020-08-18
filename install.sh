@@ -142,7 +142,7 @@ fi
 . etc/path.sh
 # ========Prompt========
 if ${VAR_interactive}; then
-	infoh "Wellcome to install YuZJLab LinuxMiniPrograms! Before installation, please agree to our License:\033[0m"
+	infoh "Wellcome to install YuZJLab LinuxMiniPrograms! Before installation, please agree to our License:"
 	cat LICENSE.md
 	read -p "Answer Y/N:>" VAR_Ans
 	! [ "${VAR_Ans}" = "Y" ]

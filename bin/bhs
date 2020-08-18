@@ -4,9 +4,10 @@ set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 more="${mymore}"
-echo -e "\033[33mYuZJLab Bash History Searcher"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
+infoh "YuZJLab Bash History Searcher"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
 . "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libstr
 STDS=""
 for opt in "${@}"; do
 	if isopt "${opt}"; then
@@ -22,15 +23,14 @@ for opt in "${@}"; do
 		--more\:*)
 			more="${opt:7}"
 			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-				echo -e "\033[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\033[0m"
+				warnh "Invalid More '${more}'! Will use original '${mymore}' instead."
 				more="${mymore}"
 			else
-				echo -e "\033[33mWill use '${more}' as More.\033[0m"
+				infoh "Will use '${more}' as More."
 			fi
 			;;
 		*)
-			echo -e "\033[31mERROR: Option '${opt}' invalid.\033[0m"
-			exit 1
+			errh "Option '${opt}' invalid."
 			;;
 		esac
 	else

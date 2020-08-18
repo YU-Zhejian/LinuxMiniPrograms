@@ -27,13 +27,13 @@ if ! "${mygrep}" ^"my${PROGNAME}"= "${path_sh}";then
 	if ! "${mygrep}" ^"my${PROGNAME}"= "${path_sh}";then
 		if [ -z "${lntmp:-}" ]; then
 			echo "my${PROGNAME}=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-			echo -e "\033[31mERROR: ${PROGNAME} still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\033[0m"
+			warnh "${PROGNAME} still not found. Please configure it manually in $(readlink -f "${path_sh}")"
 		else
-			echo -e "\033[31mWARNING: Will use BSD ${PROGNAME}.\033[0m"
+			warnh "Will use BSD ${PROGNAME}."
 			echo "my${PROGNAME}=\"${lntmp}\" #${type}" >>"${path_sh}"
 		fi
 	fi
 	unset PROG_ver line
 else
-	echo -e "\033[033m${PROGNAME} configured\033[0m"
+	infoh "${PROGNAME} configured"
 fi
