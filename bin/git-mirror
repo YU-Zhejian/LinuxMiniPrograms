@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# GITMIRROR V1
+DN="$(readlink -f "$(dirname "${0}")")"
+function timestamp(){
+	date '+%Y-%m-%d %H:%M:%S'
+}
+set -ue
+trap '' SIGINT
+OLD_IFS="${IFS}"
+. "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libstr
+. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/git-mirror.conf
+infoh "YuZJLab AutoZipManager"
+infoh "Copyright (C) 2020 YU Zhejian"
+# ============ Possess arguments ============
+for opt in "${@}"; do
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-h" | "--help")
+			yldoc git-mirror
+			exit 0
+			;;
+		esac
+	else
+		STDS=("${STDS[@]}" "${opt}")
+	fi
+done
+gmcmd=${STDS[0]:-}
+unset STDS[0]
+[ ! -z "${git_mirror_dir:-}" ] || errh "Config file not found"
+mkdir -p "${git_mirror_dir}" "${git_mirror_dir}/logs/"
+cd "${git_mirror_dir}"
+touch uuidtable act.log
+if [ -f "${DN}"/exec/gitm_"${gmcmd}".sh ];then
+	. "${DN}"/exec/gitm_"${gmcmd}".sh
+elif [ -f "${DN}"/exec/gitm_"${gmcmd}".py ];then
+	IFS="${OLD_IFS}"
+	[ "${mypython}" != "ylukh" ] && "${mypython}" "${DN}"/exec/ylsjs_"${sjscmd}".py "${PWD}" "${@}" || errh "Python not found"
+else
+	IFS="${OLD_IFS}"
+	errh "subcommand '${gmcmd}' invalid"
+fi
+IFS="${OLD_IFS}"

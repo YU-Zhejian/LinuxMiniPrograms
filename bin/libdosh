@@ -20,7 +20,7 @@ trap 'pass_int' SIGINT
 
 function getps1() {
 	[ ${prev_out} -eq 0 ] && _po="0" || _po="\e[31m${prev_out}\e[0m"
-	echo -e "\e[32m${USER}@${HOSTNAME}\e[0m:${_po}:\e[33m${PWD}\e[0m\n${ps1_ed} "
+	echo -e "\e[32m$(getuser)@${HOSTNAME}\e[0m:${_po}:\e[33m${PWD}\e[0m\n${ps1_ed} "
 }
 
 function pass_int() {

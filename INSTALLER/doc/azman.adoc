@@ -13,7 +13,7 @@ azman - AutoZip file Manager.
 
 == DESCRIPTION
 
-Execute `[subcommand]` which will be introduced bellow. If one of the `[subcommand]`, the program will check the algorithms installed on your computer and return a list of available extension name.
+Execute `[subcommand]` which will be introduced bellow. If there's no `[subcommand]` presented, the program will check the algorithms installed on your computer and return a list of available extension name.
 
 WARNING: This program do not support archives with extension `.lzma`, `.lz` and `bzip2`.
 

@@ -3,9 +3,10 @@
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.sh
+. "${DN}"/../lib/libman
 REMOVE=false
 declare -i MAXTHREAD
-MAXTHREAD=$("${mycat}" /proc/cpuinfo | "${mygrep}" '^processor\s: ' | wc -l | awk '{print $1}')
+MAXTHREAD=$(getcorenumber)
 ISFORCE=false
 THREAD=0
 OPT=()
@@ -79,6 +80,7 @@ function autozipck() {
 	fi
 	[ "${myparallel}" != 'ylukh' ] && echo -e "Checking for 'parallel' in ${myparallel}...\033[32mOK\033[33m" || echo -e "Checking for 'parallel' ...\033[31mNO\033[33m"
 	echo -e "Available extension name on your computer:\n${availext}\033[0m"
+	infoh "Available core number: ${MAXTHREAD}"
 	exit 0
 }
 #Makt temporaty resources
