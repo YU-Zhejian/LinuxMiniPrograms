@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 # LIBDOSH v1
 set +ue
+. "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libstr
+. "${DN}"/../etc/path.sh
+. "${DN}"/../lib/libman
 infoh "YuZJLab libDO Shell"
-echo -e "Copyright (C) 2019-2020 YU Zhejian"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
 
 [ ${UID} -eq 0 ] && ps1_ed="#" || ps1_ed="$"
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -26,9 +30,6 @@ function pass_int() {
 builtins=("." "[" "bind" "break" "builtin" "caller" "command" "compgen" "complete" "compopt" "continue" "declare" "dirs" "disown" "echo" "enable" "eval" "exec" "exit" "export" "false" "fc" "getopts" "hash" "help" "history" "kill" "let" "local" "mapfile" "popd" "printf" "pushd" " pwd" " read" "readonly" "return" "set" "shift" "shopt" "source" "suspend" "test" "times" "true" "type" "typeset" "ulimit" "umask" "unset")
 disabled=(":" "alias" "bg" "fg" "jobs" "logout" "trap" "unalias" "wait")
 
-. "${DN}"/../lib/libisopt
-. "${DN}"/../lib/libstr
-. "${DN}"/../etc/path.sh
 if [ -f "${HOME}/.profile" ]; then
 	. "${HOME}/.profile"
 elif [ -f "${HOME}/.bash_profile" ]; then

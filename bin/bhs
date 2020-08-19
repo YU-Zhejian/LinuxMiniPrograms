@@ -4,10 +4,10 @@ set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 more="${mymore}"
-infoh "YuZJLab Bash History Searcher"
-infoh "Copyright (C) 2019-2020 YU Zhejian"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
+infoh "YuZJLab Bash History Searcher"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
 STDS=""
 for opt in "${@}"; do
 	if isopt "${opt}"; then

@@ -2,12 +2,12 @@
 # INCLUDELS v1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-infoh "YuZJLab INCLUDEPATH ls"
-infoh "Copyright (C) 2019-2020 YU Zhejian"
-oldifs="${IFS}"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.sh
+infoh "YuZJLab INCLUDEPATH ls"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
+oldifs="${IFS}"
 more="${mymore}"
 gccinclude=$(for dir in  /lib*/gcc/*/*/include \
 /usr/lib*/gcc/*/*/include \

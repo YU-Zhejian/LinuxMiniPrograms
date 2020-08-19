@@ -2,9 +2,8 @@
 #AZMAN_LIST V1P2
 USESPLIT=false
 unset STDS[0]
-ISBLANK=true
+[ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument."
 for fulln in "${STDS[@]}"; do
-	ISBLANK=false
 	fn="$(echo ${fulln%.*} | "${mysed}" "s;.part1;;" | "${mysed}" "s;.part01;;")"
 	ext="${fulln##*.}"
 	if [ "${fn##*.}" = "tar" ]; then
@@ -106,6 +105,5 @@ for fulln in "${STDS[@]}"; do
 	esac
 done
 # ============ Finished ============
-! ${ISBLANK} || errh "NO FILENAME"
 infoh "Finished"
 exit 0

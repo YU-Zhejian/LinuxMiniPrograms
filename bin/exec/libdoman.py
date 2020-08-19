@@ -11,7 +11,7 @@ for sysarg in sys.argv[2:]:
 			os.system('yldoc libdoman')
 			exit(0)
 		elif sysarg=='-v' or sysarg=='--version':
-			print('Version 2 patch 1, compatiable with libdo Version 2.')
+			print('Version 2 patch 1 in Python, compatiable with libdo Version 2.')
 			exit(0)
 		elif sysarg.startswith('-o:'):
 			cmd=int(sysarg[3:])
@@ -63,7 +63,7 @@ if cmd==0:
 					Proj_time_e.append(line.replace('.', '')[17:])
 					i += 1
 					line = grep_lns[i]
-					time_calc = yldo(os.path.dirname('bash "'+sys.argv[0])+'"/datediff.sh ' + ' "' + Proj_time_s[Proj] + '" "' + Proj_time_e[Proj] + '"')
+					time_calc = yldo('bash "'+os.path.dirname(sys.argv[0])+'"/datediff.sh ' + ' "' + Proj_time_s[Proj] + '" "' + Proj_time_e[Proj] + '"')
 					Proj_time.append(time_calc)
 				elif line.startswith('LIBDO IS GOING TO EXECUTE'):
 					Proj_time_e.append('0')
@@ -123,7 +123,7 @@ else:
 		if line.startswith('LIBDO STOPPED AT'):
 			Time_e=line[17:]
 			line = grep_lns[i]
-			Time = yldo(os.path.dirname('bash "' + sys.argv[0]) + '"/datediff.sh ' + ' "' + Time_s + '" "' + Time_e + '"')
+			Time = yldo('bash "' + os.path.dirname(sys.argv[0]) + '"/datediff.sh ' + ' "' + Time_s + '" "' + Time_e + '"')
 			i += 1
 			line = grep_lns[i]
 		if line.startswith('LIBDO EXITED SUCCESSFULLY'):

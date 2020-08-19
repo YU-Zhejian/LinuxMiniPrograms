@@ -2,7 +2,8 @@
 # LIBDOMAN V6
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../etc/path.sh
+. "${DN}"/../lib/libstr
 infoh "YuZJLab LibDO Manager"
 infoh "Copyright (C) 2020 YU Zhejian"
-. "${DN}"/../etc/path.sh
 [ "${mypython}" != "ylukh" ] && "${mypython}" "${DN}"/exec/libdoman.py "${PWD}" "${@}" || . "${DN}"/exec/libdoman.sh
