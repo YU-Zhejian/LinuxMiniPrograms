@@ -84,13 +84,13 @@ for dir in "${eachpath[@]}"; do
 done
 tmpff=$(mktemp -t pls.XXXXXX)
 if ${WINDOWS};then
-	${allow_s} && my_grep '\.dll$' || true
-	${allow_s} && my_grep '\.DLL$' || true
-	${allow_a} && my_grep '\.lib$' || true
-	${allow_a} && my_grep '\.LIB$' || true
+	! ${allow_s} || my_grep '\.dll$'
+	! ${allow_s} || my_grep '\.DLL$'
+	! ${allow_a} || my_grep '\.lib$'
+	! ${allow_a} || my_grep '\.LIB$'
 else
-	${allow_s} && my_grep '\.so\(\..*\)*$' || true
-	${allow_a} && my_grep '\.a\(\..*\)*$' || true
+	! ${allow_s} || my_grep '\.so\(\..*\)*$'
+	! ${allow_a} || my_grep '\.a\(\..*\)*$'
 fi
 "${mymv}" "${tmpff}" "${tmpf}"
 if [ ${#STDS[@]} -eq 0 ]; then

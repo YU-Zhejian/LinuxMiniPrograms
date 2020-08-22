@@ -21,7 +21,7 @@ for fulln in "${STDS[@]}"; do
 	elif ! [ -f "${fulln}" ]; then
 		errh "Filename '${fulln}' invalid"
 	fi
-	${USESPLIT} && mktmp || true
+	! ${USESPLIT} || mktmp
 	ckext
 	infoh "Received: ${0} ${STDS[0]} "${fulln}" ${OPT:-} ==>Extension=${ext}"
 	# ============ Start ============
@@ -45,22 +45,22 @@ for fulln in "${STDS[@]}"; do
 	"tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
 		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		${USESPLIT} && stdtl "${mygzip} -dk" || "${mytar}" -tzvf "${fulln}"
+		if ${USESPLIT} ;then stdtl "${mygzip} -dk" ; else "${mytar}" -tzvf "${fulln}"; fi
 		;;
 	"tar.xz" | "txz") # ============ txz ============
 		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		${USESPLIT} && sdtl "${myxz} -dk" || "${mytar}" -tJvf "${fulln}"
+		if ${USESPLIT} ;then sdtl "${myxz} -dk" ; else "${mytar}" -tJvf "${fulln}"; fi
 		;;
 	"tar.bz2" | "tbz") # ============ tbz ============
 		[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		${USESPLIT} && stdtl "${mybzip2} -dk" || "${mytar}" -tjvf "${fulln}"
+		if ${USESPLIT} ;then stdtl "${mybzip2} -dk" ; else "${mytar}" -tjvf "${fulln}"; fi
 		;;
 	"tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
 		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		${USESPLIT} && stdtl "${myxz} -dk --format=lzma" || "${myxz}" -dc "${fulln}" | "${mytar}" -tv -f -
+		if ${USESPLIT} ;then stdtl "${myxz} -dk --format=lzma" ; else "${myxz}" -dc "${fulln}" | "${mytar}" -tv -f -; fi
 		;;
 	"gz" | "GZ") # ============ gz ============
 		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist"

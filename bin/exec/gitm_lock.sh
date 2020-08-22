@@ -42,7 +42,7 @@ case "${STDS[1]}" in
 		IFS=''
 		[ -f "${fields[1]}".lock ] && echo ${line} | tee -a "${tmpff}"
 	done < "${tmpf}"
-	! ${FORCE} && read -p "Will remove locks of above repos. Continue? [Y/n] >" ANSWER || ANSWER="Y"
+	if ! ${FORCE} ;then read -p "Will remove locks of above repos. Continue? [Y/n] >" ANSWER ; else ANSWER="Y"; fi
 	if [ "${ANSWER}" = "Y" ]; then
 		"${mycat}" "${tmpff}" | while read line; do
 			"${myrm}" -f "${fields[1]}".lock
@@ -62,7 +62,7 @@ case "${STDS[1]}" in
 	for url in "${STDS[@]}"; do
 		"${mygrep}" "${url}" uuidtable |tee -a "${tmpf}" || warnh "${url} yeilds no results"
 	done
-	! ${FORCE} && read -p "Will add locks to above repos. Continue? [Y/n] >" ANSWER || ANSWER="Y"
+	if ! ${FORCE} ;then read -p "Will add locks to above repos. Continue? [Y/n] >" ANSWER ; else ANSWER="Y"; fi
 	if [ "${ANSWER}" = "Y" ]; then
 		"${mycat}" "${tmpf}" | while read line; do
 			IFS=$'\t'

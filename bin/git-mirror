@@ -36,7 +36,11 @@ if [ -f "${DN}"/exec/gitm_"${gmcmd}".sh ];then
 	. "${DN}"/exec/gitm_"${gmcmd}".sh
 elif [ -f "${DN}"/exec/gitm_"${gmcmd}".py ];then
 	IFS="${OLD_IFS}"
-	[ "${mypython}" != "ylukh" ] && "${mypython}" "${DN}"/exec/ylsjs_"${sjscmd}".py "${PWD}" "${@}" || errh "Python not found"
+	if [ "${mypython}" != "ylukh" ];then
+		"${mypython}" "${DN}"/exec/ylsjs_"${sjscmd}".py "${PWD}" "${@}"
+	else
+		errh "Python not found"
+	fi
 else
 	IFS="${OLD_IFS}"
 	errh "subcommand '${gmcmd}' invalid"

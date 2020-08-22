@@ -23,7 +23,7 @@ function autozipck() {
 	if [ "${mygzip}" != 'ylukh' ]; then
 		echo -e "Checking for 'gzip'...\033[32mOK\033[33m"
 		availext="${availext}, gz, GZ"
-		[ "${mytar}" != 'ylukh' ] && availext="${availext}, tar.gz, tar.GZ, tgz" || true
+		[ "${mytar}" = 'ylukh' ] || availext="${availext}, tar.gz, tar.GZ, tgz"
 	else
 		echo -e "Checking for 'gzip'...\033[31mNO\033[33m"
 	fi
@@ -37,14 +37,14 @@ function autozipck() {
 	if [ "${myxz}" != 'ylukh' ]; then
 		echo -e "Checking for 'xz'...\033[32mOK\033[33m"
 		availext="${availext}, xz, lzma, lz"
-		[ "${mytar}" != 'ylukh' ] && availext="${availext}, tar.xz, txz, tar.lzma, tlz" || true
+		[ "${mytar}" = 'ylukh' ] || availext="${availext}, tar.xz, txz, tar.lzma, tlz"
 	else
 		echo -e "Checking for 'xz'...\033[31mNO\033[33m"
 	fi
 	if [ "${mybzip2}" != 'ylukh' ]; then
 		echo -e "Checking for 'bzip2'...\033[32mOK\033[33m"
 		availext="${availext}, bz2"
-		[ "${mytar}" != 'ylukh' ] && availext="${availext}, tar.bz2, tbz" || true
+		[ "${mytar}" = 'ylukh' ] || availext="${availext}, tar.bz2, tbz"
 	else
 		echo -e "Checking for 'bzip2'...\033[31mNO\033[33m"
 	fi

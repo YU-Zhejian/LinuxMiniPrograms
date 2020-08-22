@@ -58,5 +58,5 @@ if [ -f "${DN}"/../etc/yldoc.conf ]; then
 	done <"${DN}"/../etc/yldoc.conf
 fi
 for fn in "${STDS[@]}"; do
-	[ -f "${DN}"/../doc/"${fn}".usage ] && "${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}" || errh "${DN}/../doc/${fn}.usage not found"
+	if [ -f "${DN}"/../doc/"${fn}".usage ] ;then "${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}" ; else errh "${DN}/../doc/${fn}.usage not found"; fi
 done

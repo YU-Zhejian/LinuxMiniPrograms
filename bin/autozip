@@ -10,7 +10,7 @@ infoh "YuZJLab AutoZip"
 infoh  "Copyright (C) 2019-2020 YU Zhejian"
 ppopt "${@}"
 fn="${STDS[0]:-}"
-[ -z "${fn}" ] && autozipck || true
+! [ -z "${fn}" ] || autozipck
 if [ -z "${STDS[1]:-}" ]; then
 	if [ -f "${fn}" ]; then
 		ext="gz"
@@ -47,13 +47,13 @@ if [ -n "${SPLIT:-}" ]; then
 	VALIDSPLIT=false
 	case ${ext} in
 	"rar")
-		[[ "${SPLIT}" =~ ^[0-9]+[bkm]$ ]] && VALIDSPLIT=true || true
+		! [[ "${SPLIT}" =~ ^[0-9]+[bkm]$ ]] || VALIDSPLIT=true
 		;;
 	"zip")
-		[[ "${SPLIT}" =~ ^[0-9]+[kmgt]$ ]] && VALIDSPLIT=true || true
+		! [[ "${SPLIT}" =~ ^[0-9]+[kmgt]$ ]] || VALIDSPLIT=true
 		;;
 	"7z")
-		[[ "${SPLIT}" =~ ^[0-9]+[bkmg]$ ]] && VALIDSPLIT=true || true
+		! [[ "${SPLIT}" =~ ^[0-9]+[bkmg]$ ]] || VALIDSPLIT=true
 		;;
 	*)
 		if [[ "${SPLIT}" =~ ^[0-9]+$ ]] || [[ "${SPLIT}" =~ ^[0-9]+[KMGTPEZY]$ ]] || [[ "${SPLIT}" =~ ^[0-9]+[KMGTPEZY]B$ ]]; then
@@ -145,7 +145,11 @@ fi
 SPL=''
 case ${ext} in
 "tar") # ============ tar ============
-	[ -n "${SPLIT:-}" ] && "${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${fn}".${ext}. || "${mytar}" -cvf "${fn}".${ext} "${fn}"
+	if [ -n "${SPLIT:-}" ] ;then
+		"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${fn}".${ext}.
+	else
+		"${mytar}" -cvf "${fn}".${ext} "${fn}"
+	fi
 	;;
 "tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
 	if [ "${mygzip}" = 'ylukh' ] && [ "${mypigz}" != 'ylukh' ]; then
@@ -167,7 +171,7 @@ case ${ext} in
 	;;
 "tar.xz" | "txz") # ============ txz ============
 	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
-	[ ${THREAD} -gt 0 ] && PAR="--threads=${THREAD}" || true
+	! [ ${THREAD} -gt 0 ] || PAR="--threads=${THREAD}"
 	if [ -n "${SPLIT:-}" ]; then
 		"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
 		for tfn in "${tempdir}"/"${fn}".*; do
@@ -221,13 +225,11 @@ case ${ext} in
 	[ "${mybgzip}" != 'ylukh' ] || errh "BGZip NO exist"
 	ext="gz"
 	[ ! -n "${SPLIT:-}" ] || errh "BGZip do not support split"
-	else
-		"${mycat}" "${fn}" | ${PAR} "${mybgzip}" ${LVL} >"${fn}".${ext}
-	fi
+	"${mycat}" "${fn}" | ${PAR} "${mybgzip}" ${LVL} >"${fn}".${ext}
 	;;
 "xz") # ============ xz ============
 	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
-	[ ${THREAD} -gt 0 ] && PAR="--threads=${THREAD}" || true
+	! [ ${THREAD} -gt 0 ] || PAR="--threads=${THREAD}"
 	if [ -n "${SPLIT:-}" ]; then
 		"${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
 		for tfn in "${tempdir}"/"${fn}".*; do
@@ -261,25 +263,25 @@ case ${ext} in
 	;;
 "7z") # ============ 7z ============
 	[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
-	[ -n "${SPLIT:-}" ] && SPL="-v${SPLIT}" || true
-	[ ${THREAD} -gt 0 ] && PAR="-mmt${THREAD}" || true
+	! [ -n "${SPLIT:-}" ] || SPL="-v${SPLIT}"
+	! [ ${THREAD} -gt 0 ] || PAR="-mmt${THREAD}"
 	"${my7z}" -y ${PAR} u "${fn}".${ext} "${fn}" ${LVL} ${SPL}
 	;;
 "zip") # ============ zip ============
 	[ "${myzip}" != 'ylukh' ] || errh "zip NO exist"
-	[ -n "${SPLIT:-}" ] && SPL="-s ${SPLIT}" || true
+	[ -z "${SPLIT:-}" ] || SPL="-s ${SPLIT}"
 	"${myzip}" ${SPL} -r "${fn}".${ext} "${fn}" ${LVL}
 	;;
 "rar") # ============ rar ============
 	[ "${myrar}" != 'ylukh' ] || errh "rar NO exist"
-	[ ${THREAD} -gt 0 ] && PAR="-mt${THREAD}" || true
-	[ -n "${SPLIT:-}" ] && SPL="-v${SPLIT}" || true
+	! [ ${THREAD} -gt 0 ] || PAR="-mt${THREAD}"
+	! [ -n "${SPLIT:-}" ] || SPL="-v${SPLIT}"
 	"${myrar}" ${PAR} ${SPL} a "${fn}".${ext} "${fn}"
 	;;
 esac
 # ============ Finished ============
 infoh "Removing temporary resources..."
-[ -n "${SPLIT:-}" ] && "${myrm}" -rf "${tempdir}" "${tempf}" || true
+[ -z "${SPLIT:-}" ] || "${myrm}" -rf "${tempdir}" "${tempf}"
 ! ${REMOVE} || "${myrm}" -rf ${fn}
 infoh "Finished"
 exit 0

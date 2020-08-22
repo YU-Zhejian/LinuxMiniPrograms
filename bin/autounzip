@@ -38,11 +38,11 @@ for fulln in "${STDS[@]}"; do
 	elif ! [ -f "${fulln}" ]; then
 		errh "Filename '${fulln}' invalid"
 	fi
-	${USESPLIT} && mktmp || true
+	! ${USESPLIT} || mktmp
 	ckext
 	infoh "Received: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}"
 	if [ -e "${fn}" ]; then
-		${ISFORCE} && ${myrm} -rf "${fn}" || ${mymv} -f "${fn}" "${fn}".bak
+		if ${ISFORCE} ;then ${myrm} -rf "${fn}" ; else ${mymv} -f "${fn}" "${fn}".bak; fi
 	fi
 	# ============ Start Decompressing ============
 	case ${ext} in
@@ -65,43 +65,43 @@ for fulln in "${STDS[@]}"; do
 	"tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
 		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		${USESPLIT} && stdtc "${mygzip} -dk" || "${mytar}" -xzvf "${fulln}"
+		if ${USESPLIT};then stdtc "${mygzip} -dk"; else "${mytar}" -xzvf "${fulln}"; fi
 		;;
 	"tar.xz" | "txz") # ============ txz ============
 		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		${USESPLIT} && stdtc "${myxz} -dk" || "${mytar}" -xJvf "${fulln}"
+		if ${USESPLIT} ;then stdtc "${myxz} -dk" ; else "${mytar}" -xJvf "${fulln}"; fi
 		;;
 	"tar.bz2" | "tbz") # ============ tbz ============
 		[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		${USESPLIT} && stdtc "${mybzip2} -dk" || "${mytar}" -xjvf "${fulln}"
+		if ${USESPLIT} ;then stdtc "${mybzip2} -dk" ; else "${mytar}" -xjvf "${fulln}"; fi
 		;;
 	"tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
 		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		${USESPLIT} && stdtc "${myxz} -dk --format=lzma" || "${myxz}" -dc "${fulln}" | "${mytar}" -xv -f -
+		if ${USESPLIT} ;then stdtc "${myxz} -dk --format=lzma" ; else "${myxz}" -dc "${fulln}" | "${mytar}" -xv -f -; fi
 		;;
 	"gz" | "GZ") # ============ gz ============
 		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist"
-		${USESPLIT} && stdfc "${mygzip} -dk" || "${mycat}" "${fulln}" | "${mygzip}" -dc >"${fn}"
+		if ${USESPLIT} ;then stdfc "${mygzip} -dk" ; else "${mycat}" "${fulln}" | "${mygzip}" -dc >"${fn}"; fi
 		;;
 	"xz") # ============ xz ============
 		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
-		${USESPLIT} && stdfc "${myxz} -dk" || "${myxz}" -dk "${fulln}"
+		if ${USESPLIT} ;then stdfc "${myxz} -dk" ; else "${myxz}" -dk "${fulln}"; fi
 		;;
 	"bz2") # ============ bz2 ============
 		[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist"
-		${USESPLIT} && stdfc "${mybzip2} -dk" || "${mybzip2}" -dk "${fulln}"
+		if ${USESPLIT} ;then stdfc "${mybzip2} -dk" ; else "${mybzip2}" -dk "${fulln}"; fi
 		;;
 	"lz" | "lzma") # ============ lz ============
 		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
-		${USESPLIT} && stdfc "${myxz} -dk --format=lzma" || "${mycat}" "${fulln}" | "${myxz}" -dk --format=lzma >"${fn}"
+		if ${USESPLIT} ;then stdfc "${myxz} -dk --format=lzma" ; else "${mycat}" "${fulln}" | "${myxz}" -dk --format=lzma >"${fn}"; fi
 		;;
 	"7z") # ============ 7z ============
 		[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
-		${USESPLIT} && SUFF=".001" || true
-		[ ${THREAD} -gt 0 ] && PAR="-mmt${THREAD}" || true
+		! ${USESPLIT} || SUFF=".001"
+		! [ ${THREAD} -gt 0 ] || PAR="-mmt${THREAD}"
 		"${my7z}" -y ${PAR} x "${fulln}"${SUFF}
 		;;
 	"zip") # ============ zip ============
@@ -120,13 +120,13 @@ for fulln in "${STDS[@]}"; do
 		;;
 	"rar")
 		[ "${myunrar}" != 'ylukh' ] || errh "unrar NO exist"
-		[ ${THREAD} -gt 0 ] && PAR="-mt${THREAD}" || true
+		! [ ${THREAD} -gt 0 ] || PAR="-mt${THREAD}"
 		"${myunrar}" ${PAR} x "${fulln}"
 		;;
 	esac
 	# ============ Finished ============
 	infoh "Removing temporary resources..."
-	${USESPLIT} && "${myrm}" -rf "${tempdir}" "${tempf}" || true
+	! ${USESPLIT} || "${myrm}" -rf "${tempdir}" "${tempf}"
 	if ${REMOVE}; then
 		if ${USESPLIT}; then
 			file_i=1

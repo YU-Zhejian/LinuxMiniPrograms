@@ -72,9 +72,9 @@ infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
 	"${myls}" -1 -F "${dir}" 2>/dev/null | "${mysed}" "s;^;$(echo "${dir}")/;" >>"${tmpf}" || true
 done
-! ${allow_d} && my_grep '/$' || true
-! ${allow_x} && my_grep '\*$' || true
-! ${allow_o} && my_grep '[^\*/]$' || true
+${allow_d} || my_grep '/$'
+${allow_x} || my_grep '\*$'
+${allow_o} || my_grep '[^\*/]$'
 if [ ${#STDS[@]} -eq 0 ]; then
 	"${mycat}" "${tmpf}" | "${more}"
 else

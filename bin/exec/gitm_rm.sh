@@ -48,7 +48,7 @@ done
 for url in "${STDS[@]}"; do
 	"${mygrep}" "${url}" uuidtable | tee "${tmpf}" || warnh "${url} yeilds no results"
 done
-! ${FORCE} && read -p "Will remove above repos. Continue? [Y/n] >" ANSWER || ANSWER="Y"
+if ! ${FORCE} ;then read -p "Will remove above repos. Continue? [Y/n] >" ANSWER ; else ANSWER="Y"; fi
 if [ "${ANSWER}" = "Y" ]; then
 	"${mycat}" "${tmpf}" | while read line; do
 		IFS=$'\t'

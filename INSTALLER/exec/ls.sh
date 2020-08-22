@@ -4,7 +4,7 @@
 if [ -z "${myls:-}" ]; then
 	GNU_found=false
 	for dir in "${eachpath[@]}"; do
-		${GNU_found} && break || true
+		! ${GNU_found} || break
 		tmpf=$(mktemp -t configpath.XXXXXX)
 		ls -F -1 "${dir}" | grep '.\*$' | sed "s;\*\$;;" | grep '^ls\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >"${tmpf}"
 		while read line; do

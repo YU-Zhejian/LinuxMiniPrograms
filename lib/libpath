@@ -18,7 +18,7 @@ for dir in "${eachpath[@]}"; do
 	fi
 	unset dir_full dir
 done
-[ "${duplicated_path}" != ":" ] && duplicated_path=${duplicated_path:1:-1} || true
-[ "${invalid_path}" != ":" ] && invalid_path=${invalid_path:1:-1} || true
-[ "${valid_path}" != ":" ] && valid_path=${valid_path:1:-1} || true
+[ "${duplicated_path}" = ":" ] || duplicated_path=${duplicated_path:1:-1}
+[ "${invalid_path}" = ":" ] || invalid_path=${invalid_path:1:-1}
+[ "${valid_path}" = ":" ] || valid_path=${valid_path:1:-1}
 IFS="${oldIFS}"

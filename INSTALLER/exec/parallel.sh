@@ -4,7 +4,7 @@
 if [ -z "${myparallel:-}" ]; then
 	GNU_found=false
 	for dir in "${eachpath[@]}"; do
-		${GNU_found} && break || true
+		! ${GNU_found} || break
 		tmpf=$(mktemp -t configpath.XXXXXX)
 		"${myls}" -F -1 "${dir}" | "${mygrep}" '.[*@]$' | "${mysed}" 's;[*@]$;;' | "${mygrep}" '^parallel\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
 		while read line; do

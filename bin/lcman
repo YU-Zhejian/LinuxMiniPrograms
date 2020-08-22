@@ -89,14 +89,14 @@ if [ ${#sf[@]} -eq 0 ]; then
 else
 	for item in "${sf[@]}"; do
 		for ((n = 0; n <= i - 1; n++)); do
-			[[ ${f[${n}]} == *${item}* ]] && uf[${n}]=true || true
+			! [[ ${f[${n}]} == *${item}* ]] || uf[${n}]=true
 		done
 	done
 fi
 if ! [ ${#se[@]} -eq 0 ]; then
 	for item in "${se[@]}"; do
 		for ((n = 0; n <= i - 1; n++)); do
-			[[ ${f[${n}]} == *${item}* ]] && uf[${n}]=false || true
+			! [[ ${f[${n}]} == *${item}* ]] || uf[${n}]=false
 		done
 	done
 fi
@@ -107,7 +107,7 @@ if [ ${#sm[@]} -eq 0 ]; then
 else
 	for item in "${sm[@]}"; do
 		for ((n = 0; n <= i - 1; n++)); do
-			[[ ${m[${n}]} == *${item}* ]] && um[${n}]=true || true
+			! [[ ${m[${n}]} == *${item}* ]] || um[${n}]=true
 		done
 	done
 fi

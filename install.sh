@@ -114,8 +114,8 @@ OPTIONS:
 done
 # ========Check========
 infoh "Checking FileSystem..."
-${VAR_update_path} && rm 'etc/path.sh' || true
-! [ -f 'etc/path.sh' ] && bash INSTALLER/configpath || true
+! ${VAR_update_path} || rm 'etc/path.sh'
+[ -f 'etc/path.sh' ] || bash INSTALLER/configpath
 if ${VAR_update}; then
 	ETC=$(
 		[ -d "etc" ]
@@ -149,7 +149,7 @@ if ${VAR_interactive}; then
 	if [ ${ETC} -eq 0 ]; then
 		infoh "Do you want to reinstall the config in 'etc'?"
 		read -p "Answer Y/N:>" VAR_Ans
-		[ "${VAR_Ans}" = "Y" ] && VAR_install_config=true || true
+		[ "${VAR_Ans}" != "Y" ] || VAR_install_config=true
 	else
 		infoh "Will install the config in 'etc'"
 		VAR_install_config=true
@@ -157,14 +157,14 @@ if ${VAR_interactive}; then
 	if [ ${VAR} -eq 0 ]; then
 		infoh "Do you want to clear the history in 'var'?"
 		read -p "Answer Y/N:>" VAR_Ans
-		[ "${VAR_Ans}" = "Y" ] && VAR_clear_history=true
+		[ "${VAR_Ans}" != "Y" ] || VAR_clear_history=true
 	else
 		infoh "Will install history to 'var'"
 		VAR_clear_history=true
 	fi
 	infoh "Do you want to install documentations in Groff man, pdf, YuZJLab Usage and HTML? This need command 'asciidoctor' and 'asciidoctor-pdf' (available from Ruby pem) and Python 3"
 	read -p "Answer Y/N:>" VAR_Ans
-	[ "${VAR_Ans}" = "Y" ] && VAR_install_doc=true
+	[ "${VAR_Ans}" != "Y" ] || VAR_install_doc=true
 fi
 #========Install ETC========
 infoh "Installing..."
@@ -194,7 +194,7 @@ if ! [ ${ADOC} -eq 0 ]; then
 	VAR_install_html=false
 	VAR_install_man=false
 fi
-! [ ${ADOC_PDF} -eq 0 ] && VAR_install_pdf=false || true
+[ ${ADOC_PDF} -eq 0 ] || VAR_install_pdf=false
 if ${VAR_install_pdf}; then
 	"${mymkdir}" -p ../../pdf
 	for fn in *.adoc; do

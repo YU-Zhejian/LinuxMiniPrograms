@@ -9,11 +9,8 @@ function funct_exit() {
 	kill -9 ${$}
 }
 trap "funct_exit" SIGINT
-echo 'us, user    : time running un-niced user processes
-sy, system  : time running kernel processes
-id, idle    : time spent in the kernel idle handle
-wa, IO-wait : time waiting for I/O completion
-hi          : time spent servicing hardware interrupts
-si          : time spent servicing software interrupts
-st          : time stolen from this vm by the hypervisor'
-top -c -b -d 0.1 -p ${1} | "${mygrep}" -v '^top'|"${mygrep}" -v '^$'|"${mysed}" 's;^Tasks;\nTasks;'
+if [ "${mypython}" != "ylukh" ];then
+	"${mypython}" "${DN}"/exec/libdo_monitor.py "${@}"
+else
+	errh "Python not found"
+fi
