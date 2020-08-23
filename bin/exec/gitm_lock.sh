@@ -31,10 +31,10 @@ case "${STDS[1]}" in
 	tmpff="$(mktemp -t gitm.XXXXX)"
 	if [ ${#STDS[@]} -gt 0 ]; then
 		for url in "${STDS[@]}"; do
-			"${mygrep}" "${url}" uuidtable > "${tmpf}" || warnh "${url} yeilds no results"
+			grep_uuidtable "${url}" "${tmpf}" || errh "${url} yeilds no results"
 		done
 	else
-		${mycat} uuidtable > "${tmpf}"
+		"${mycat}" uuidtable.d/* > "${tmpf}"
 	fi
 	while read line; do
 		IFS=$'\t'
@@ -42,6 +42,7 @@ case "${STDS[1]}" in
 		IFS=''
 		[ -f "${fields[1]}".lock ] && echo ${line} | tee -a "${tmpff}"
 	done < "${tmpf}"
+	[ $(wc -l "${tmpff}" | awk '{print $1}') -eq 0 ] || FORCE=true
 	if ! ${FORCE} ;then read -p "Will remove locks of above repos. Continue? [Y/n] >" ANSWER ; else ANSWER="Y"; fi
 	if [ "${ANSWER}" = "Y" ]; then
 		"${mycat}" "${tmpff}" | while read line; do
@@ -51,16 +52,18 @@ case "${STDS[1]}" in
 		done
 	fi
 	"${myrm}" -f "${tmpf}" "${tmpff}"
-	;;
-"rm_sarg")
-	"${myrm}" -f sync.lock rm.lock archive.lock gc.lock
+	if ! ${FORCE} ;then
+		"${myrm}" -i sync.lock rm.lock archive.lock gc.lock uuidtable.lock || true
+	else
+		"${myrm}" -f sync.lock rm.lock archive.lock gc.lock uuidtable.lock
+	fi
 	;;
 "add")
 	unset STDS[1]
 	[ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument."
 	tmpf="$(mktemp -t gitm.XXXXX)"
 	for url in "${STDS[@]}"; do
-		"${mygrep}" "${url}" uuidtable |tee -a "${tmpf}" || warnh "${url} yeilds no results"
+		grep_uuidtable "${url}" "${tmpf}" || errh "${url} yeilds no results"
 	done
 	if ! ${FORCE} ;then read -p "Will add locks to above repos. Continue? [Y/n] >" ANSWER ; else ANSWER="Y"; fi
 	if [ "${ANSWER}" = "Y" ]; then

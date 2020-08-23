@@ -14,7 +14,7 @@ for opt in "${@}"; do
 done
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument."
 for url in "${STDS[@]}"; do
-	"${mygrep}" "${url}" "${git_mirror_dir}/uuidtable" > "${tmpf}"
+	grep_uuidtable "${url}" "${tmpf}" || errh "${url} yeilds no results"
 done
 "${mycat}" "${tmpf}" | while read line; do
 	IFS=$'\t'

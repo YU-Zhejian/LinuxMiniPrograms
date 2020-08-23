@@ -24,8 +24,7 @@ if ! echo -e "gc\t${$}" > gc.lock 2> /dev/null;then
 	echo -e "$(timestamp)\tGC\tOCCUPIED" >> act.log
 	errh "Repository being gced by $("${mycat}" sync.lock)."
 fi
-set +C
-while read line; do
+"${mycat}" uuidtable.d/*|while read line; do
 	IFS=$'\t'
 	fields=(${line})
 	IFS=''
@@ -36,7 +35,6 @@ while read line; do
 		continue
 	fi
 	set +C
-	mygc &
-done < uuidtable
-wait
+	mygc
+done
 "${myrm}" -f "${tmpf}" gc.lock

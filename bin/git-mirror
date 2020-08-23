@@ -11,6 +11,7 @@ OLD_IFS="${IFS}"
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.sh
 . "${DN}"/../etc/git-mirror.conf
+. "${DN}"/exec/libgitm.sh
 infoh "YuZJLab AutoZipManager"
 infoh "Copyright (C) 2020 YU Zhejian"
 # ============ Possess arguments ============
@@ -29,9 +30,9 @@ done
 gmcmd=${STDS[0]:-}
 unset STDS[0]
 [ ! -z "${git_mirror_dir:-}" ] || errh "Config file not found"
-mkdir -p "${git_mirror_dir}" "${git_mirror_dir}/logs/"
+mkdir -p "${git_mirror_dir}" "${git_mirror_dir}/logs/" "${git_mirror_dir}/uuidtable.d/"
 cd "${git_mirror_dir}"
-touch uuidtable act.log
+touch act.log
 if [ -f "${DN}"/exec/gitm_"${gmcmd}".sh ];then
 	. "${DN}"/exec/gitm_"${gmcmd}".sh
 elif [ -f "${DN}"/exec/gitm_"${gmcmd}".py ];then

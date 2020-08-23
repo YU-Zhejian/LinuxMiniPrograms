@@ -3,10 +3,10 @@ tmpf="$(mktemp -t gitm.XXXXX)"
 
 if [ ${#STDS[@]} -gt 0 ];then
 	for url in "${STDS[@]}"; do
-		"${mygrep}" "${url}" uuidtable | tee "${tmpf}" || warnh "${url} yeilds no results"
+		grep_uuidtable "${url}" "${tmpf}" || errh "${url} yeilds no results"
 	done
 else
-	"${mycat}" uuidtable | tee "${tmpf}"
+	"${mycat}" uuidtable.d/* | tee "${tmpf}"
 fi
 infoh "Will lsbranch above repos."
 "${mycat}" "${tmpf}" | while read line; do

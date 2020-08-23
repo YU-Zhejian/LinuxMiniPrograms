@@ -2,18 +2,29 @@
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument."
 [ "${mypython}" != "ylukh" ] || errh "Python not found"
 
-for url in "${STDS[@]}";do
-	url=$(echo ${url}|"${mysed}" 's;file://;;')
+for url in "${STDS[@]}"; do
+	url=$(echo ${url} | "${mysed}" 's;file://;;')
 	"${mypython}" "${DN}"/exec/valid_url.py "${url}" || errh "Bad URL ${url}".
-	! "${mygrep}" "${url}" "${git_mirror_dir}/uuidtable" || errh "${url} exists"
+	tmpf="$(mktemp -t gitm.XXXXX)"
+	! grep_uuidtable "${url}" "${tmpf}" &>> /dev/null || errh "${url} exists"
 	while true; do
 		uuid=$(uuidgen)
-		infoh ${url}' -> '${uuid}
-		"${mygrep}" "${uuid}" "${git_mirror_dir}/uuidtable" || break
+		grep_uuidtable "${uuid}" "${tmpf}" &>> /dev/null || break
 	done
+	infoh ${url}' -> '${uuid}
 	mkdir "logs/${uuid}/"
-	if git clone --mirror --no-hardlinks --verbose --progress "${url}" "${uuid}" 2>&1|tee "logs/${uuid}/add-$(date '+%Y-%m-%d_%H-%M-%S').log"; then
-		echo -e  "${url}\t${uuid}" >> "${git_mirror_dir}/uuidtable"
+	if git clone --mirror --no-hardlinks --verbose --progress "${url}" "${uuid}" 2>&1 | tee "logs/${uuid}/add-$(date '+%Y-%m-%d_%H-%M-%S').log"; then
+		for fn in uuidtable.d/*; do
+			ADDED=false
+			if [ $(wc -l "${fn}" | awk '{print $1}') -le 1000 ]; then
+				ADDED=true
+				echo -e "${url}\t${uuid}" >> "${fn}"
+				break
+			fi
+		done
+		if ! ${ADDED}; then
+			echo -e "${url}\t${uuid}" >> $(date '+%Y-%m-%d_%H-%M-%S')
+		fi
 		echo -e "$(timestamp)\tADD\tSUCCESS\t${url}\t${uuid}" >> act.log
 	else
 		warnh "${url} corrupted. Will be skipped."
@@ -21,3 +32,4 @@ for url in "${STDS[@]}";do
 		echo -e "$(timestamp)\tADD\tFAILED\t${url}\t${uuid}" >> act.log
 	fi
 done
+"${myrm}" -f "${tmpf}"
