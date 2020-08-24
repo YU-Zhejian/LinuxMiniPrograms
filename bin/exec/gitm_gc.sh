@@ -1,7 +1,9 @@
 #GITM_GC.sh v1
 tmpf="$(mktemp -t gitm.XXXXX)"
 function mygc(){
+	infoh "Repository UUID=${fields[1]} gc started"
 	"${mycp}" -r "${fields[1]}" "${fields[1]}".gc
+	echo -e "$(timestamp)\tGC_CPDIR\tSUCCESS\t${fields[0]}\t${fields[1]}" >> act.log
 	cd "${fields[1]}".gc
 	if git gc --aggressive --prune=now &> ../logs/"${fields[1]}"/gc-"$(date '+%Y-%m-%d_%H-%M-%S')".log;then
 		cd ..

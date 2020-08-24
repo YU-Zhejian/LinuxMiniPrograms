@@ -42,11 +42,19 @@ By adding a URL, an UUID will be generated as uniq identification of this git re
 
 Get all changes and make local/remote repository identical.
 
-=== rm
+=== rmrepo
 
-SYNOPSIS: `git-mirror rm [URL/UUID]`
+SYNOPSIS: `git-mirror rmrepo [URL/UUID]`
 
 Remove a repository.
+
+OPTION: `-f` for force removal without confirmation.
+
+=== rmrecord
+
+SYNOPSIS: `git-mirror rmrecord [URL/UUID]`
+
+Remove a repository record. You may use this when `git-mirror rm` fails.
 
 OPTION: `-f` for force removal without confirmation.
 
@@ -100,14 +108,24 @@ List all registered git-mirrors and their UUIDs.
 
 === BSD
 
-Not tested.
+Tested with all functions supported.
 
 === CYGWin
 
 Tested with all functions supported.
 
-== SEE ALSO
+== FILES
 
-autozip, azman
+* `etc/git-mirror.conf` Configuration files. Detailed instructions are available in the file commented.
+
+* `var/git-mirror.d` The default git-mirror directory.
+
+** `var/git-mirror.d/act.log` Logs of actions performed.
+
+** `var/git-mirror.d/logs/${UUID}` Logs of a specific repo. Produced during add, sync and gc.
+
+** `var/git-mirror.d/${UUID}` Repositories.
+
+** `var/git-mirror.d/uuidtables.d` Databases.
 
 include::include/copy.adoc[]

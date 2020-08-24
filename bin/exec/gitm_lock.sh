@@ -41,10 +41,13 @@ case "${STDS[1]}" in
 		IFS=''
 		[ -f "${fields[1]}".lock ] && echo ${line} | tee -a "${tmpff}"
 	done < "${tmpf}"
-	[ $(wc -l "${tmpff}" | awk '{print $1}') -eq 0 ] || FORCE=true
+	[ $(wc -l "${tmpff}" | awk '{print $1}') -ne 0 ] || FORCE=true
 	if ! ${FORCE}; then read -p "Will remove locks of above repos. Continue? [Y/n] >" ANSWER; else ANSWER="Y"; fi
 	if [ "${ANSWER}" = "Y" ]; then
 		"${mycat}" "${tmpff}" | while read line; do
+			IFS=$'\t'
+			fields=(${line})
+			IFS=''
 			"${myrm}" -f "${fields[1]}".lock
 			echo -e "$(timestamp)\tRMLOCK\tSUCCESS\t${fields[0]}\t${fields[1]}" >> act.log
 			infoh "Repository UUID=${fields[1]} rmlock success"
@@ -54,7 +57,7 @@ case "${STDS[1]}" in
 	if ! ${FORCE}; then
 		"${myrm}" -i sync.lock rm.lock archive.lock gc.lock uuidtable.lock add.lock || true
 	else
-		"${myrm}" -f sync.lock rm.lock archive.lock gc.lock uuidtable.lock add.lock
+		"${myrm}" -f sync.lock rm.lock archive.lock gc.lock uuidtable.lock add.lock &>/dev/null
 	fi
 	;;
 "add")

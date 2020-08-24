@@ -1,9 +1,11 @@
 #GITM_SYNC.sh v1
 tmpf="$(mktemp -t gitm.XXXXX)"
 function sync() {
+	infoh "Repository UUID=${fields[1]} sync started"
 	"${mycp}" -r "${fields[1]}" "${fields[1]}".sync
+	echo -e "$(timestamp)\tSYNC_CPDIR\tSUCCESS\t${fields[0]}\t${fields[1]}" >> act.log
 	cd "${fields[1]}".sync
-	if git remote update &> ../logs/"${fields[1]}"/sync-"$(date '+%Y-%m-%d_%H-%M-%S')".log; then
+	if git remote --verbose update --prune  &> ../logs/"${fields[1]}"/sync-"$(date '+%Y-%m-%d_%H-%M-%S')".log; then
 		cd ..
 		"${mymv}" "${fields[1]}" "${fields[1]}".obs
 		"${mymv}" "${fields[1]}".sync "${fields[1]}"

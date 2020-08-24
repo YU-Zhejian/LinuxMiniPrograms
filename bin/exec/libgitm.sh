@@ -29,12 +29,12 @@ function rmrec() {
 	done
 	tmpff="$(mktemp -t gitm.XXXXX)"
 	for fn in uuidtable.d/*; do
-		"${mygrep}" -v "${1}" "${fn}" > "${tmpff}"
+		"${mygrep}" -v "${1}" "${fn}" > "${tmpff}" || true
 		if [ $(wc -l "${fn}" | awk '{print $1}') -ne $(wc -l "${tmpff}" | awk '{print $1}') ];then
 			"${mymv}" "${tmpff}" "${fn}"
 			break
 		fi
 	done
-	"${myrm}" -f uuidtable.lock
+	"${myrm}" -f uuidtable.lock "${tmpff}"
 	echo -e "$(timestamp)\tRMRECORD\tSUCCESS\t${fields[0]}\t${fields[1]}" >> act.log
 }

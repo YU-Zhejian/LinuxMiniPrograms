@@ -163,5 +163,3 @@ Desktop/\346\220\234\347\264\242 Everything.lnk
 Removing temporary resources...
 Finished.
 ```
-== FILES
-. `etc/autozip.conf` The main condiguration file of this program.
