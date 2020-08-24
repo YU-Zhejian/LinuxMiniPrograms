@@ -19,7 +19,8 @@ for fulln in "${STDS[@]}"; do
 		fulln="$(echo ${fulln} | "${mysed}" "s;.rar;.part1.rar;")"
 		USESPLIT=true
 	elif ! [ -f "${fulln}" ]; then
-		errh "Filename '${fulln}' invalid"
+		warnh "Filename '${fulln}' invalid and skipped"
+		continue
 	fi
 	! ${USESPLIT} || mktmp
 	ckext
