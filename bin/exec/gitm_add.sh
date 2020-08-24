@@ -8,7 +8,7 @@ for url in "${STDS[@]}"; do
 	tmpf="$(mktemp -t gitm.XXXXX)"
 	! grep_uuidtable "${url}" "${tmpf}" &>> /dev/null || errh "${url} exists"
 	while true; do
-		uuid=$(uuidgen)
+		uuid=$(uuidgen -t)
 		grep_uuidtable "${uuid}" "${tmpf}" &>> /dev/null || break
 	done
 	infoh ${url}' -> '${uuid}
