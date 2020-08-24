@@ -194,6 +194,7 @@ case ${ext} in
 	;;
 "tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
 	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
+	[ "${THREAD}" -eq 0 ] || warnh "LZMA do not support parallel. Will be resetted to 1"
 	if [ -n "${SPLIT:-}" ]; then
 		"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
 		for tfn in "${tempdir}"/"${fn}".*; do
@@ -252,6 +253,7 @@ case ${ext} in
 	;;
 "lz" | "lzma") # ============ lz ============
 	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
+	[ "${THREAD}" -eq 0 ] || warnh "LZMA do not support parallel. Will be resetted to 1"
 	if [ -n "${SPLIT:-}" ]; then
 		"${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
 		for tfn in "${tempdir}"/"${fn}".*; do
