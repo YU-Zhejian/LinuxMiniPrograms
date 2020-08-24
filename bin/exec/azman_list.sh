@@ -50,7 +50,7 @@ for fulln in "${STDS[@]}"; do
 	"tar.xz" | "txz") # ============ txz ============
 		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		if ${USESPLIT} ;then sdtl "${myxz} -dk" ; else "${mytar}" -tJvf "${fulln}"; fi
+		if ${USESPLIT} ;then stdtl "${myxz} -dk" ; else "${mytar}" -tJvf "${fulln}"; fi
 		;;
 	"tar.bz2" | "tbz") # ============ tbz ============
 		[ "${mybzip2}" != 'ylukh' ] || errh "BZip2 NO exist"

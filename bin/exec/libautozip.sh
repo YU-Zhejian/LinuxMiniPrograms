@@ -161,106 +161,103 @@ function fixthree() {
 	done
 	echo ${fout}
 }
-# Standard_C heads
-function stdc_h() {
+# Get splitted numbers
+function get_splitted_numbers() {
 	local file_i=1
 	local in_i=001
+	while [ -f "${1}".${in_i} ]; do
+		file_i=$((${file_i} + 1))
+		in_i=$(fixthree ${file_i})
+	done
+	echo $((${file_i} - 1))
+}
+# Standard_X heads
+function stdx_h() {
 	if [ ${THREAD} -gt 0 ]; then
+		local file_i=1
+		local in_i=001
+		infoh "Decompressing splitted archives in a paralleled manner..."
 		while [ -f "${fulln}".${in_i} ]; do
-			echo "\"${mycat}\" \"${PWD}/${fulln}\".${in_i} | ${*}>>\"${tempdir}\"/${in_i}" >>"${tempdir}"/"${in_i}".sh
+			echo "\"${mycat}\" \"${PWD}/${fulln}\".${in_i} | ${*}>>\"${tempdir}\"/${in_i}" >> "${tempdir}"/"${in_i}".sh
 			file_i=$((${file_i} + 1))
 			in_i=$(fixthree ${file_i})
 		done
 		"${myfind}" "${tempdir}"/*.sh | "${myparallel}" -j ${THREAD} bash
 	else
+		local file_total
+		file_total=$(get_splitted_numbers "${fulln}")
+		local file_i=1
+		local in_i=001
+		infoh "Decompressing splitted archives..."
 		while [ -f "${fulln}".${in_i} ]; do
-			"${mycat}" "${fulln}".${in_i} | ${*} >>"${tempdir}"/${in_i}
+			infoh "Decompressing ${file_i}/${file_total}..."
+			"${mycat}" "${fulln}".${in_i} | ${*} >> "${tempdir}"/${in_i}
 			file_i=$((${file_i} + 1))
 			in_i=$(fixthree ${file_i})
 		done
 	fi
 }
-# standard TAR extractor
-function stdtx() {
-	stdc_h "${@}"
+# standard TAR list/extract head
+function stdtle_h(){
+	stdx_h "${@}"
 	local file_i=1
 	local in_i=001
+	local file_total
+	file_total=$(get_splitted_numbers "${fulln}")
+	infoh "Merging from splitted files"
 	while [ -f "${fulln}".${in_i} ]; do
-		"${mycat}" "${tempdir}"/${in_i} >>"${tempf}"
+		infoh "Merging from ${file_i}/${file_total}..."
+		"${mycat}" "${tempdir}"/${in_i} >> "${tempf}"
 		file_i=$((${file_i} + 1))
 		in_i=$(fixthree ${file_i})
 	done
 	unset file_i in_1
+}
+# standard TAR extractor
+function stdtx() {
+	stdtle_h "${@}"
+	infoh "Listing..."
 	"${mytar}" -xvf "${tempf}"
 }
 # standard TAR lister
 function stdtl() {
-	stdc_h "${@}"
-	local file_i=1
-	local in_i=001
-	while [ -f "${fulln}".${in_i} ]; do
-		"${mycat}" "${tempdir}"/${in_i} >>"${tempf}"
-		file_i=$((${file_i} + 1))
-		in_i=$(fixthree ${file_i})
-	done
-	unset file_i in_1
+	stdtle_h "${@}"
+	infoh "Extracting..."
 	"${mytar}" -tvf "${tempf}"
 }
 # standard FILE extractor
 function stdfx() {
-	stdc_h "${@}"
+	OLD_temp="${tempf}"
+	tempf="${fn}"
+	stdtle_h "${@}"
+	tempf="${OLD_temp}"
+}
+# Standard_C tails
+function stdc_t() {
+	local file_total
+	file_total=$(get_splitted_numbers "${tempdir}/${fn}")
 	local file_i=1
 	local in_i=001
-	while [ -f "${fulln}".${in_i} ]; do
-		"${mycat}" "${tempdir}"/${in_i} >>"${fn}"
+	while [ -f "${tempdir}/${fn}".${in_i} ]; do
+		infoh "Making archive ${file_i}/${file_total}..."
+		"${mycat}" "${tempdir}/${fn}"."${in_i}" | "${@}" > "${fn}".${ext}."${in_i}"
 		file_i=$((${file_i} + 1))
 		in_i=$(fixthree ${file_i})
 	done
-	unset file_i in_1
 }
 # standard TAR creator
 function stdtc() {
 	infoh "TARing and splitting the folder..."
-	"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
+	"${mytar}" -f - -cv "${fn}" | "${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
 	infoh "Compressing splitted archive..."
-	local file_i=1
-	local in_i=001
-	while [ -f "${tempdir}"/"${fn}".${in_i} ]; do
-		file_i=$((${file_i} + 1))
-		in_i=$(fixthree ${file_i})
-	done
-	local file_total=$((${file_i}-1))
-	file_i=1
-	in_i=001
-	while [ -f "${tempdir}"/"${fn}".${in_i} ]; do
-		tfn="${tempdir}/${fn}.${in_i}"
-		infoh "Making archive ${file_i}/${file_total}..."
-		"${mycat}" "${tfn}" | "${@}" >"${fn}".${ext}.${tfn:0-3}
-		file_i=$((${file_i} + 1))
-		in_i=$(fixthree ${file_i})
-	done
+	stdc_t "${@}"
 }
 # standard FILE creator
 function stdfc() {
 	infoh "Splitting the file..."
-	"${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
+	"${mycat}" "${fn}" | "${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
 	infoh "Compressing splitted files..."
-	local file_i=1
-	local in_i=001
-	while [ -f "${tempdir}"/"${fn}".${in_i} ]; do
-		file_i=$((${file_i} + 1))
-		in_i=$(fixthree ${file_i})
-	done
-	local file_total=$((${file_i}-1))
-	file_i=1
-	in_i=001
-	while [ -f "${tempdir}"/"${fn}".${in_i} ]; do
-		tfn="${tempdir}/${fn}.${in_i}"
-		infoh "Making archive ${file_i}/${file_total}..."
-		"${mycat}" "${tfn}" | "${@}" >"${fn}".${ext}.${tfn:0-3}
-		file_i=$((${file_i} + 1))
-		in_i=$(fixthree ${file_i})
-	done
+	stdc_t "${@}"
 }
 # Check extension name
 function ckext() {
