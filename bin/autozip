@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# AUTOZIP V3P2
+# AUTOZIP V4
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -7,7 +7,7 @@ ISAUTOZIP=true
 . "${DN}"/exec/libautozip.sh
 # ============ Start ============
 infoh "YuZJLab AutoZip"
-infoh  "Copyright (C) 2019-2020 YU Zhejian"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
 ppopt "${@}"
 fn="${STDS[0]:-}"
 ! [ -z "${fn}" ] || autozipck

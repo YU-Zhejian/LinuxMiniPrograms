@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LIBAUTOZIP V3P3
+# LIBAUTOZIP V4
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.sh
@@ -99,7 +99,7 @@ function ppopt() {
 				exit 0
 				;;
 			"-v" | "--version")
-				echo "Version 3 Patch 2"
+				echo "Version 4"
 				exit 0
 				;;
 			"--force")

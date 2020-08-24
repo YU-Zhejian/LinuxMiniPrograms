@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# AZMAN V3P2
+# AZMAN V4
 DN="$(readlink -f "$(dirname "${0}")")"
 exec 1>&2
 ISAUTOZIP=false

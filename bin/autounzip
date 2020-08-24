@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# AUTOUNZIP V3P3
+# AUTOUNZIP V4
 set -eu
 ISAOTOZIP=false
 USESPLIT=false
@@ -9,7 +9,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/exec/libautozip.sh
 # ============ Start ============
 infoh "YuZJLab AutoUnZip"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\033[0m"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
 ppopt "${@}"
 # ============ Possess arguments ============
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument."

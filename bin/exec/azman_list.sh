@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#AZMAN_LIST V1P2
+#AZMAN_LIST V2
 USESPLIT=false
 unset STDS[0]
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument."
