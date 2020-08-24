@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 # GITMIRROR V1
 DN="$(readlink -f "$(dirname "${0}")")"
-function timestamp(){
-	date '+%Y-%m-%d %H:%M:%S'
-}
 set -ue
 trap '' SIGINT
 OLD_IFS="${IFS}"
