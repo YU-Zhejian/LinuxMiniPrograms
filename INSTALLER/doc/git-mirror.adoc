@@ -126,6 +126,6 @@ Tested with all functions supported.
 
 ** `var/git-mirror.d/${UUID}` Repositories.
 
-** `var/git-mirror.d/uuidtables.d` Databases.
+** `var/git-mirror.d/uuidtables.d` Databases containing relationship between UUIDs and repository URLs.
 
 include::include/copy.adoc[]
