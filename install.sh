@@ -114,7 +114,7 @@ OPTIONS:
 done
 # ========Check========
 infoh "Checking FileSystem..."
-! ${VAR_update_path} || rm 'etc/path.sh'
+! ${VAR_update_path} || rm -f 'etc/path.sh'
 [ -f 'etc/path.sh' ] || bash INSTALLER/configpath
 if ${VAR_update}; then
 	ETC=$(

@@ -32,9 +32,8 @@ function DO() {
 			;;
 		esac
 	fi
-	[ -z "${LIBDO_LOG:-}" ] || libdo_monitor ${LIBDO_PID} &>> "${LIBDO_LOG}".${LIBDO_PID}.log &
+	[ -z "${LIBDO_LOG:-}" ] || libdo_monitor ${LIBDO_PID} ${$} &>> "${LIBDO_LOG}".${LIBDO_PID}.log &
 	monitor_pid=${!}
-	echo $$ $LIBDO_PID $monitor_pid
 	[ -z "${LIBDO_TOP_PID:-}" ] && DO_ECHO "LIBDO PID ${LIBDO_PID}" || DO_ECHO "LIBDO PID ${LIBDO_PID} with top_pid ${LIBDO_TOP_PID}"
 	wait ${LIBDO_PID} && LIBDO_PRIV=0 || LIBDO_PRIV=${?}
 	kill -SIGINT ${monitor_pid}
