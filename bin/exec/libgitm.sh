@@ -29,7 +29,8 @@ function rmrec() {
 	done
 	tmpff="$(mktemp -t gitm.XXXXX)"
 	for fn in uuidtable.d/*; do
-		if "${mygrep}" -v "${1}" "${fn}" > "${tmpff}"; then
+		"${mygrep}" -v "${1}" "${fn}" > "${tmpff}"
+		if [ $(wc -l "${fn}" | awk '{print $1}') -ne $(wc -l "${tmpff}" | awk '{print $1}') ];then
 			"${mymv}" "${tmpff}" "${fn}"
 			break
 		fi

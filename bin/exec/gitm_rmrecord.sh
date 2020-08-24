@@ -25,7 +25,6 @@ if [ "${ANSWER}" = "Y" ]; then
 			continue
 		fi
 		rmrec "${fields[1]}"
-		"${myrm}" -f "${fields[1]}".lock
 	done
 fi
 "${myrm}" -f "${tmpf}"
