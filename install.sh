@@ -107,7 +107,7 @@ OPTIONS:
 			VAR_interactive=false
 			;;
 		*)
-			errh "Option '${opt}' invalid."
+			errh "Option '${opt}' invalid"
 			;;
 		esac
 	fi
@@ -230,7 +230,7 @@ if ${VAR_install_man}; then
 	MANCONF=false
 	for item in ${eachpath}; do
 		if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}/man")" ] ; then
-			infoh "MANPATH configured."
+			infoh "MANPATH configured"
 			MANCONF=true
 			break
 		fi
@@ -260,7 +260,7 @@ IFS=''
 PYCONF=false
 for item in ${eachpath}; do
 	if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}")" ] ; then
-		infoh "PYTHONPATH configured."
+		infoh "PYTHONPATH configured"
 		PYCONF=true
 		break
 	fi
@@ -279,7 +279,7 @@ IFS=''
 PACONF=false
 for item in ${eachpath}; do
 	if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}/bin")" ] ; then
-		infoh "PATH configured."
+		infoh "PATH configured"
 		PACONF=true
 		break
 	fi
@@ -308,4 +308,4 @@ add_dir
 "${mychmod}" +x bin/*
 "${mychmod}" +x *.sh
 IFS="${OLDIFS}"
-infoh "Finished. Please execute 'exec bash' to restart bash."
+infoh "Finished. Please execute 'exec bash' to restart bash"

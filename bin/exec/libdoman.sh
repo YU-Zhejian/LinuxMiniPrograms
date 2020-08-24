@@ -25,14 +25,14 @@ for opt in "${@}"; do
 		--more\:*)
 			more="${opt:7}"
 			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-				warnh "Invalid More '${more}'! Will use original '${mymore}' instead."
+				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
 				more="${mymore}"
 			else
-				infoh "Will use '${more}' as More."
+				infoh "Will use '${more}' as More"
 			fi
 			;;
 		*)
-			errh "Option '${opt}' invalid."
+			errh "Option '${opt}' invalid"
 			;;
 		esac
 	else
@@ -40,17 +40,17 @@ for opt in "${@}"; do
 	fi
 done
 if [ ${#STDS[@]} -gt 1 ]; then
-	infoh "More than one filename was received. Will disable -o option."
+	infoh "More than one filename was received. Will disable -o option"
 	cmd=0
 elif [ ${#STDS[@]} -lt 1 ]; then
-	errh "No file."
+	errh "No file"
 fi
 if [ ${cmd} -eq 0 ]; then
 	more="${mycat}"
-	infoh "Will use '${more}' as More."
+	infoh "Will use '${more}' as More"
 	for fn in "${STDS[@]}"; do
-		[ -f "${fn}" ] || errh "Filename '${fn}' invalid."
-		infoh "Loading ${fn}...0 item proceeded."
+		[ -f "${fn}" ] || errh "Filename '${fn}' invalid"
+		infoh "Loading ${fn}...0 item proceeded"
 		ffn="$(mktemp -t libdo_man.XXXXXX)"
 		"${mycat}" "${fn}" | "${mygrep}" LIBDO >"${ffn}"
 		while read line; do
@@ -63,7 +63,7 @@ if [ ${cmd} -eq 0 ]; then
 			i=$((${i} + 1))
 			if [[ "${line}" =~ "LIBDO IS GOING TO EXECUTE"* ]]; then
 				Proj=$((${Proj} + 1))
-				infoh "Loading ${fn}...${Proj} item proceeded."
+				infoh "Loading ${fn}...${Proj} item proceeded"
 				Proj_CMD[${Proj}]="${line:26}"
 				line="${all_lines[i]}"
 				if [[ "${line}" =~ "LIBDO STARTED AT"* ]]; then
@@ -110,7 +110,7 @@ if [ ${cmd} -eq 0 ]; then
 	done
 else
 	fn="${STDS[0]}"
-	[ -f "${fn}" ] || errh "Filename '${fn}' invalid."
+	[ -f "${fn}" ] || errh "Filename '${fn}' invalid"
 	ln_s=0
 	ln_e=0
 	tmps="$(mktemp -t libdo_man.XXXXXX)"
@@ -126,7 +126,7 @@ else
 		fi
 	done <"${tmps}"
 	"${myrm}" "${tmps}"
-	[ ${ln_s} -ne 0 ] || echo -e "${cmd} invalid."
+	[ ${ln_s} -ne 0 ] || echo -e "${cmd} invalid"
 	[ ${ln_e} -ne 0 ] || ln_e=$(wc -l ${fn} | awk '{print $1}')
 	unset line
 	tmpprj="$(mktemp -t libdo_man.XXXXXX)"
@@ -172,5 +172,5 @@ else
 	infoh "________________OUTPUT____FINISHED________________" >&2
 	rm "${tmpprj}"
 fi
-infoh "Finished."
+infoh "Finished"
 exit 0

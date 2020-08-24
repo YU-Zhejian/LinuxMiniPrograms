@@ -12,9 +12,9 @@ for opt in "${@}"; do
 		esac
 	fi
 done
-[ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument."
+[ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
 for url in "${STDS[@]}"; do
-	grep_uuidtable "${url}" "${tmpf}" || errh "${url} yeilds no results"
+	grep_uuidtable "${url}" "${tmpf}" &>>/dev/null || warnh "${url} yields no results"
 done
 "${mycat}" "${tmpf}" | while read line; do
 	IFS=$'\t'
@@ -26,4 +26,4 @@ done
 	echo -e "$(timestamp)\tGETURL\tSUCCESS\t${fields[0]}\t${fields[1]}" >> act.log
 done
 "${myrm}" -f "${tmpf}"
-infoh "Repository geturl success."
+infoh "Repository geturl success"

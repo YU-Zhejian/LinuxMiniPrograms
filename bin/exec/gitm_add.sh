@@ -1,12 +1,23 @@
 # GITM_ADD.sh v1
-[ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument."
+[ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
 [ "${mypython}" != "ylukh" ] || errh "Python not found"
-
+set -C
+if ! echo -e "add\t${$}" > add.lock 2> /dev/null; then
+	set +C
+	echo -e "$(timestamp)\tADD\tOCCUPIED" >> act.log
+	errh "Repository being added by $("${mycat}" add.lock)"
+fi
 for url in "${STDS[@]}"; do
 	url=$(echo ${url} | "${mysed}" 's;file://;;')
-	"${mypython}" "${DN}"/exec/valid_url.py "${url}" || errh "Bad URL ${url}".
+	if ! "${mypython}" "${DN}"/exec/valid_url.py "${url}";then
+		warnh "Skipping bad URL ${url}"
+		continue
+	fi
 	tmpf="$(mktemp -t gitm.XXXXX)"
-	! grep_uuidtable "${url}" "${tmpf}" &>> /dev/null || errh "${url} exists"
+	if grep_uuidtable "${url}" "${tmpf}" &>> /dev/null;then
+		warnh "Skipping existing URL ${url}"
+		continue
+	fi
 	while true; do
 		uuid=$(uuidgen)
 		grep_uuidtable "${uuid}" "${tmpf}" &>> /dev/null || break
@@ -27,9 +38,9 @@ for url in "${STDS[@]}"; do
 		fi
 		echo -e "$(timestamp)\tADD\tSUCCESS\t${url}\t${uuid}" >> act.log
 	else
-		warnh "${url} corrupted. Will be skipped."
+		warnh "${url} corrupted. Will be skipped"
 		"${myrm}" -rf "${uuid}" "logs/${uuid}/"
 		echo -e "$(timestamp)\tADD\tFAILED\t${url}\t${uuid}" >> act.log
 	fi
 done
-"${myrm}" -f "${tmpf}"
+"${myrm}" -f "${tmpf}" add.lock

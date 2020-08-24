@@ -2,7 +2,7 @@
 #AZMAN_LIST V2
 USESPLIT=false
 unset STDS[0]
-[ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument."
+[ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
 for fulln in "${STDS[@]}"; do
 	fn="$(echo ${fulln%.*} | "${mysed}" "s;.part1;;" | "${mysed}" "s;.part01;;")"
 	ext="${fulln##*.}"
