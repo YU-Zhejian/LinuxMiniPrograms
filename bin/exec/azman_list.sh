@@ -65,7 +65,6 @@ for fulln in "${STDS[@]}"; do
 	"gz" | "GZ") # ============ gz ============
 		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist"
 		! ${USESPLIT} || errh "Splitted archive not supported"
-		fi
 		"${mygzip}" -l "${fulln}"
 		;;
 	"xz") # ============ xz ============

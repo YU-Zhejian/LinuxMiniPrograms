@@ -29,7 +29,7 @@ for fulln in "${STDS[@]}"; do
 		autozipck
 	elif ! [ -f "${fulln}" ] && [ -f "${fulln}.001" ]; then
 		USESPLIT=true
-	elif ! [ -f "${fulln}" ] && [ fe "$(echo ${fulln} | "${mysed}" "s;.rar;.part01.rar;")" ] && [ ${ext} = "rar" ]; then
+	elif ! [ -f "${fulln}" ] && [ -f "$(echo ${fulln} | "${mysed}" "s;.rar;.part01.rar;")" ] && [ ${ext} = "rar" ]; then
 		fulln="$(echo ${fulln} | "${mysed}" "s;.rar;.part01.rar;")"
 		USESPLIT=true
 	elif ! [ -f "${fulln}" ] && [ -f "$(echo ${fulln} | "${mysed}" "s;.rar;.part1.rar;")" ] && [ ${ext} = "rar" ]; then

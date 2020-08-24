@@ -189,7 +189,7 @@ case ${ext} in
 			"${mycat}" "${tfn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}".${ext}.${tfn:0-3}
 		done
 	else
-		"${mytar}" -f - -cv "${fn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}""${ext}"
+		"${mytar}" -f - -cv "${fn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}"."${ext}"
 	fi
 	;;
 "tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
