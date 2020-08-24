@@ -23,7 +23,7 @@ for url in "${STDS[@]}"; do
 			fi
 		done
 		if ! ${ADDED}; then
-			echo -e "${url}\t${uuid}" >> $(date '+%Y-%m-%d_%H-%M-%S')
+			echo -e "${url}\t${uuid}" >> uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')"
 		fi
 		echo -e "$(timestamp)\tADD\tSUCCESS\t${url}\t${uuid}" >> act.log
 	else

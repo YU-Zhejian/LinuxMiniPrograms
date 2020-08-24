@@ -31,6 +31,7 @@ gmcmd=${STDS[0]:-}
 unset STDS[0]
 [ ! -z "${git_mirror_dir:-}" ] || errh "Config file not found"
 mkdir -p "${git_mirror_dir}" "${git_mirror_dir}/logs/" "${git_mirror_dir}/uuidtable.d/"
+"${myls}" "${git_mirror_dir}"/* &>>/dev/null || touch uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')"
 cd "${git_mirror_dir}"
 touch act.log
 if [ -f "${DN}"/exec/gitm_"${gmcmd}".sh ];then
