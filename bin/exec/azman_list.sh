@@ -53,7 +53,7 @@ for fulln in "${STDS[@]}"; do
 		if ${USESPLIT} ;then sdtl "${myxz} -dk" ; else "${mytar}" -tJvf "${fulln}"; fi
 		;;
 	"tar.bz2" | "tbz") # ============ tbz ============
-		[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist"
+		[ "${mybzip2}" != 'ylukh' ] || errh "BZip2 NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 		if ${USESPLIT} ;then stdtl "${mybzip2} -dk" ; else "${mytar}" -tjvf "${fulln}"; fi
 		;;

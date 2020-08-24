@@ -73,7 +73,7 @@ for fulln in "${STDS[@]}"; do
 		if ${USESPLIT} ;then stdtc "${myxz} -dk" ; else "${mytar}" -xJvf "${fulln}"; fi
 		;;
 	"tar.bz2" | "tbz") # ============ tbz ============
-		[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist"
+		[ "${mybzip2}" != 'ylukh' ] || errh "BZip2 NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 		if ${USESPLIT} ;then stdtc "${mybzip2} -dk" ; else "${mytar}" -xjvf "${fulln}"; fi
 		;;
@@ -91,7 +91,7 @@ for fulln in "${STDS[@]}"; do
 		if ${USESPLIT} ;then stdfc "${myxz} -dk" ; else "${myxz}" -dk "${fulln}"; fi
 		;;
 	"bz2") # ============ bz2 ============
-		[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist"
+		[ "${mybzip2}" != 'ylukh' ] || errh "BZip2 NO exist"
 		if ${USESPLIT} ;then stdfc "${mybzip2} -dk" ; else "${mybzip2}" -dk "${fulln}"; fi
 		;;
 	"lz" | "lzma") # ============ lz ============

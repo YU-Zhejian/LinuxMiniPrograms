@@ -182,7 +182,7 @@ case ${ext} in
 	fi
 	;;
 "tar.bz2" | "tbz") # ============ tbz ============
-	[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist"
+	[ "${mybzip2}" != 'ylukh' ] || errh "BZip2 NO exist"
 	if [ -n "${SPLIT:-}" ]; then
 		"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
 		for tfn in "${tempdir}"/"${fn}".*; do
@@ -240,7 +240,7 @@ case ${ext} in
 	fi
 	;;
 "bz2") # ============ bz2 ============
-	[ "${mybz2}" != 'ylukh' ] || errh "BZip2 NO exist"
+	[ "${mybzip2}" != 'ylukh' ] || errh "BZip2 NO exist"
 	if [ -n "${SPLIT:-}" ]; then
 		"${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
 		for tfn in "${tempdir}"/"${fn}".*; do
