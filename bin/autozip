@@ -161,10 +161,7 @@ case ${ext} in
 		cmd="${PAR} ${mygzip}"
 	fi
 	if [ -n "${SPLIT:-}" ]; then
-		"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
-		for tfn in "${tempdir}"/"${fn}".*; do
-			"${mycat}" "${tfn}" | ${cmd} ${LVL} >"${fn}".${ext}.${tfn:0-3}
-		done
+		stdtc ${cmd} ${LVL}
 	else
 		"${mytar}" -f - -cv "${fn}" | ${cmd} ${LVL} >"${fn}".${ext}
 	fi
@@ -173,10 +170,7 @@ case ${ext} in
 	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 	! [ ${THREAD} -gt 0 ] || PAR="--threads=${THREAD}"
 	if [ -n "${SPLIT:-}" ]; then
-		"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
-		for tfn in "${tempdir}"/"${fn}".*; do
-			"${mycat}" "${tfn}" | "${myxz}" ${PAR} ${LVL} >"${fn}".${ext}.${tfn:0-3}
-		done
+		stdtc "${myxz}" ${PAR} ${LVL}
 	else
 		"${mytar}" -f - -cv "${fn}" | "${myxz}" ${PAR} ${LVL} >"${fn}".${ext}
 	fi
@@ -184,10 +178,7 @@ case ${ext} in
 "tar.bz2" | "tbz") # ============ tbz ============
 	[ "${mybzip2}" != 'ylukh' ] || errh "BZip2 NO exist"
 	if [ -n "${SPLIT:-}" ]; then
-		"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
-		for tfn in "${tempdir}"/"${fn}".*; do
-			"${mycat}" "${tfn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}".${ext}.${tfn:0-3}
-		done
+		stdtc ${PAR} "${mybzip2}" ${LVL}
 	else
 		"${mytar}" -f - -cv "${fn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}"."${ext}"
 	fi
@@ -196,10 +187,7 @@ case ${ext} in
 	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 	[ "${THREAD}" -eq 0 ] || warnh "LZMA do not support parallel. Will be resetted to 1"
 	if [ -n "${SPLIT:-}" ]; then
-		"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
-		for tfn in "${tempdir}"/"${fn}".*; do
-			"${mycat}" "${tfn}" | "${myxz}" --format=lzma ${LVL} >"${fn}".${ext}.${tfn:0-3}
-		done
+		stdtc "${myxz}" --format=lzma ${LVL}
 	else
 		"${mytar}" -f - -cv "${fn}" | "${myxz}" --format=lzma ${LVL} >"${fn}".${ext}
 	fi
@@ -214,10 +202,7 @@ case ${ext} in
 		cmd="${PAR} ${mygzip}"
 	fi
 	if [ -n "${SPLIT:-}" ]; then
-		"${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
-		for tfn in "${tempdir}"/"${fn}".*; do
-			"${mycat}" "${tfn}" | ${cmd} ${LVL} >"${fn}".${ext}.${tfn:0-3}
-		done
+		stdfc ${cmd} ${LVL}
 	else
 		"${mycat}" "${fn}" | ${cmd} ${LVL} >"${fn}".${ext}
 	fi
@@ -232,10 +217,7 @@ case ${ext} in
 	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 	! [ ${THREAD} -gt 0 ] || PAR="--threads=${THREAD}"
 	if [ -n "${SPLIT:-}" ]; then
-		"${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
-		for tfn in "${tempdir}"/"${fn}".*; do
-			"${mycat}" "${tfn}" | "${myxz}" ${PAR} ${LVL} >"${fn}".${ext}.${tfn:0-3}
-		done
+		stdfc "${myxz}" ${PAR} ${LVL}
 	else
 		"${mycat}" "${fn}" | "${myxz}" ${PAR} ${LVL} >"${fn}".${ext}
 	fi
@@ -243,10 +225,7 @@ case ${ext} in
 "bz2") # ============ bz2 ============
 	[ "${mybzip2}" != 'ylukh' ] || errh "BZip2 NO exist"
 	if [ -n "${SPLIT:-}" ]; then
-		"${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
-		for tfn in "${tempdir}"/"${fn}".*; do
-			"${mycat}" "${tfn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}".${ext}.${tfn:0-3}
-		done
+		stdfc ${PAR} "${mybzip2}" ${LVL}
 	else
 		"${mycat}" "${fn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}".${ext}
 	fi
@@ -255,10 +234,7 @@ case ${ext} in
 	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 	[ "${THREAD}" -eq 0 ] || warnh "LZMA do not support parallel. Will be resetted to 1"
 	if [ -n "${SPLIT:-}" ]; then
-		"${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
-		for tfn in "${tempdir}"/"${fn}".*; do
-			"${mycat}" "${tfn}" |"${myxz}" --format=lzma ${LVL} >"${fn}".${ext}.${tfn:0-3}
-		done
+		stdfc "${myxz}" --format=lzma ${LVL}
 	else
 		"${mycat}" "${fn}" |"${myxz}" --format=lzma ${LVL} >"${fn}".${ext}
 	fi

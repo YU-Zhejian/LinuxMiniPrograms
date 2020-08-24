@@ -180,8 +180,8 @@ function stdc_h() {
 		done
 	fi
 }
-# standard TAR creator
-function stdtc() {
+# standard TAR extractor
+function stdtx() {
 	stdc_h "${@}"
 	local file_i=1
 	local in_i=001
@@ -206,8 +206,8 @@ function stdtl() {
 	unset file_i in_1
 	"${mytar}" -tvf "${tempf}"
 }
-# standard FILE creator
-function stdfc() {
+# standard FILE extractor
+function stdfx() {
 	stdc_h "${@}"
 	local file_i=1
 	local in_i=001
@@ -217,6 +217,50 @@ function stdfc() {
 		in_i=$(fixthree ${file_i})
 	done
 	unset file_i in_1
+}
+# standard TAR creator
+function stdtc() {
+	infoh "TARing and splitting the folder..."
+	"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
+	infoh "Compressing splitted archive..."
+	local file_i=1
+	local in_i=001
+	while [ -f "${tempdir}"/"${fn}".${in_i} ]; do
+		file_i=$((${file_i} + 1))
+		in_i=$(fixthree ${file_i})
+	done
+	local file_total=$((${file_i}-1))
+	file_i=1
+	in_i=001
+	while [ -f "${tempdir}"/"${fn}".${in_i} ]; do
+		tfn="${tempdir}/${fn}.${in_i}"
+		infoh "Making archive ${file_i}/${file_total}..."
+		"${mycat}" "${tfn}" | "${@}" >"${fn}".${ext}.${tfn:0-3}
+		file_i=$((${file_i} + 1))
+		in_i=$(fixthree ${file_i})
+	done
+}
+# standard FILE creator
+function stdfc() {
+	infoh "Splitting the file..."
+	"${mycat}" "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${tempdir}"/"${fn}".
+	infoh "Compressing splitted files..."
+	local file_i=1
+	local in_i=001
+	while [ -f "${tempdir}"/"${fn}".${in_i} ]; do
+		file_i=$((${file_i} + 1))
+		in_i=$(fixthree ${file_i})
+	done
+	local file_total=$((${file_i}-1))
+	file_i=1
+	in_i=001
+	while [ -f "${tempdir}"/"${fn}".${in_i} ]; do
+		tfn="${tempdir}/${fn}.${in_i}"
+		infoh "Making archive ${file_i}/${file_total}..."
+		"${mycat}" "${tfn}" | "${@}" >"${fn}".${ext}.${tfn:0-3}
+		file_i=$((${file_i} + 1))
+		in_i=$(fixthree ${file_i})
+	done
 }
 # Check extension name
 function ckext() {

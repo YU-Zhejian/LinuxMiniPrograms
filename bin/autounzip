@@ -65,38 +65,38 @@ for fulln in "${STDS[@]}"; do
 	"tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
 		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		if ${USESPLIT};then stdtc "${mygzip} -dk"; else "${mytar}" -xzvf "${fulln}"; fi
+		if ${USESPLIT};then stdtx "${mygzip} -dk"; else "${mytar}" -xzvf "${fulln}"; fi
 		;;
 	"tar.xz" | "txz") # ============ txz ============
 		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		if ${USESPLIT} ;then stdtc "${myxz} -dk" ; else "${mytar}" -xJvf "${fulln}"; fi
+		if ${USESPLIT} ;then stdtx "${myxz} -dk" ; else "${mytar}" -xJvf "${fulln}"; fi
 		;;
 	"tar.bz2" | "tbz") # ============ tbz ============
 		[ "${mybzip2}" != 'ylukh' ] || errh "BZip2 NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		if ${USESPLIT} ;then stdtc "${mybzip2} -dk" ; else "${mytar}" -xjvf "${fulln}"; fi
+		if ${USESPLIT} ;then stdtx "${mybzip2} -dk" ; else "${mytar}" -xjvf "${fulln}"; fi
 		;;
 	"tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
 		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		if ${USESPLIT} ;then stdtc "${myxz} -dk --format=lzma" ; else "${myxz}" -dc "${fulln}" | "${mytar}" -xv -f -; fi
+		if ${USESPLIT} ;then stdtx "${myxz} -dk --format=lzma" ; else "${myxz}" -dc "${fulln}" | "${mytar}" -xv -f -; fi
 		;;
 	"gz" | "GZ") # ============ gz ============
 		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist"
-		if ${USESPLIT} ;then stdfc "${mygzip} -dk" ; else "${mycat}" "${fulln}" | "${mygzip}" -dc >"${fn}"; fi
+		if ${USESPLIT} ;then stdfx "${mygzip} -dk" ; else "${mycat}" "${fulln}" | "${mygzip}" -dc >"${fn}"; fi
 		;;
 	"xz") # ============ xz ============
 		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
-		if ${USESPLIT} ;then stdfc "${myxz} -dk" ; else "${myxz}" -dk "${fulln}"; fi
+		if ${USESPLIT} ;then stdfx "${myxz} -dk" ; else "${myxz}" -dk "${fulln}"; fi
 		;;
 	"bz2") # ============ bz2 ============
 		[ "${mybzip2}" != 'ylukh' ] || errh "BZip2 NO exist"
-		if ${USESPLIT} ;then stdfc "${mybzip2} -dk" ; else "${mybzip2}" -dk "${fulln}"; fi
+		if ${USESPLIT} ;then stdfx "${mybzip2} -dk" ; else "${mybzip2}" -dk "${fulln}"; fi
 		;;
 	"lz" | "lzma") # ============ lz ============
 		[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
-		if ${USESPLIT} ;then stdfc "${myxz} -dk --format=lzma" ; else "${mycat}" "${fulln}" | "${myxz}" -dk --format=lzma >"${fn}"; fi
+		if ${USESPLIT} ;then stdfx "${myxz} -dk --format=lzma" ; else "${mycat}" "${fulln}" | "${myxz}" -dk --format=lzma >"${fn}"; fi
 		;;
 	"7z") # ============ 7z ============
 		[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
