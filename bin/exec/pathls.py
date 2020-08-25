@@ -34,7 +34,7 @@ sstr=[]
 for sysarg in sys.argv[1:]:
 	if isopt(sysarg):
 		if sysarg=='-h' or sysarg=='--help':
-			os.system('yldoc pls')
+			os.system('yldoc pathls')
 			exit(0)
 		elif sysarg=='-v' or sysarg=='--version':
 			print('Version 1 Emergency Patch 7 in Python')

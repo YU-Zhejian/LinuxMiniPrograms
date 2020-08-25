@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 #IOMUX V1
+echo "Experimental."
+exit
 mkfifo in out
 cat in|bash -li &>> out

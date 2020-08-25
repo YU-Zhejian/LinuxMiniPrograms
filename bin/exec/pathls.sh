@@ -23,7 +23,7 @@ for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
 		"-h" | "--help")
-			yldoc pls
+			yldoc pathls
 			exit 0
 			;;
 		"-v" | "--version")
