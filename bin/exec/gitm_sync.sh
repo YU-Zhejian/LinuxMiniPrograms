@@ -2,6 +2,7 @@
 tmpf="$(mktemp -t gitm.XXXXX)"
 function sync() {
 	infoh "Repository UUID=${fields[1]} sync started"
+	"${myrm}" -fr "${fields[1]}".sync
 	"${mycp}" -r "${fields[1]}" "${fields[1]}".sync
 	echo -e "$(timestamp)\tSYNC_CPDIR\tSUCCESS\t${fields[0]}\t${fields[1]}" >> act.log
 	cd "${fields[1]}".sync

@@ -2,6 +2,7 @@
 tmpf="$(mktemp -t gitm.XXXXX)"
 function mygc(){
 	infoh "Repository UUID=${fields[1]} gc started"
+	"${myrm}" -fr "${fields[1]}".gc
 	"${mycp}" -r "${fields[1]}" "${fields[1]}".gc
 	echo -e "$(timestamp)\tGC_CPDIR\tSUCCESS\t${fields[0]}\t${fields[1]}" >> act.log
 	cd "${fields[1]}".gc

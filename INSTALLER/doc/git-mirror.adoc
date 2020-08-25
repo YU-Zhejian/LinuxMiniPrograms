@@ -84,7 +84,7 @@ List all locks.
 
 SYNOPSIS: `git-mirror lock rm [URL/UUID]`
 
-Remove lock from `[URL/UUID]`.
+Remove lock from `[URL/UUID]`. Stop if the process is still running.
 
 OPTION: `-f` for force removal without confirmation.
 

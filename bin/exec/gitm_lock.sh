@@ -48,17 +48,30 @@ case "${STDS[1]}" in
 			IFS=$'\t'
 			fields=(${line})
 			IFS=''
+			if ps -p $("${mycat}" "${fields[1]}.lock"|awk '{print $2}') &>>/dev/null;then
+				echo -e "$(timestamp)\tRMLOCK\tOCCUPIED\t${fields[0]}\t${fields[1]}" >> act.log
+				warnh "Process still running for UUID=${fields[1]}. Will skip this repo"
+				continue
+			fi
 			"${myrm}" -f "${fields[1]}".lock
 			echo -e "$(timestamp)\tRMLOCK\tSUCCESS\t${fields[0]}\t${fields[1]}" >> act.log
 			infoh "Repository UUID=${fields[1]} rmlock success"
 		done
 	fi
 	"${myrm}" -f "${tmpf}" "${tmpff}"
-	if ! ${FORCE}; then
-		"${myrm}" -i sync.lock rm.lock archive.lock gc.lock uuidtable.lock add.lock || true
-	else
-		"${myrm}" -f sync.lock rm.lock archive.lock gc.lock uuidtable.lock add.lock &>/dev/null
-	fi
+	for fn in sync.lock rm.lock archive.lock gc.lock uuidtable.lock add.lock;do
+		if ps -p $("${mycat}" "${fn}" 2>/dev/null|awk '{print $2}') &>>/dev/null;then
+			warnh "Process still running for ${fn}. Will skip this lock."
+			continue
+		elif [ ! -e ${fn} ] ;then
+			continue
+		fi
+		if ! ${FORCE}; then
+			"${myrm}" -i "${fn}"
+		else
+			"${myrm}" -f "${fn}" &>/dev/null
+		fi
+	done
 	;;
 "add")
 	unset STDS[1]
