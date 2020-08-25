@@ -14,12 +14,12 @@ function my_grep() {
 }
 
 more="${mymore}"
-locallib=$(for dir in /lib \
-/lib* \
-/usr/lib*/ \
-/usr/local/lib*/ \
-"${HOME}"/usr/lib*/ \
-"${HOME}"/usr/local/lib*/; do echo ${dir}; done | tr '\n' ':')
+locallib=$(for dir in /lib* \
+/usr/lib* \
+/usr/local/lib* \
+"${HOME}"/usr/lib* \
+"${HOME}"/usr/local/lib*
+do echo ${dir}; done  |"${mygrep}" -v '*'|"${mygrep}" -E '/lib(64){0,1}$'| tr '\n' ':')
 INPATH="${locallib}:${LD_LIBRARY_PATH:-}"${LIBRARY_PATH:-}
 . "${DN}"/../lib/libpath
 IFS=":"
