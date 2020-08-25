@@ -27,15 +27,15 @@ function pass_int() {
 	[ ! ${_PID} -eq 0 ] && kill -13 ${_PID}
 }
 
-builtins=("." "[" "bind" "break" "builtin" "caller" "command" "compgen" "complete" "compopt" "continue" "declare" "dirs" "disown" "echo" "enable" "eval" "exec" "exit" "export" "false" "fc" "getopts" "hash" "help" "history" "kill" "let" "local" "mapfile" "popd" "printf" "pushd" " pwd" " read" "readonly" "return" "set" "shift" "shopt" "source" "suspend" "test" "times" "true" "type" "typeset" "ulimit" "umask" "unset")
-disabled=(":" "alias" "bg" "fg" "jobs" "logout" "trap" "unalias" "wait")
+builtins=("." "[" "bind" "break" "builtin" "caller" "command" "compgen" "complete" "compopt" "continue" "declare" "dirs" "disown" "echo" "enable" "eval" "exec" "exit" "export" "false" "fc" "hash" "help" "history" "kill" "let" "local" "mapfile" "popd" "printf" "pushd" " pwd" " read" "readonly" "return" "set" "shift" "shopt" "source" "suspend" "test" "times" "true" "type" "typeset" "ulimit" "umask" "unset")
+disabled=(":" "alias" "bg" "fg" "jobs" "logout" "trap" "unalias" "wait" "getopts")
 
-if [ -f "${HOME}/.profile" ]; then
-	. "${HOME}/.profile"
+if [ -f "${HOME}/.bashrc" ]; then
+	. "${HOME}/.bashrc"
 elif [ -f "${HOME}/.bash_profile" ]; then
 	. "${HOME}/.bash_profile"
-elif [ -f "${HOME}/.bashrc" ]; then
-	. "${HOME}/.bashrc"
+elif [ -f "${HOME}/.profile" ]; then
+	. "${HOME}/.profile"
 fi
 
 while read -p "$(getps1)" line; do
@@ -49,9 +49,9 @@ while read -p "$(getps1)" line; do
 				tmpf="$(mktemp -t libdosh.XXXXX)"
 				infoh "Builtin"
 				echo "${buffer}"' 2>&1 | tee -a "${log}" && prev_out=0 || prev_out=${?}' > "${tmpf}"
-				cat "${tmpf}"
+				"${mycat}" "${tmpf}"
 				. "${tmpf}"
-				rm "${tmpf}"
+				"${myrm}" "${tmpf}"
 				break
 			fi
 		done

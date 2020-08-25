@@ -17,6 +17,7 @@ more="${mymore}"
 locallib=$(for dir in /lib \
 /lib* \
 /usr/lib*/ \
+/usr/local/lib*/ \
 "${HOME}"/usr/lib*/ \
 "${HOME}"/usr/local/lib*/; do echo ${dir}; done | tr '\n' ':')
 INPATH="${locallib}:${LD_LIBRARY_PATH:-}"${LIBRARY_PATH:-}
