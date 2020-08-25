@@ -9,18 +9,72 @@ lcman - LiveChat History Manager
 
 == SYNOPSIS
 
-lcman [OPTIONS]
+`lcman [OPTIONS]`
+
+== DESCRIPTION
+
+Filter livechat history by `[OPTIONS]`.
 
 == OPTIONS
 
 include::include/cmnopt.adoc[]
 
-`-f:[STRING]|--from:[STRING]` Search in history with sender [STRING].
+* `-f:[STRING]|--from:[STRING]` Search in history with sender `[STRING]`.
 
-`-m:[STRING]|--message:[STRING]` Search in history with message [STRING].
+* `-m:[STRING]|--message:[STRING]` Search in history with message `[STRING]`.
 
-`-s|--exclude-system` Exclude message from SYSTEM.
+* `-s|--exclude-system` Exclude message from user `SYSTEM`.
 
-`-e:[STRING]|--exclude:[STRING]` Search in history without sender [STRING].
+* `-e:[STRING]|--exclude:[STRING]` Search in history without sender `[STRING]`.
+
+* `--more:[program]` By default, the GNU/Linux program `more` will be used if there's too much output. Use `[program]` to replace `more`. e.g. `less`, `cat`, `head` or `tail` if you wish.
+
+WARNING: For BSD users, please be aware that we will use `cat` instead of `more` here.
+
+== EXAMPLE
+
+These examples are tested under CYGWin.
+
+```
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ lcman
+YuZJLab LiveChat Manager
+Copyright (C) 2019-2020 YU Zhejian
+Reading Databases...
+Filtering...
+[2019-12-23,11:27:01] [SYSTEM] test is now on line.
+[2019-12-23,11:27:11] [test] test
+[2019-12-23,11:27:15] [SYSTEM] test had quitted.
+```
+
+```
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ lcman -s
+YuZJLab LiveChat Manager
+Copyright (C) 2019-2020 YU Zhejian
+Reading Databases...
+Filtering...
+[2019-12-23,11:27:11] [test] test
+```
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions except `more` supported.
+
+=== CYGWin
+
+Tested with all functions supported.
+
+== FILES
+
+. `var/livechat.d/LCONLINE` The file containing information about online users.
+
+. `var/livechat.d/MESSAGES` The file containing all messages.
+
+== SEE ALSO
+
+livechat
 
 include::include/copy.adoc[]

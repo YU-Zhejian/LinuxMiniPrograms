@@ -9,69 +9,60 @@ autozip - An automatic file compression tool.
 
 == SYNOPSIS
 
-autozip [source] [ext] [level] [options]
+`autozip [source] [ext] [level] [options]`
 
 == DESCRIPTION
 
-This will compress files and folders with extension [ext] to [level]. You can make [level] 1 (fastest) to 9 (best). Some algorithms (e.g. xzip, zip) may support 0 (store only; no compression). If [level] is omitted, will use default value provided by algorithm. If [ext] is also omitted, will use gz & tar.gz. If [source] is omitted, will check the algorithms installed on your computer and give back a list of available extension name.
+This program will compress files and folders with extension [ext] to [level]. You can make [level] 1 (fastest) to 9 (best). Some algorithms (e.g. xzip, zip) may support 0 which means to be store only without compression. If [level] is omitted, this program will use default value provided by algorithm. If [ext] is also omitted, this program will use gz & tar.gz by default. If [source] is omitted, this program will check the algorithms installed on your computer and return a list of available extension name.
 
 == OPTIONS
 
 include::include/cmnopt.adoc[]
 
-`--force-parallel:[location]` Force to use GUN parallel at [location]. This will not affect pgzip, XZ Utils or other algorithms which do not require GNU Parallel.
+* `--force` Remove the target if exists.
 
-`--force` Remove the target if exists.
-`--remove` Remove [sorce] if success.
+* `--remove` Remove [sorce] if success.
 
-`-s[:[split]]|-split[:[split]]` Split the archive by [split]. This is realized by using GNU coreunits "split" or those provided in corresponding algorithms like 7zip, zip or rar. If [split] is omitted, it will be treated as 1G. legal [split] are those which can be recognized by GNU coreunits "split" or corresponding algorithms.
+* `-s[:[split]]|-split[:[split]]` Split the archive by [split]. This is realized by using GNU CoreUtils `split` or those provided by corresponding algorithms like 7zip, zip or rar. If `[split]` is omitted, it will be treated as 1G. legal [split] are those which can be recognized by GNU CoreUtils `split` or corresponding algorithms.
+
+Please be aware that __WE DO NOT SUPPORT BSD SPLIT__.
 
 When making a tar.?z archive, this will split the tar file and compress them orderly.
 
-When using zip format, we'll use `zip -FF` to merge the zips.
+== USEING GNU PARALLEL
 
-== USE OF GNU PARALLEL (REQUIRE ROOT PREVILEDGE)
-It is recommended to use GNU Parallel to accelerate the speed of compression. You can change the first line of autozip.conf to "PARALLEL" to enable this feature. GNU Parallel is not available on autounzip.
-
-When using XZ Utils, we will use argument "-T0" instead of GNU Parallel.
+It is recommended to use GNU Parallel to accelerate the speed of compression. You can change the first line of `etc/autozip.conf` to `PARALLEL` to enable this feature.
     
-WARNING: GNU Parallel consumes lots of memory & CPU resources. NEVER USE IT ON CLUSTERS!!!
+WARNING: GNU Parallel consumes lots of memory & CPU resources. __NEVER USE IT ON CLUSTERS__!!!
 
-== USE OF PIGZ
-When pigz, GNU parallel both exist and you have PARALLEL in autozip.conf, pigz will be used.
+include::include/autozipcmn.adoc[]
 
-== USE OF GNU GZIP
-When processing bioinformatical data, please make sure that You should use GZIP to produce a GZIP COMPRESSED DATA instead of BGZIP to produce a BLOCKED GNU ZIP FORMAT before using this tool!
+== COMPATIBILITY
 
-== USE OF BGZIP
-This is the right way to produce a BLOCKED GNU ZIP FORMAT with "gz" extension. Because it is capable of GNU GZip, we'll not distinguish them when extracting data. "tar.gz" is not supported in bgz format because it sounds weird.
+=== BSD
 
-== USE OF LZMA SDK AND XZ UTILS
+Tested with all functions supported.
 
-The core of the XZ Utils compression code is based on LZMA SDK. So when you're about to compress & decompress files with lz, lzma, tar.lzma, tlz extensions, we'll use XZ Utils.
+=== CYGWin
 
-== USE OF 7ZIP
-WARNING: DO NOT USE the 7-zip format for backup purpose on Linux/Unix because 7-zip does not store the owner/group of the file.
-WARNING: Although 7-zip provided us with a handful of algorithms, we will only take default values.
+Tested with all functions supported.
 
-== USE OF RAR
-WARNING: 1. RAR is a PROPERTY software. 2. Use ABSOLUTE PATH.
+== SEE ALSO
 
-
-== EXIT STATUS
-`0` OK
-
-`1` ERROR
+autounzip, azman
 
 == INFORMATION ABOUT ALGORITHMS
-	1.9G TDSGitServer
-	478M TDSGitServer.txz
-	479M TDSGitServer.7z
-	540M TDSGitServer.rar
-	580M TDSGitServer.tlz
-	673M TDSGitServer.tbz
-	718M TDSGitServer.zip
-	719M TDSGitServer.tgz
-	1.9G TDSGitServer.tar
+
+```
+1.9G TDSGitServer
+478M TDSGitServer.txz
+479M TDSGitServer.7z
+540M TDSGitServer.rar
+580M TDSGitServer.tlz
+673M TDSGitServer.tbz
+718M TDSGitServer.zip
+719M TDSGitServer.tgz
+1.9G TDSGitServer.tar
+```
 
 include::include/copy.adoc[]

@@ -9,3 +9,7 @@
 /INSTALLER/doc/*.1
 /INSTALLER/doc/*.html
 /INSTALLER/doc/*.pdf
+__pycache__
+*.stackdump
+/gnome-keyring-daemo.core
+.vscode

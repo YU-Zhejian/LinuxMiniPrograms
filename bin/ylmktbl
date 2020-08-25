@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# YLMKTNL V4P1
+set -ue
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../etc/path.sh
+if [ "${mypython}" != "ylukh" ];then
+    "${mypython}" "${DN}"/exec/ylmktbl.py "${PWD}" "${@}"
+else
+   . "${DN}"/exec/ylmktbl.sh
+fi

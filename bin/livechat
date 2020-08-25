@@ -1,47 +1,43 @@
-#! /bin/bash
-# LIVECHAT V1EP5
-function sdmess(){
-    echo "`date +%Y-%m-%d,%H:%M:%S`;${1};${MESS_SD}">>MESSAGES
+#!/usr/bin/env bash
+# LIVECHAT V1EP7
+set -ue
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../etc/path.sh
+function sdmess() {
+    echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${MESS_SD}" >>MESSAGES
 }
-function F_REC(){
-    while true;do
-        IFS=" "
+function F_REC() {
+    while true; do
+    #echo a
+        IFS=""
         sleep 1
-        local arr=(`wc -l MESSAGES`)
-        local en=$((${arr[0]}-${M_R}))
+        local arr=$(wc -l MESSAGES | awk '{print $1}')
+        local en=$((${arr} - ${M_R}))
         if [ ${en} -ne 0 ]; then
             echo -ne "\007"
-            tail -n $((${arr[0]}-$M_R)) MESSAGES>"URM_${LCUN}"
-            local M_R=${arr[0]}
-            unset arr
+            "${mytail}" -n $((${arr} - ${M_R})) MESSAGES >"URM_${LCUN}"
+            local M_R=${arr}
             IFS=";"
-            while read line;do
-                local M_A=($line)
+            while read line; do
+                local M_A=(${line})
                 echo -e "\e[31m[${M_A[0]}]\e[0m \e[36m[${M_A[1]}]\e[0m ${M_A[2]}"
             done <"URM_${LCUN}"
         fi
     done
 }
-DN=$(dirname ${0})
+OLD_IFS="${IFS}"
 LVCD="${DN}/../var/livechat.d"
-if [ -e ${LVCD} ];then
-    if [ -f ${LVCD} ];then
-        echo -e "\e[31mERROR: \"${LVCD}\" is a file rather than a directory.\e[0m"
-        exit 1
-    fi
-else
-    echo -e "\e[31mWARNING: livechat.d not exist.\e[0m"
-    mkdir ${LVCD}
-fi
-if [ ! -e ${LVCD}/LCONLINE ];then
+mkdir -p "${LVCD}"
+if [ ! -e "${LVCD}"/LCONLINE ]; then
     echo -e "\e[31mWARNING: livechat.d/LCONLINE not exist.\e[0m"
-    touch ${LVCD}/LCONLINE
+    touch "${LVCD}"/LCONLINE
 fi
-cd ${LVCD}
+cd "${LVCD}"
 unset LVCD
 echo -e "\e[33mWelcome to YuZJLab LiveChat"
 echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
-{ . ${DN}/../lib/libisopt; } && { echo -e "\e[33mlibisopt loaded\e[0m"; } || { echo -e "\e[31mFail to load libisopt.\e[0m";exit 1; }
+. "${DN}"/../lib/libisopt
+STDS=""
 for opt in "${@}"; do
     if isopt ${opt}; then
         case ${opt} in
@@ -50,7 +46,7 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-v" | "--version")
-            echo "Version 1 emergency patch 5"
+            echo "Version 1 Emergency Patch 7"
             exit 0
             ;;
         *)
@@ -59,47 +55,48 @@ for opt in "${@}"; do
             ;;
         esac
     else
-        STDS="${STDS} ${opt}"
+        STDS="${opt}"
     fi
 done
 
-if [ -z ${STDS[0]} ]; then
+if [ -z "${STDS}" ]; then
     echo -e "\e[33mPlease key in your name/roomnumber:\e[0m"
     echo -e "\e[33mUse Ctrl-C to exit\e[0m"
     read LCUN
 else
-    LCUN=${STDS[0]}
+    LCUN="${STDS}"
 fi
-if [ `cat LCONLINE|grep "${LCUN}"|wc -l` -ne 0 ]; then
-    echo -e "\e[31m ERROR: There's a user with the same name.\e[0m"
+while read line;do
+    if [ "${line}" = "${LCUN}"];then
+    echo -e "\e[31mERROR: There's a user with the same name.\e[0m"
     exit 1
-fi
+    fi
+done < LCONLINE
 unset BOOLONLINE
-echo ${LCUN}>>LCONLINE
+echo "${LCUN}" >>LCONLINE
 MESS_SD="${LCUN} is now on line."
 sdmess SYSTEM
 echo -e "\e[33mThe following users are now online:\e[0m"
 cat LCONLINE
 echo -e "\e[33mPlease use 'logout' instead of Ctrl-C to exit.\e[0m"
 export M_R=0
-(F_REC)&
+(F_REC) &
 pid_rec=${!}
 echo -e "\e[33mPID of reciever: ${pid_rec}.\e[0m"
-while [ true ];do
+while [ true ]; do
     read MESS_SD
     if [ "${MESS_SD}" != "logout" ]; then
-        sdmess ${LCUN}
+        sdmess "${LCUN}"
         printf "\e[1A"
     else
         MESS_SD="${LCUN} had quitted."
         sdmess "SYSTEM"
-        kill -9 $pid_rec &>>/dev/null
-        cat LCONLINE|grep -v ${LCUN}>tmp
-        cat tmp>LCONLINE
-        rm tmp
-        rm URM_${LCUN}
+        kill -9 ${pid_rec} &>>/dev/null
+        "${mycat}" LCONLINE |"${mygrep}" -v "^${LCUN}$" >tmp
+        "${mymv}" tmp LCONLINE
+        "${myrm}" "URM_${LCUN}"
         echo -e "\e[33mThanks for using this system.\e[0m"
-        IFS=${OLD_IFS}
+        IFS="${OLD_IFS}"
         exit 0
     fi
 done

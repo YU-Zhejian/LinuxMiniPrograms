@@ -9,26 +9,40 @@ azman - AutoZip file Manager.
 
 == SYNOPSIS
 
-azman [subcommand] [source] [options]
+`azman [subcommand]`
 
 == DESCRIPTION
 
-Use [subcommand] on [source]. The subcommands will be introduced bellow. If one of the [subcommand] or [source] is omitted, will check the algorithms installed on your computer and give back a list of available extension name.
+Execute `[subcommand]` which will be introduced bellow. If one of the `[subcommand]`, the program will check the algorithms installed on your computer and return a list of available extension name.
 
+WARNING: This program do not support archives with extension `.lzma`, `.lz` and `bzip2`.
 
 == OPTIONS
 
 include::include/cmnopt.adoc[]
 
 == SUBCOMMANDS
-`list` List all files and folders inside with a verbose format.
 
-== USE OF RAR
-WARNING: 1. RAR is a PROPERTY software. 2. Use ABSOLUTE PATH.
+`list [SOURCE1] [[SOURCE2]...]` List all files and folders inside `[SOURCE]` in a verbose format.
 
-== EXIT STATUS
-`0` OK
+include::include/autozipcmn.adoc[]
 
-`1` ERROR
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== CYGWin
+
+Tested with all functions supported.
+
+== KNOWN BUGS
+
+Cannot list splitted zip files which contains only 1 file.
+
+== SEE ALSO
+
+autozip, azman
 
 include::include/copy.adoc[]

@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+# MLS v1
+set -ue
+DN="$(readlink -f "$(dirname "${0}")")"
+echo -e "\e[33mYuZJLab MANPATH ls"
+echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
+oldifs="${IFS}"
+function my_grep() {
+    regstr="${1}"
+    local tmpffff=$(mktemp -t pls.XXXXXX)
+    "${mycat}" "${tmpf}" | "${mygrep}" -v "${regstr}" >"${tmpffff}"
+    mv "${tmpffff}" "${tmpf}"
+}
+. "${DN}"/../lib/libisopt
+. "${DN}"/../etc/path.sh
+more="${mymore}"
+if [[ "${myos}" =~ .*"BSD".* ]];then
+    INPATH="/usr/share/man:/usr/local/man:$("${mycat}" /usr/local/etc/man.d/*.conf | "${mygrep}" -v \# | "${mygrep}" MANPATH | "${mycut}" -f 2 -d ' ' | tr '\n' ':')${MANPATH:-}"
+    # TODO: locate man.conf. Not appearing under '/etc/'.
+else
+    INPATH="$("${mycat}" /etc/man_db.conf | "${mygrep}" -v \# | "${mygrep}" MANDB_MAP | "${mycut}" -f 2 | tr '\n' ':')${MANPATH:-}"
+fi
+echo $INPATH
+. "${DN}"/../lib/libpath
+IFS=":"
+eachpath=(${valid_path})
+unset duplicated_path
+IFS=''
+STDS=()
+for opt in "${@}"; do
+    if isopt "${opt}"; then
+        case "${opt}" in
+        "-h" | "--help")
+            yldoc pls
+            exit 0
+            ;;
+        "-v" | "--version")
+            echo "Version 3 Patch 1 in Bash"
+            exit 0
+            ;;
+        "-l" | "--list")
+            echo ${valid_path} | tr ':' '\n'
+            unset valid_path
+            exit 0
+            ;;
+        "-i" | "--invalid")
+            echo ${invalid_path} | tr ':' '\n'
+            unset invalid_set invalid_path valid_path
+            exit 0
+            ;;
+        --more\:*)
+            more=$"{opt:7}"
+            if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
+                echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
+                more="${mymore}"
+            else
+                echo -e "\e[33mWill use '${more}' as More.\e[0m"
+            fi
+            ;;
+        *)
+            echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
+            exit 1
+            ;;
+        esac
+    else
+        STDS=(${STDS[@]} "${opt}")
+    fi
+done
+unset invalid_path valid_path
+tmpf="$(mktemp -t pls.XXXXXX)"
+echo -e "\e[33mReading database...\e[0m"
+for dir in "${eachpath[@]}"; do
+    if ! [ -d "${dir}" ]; then continue; fi
+    "${myls}" -1 -F "${dir}" | "${mysed}" "s;^;$(echo "${dir}")/;" | "${mygrep}" man[^/]*/$ | while read line; do
+        "${myls}" -1 -F "${line}"|"${mysed}" "s;.gz;;"|"${mysed}" "s;^;$(echo "${line}");" >>"${tmpf}"
+    done
+done
+if [ ${#STDS[@]} -eq 0 ]; then
+    "${mycat}" "${tmpf}" | "${more}"
+else
+    IFS=''
+    grepstr=''
+    for fn in "${STDS[@]}"; do
+        grepstr="${grepstr} -e ${fn}"
+    done
+    eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"\|"${more}"
+fi
+rm "${tmpf}"
+IFS="${oldifs}"

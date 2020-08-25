@@ -9,7 +9,7 @@ libdoman - LibDO log manager.
 
 == SYNOPSIS
 
-libdoman [log] [[log2] ...] [OPTIONS]
+`libdoman [log] [[log2] ...] [OPTIONS]`
 
 == DESCRIPTION
 
@@ -19,8 +19,73 @@ Decode LibDO output information from logs.
 
 include::include/cmnopt.adoc[]
 
-`--more:[program]` The GNU/Linux program 'more' will be used if there's too much output. Use [program] to replace 'more'.e.g. 'less', 'cat', 'head' or 'tail'.
+* `--more:[program]` By default, the GNU/Linux program `more` will be used if there's too much output. Use `[program]` to replace `more`. e.g. `less`, `cat`, `head` or `tail` if you wish.
 
-`-o:[item]|--output:[item]` Get more information about [item]. The numbering of items started from 1.
+* `-o:[item]|--output:[item]` Get more information about `[item]`. The numbering of items started from 1.
+
+== EXAMPLES
+
+These examples are tested under CYGWin.
+
+```
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ libdoman ls.log
+YuZJLab LibDO Manager.
+Copyright (C) 2020 YU Zhejian
+Loading /d/Software/LinuxMiniPrograms/ls.log ...0 item proceeded.
+Loading /d/Software/LinuxMiniPrograms/ls.log ...1 item proceeded.
+File /d/Software/LinuxMiniPrograms/ls.log loaded. Making table...
+|=============================[...]============================|
+|NO.|COMMAND                  [...]                 |EXIT|TIME |
+|=============================[...]============================|
+|1  |ls                       [...]                 |0   |0:0:0|
+|=============================[...]============================|
+Finished.
+```
+
+```
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ libdoman ls.log -o:1
+YuZJLab LibDO Manager.
+Copyright (C) 2020 YU Zhejian
+JOB_CMD      : ls
+ELAPSED_TIME : 2020-06-06 00:26:18 to 2020-06-06 00:26:18, Total 0:0:0
+EXIT_STATUS  : 0
+________________JOB_________OUTPUT________________
+BeforeAdd.sh
+INSTALLER
+In_case_of_fire.sh
+LICENSE.md
+LMP_Pylib
+Readme.md
+bin
+doc
+etc
+etc_backup.tgz
+html
+install.sh
+lib
+ls.log
+ls.sh
+man
+pdf
+var
+________________OUTPUT____FINISHED________________
+Finished.
+```
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== CYGWin
+
+Tested with all functions supported.
+
+== SEE ALSO
+
+libdo, libdoman-update
 
 include::include/copy.adoc[]
