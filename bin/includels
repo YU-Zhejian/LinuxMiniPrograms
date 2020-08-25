@@ -10,21 +10,21 @@ infoh "Copyright (C) 2019-2020 YU Zhejian"
 oldifs="${IFS}"
 more="${mymore}"
 
-gccinclude=$(for dir in  /lib*/gcc/*/*/include \
-/usr/lib*/gcc/*/*/include \
-/usr/local/lib*/gcc/*/include \
-"${HOME}"/usr/lib*/gcc/*/*/include \
-"${HOME}"/usr/local/lib*/gcc/*/*/include
+gccinclude=$(for dir in  /lib*/gcc*/*/*/include \
+/usr/lib*/gcc*/*/*/include \
+/usr/local/lib*/gcc*/*/include \
+"${HOME}"/usr/lib*/gcc*/*/*/include \
+"${HOME}"/usr/local/lib*/gcc*/*/*/include
 do echo ${dir}; done | tr '\n' ':')
 
-clanginclude=$(for dir in /lib*/clang/*/include \
-/usr/lib*/clang/*/include \
-/usr/local/lib*/clang/*/include \
-"${HOME}"/usr/lib/clang/*/include \
-"${HOME}"/usr/local/lib/clang/*/include
+clanginclude=$(for dir in /lib*/clang*/*/include \
+/usr/lib*/clang*/*/include \
+/usr/local/lib*/clang*/*/include \
+"${HOME}"/usr/lib/clang*/*/include \
+"${HOME}"/usr/local/lib/clang*/*/include
 do echo ${dir}; done | tr '\n' ':')
 
-INPATH="/usr/include:/usr/local/include:${gccinclude}:${C_INCLUDE_PATH:-}"${CPLUS_INCLUDE_PATH:-}
+INPATH="/usr/include:/usr/local/include:${HOME}/include:${HOME}/usr/include:${HOME}/usr/local/include:${gccinclude}:${clanginclude}:${C_INCLUDE_PATH:-}"${CPLUS_INCLUDE_PATH:-}
 . "${DN}"/../lib/libpath
 IFS=":"
 eachpath=(${valid_path})
