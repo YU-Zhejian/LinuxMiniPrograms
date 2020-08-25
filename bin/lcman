@@ -25,7 +25,7 @@ for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
 		"-v" | "--version")
-			infoh "Version 3 Emergency Patch 5, compatiable with LiveChat Version 1 & 2"
+			infoh "Version 3 Emergency Patch 5, compatible with LiveChat Version 1 & 2"
 			exit 0
 			;;
 		"-h" | "--help")
@@ -89,14 +89,14 @@ if [ ${#sf[@]} -eq 0 ]; then
 else
 	for item in "${sf[@]}"; do
 		for ((n = 0; n <= i - 1; n++)); do
-			! [[ ${f[${n}]} == *${item}* ]] || uf[${n}]=true
+			! [[ ${f[${n}]} =~ .*"${item}".* ]] || uf[${n}]=true
 		done
 	done
 fi
 if ! [ ${#se[@]} -eq 0 ]; then
 	for item in "${se[@]}"; do
 		for ((n = 0; n <= i - 1; n++)); do
-			! [[ ${f[${n}]} == *${item}* ]] || uf[${n}]=false
+			! [ ${f[${n}]} = ${item} ] || uf[${n}]=false
 		done
 	done
 fi
@@ -107,7 +107,7 @@ if [ ${#sm[@]} -eq 0 ]; then
 else
 	for item in "${sm[@]}"; do
 		for ((n = 0; n <= i - 1; n++)); do
-			! [[ ${m[${n}]} == *${item}* ]] || um[${n}]=true
+			! [[ ${m[${n}]} =~ .*"${item}".* ]] || um[${n}]=true
 		done
 	done
 fi
