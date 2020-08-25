@@ -1,3 +1,10 @@
 2020-06-11
-AutoZip series: Support BAM, jar, iso (mount command), pack200
+AutoZip series:
+https://github.com/lz4/lz4 (installed v1.9.2 in BSD, *.lz4)
+https://github.com/facebook/zstd (installed v1.3.4 in BSD, *.zst)
+https://www.lzop.org/ (available v1.04 in BSD, *.lzo)
+https://github.com/google/brotli (N/A in BSD, pip install Brotli 1.0.7, *.br)
+# http://www.h5py.org/lzf/ (N/A in BSD)
+# https://github.com/google/snappy (1.1.8 in BSD, Lib only)
 
+PSS: @

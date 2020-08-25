@@ -1,0 +1,39 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= includels(1)
+
+== NAME
+libdo_monitor - Monitor a process
+
+== SYNOPSIS
+
+libdo_monitor [LIBDO_PID] [PPID]
+
+== DESCRIPTION
+
+Monitor `[LIBDO_PID]` and its sub-processes/threads by watching its CPU, memory and disk IO. We also use `pstree` to expand `[PPID]`.
+
+== OPTIONS
+
+None.
+
+== EXAMPLES
+
+These examples are tested under Ubuntu GNU/Linux 20.10.
+
+```
+Will be added later.
+```
+
+== COMPATIBILITY
+
+=== BSD
+
+Not supported.
+
+=== CYGWin
+
+Not supported.
+
+include::include/copy.adoc[]

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # LIBDO_MONITOR.py V1
 import psutil,os,sys,time,datetime,signal
 from LMP_Pylib.libylfile import *
@@ -19,7 +20,7 @@ while True:
 	print(now() + 'CurrentSWAP: ' + 'Total=' + str(cmem.total) + ',ImmAvail=' + str(cmem.free) + ',AvailPer=' + str(cmem.percent))
 	tsp = now()
 	try:
-		print(tsp + 'PSTREE:\n' + yldo('pstree -ap ' + sys.argv[2]))
+		print(tsp + 'PSTREE:\n' + yldo('pstree -ap ' + sys.argv[2] +'||true'))
 		ptable=SHELL_PROC.children(recursive=True)
 		for subp in ptable:
 			print(tsp + str(subp.pid) + ':INFO:' + ','.join(["EXE=" + subp.exe(), "CMD=" + ' '.join(subp.cmdline()), "STAT=" + subp.status(), "CWD=" + subp.cwd(), "OnCPU=" + str(subp.cpu_num()), "%CPU=" + str(subp.cpu_percent(0.2)),  "NICE=" + str(subp.nice())]))
