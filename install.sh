@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# INSTALLER V3P3
+# INSTALLER V3P4
 set -eu
 OLDIFS="${IFS}"
 if ！ readlink -f . &>/dev/null;then
@@ -27,7 +27,7 @@ for opt in "${@}"; do
 	if isopt ${opt}; then
 		case ${opt} in
 		"-v" | "--version")
-			echo "Version 3 Patch 3"
+			echo "Version 3 Patch 4"
 			exit 0
 			;;
 		"-h" | "--help")

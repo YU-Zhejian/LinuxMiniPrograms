@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# PLS.sh V3P2
+# PLS.sh V3P3
 oldifs="${IFS}"
 function my_grep() {
 	regstr="${1}"
 	local tmpff=$(mktemp -t pls.XXXXXX)
 	"${mycat}" "${tmpf}" | "${mygrep}" -v "${regstr}" >"${tmpff}"
-	mv "${tmpff}" "${tmpf}"
+	"${mymv}" "${tmpff}" "${tmpf}"
 }
 more="${mymore}"
 . "${DN}"/../lib/libisopt
@@ -27,7 +27,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 3 Patch 2 in Bash"
+			echo "Version 3 Patch 3"
 			exit 0
 			;;
 		"--no-x")
@@ -85,5 +85,5 @@ else
 	done
 	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"\|"${more}"
 fi
-rm "${tmpf}"
+"${myrm}" "${tmpf}"
 IFS="${oldifs}"

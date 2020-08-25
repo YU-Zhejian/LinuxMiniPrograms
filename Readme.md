@@ -61,6 +61,12 @@ We need some "standard" GNU executables.
 
 - `GNU ps>= procps-ng version 3.3.10` or `ps - process status` or `ps (cygwin) 3.1.4`.
 
+If youwould like to use libDO v3 instead of v2, you need following dependencies:
+
+- `pstree(PSmisc)>=23.1` for GNU/Linux users or `pstree $ by Fred Hucht (C) 1993-2015>=2.39` for BSD users.
+
+- `psutil>=5.7.2`
+
 The entire system needs `git` to be downloaded, installed or upgraded. `git` can be installed by your package manager or by compiling its source code. If there's no `git` on your target machine, please download a zipped archive from GitHub and use `scp` to transport it to your target machine. However, you may unable to get updates in this way.
 
 All documentations are written in `asciidoctor`.If you wish to compile them into Groff man, PDF, HTML and YuZJLab Usage, please install the following dependencies:
