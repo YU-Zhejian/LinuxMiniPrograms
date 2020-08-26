@@ -10,9 +10,9 @@ if [ -z "${mysed:-}" ]; then
 		while read line; do
 			lntmp="${line}"
 			sed_ver=$("${line}" --version 2>&1||true)
-			if [[ "${sed_ver}" =~ .*"GNU".* ]]; then
+			if [[ "${sed_ver}" == *"GNU"* ]]; then
 				GNU_found=true
-				[[ "${sed_ver}" =~ .*"Cygwin".* ]] && type="GNU version in Cygwin systems" || type="GNU version in GNU/Linux systems"
+				[[ "${sed_ver}" == *"Cygwin"* ]] && type="GNU version in Cygwin systems" || type="GNU version in GNU/Linux systems"
 			else
 				type="BSD version"
 			fi

@@ -9,9 +9,9 @@ if ! "${mygrep}" ^"my${PROGNAME}"= "${path_sh}";then
 		while read line; do
 			lntmp="${line}"
 			PROG_ver=$("${line}" --version 2>&1||true)
-			if [[ "${PROG_ver}" =~ .*"GNU".* ]]; then
+			if [[ "${PROG_ver}" == *"GNU"* ]]; then
 				GNU_found=true
-				[[ "${PROG_ver}" =~ .*"Cygwin".* ]] && type="GNU version in Cygwin systems" || type="GNU version in GNU/Linux systems"
+				[[ "${PROG_ver}" == *"Cygwin"* ]] && type="GNU version in Cygwin systems" || type="GNU version in GNU/Linux systems"
 			else
 				type="BSD version"
 			fi

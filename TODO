@@ -1,10 +1,8 @@
 2020-06-11
 AutoZip series:
-https://github.com/lz4/lz4 (installed v1.9.2 in BSD, *.lz4)
-https://github.com/facebook/zstd (installed v1.3.4 in BSD, *.zst)
-https://www.lzop.org/ (available v1.04 in BSD, *.lzo)
-https://github.com/google/brotli (N/A in BSD, pip install Brotli 1.0.7, *.br)
-# http://www.h5py.org/lzf/ (N/A in BSD)
-# https://github.com/google/snappy (1.1.8 in BSD, Lib only)
+https://github.com/lz4/lz4 (installed v1.9.2 in BSD, 1.8.1 in centos, 1.7.5 in cygwin, *.lz4)
+https://github.com/facebook/zstd (installed v1.3.4 in BSD, 1.4.2 in centos, 1.4.5 in cygwin, *.zst)
+https://www.lzop.org/ (available v1.04 in BSD, 1.03 in centos/cygwin, *.lzo)
+https://github.com/google/brotli (N/A in BSD, pip install Brotli 1.0.7, 1.0.6 in centos, 1.0.7 in cygwin, *.br)
 
 PSS: @

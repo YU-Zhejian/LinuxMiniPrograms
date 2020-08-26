@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # DATEDIFF V2
-if [[ "$(date --version 2>&1||true)" =~ "GNU" ]];then
+if [[ "$(date --version 2>&1||true)" == *"GNU"* ]];then
 	Start_Sec=$(date -d "${1}" "+%s")
 	End_Sec=$(date -d "${2}" "+%s")
 else

@@ -12,9 +12,9 @@ function getuser() {
 	fi
 }
 function getcorenumber(){
-	if [[ ${myos} =~ .*"Linux".* ]];then
-		"${mycat}" /proc/cpuinfo | "${mygrep}" '^processor\s: ' | wc -l | awk '{print $1}'
-	elif [[ ${myos} =~ .*"BSD".* ]];then
+	if [[ ${myos} == *"BSD"* ]];then
 		sysctl -a|grep hw.ncpu|awk '{print $2;}'
+	else
+		"${mycat}" /proc/cpuinfo | "${mygrep}" '^processor\s: ' | wc -l | awk '{print $1}'
 	fi
 }

@@ -9,10 +9,10 @@ if [ -z "${mygrep:-}" ]; then
 		"${myls}" -F -1 "${dir}" | grep '.\*$' | sed "s;\*\$;;" | grep '^grep\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >"${tmpf}"
 		while read line; do
 			grep_ver=$("${line}" --version 2>&1||true)
-			if [[ "${grep_ver}" =~ .*"GNU".* ]]; then
-				if [[ "${grep_ver}" =~ .*"BSD".* ]]; then
+			if [[ "${grep_ver}" == *"GNU"* ]]; then
+				if [[ "${grep_ver}" == *"BSD"* ]]; then
 					type="GNU version in BSD systems"
-				elif [[ "${grep_ver}" =~ .*"Cygwin".* ]]; then
+				elif [[ "${grep_ver}" == *"Cygwin"* ]]; then
 					type="GNU version in Cygwin systems"
 				else
 					type="GNU version in GNU/Linux systems"

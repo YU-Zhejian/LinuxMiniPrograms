@@ -10,9 +10,9 @@ if [ -z "${myrm:-}" ]; then
 		while read line; do
 			lntmp="${line}"
 			rm_ver=$("${line}" --version 2>&1||true)
-			if [[ "${rm_ver}" =~ .*"GNU".* ]]; then
+			if [[ "${rm_ver}" == *"GNU"* ]]; then
 				GNU_found=true
-				[[ "${rm_ver}" =~ .*"Cygwin".* ]] && type="GNU version in Cygwin systems" || type="GNU version in GNU/Linux systems"
+				[[ "${rm_ver}" == *"Cygwin"* ]] && type="GNU version in Cygwin systems" || type="GNU version in GNU/Linux systems"
 			else
 				type="BSD version"
 			fi

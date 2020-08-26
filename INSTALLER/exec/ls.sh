@@ -10,9 +10,9 @@ if [ -z "${myls:-}" ]; then
 		while read line; do
 			lntmp="${line}"
 			ls_ver=$("${line}" --version 2>&1||true)
-			if [[ "${ls_ver}" =~ .*"GNU".* ]]; then
+			if [[ "${ls_ver}" == *"GNU"* ]]; then
 				GNU_found=true
-				[[ "${ls_ver}" =~ .*"Cygwin".* ]] && type="GNU version in Cygwin systems" || type="GNU version in GNU/Linux systems"
+				[[ "${ls_ver}" == *"Cygwin"* ]] && type="GNU version in Cygwin systems" || type="GNU version in GNU/Linux systems"
 			else
 				type="BSD version"
 			fi

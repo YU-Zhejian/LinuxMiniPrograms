@@ -11,75 +11,51 @@ ISFORCE=false
 THREAD=0
 OPT=()
 STDS=()
-# Check for all compoments: frontend.
+# Check for all components: backend.
+function ckavail() {
+	local CK_PROG=("${@}")
+	local CK_EXT="${1} "
+	unset CK_PROG[0]
+	for prog_grp in "${CK_PROG[@]}"; do
+		CK_PROG_TMP=(${prog_grp})
+		evalstr="true"
+		for prog in "${CK_PROG_TMP[@]}";do
+			evalstr="${evalstr}"'&&[ ${my'${prog}'} != "ylukh" ]'
+		done
+		if eval "${evalstr}"; then
+			printf "${CK_EXT}"
+			return 0
+		fi
+	done
+	return 1
+}
+# Check for all components: frontend.
+
 function autozipck() {
-	echo -e "\033[33mStart checking all compoments..."
-	if [ "${mytar}" != 'ylukh' ]; then
-		echo -e "Checking for 'tar'...\033[32mOK\033[33m"
-		availext="tar"
-	else
-		echo -e "Checking for 'tar'...\033[31mNO\033[33m"
-	fi
-	if [ "${mygzip}" != 'ylukh' ]; then
-		echo -e "Checking for 'gzip'...\033[32mOK\033[33m"
-		availext="${availext}, gz, GZ"
-		[ "${mytar}" = 'ylukh' ] || availext="${availext}, tar.gz, tar.GZ, tgz"
-	else
-		echo -e "Checking for 'gzip'...\033[31mNO\033[33m"
-	fi
-	[ "${mypigz}" != 'ylukh' ] && echo -e "Checking for 'pigz'...\033[32mOK\033[33m" || echo -e "Checking for 'pigz'...\033[31mNO\033[33m"
-	if [ "${mybgzip}" != 'ylukh' ]; then
-		echo -e "Checking for 'bgzip'...\033[32mOK\033[33m"
-		availext="${availext}, bgz"
-	else
-		echo -e "Checking for 'bgzip'...\033[31mNO\033[33m"
-	fi
-	if [ "${myxz}" != 'ylukh' ]; then
-		echo -e "Checking for 'xz'...\033[32mOK\033[33m"
-		availext="${availext}, xz, lzma, lz"
-		[ "${mytar}" = 'ylukh' ] || availext="${availext}, tar.xz, txz, tar.lzma, tlz"
-	else
-		echo -e "Checking for 'xz'...\033[31mNO\033[33m"
-	fi
-	if [ "${mybzip2}" != 'ylukh' ]; then
-		echo -e "Checking for 'bzip2'...\033[32mOK\033[33m"
-		availext="${availext}, bz2"
-		[ "${mytar}" = 'ylukh' ] || availext="${availext}, tar.bz2, tbz"
-	else
-		echo -e "Checking for 'bzip2'...\033[31mNO\033[33m"
-	fi
-	if [ "${my7z}" != 'ylukh' ]; then
-		echo -e "Checking for '7z'...\033[32mOK\033[33m"
-		availext="${availext}, 7z"
-	else
-		echo -e "Checking for '7z'...\033[31mNO\033[33m"
-	fi
-	if [ "${myzip}" != 'ylukh' ]; then
-		echo -e "Checking for 'zip'...\033[32mOK\033[33m"
-		availext="${availext}, zip(Add)"
-	else
-		echo -e "Checking for 'zip'...\033[31mNO\033[33m"
-	fi
-	if [ "${myrar}" != 'ylukh' ]; then
-		echo -e "Checking for 'rar'...\033[32mOK\033[33m"
-		availext="${availext}, rar(Add)"
-	else
-		echo -e "Checking for 'rar'...\033[31mNO\033[33m"
-	fi
-	if [ "${myunzip}" != 'ylukh' ]; then
-		echo -e "Checking for 'unzip'...\033[32mOK\033[33m"
-		availext="${availext}, zip(Extract)"
-	else
-		echo -e "Checking for 'unzip'...\033[31mNO\033[33m"
-	fi
-	if [ "${myunrar}" != 'ylukh' ]; then
-		echo -e "Checking for 'unrar'...\033[32mOK\033[33m"
-		availext="${availext}, rar(Extract)"
-	else
-		echo -e "Checking for 'unrar'...\033[31mNO\033[33m"
-	fi
+	infoh "Start checking formats..."
+	ckavail "tar" tar && TAR=true || TAR=false
+	ckavail "gz GZ" gzip pigz && GZ=true || GZ=false
+	ckavail "bgz" bgzip && BGZ=true || BGZ=false
+	ckavail "bz2" bzip2 && BZ2=true || BZ2=false
+	ckavail "xz" xz && XZ=true || XZ=false
+	ckavail "lz lzma" xz lzma && LZMA=true || LZMA=false
+	ckavail "lz4" lz4 && LZ4=true || LZ4=false
+	ckavail "zst" zstd && ZST=true || ZST=false
+	ckavail "lzo" lzop && LZO=true || LZO=false
+	ckavail "br" brotli && BR=true || BR=false
+	ckavail "7z" 7z 7za && Z7=true || Z7=false
+	ckavail "rar" "rar unrar" && RAR=true || RAR=false
+	ckavail "zip" "zip unzip" && ZIP=true || ZIP=false
+	${TAR} && ${GZ} && printf "tar.gz tgz "
+	${TAR} && ${BZ2} && printf "tar.bz2 tbz "
+	${TAR} && ${XZ} && printf "tar.xz txz "
+	${TAR} && ${LZMA} && printf "tar.lzma tar.lz tlz "
+	${TAR} && ${LZ4} && printf "tar.lz4 "
+	${TAR} && ${ZST} && printf "tar.zst "
+	${TAR} && ${LZO} && printf "tar.lzo "
+	${TAR} && ${BR} && printf "tar.br "
+	infoh "\nCheck complete"
 	[ "${myparallel}" != 'ylukh' ] && echo -e "Checking for 'parallel' in ${myparallel}...\033[32mOK\033[33m" || echo -e "Checking for 'parallel' ...\033[31mNO\033[33m"
-	echo -e "Available extension name on your computer:\n${availext}\033[0m"
 	infoh "Available core number: ${MAXTHREAD}"
 	exit 0
 }
@@ -198,7 +174,7 @@ function stdx_h() {
 	fi
 }
 # standard TAR list/extract head
-function stdtle_h(){
+function stdtle_h() {
 	stdx_h "${@}"
 	local file_i=1
 	local in_i=001
@@ -262,7 +238,7 @@ function stdfc() {
 # Check extension name
 function ckext() {
 	case "${ext}" in
-	"tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "tbz" | "tar.lzma" | "tar.lz" | "tlz" | "gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz" | "rar" | "zip" | "7z") ;;
+	"tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "tbz" | "tar.lzma" | "tar.lz" | "tlz" | "gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz" | "rar" | "zip" | "7z" | "lz4" | "lzo" | "zst" | "br" | "tar.lz4" | "tar.lzo" | "tar.zst" | "tar.br") ;;
 	*)
 		errh "Extension name '${ext}' invalid.\nYou can execute 'autozip' without any argument or option to check available method and extension"
 		;;

@@ -10,7 +10,7 @@ if [ -z "${myparallel:-}" ]; then
 		while read line; do
 			echo "will cite\n" | "${line}" --citation &>>/dev/null||true
 			parallel_ver=$("${line}" --version 2>&1||true)
-			if [[ "${parallel_ver}" =~ .*"GNU".* ]]; then
+			if [[ "${parallel_ver}" == *"GNU"* ]]; then
 				GNU_found=true
 				type="GNU version"
 				echo "parallel found in ${line}, ${type}"

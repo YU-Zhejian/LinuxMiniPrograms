@@ -61,12 +61,12 @@ if [ ${cmd} -eq 0 ]; then
 		while [ ${#all_lines[@]} -gt ${i} ]; do
 			line="${all_lines[i]}"
 			i=$((${i} + 1))
-			if [[ "${line}" =~ "LIBDO IS GOING TO EXECUTE"* ]]; then
+			if [[ "${line}" == "LIBDO IS GOING TO EXECUTE"* ]]; then
 				Proj=$((${Proj} + 1))
 				infoh "Loading ${fn}...${Proj} item proceeded"
 				Proj_CMD[${Proj}]="${line:26}"
 				line="${all_lines[i]}"
-				if [[ "${line}" =~ "LIBDO STARTED AT"* ]]; then
+				if [[ "${line}" == "LIBDO STARTED AT"* ]]; then
 					Proj_Time_s[${Proj}]="${line:17}"
 					i=$((${i} + 2)) #Skip PID
 					line="${all_lines[i]}"
@@ -77,12 +77,12 @@ if [ ${cmd} -eq 0 ]; then
 					Proj_Time[${Proj}]="ERR"
 					continue
 				fi
-				if [[ "${line}" =~ "LIBDO STOPPED AT"* ]]; then
+				if [[ "${line}" == "LIBDO STOPPED AT"* ]]; then
 					Proj_Time_e[${Proj}]="${line:17}"
 					Proj_Time[${Proj}]=$(bash "${DN}"/exec/datediff.sh "${Proj_Time_s[${Proj}]}" "${Proj_Time_e[${Proj}]}")
 					i=$((${i} + 1))
 					line="${all_lines[i]}"
-				elif [[ "${line}" =~ "LIBDO IS GOING TO EXECUTE"* ]]; then
+				elif [[ "${line}" == "LIBDO IS GOING TO EXECUTE"* ]]; then
 					Proj_Time_e[${Proj}]=0
 					Proj_Exit[${Proj}]="-1"
 					Proj_Time[${Proj}]="ERR"
@@ -91,7 +91,7 @@ if [ ${cmd} -eq 0 ]; then
 				if [[ "${line}" == "LIBDO EXITED SUCCESSFULLY" ]]; then
 					i=$((${i} + 1))
 					Proj_Exit[${Proj}]="0"
-				elif [[ "${line}" =~ "LIBDO FAILED, GOT"* ]]; then
+				elif [[ "${line}" == "LIBDO FAILED, GOT"* ]]; then
 					i=$((${i} + 1))
 					Proj_Exit[${Proj}]="${line:21}"
 				fi
@@ -144,7 +144,7 @@ else
 	else
 		i=2
 		line="${all_lines[i]}"
-		if [[ "${line}" =~ "LIBDO STOPPED AT"* ]]; then
+		if [[ "${line}" == "LIBDO STOPPED AT"* ]]; then
 			Time_e="${line:17}"
 			Time="$(bash "${DN}"/exec/datediff.sh "${Time_s}" "${Time_e}")"
 			i=$((${i} + 1))
@@ -152,7 +152,7 @@ else
 		fi
 		if [[ "${line}" == "LIBDO EXITED SUCCESSFULLY" ]]; then
 			Exit="0"
-		elif [[ "${line}" =~ "LIBDO FAILED, GOT"* ]]; then
+		elif [[ "${line}" == "LIBDO FAILED, GOT"* ]]; then
 			Exit="${line:21}"
 		fi
 	fi

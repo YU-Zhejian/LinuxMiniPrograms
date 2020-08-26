@@ -42,7 +42,7 @@ function mktbl_GetLongestString() {
 }
 oldifs=${IFS}
 while read line; do
-	if ! [[ "${line}" =~ ^#.* ]]; then
+	if ! [[ "${line}" == ^#* ]]; then
 		IFS=";"
 		curr_col_items=(${line})
 		IFS=''
@@ -68,7 +68,7 @@ for row_tmp_str in "${row[@]}"; do
 	row_len=${#row_tmp_len}
 	unset row_tmp_len
 	curr_row=''
-	if [[ ${row_instruction[${j}]} =~ ^W.* ]]; then #Wrap
+	if [[ ${row_instruction[${j}]} == ^W* ]]; then #Wrap
 		echo "Still Testing"
 		exit
 		wrap=${row_instruction[${j}]:1}
@@ -90,7 +90,7 @@ for row_tmp_str in "${row[@]}"; do
 			curr_row="${curr_row}${formatted_item};"
 		done
 		unset formatted_item wrap_s wrap wrap_e nit row_tmp item
-	elif [[ ${row_instruction[${j}]} =~ ^S.* ]]; then #Shrink
+	elif [[ ${row_instruction[${j}]} == ^S* ]]; then #Shrink
 		shrink=${row_instruction[${j}]:1}
 		shrinked=$(($shrink - 3))
 		if [ ${row_len} -gt ${shrink} ]; then row_len=${shrink}; fi

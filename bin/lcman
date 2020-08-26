@@ -7,7 +7,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 infoh "YuZJLab LiveChat Manager"
 infoh "Copyright (C) 2019-2020 YU Zhejian"
-if ! [[ "$("${mymore}" --version 2>&1||true)" =~ .*"util-linux".* ]]; then
+if ! [[ "$("${mymore}" --version 2>&1||true)" == *"util-linux"* ]]; then
 	warnh "Will use ${mycat} as more"
 	mymore="${mycat}"
 fi
@@ -89,7 +89,7 @@ if [ ${#sf[@]} -eq 0 ]; then
 else
 	for item in "${sf[@]}"; do
 		for ((n = 0; n <= i - 1; n++)); do
-			! [[ ${f[${n}]} =~ .*"${item}".* ]] || uf[${n}]=true
+			! [[ ${f[${n}]} == *"${item}"* ]] || uf[${n}]=true
 		done
 	done
 fi
@@ -107,7 +107,7 @@ if [ ${#sm[@]} -eq 0 ]; then
 else
 	for item in "${sm[@]}"; do
 		for ((n = 0; n <= i - 1; n++)); do
-			! [[ ${m[${n}]} =~ .*"${item}".* ]] || um[${n}]=true
+			! [[ ${m[${n}]} == *"${item}"* ]] || um[${n}]=true
 		done
 	done
 fi

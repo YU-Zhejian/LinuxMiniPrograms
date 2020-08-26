@@ -41,11 +41,11 @@ fi
 while read -p "$(getps1)" line; do
 	line=$(trimstr "${line}")
 	${UNFILL} && buffer="${buffer:0:-1} ${line}" || buffer="${line}"
-	[[ "${line}" =~ .*'\' ]] && UNFILL=true || UNFILL=false
+	[[ "${line}" == *'\' ]] && UNFILL=true || UNFILL=false
 	if ! ${UNFILL}; then
 		echo "$(date '+%Y-%m-%d %H:%M:%S'),${PWD}> ${buffer}" >> "${log}"
 		for str in "${builtins[@]}"; do
-			if [[ "${buffer}" =~ "${str} ".* ]]; then
+			if [[ "${buffer}" == "${str} "* ]]; then
 				tmpf="$(mktemp -t libdosh.XXXXX)"
 				infoh "Builtin"
 				echo "${buffer}"' 2>&1 | tee -a "${log}" && prev_out=0 || prev_out=${?}' > "${tmpf}"
@@ -56,7 +56,7 @@ while read -p "$(getps1)" line; do
 			fi
 		done
 		for str in "${disabled[@]}"; do
-			if [[ "${buffer}" =~ "${str} ".* ]]; then
+			if [[ "${buffer}" == "${str} "* ]]; then
 				echo -e "\033[31mFeature Disabled\033[0m"
 				break
 			fi
