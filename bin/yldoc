@@ -32,7 +32,7 @@ for opt in "${@}"; do
 			;;
 		"-l" | "--list")
 			infoh "Reading database..."
-			"${myls}" -1 "${DN}"/../doc | "${mysort}" | "${mysed}" 's/.usage//' | "${more}"
+			"${myls}" -1 "${DN}"/../doc | "${mysort}" | "${mysed}" 's/.usage$//' | "${more}"
 			exit 0
 			;;
 		*)

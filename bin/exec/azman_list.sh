@@ -4,7 +4,7 @@ USESPLIT=false
 unset STDS[0]
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
 for fulln in "${STDS[@]}"; do
-	fn="$(echo ${fulln%.*} | "${mysed}" "s;.part1;;" | "${mysed}" "s;.part01;;")"
+	fn="$(echo ${fulln%.*} | "${mysed}" "s;.part1$;;" | "${mysed}" "s;.part01$;;")"
 	ext="${fulln##*.}"
 	if [ "${fn##*.}" = "tar" ]; then
 		ext="tar.${ext}"
@@ -12,11 +12,11 @@ for fulln in "${STDS[@]}"; do
 	fi
 	if ! [ -f "${fulln}" ] && [ -f "${fulln}.001" ]; then
 		USESPLIT=true
-	elif ! [ -f "${fulln}" ] && [ -f "$(echo ${fulln} | "${mysed}" "s;.rar;.part01.rar;")" ] && [ ${ext} = "rar" ]; then
-		fulln="$(echo ${fulln} | "${mysed}" "s;.rar;.part01.rar;")"
+	elif ! [ -f "${fulln}" ] && [ -f "$(echo ${fulln} | "${mysed}" "s;.rar$;.part01.rar;")" ] && [ ${ext} = "rar" ]; then
+		fulln="$(echo ${fulln} | "${mysed}" "s;.rar$;.part01.rar;")"
 		USESPLIT=true
-	elif ! [ -f "${fulln}" ] && [ -f "$(echo ${fulln} | "${mysed}" "s;.rar;.part1.rar;")" ] && [ ${ext} = "rar" ]; then
-		fulln="$(echo ${fulln} | "${mysed}" "s;.rar;.part1.rar;")"
+	elif ! [ -f "${fulln}" ] && [ -f "$(echo ${fulln} | "${mysed}" "s;.rar$;.part1.rar;")" ] && [ ${ext} = "rar" ]; then
+		fulln="$(echo ${fulln} | "${mysed}" "s;.rar$;.part1.rar;")"
 		USESPLIT=true
 	elif ! [ -f "${fulln}" ]; then
 		warnh "Filename '${fulln}' invalid and skipped"

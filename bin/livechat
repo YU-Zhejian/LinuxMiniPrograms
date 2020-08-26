@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LIVECHAT V1EP7
+# LIVECHAT V1P8
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
@@ -47,7 +47,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1 Emergency Patch 7"
+			echo "Version 1 Patch 8"
 			exit 0
 			;;
 		*)
@@ -66,12 +66,7 @@ if [ -z "${STDS}" ]; then
 else
 	LCUN="${STDS}"
 fi
-while read line;do
-	if [ "${line}" = "${LCUN}" ];then
-	errh "There's a user with the same name"
-	exit 1
-	fi
-done < LCONLINE
+! "${mygrep}" "${LCUN}" LCONLINE || errh "There's a user with the same name"
 unset BOOLONLINE
 echo "${LCUN}" >>LCONLINE
 MESS_SD="${LCUN} is now on line"

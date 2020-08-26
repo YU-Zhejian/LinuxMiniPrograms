@@ -8,7 +8,7 @@ if ! echo -e "add\t${$}" > add.lock 2> /dev/null; then
 	errh "Repository being added by $("${mycat}" add.lock)"
 fi
 for url in "${STDS[@]}"; do
-	url=$(echo ${url} | "${mysed}" 's;file://;;')
+	url=$(echo ${url} | "${mysed}" 's;^file://;;')
 	if ! "${mypython}" "${DN}"/exec/valid_url.py "${url}";then
 		warnh "Skipping bad URL ${url}"
 		continue

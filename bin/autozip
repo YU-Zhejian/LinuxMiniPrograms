@@ -15,7 +15,7 @@ if [ -z "${STDS[1]:-}" ]; then
 	if [ -f "${fn}" ]; then
 		ext="gz"
 	elif [ -d "${fn}" ];then
-		fn=$(echo ${fn} | ${mysed} "s:/$::")
+		fn=$(echo ${fn} | ${mysed} "s;/$;;")
 		ext="tar.gz"
 	else
 		errh "Filename '${fn}' invalid"
