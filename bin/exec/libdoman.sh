@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-#LIBDOMAN.sh V7
+#LIBDOMAN.sh V7P1
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 more="${mymore}"
 cmd=0
 STDS=()
+ISMACHINE=false
 for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
@@ -13,8 +14,12 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			infoh "Version 7 in Bash, compatiable with libdo Version 2"
+			infoh "Version 7 Patch 1 in Bash, compatiable with libdo Version 2 & 3"
 			exit 0
+			;;
+		"-m"|"--machine")
+			cmd=0
+			ISMACHINE=true
 			;;
 		-o\:*)
 			cmd=${opt:3}
@@ -79,7 +84,11 @@ if [ ${cmd} -eq 0 ]; then
 				fi
 				if [[ "${line}" == "LIBDO STOPPED AT"* ]]; then
 					Proj_Time_e[${Proj}]="${line:17}"
-					Proj_Time[${Proj}]=$(bash "${DN}"/exec/datediff.sh "${Proj_Time_s[${Proj}]}" "${Proj_Time_e[${Proj}]}")
+					if ${ISMACHINE};then
+						Proj_Time[${Proj}]=$(bash "${DN}"/exec/datediff.sh "${Proj_Time_s[${Proj}]}" "${Proj_Time_e[${Proj}]}" machine)
+					else
+						Proj_Time[${Proj}]=$(bash "${DN}"/exec/datediff.sh "${Proj_Time_s[${Proj}]}" "${Proj_Time_e[${Proj}]}")
+					fi
 					i=$((${i} + 1))
 					line="${all_lines[i]}"
 				elif [[ "${line}" == "LIBDO IS GOING TO EXECUTE"* ]]; then
@@ -98,14 +107,20 @@ if [ ${cmd} -eq 0 ]; then
 			fi
 		done
 		infoh "File ${fn} loaded. Making table..."
-		table=$(mktemp -t libdo_man.XXXXXX)
-		echo -e "#1\n#S90\n#1\n#1" >"${table}"
-		echo "NO.;COMMAND;EXIT;TIME" >>"${table}"
-		for ((i = 1; i <= ${Proj}; i++)); do
-			echo "${i};${Proj_CMD[${i}]};${Proj_Exit[${i}]};${Proj_Time[${i}]}" >>"${table}"
-		done
-		ylmktbl "${table}" | "${more}"
-		"${myrm}" "${ffn}" "${table}"
+		if ${ISMACHINE};then
+			for ((i = 1; i <= ${Proj}; i++)); do
+				echo -e "${Proj_CMD[${i}]}\t${Proj_Exit[${i}]}\t${Proj_Time[${i}]}"
+			done
+		else
+			table=$(mktemp -t libdo_man.XXXXXX)
+			echo -e "#1\n#S90\n#1\n#1" >"${table}"
+			echo "NO.;COMMAND;EXIT;TIME" >>"${table}"
+			for ((i = 1; i <= ${Proj}; i++)); do
+				echo "${i};${Proj_CMD[${i}]};${Proj_Exit[${i}]};${Proj_Time[${i}]}" >>"${table}"
+			done
+			ylmktbl "${table}" | "${more}"
+			"${myrm}" "${ffn}" "${table}"
+		fi
 		unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table ffn all_lines
 	done
 else

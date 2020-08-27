@@ -1,25 +1,29 @@
 #!/usr/bin/env python
-# LIBDOMAN.py V2P1
+# LIBDOMAN.py V2P2
 from LMP_Pylib.libisopt import *
 from LMP_Pylib.libmktbl import *
+from LMP_Pylib.libstr import *
 import sys,os
 sstr=[]
 cmd=0
+ISMACHINE=False
 for sysarg in sys.argv[2:]:
 	if isopt(sysarg):
 		if sysarg=='-h' or sysarg=='--help':
 			os.system('yldoc libdoman')
 			exit(0)
 		elif sysarg=='-v' or sysarg=='--version':
-			print('Version 2 patch 1 in Python, compatiable with libdo Version 2.')
+			print('Version 2 patch 2 in Python, compatiable with libdo Version 2 & 3')
 			exit(0)
+		elif sysarg == '-m' or sysarg == '--machine':
+			cmd=0
+			ISMACHINE=True
 		elif sysarg.startswith('-o:'):
 			cmd=int(sysarg[3:])
 		elif sysarg.startswith('--output:'):
 			cmd=int(sysarg[9:])
 		else:
-			print("\033[31mERROR: Option "+sysarg+" invalid.\033[0m")
-			exit(1)
+			errh("Option "+sysarg+" invalid")
 	else:
 		sstr.append(sysarg)
 
@@ -27,9 +31,9 @@ if cmd==0:
 	for fn in sstr:
 		fn=sys.argv[1].strip()+'/'+fn.strip()
 		if not os.path.isfile(fn):
-			print("\033[31mERROR: Filename ", fn, "invalid. Use libdoman -h for help.\033[0m")
-			exit(1)
-		print("\033[33mLoading", fn, "...0 item proceeded.\033[0m")
+			errh("Filename "+ fn+ " invalid. Use libdoman -h for help")
+		if not ISMACHINE:
+			infoh("Loading"+ fn+ "...0 item proceeded")
 		Proj = -1
 		tmpf=mktemp("libdo_man.XXXXXX")
 		os.system('cat "'+fn+'" | grep LIBDO >'+tmpf)
@@ -47,7 +51,7 @@ if cmd==0:
 			i += 1
 			if line.startswith('LIBDO IS GOING TO EXECUTE'):
 				Proj += 1
-				print("\033[33mLoading", fn, "..." + str(Proj+1) + " item proceeded.\033[0m")
+				infoh("Loading"+ fn+ "..." + str(Proj+1) + " item proceeded")
 				Proj_cmd.append(line[26:])
 				line = grep_lns[i]
 				if line.startswith('LIBDO STARTED AT'):
@@ -63,7 +67,10 @@ if cmd==0:
 					Proj_time_e.append(line.replace('.', '')[17:])
 					i += 1
 					line = grep_lns[i]
-					time_calc = yldo('bash "'+os.path.dirname(sys.argv[0])+'"/datediff.sh ' + ' "' + Proj_time_s[Proj] + '" "' + Proj_time_e[Proj] + '"')
+					if ISMACHINE:
+						time_calc = yldo('bash "' + os.path.dirname(sys.argv[0]) + '"/datediff.sh ' + ' "' + Proj_time_s[Proj] + '" "' + Proj_time_e[Proj] + '" machine')
+					else:
+						time_calc = yldo('bash "'+os.path.dirname(sys.argv[0])+'"/datediff.sh ' + ' "' + Proj_time_s[Proj] + '" "' + Proj_time_e[Proj] + '"')
 					Proj_time.append(time_calc)
 				elif line.startswith('LIBDO IS GOING TO EXECUTE'):
 					Proj_time_e.append('0')
@@ -75,20 +82,23 @@ if cmd==0:
 					Proj_exit.append('0')
 				elif line.startswith('LIBDO FAILED, GOT'):
 					Proj_exit.append(line.replace('.', '')[21:])
-		print("\033[33mFile", fn, "loaded. Making table...\033[0m")
-		tmpf=mktemp("libdo_man.XXXXXX")
-		tmpf_hand = open(tmpf, 'w')
-		tmpf_hand.write('#1\n#S90\n#1\n#1\nNO.;COMMAND;EXIT;TIME\n')
-		for i in range(Proj+1):
-			tmpf_hand.write(str(i+1) + ';' + Proj_cmd[i] + ';' + Proj_exit[i] + ';' + Proj_time[i]+'\n')
-		tmpf_hand.close()
-		mktbl(tmpf)
-		os.remove(tmpf)
+		infoh("File"+ fn+ "loaded. Making table...")
+		if ISMACHINE:
+			for i in range(Proj + 1):
+				print(Proj_cmd[i] + '\t' + Proj_exit[i] + '\t' + Proj_time[i])
+		else:
+			tmpf=mktemp("libdo_man.XXXXXX")
+			tmpf_hand = open(tmpf, 'w')
+			tmpf_hand.write('#1\n#S90\n#1\n#1\nNO.;COMMAND;EXIT;TIME\n')
+			for i in range(Proj+1):
+				tmpf_hand.write(str(i+1) + ';' + Proj_cmd[i] + ';' + Proj_exit[i] + ';' + Proj_time[i]+'\n')
+			tmpf_hand.close()
+			mktbl(tmpf)
+			os.remove(tmpf)
 else:
 	fn = sys.argv[1].strip() + '/' + sstr[0]
 	if not os.path.isfile(fn):
-		print("\033[31mERROR: Filename ", fn, "invalid. Use libdoman -h for help.\033[0m")
-		exit(1)
+		errh("Filename "+ fn+ " invalid. Use libdoman -h for help")
 	ln_s=0
 	ln_e=0
 	tmpf=mktemp("libdo_man.XXXXXX")
@@ -104,7 +114,7 @@ else:
 			ln_e = int(line.strip().split("\t")[0])-1
 			break
 	if ln_s==0:
-		print("\033[31mERROR: "+str(cmd)+" invalid.\033[0m")
+		errh(str(cmd)+" invalid")
 	if ln_e==0:
 		ln_e = pywcl(fn)
 	tmpf = mktemp("libdo_man.XXXXXX")
@@ -143,4 +153,4 @@ else:
 	else:
 		os.system('head -n ' + str(els) + ' "' +fn +'" | tail -n ' + str(tls - els+1))
 	print("\033[33m_______________OUTPUT____FINISHED________________\033[0m")
-print("\033[33mFinished.\033[0m")
+infoh("Finished")

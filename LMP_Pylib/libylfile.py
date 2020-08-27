@@ -2,8 +2,7 @@
 import os
 def ylread(filename:str)->str:
 	if not os.path.isfile(filename):
-		print("\033[31mERROR: File "+filename+" invalid.\033[0m")
-		raise FileNotFoundError
+		errh("File "+filename+" invalid")
 	fh=open(filename)
 	rets=fh.read().strip()
 	fh.close()

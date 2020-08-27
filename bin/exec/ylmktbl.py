@@ -3,6 +3,7 @@
 import sys
 from LMP_Pylib.libisopt import *
 from LMP_Pylib.libmktbl import *
+from LMP_Pylib.libstr import *
 sys.argv.pop(0)
 sstr=[]
 for sysarg in sys.argv[1:]:
@@ -14,7 +15,7 @@ for sysarg in sys.argv[1:]:
 			print('Version 3 in Python')
 			exit(0)
 		else:
-			print("\033[31mERROR: Option "+sysarg+" invalid.\033[0m")
+			errh("Option "+sysarg+" invalid")
 			exit(1)
 	else:
 		sstr.append(sysarg)

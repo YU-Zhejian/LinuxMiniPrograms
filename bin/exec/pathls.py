@@ -54,7 +54,7 @@ for sysarg in sys.argv[1:]:
 				print(mypath)
 			exit(0)
 		else:
-			print("\033[31mERROR: Option "+sysarg+" invalid.\033[0m")
+			errh("Option "+sysarg+" invalid")
 			exit(1)
 	else:
 		sstr.append(sysarg)

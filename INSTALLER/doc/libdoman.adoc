@@ -23,6 +23,8 @@ include::include/cmnopt.adoc[]
 
 * `-o:[item]|--output:[item]` Get more information about `[item]`. The numbering of items started from 1.
 
+* `-m|--machine` Use machine mode. Capable for pipelines.
+
 == EXAMPLES
 
 These examples are tested under CYGWin.
