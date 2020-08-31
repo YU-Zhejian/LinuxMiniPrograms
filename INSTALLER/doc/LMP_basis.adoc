@@ -41,7 +41,7 @@ Tested and fully supported.
 
 * We need you to mount `proc` under `proc`. This can be done by (root privilege ) adding `proc /proc procfs rw 0 0` to `/etc/fstab` and execute `mount -a` afterwards.
 
-== CYGWin
+=== CYGWin
 
 * There are differences between CYGWin's and GNU/Linux's `ps`. Fixed.
 
@@ -96,6 +96,14 @@ As we're developing programs mostly under Microsoft Windows, we **DO NOT** pay a
 === Branches on GitHub
 
 There are two main branches on GitHub: `master` and `testing`. `master` branch is a stable releasing branch and `testing` branch is cutting-edge developing branch. Other branches should be considered as unstable.
+
+== UPGRADE
+
+Here are the instructions on how to upgrade LinuxMiniPrograms.
+
+. Use `git pull` to pull down the newest version.
+
+. Use `./installer.sh --update` to re-generate `etc/path.sh`. You may also re-compile the documentations.
 
 == SEE ALSO
 

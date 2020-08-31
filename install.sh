@@ -101,6 +101,7 @@ OPTIONS:
 		"--update")
 			VAR_interactive=false
 			VAR_update=false
+			VAR_update_path=true
 			;;
 		"--update-path")
 			VAR_update_path=true
