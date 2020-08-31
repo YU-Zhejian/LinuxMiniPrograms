@@ -1,67 +1,62 @@
 #!/usr/bin/env bash
-# YLDOC V1P6
+# YLDOC V1P7
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-echo -e "\e[33mYuZJLab Documentation System"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../etc/path.sh
+. "${DN}"/../lib/libstr
+infoh "YuZJLab Documentation System"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
+
 more="${mymore}"
 STDS=()
 for opt in "${@}"; do
-    if isopt "${opt}"; then
-        case "${opt}" in
-        "-h" | "--help")
-            yldoc yldoc
-            exit 0
-            ;;
-        "-v" | "--version")
-            echo "Version 1 Patch 6"
-            exit 0
-            ;;
-        --more\:*)
-            more="${opt:7}"
-            if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-                echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
-                more="${mymore}"
-            else
-                echo -e "\e[33mWill use '${more}' as More.\e[0m"
-            fi
-            ;;
-        "-l" | "--list")
-            echo -e "\e[33mReading database...\e[0m"
-            "${myls}" -1 "${DN}"/../doc | "${mysort}" | "${mysed}" 's/.usage//' | "${more}"
-            exit 0
-            ;;
-        *)
-            echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
-            exit 1
-            ;;
-        esac
-    else
-        STDS=("${STDS[@]}" "${opt}")
-    fi
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-h" | "--help")
+			yldoc yldoc
+			exit 0
+			;;
+		"-v" | "--version")
+			echo "Version 1 Patch 7"
+			exit 0
+			;;
+		--more\:*)
+			more="${opt:7}"
+			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
+				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
+				more="${mymore}"
+			else
+				infoh "Will use '${more}' as More"
+			fi
+			;;
+		"-l" | "--list")
+			infoh "Reading database..."
+			"${myls}" -1 "${DN}"/../doc | "${mysort}" | "${mysed}" 's/.usage$//' | "${more}"
+			exit 0
+			;;
+		*)
+			errh "Option '${opt}' invalid"
+			;;
+		esac
+	else
+		STDS=("${STDS[@]}" "${opt}")
+	fi
 done
 if [ ${#STDS[@]} -eq 0 ]; then
-    yldoc yldoc
-    exit 0
+	yldoc yldoc
+	exit 0
 fi
-
 if [ -f "${DN}"/../etc/yldoc.conf ]; then
-    while read line; do
-        li=(${line})
-        for ((i = 0; i < ${#STDS[@]}; i++)); do
-            if [ ${STDS[${i}]} = ${li[0]} ]; then
-                STDS[${i}]=${li[1]}
-            fi
-        done
-    done <"${DN}"/../etc/yldoc.conf
+	while read line; do
+		li=(${line})
+		for ((i = 0; i < ${#STDS[@]}; i++)); do
+			if [ ${STDS[${i}]} = ${li[0]} ]; then
+				STDS[${i}]=${li[1]}
+			fi
+		done
+	done <"${DN}"/../etc/yldoc.conf
 fi
 for fn in "${STDS[@]}"; do
-    if [ -f "${DN}"/../doc/"${fn}".usage ]; then
-        "${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}"
-    else
-        echo -e "\e[31mERROR: ${DN}/../doc/${fn}.usage not found!\e[0m"
-        exit 1
-    fi
+	if [ -f "${DN}"/../doc/"${fn}".usage ] ;then "${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}" ; else errh "${DN}/../doc/${fn}.usage not found"; fi
 done

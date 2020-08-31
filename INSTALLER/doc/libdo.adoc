@@ -181,6 +181,6 @@ Tested with all functions supported.
 
 == SEE ALSO
 
-libdoman, libdoman_update
+libdoman, libdoman_update, libdo3, libdosh, libdo_monitor
 
 include::include/copy.adoc[]

@@ -1,22 +1,20 @@
 #!/usr/bin/env bash
-# AZMAN V3P2
+# AZMAN V4
 DN="$(readlink -f "$(dirname "${0}")")"
 exec 1>&2
 ISAUTOZIP=false
 . "${DN}"/exec/libautozip.sh
-echo -e "\e[33mYuZJLab AutoZipManager"
-echo -e "Copyright (C) 2020 YU Zhejian\e[0m"
-preck
+infoh "YuZJLab AutoZipManager"
+infoh "Copyright (C) 2020 YU Zhejian"
 ppopt "${@}"
 # ============ Possess arguments ============
 azcmd=${STDS[0]:-}
 unset STDS[0]
 if [ -z "${azcmd}" ]; then
-    autozipck
-    exit 0
-elif [ -e "${DN}"/exec/azman_"${azcmd}".sh ];then
-    . "${DN}"/exec/azman_"${azcmd}".sh
+	autozipck
+	exit 0
+elif [ -f "${DN}"/exec/azman_"${azcmd}".sh ];then
+	. "${DN}"/exec/azman_"${azcmd}".sh
 else
-    echo -e "\e[31mERROR: subcommand '${azcmd}' invalid!\e[0m"
-    exit 1
+	errh "subcommand '${azcmd}' invalid"
 fi

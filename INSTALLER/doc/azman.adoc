@@ -13,11 +13,13 @@ azman - AutoZip file Manager.
 
 == DESCRIPTION
 
-Execute `[subcommand]` which will be introduced bellow. If one of the `[subcommand]`, the program will check the algorithms installed on your computer and return a list of available extension name.
+Execute `[subcommand]` which will be introduced bellow. If there's no `[subcommand]` presented, the program will check the algorithms installed on your computer and return a list of available extension name.
 
 WARNING: This program do not support archives with extension `.lzma`, `.lz` and `bzip2`.
 
 == OPTIONS
+
+* `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when extracting the archive. `[thread]` should not be higher than the number of cores installed. If `[thread]` is omitted, will use the number of cores installed.
 
 include::include/cmnopt.adoc[]
 

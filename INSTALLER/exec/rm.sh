@@ -2,46 +2,40 @@
 # RM.sh V1P1
 . "${path_sh}"
 if [ -z "${myrm:-}" ]; then
-    GNU_found=false
-    for dir in "${eachpath[@]}"; do
-        if ${GNU_found}; then
-            break
-        fi
-        tmpf=$(mktemp -t configpath.XXXXXX)
-        "${myls}" -F -1 "${dir}" | "${mygrep}" '.[*@]$' | "${mysed}" 's;[*@]$;;' | "${mygrep}" '^rm\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
-        while read line; do
-            lntmp="${line}"
-            rm_ver=$("${line}" --version 2>&1||true)
-            if [[ "${rm_ver}" =~ .*"GNU".* ]]; then
-                GNU_found=true
-                if [[ "${rm_ver}" =~ .*"Cygwin".* ]]; then
-                    type="GNU version in Cygwin systems"
-                else
-                    type="GNU version in GNU/Linux systems"
-                fi
-            else
-                type="BSD version"
-            fi
-            echo "rm found in ${line}, ${type}"
-            if ${GNU_found}; then
-                echo "myrm=\"${line}\" #${type}" >>"${path_sh}"
-                break
-            fi
-        done <"${tmpf}"
-        rm "${tmpf}"
-        unset tmpf dir
-    done
-    . "${path_sh}"
-    if [ -z "${myrm:-}" ]; then
-        if [ -z "${lntmp:-}" ]; then
-            echo "myrm=\"ylukh\" #UNKNOWN" >>"${path_sh}"
-            echo -e "\e[31mERROR: rm still not found. Please configure it manually in LMP_ROOT/etc/"${path_sh}".\e[0m"
-        else
-            echo -e "\e[31mWARNING: Will use BSD rm.\e[0m"
-            echo "myrm=\"${lntmp}\" #${type}" >>"${path_sh}"
-        fi
-    fi
-    unset rm_ver line
+	GNU_found=false
+	for dir in "${eachpath[@]}"; do
+		! ${GNU_found} || break
+		tmpf=$(mktemp -t configpath.XXXXXX)
+		"${myls}" -F -1 "${dir}" | "${mygrep}" '.[*@]$' | "${mysed}" 's;[*@]$;;' | "${mygrep}" '^rm\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" >"${tmpf}"
+		while read line; do
+			lntmp="${line}"
+			rm_ver=$("${line}" --version 2>&1||true)
+			if [[ "${rm_ver}" =~ .*"GNU".* ]]; then
+				GNU_found=true
+				[[ "${rm_ver}" =~ .*"Cygwin".* ]] && type="GNU version in Cygwin systems" || type="GNU version in GNU/Linux systems"
+			else
+				type="BSD version"
+			fi
+			echo "rm found in ${line}, ${type}"
+			if ${GNU_found}; then
+				echo "myrm=\"${line}\" #${type}" >>"${path_sh}"
+				break
+			fi
+		done <"${tmpf}"
+		rm "${tmpf}"
+		unset tmpf dir
+	done
+	. "${path_sh}"
+	if [ -z "${myrm:-}" ]; then
+		if [ -z "${lntmp:-}" ]; then
+			echo "myrm=\"ylukh\" #UNKNOWN" >>"${path_sh}"
+			warnh "rm still not found. Please configure it manually in $(readlink -f "${path_sh}")"
+		else
+			warnh "Will use BSD rm"
+			echo "myrm=\"${lntmp}\" #${type}" >>"${path_sh}"
+		fi
+	fi
+	unset rm_ver line
 else
-    echo -e "\e[033mrm configured\e[0m"
+	infoh "rm configured"
 fi

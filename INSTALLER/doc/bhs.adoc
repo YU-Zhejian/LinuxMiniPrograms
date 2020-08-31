@@ -30,17 +30,17 @@ admin@DESKTOP-FFEV0AF ~
 $ bhs
 YuZJLab Bash History Searcher
 Copyright (C) 2019-2020 YU Zhejian
-     1  git clone https://github.com/YuZJLab/LinuxMiniPrograms
-     2  cd LinuxMiniPrograms
-     3  ls
-     4  git status
-     5  git checkout origin/BSD
-     6  git switch -c BSD
-     7  ./install.sh --help
-     8  ./install.sh --all
-     9  exec bash
+	 1  git clone https://github.com/YuZJLab/LinuxMiniPrograms
+	 2  cd LinuxMiniPrograms
+	 3  ls
+	 4  git status
+	 5  git checkout origin/BSD
+	 6  git switch -c BSD
+	 7  ./install.sh --help
+	 8  ./install.sh --all
+	 9  exec bash
 [...]
-    29  git status
+	29  git status
 ```
 
 ```
@@ -49,8 +49,8 @@ $ bhs 'git push'
 YuZJLab Bash History Searcher
 Copyright (C) 2019-2020 YU Zhejian
 "git push"
-    30  git push
-    31  git push
+	30  git push
+	31  git push
    185  git push
 ```
 

@@ -27,6 +27,8 @@ include::include/cmnopt.adoc[]
 
 * `--remove` Remove [sorce] if success.
 
+* `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when extracting the archive. `[thread]` should not be higher than the number of cores installed. If `[thread]` is omitted, will use the number of cores installed.
+
 include::include/autozipcmn.adoc[]
 
 == COMPATIBILITY

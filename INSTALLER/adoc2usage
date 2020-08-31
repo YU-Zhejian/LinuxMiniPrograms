@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# AD2U V2P1
-. "${PWD}"/../../etc/path.sh
-"${mypython}" "${PWD}"/../exec/adoc2usage.py "${@}"

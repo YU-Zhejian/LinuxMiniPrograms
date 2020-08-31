@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# LIBDO_MONITOR V1
+set -ue
+
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../etc/path.sh
+. "${DN}"/../lib/libstr
+function funct_exit() {
+	kill -9 ${$}
+}
+trap "funct_exit" SIGINT
+if [ "${mypython}" != "ylukh" ];then
+	"${mypython}" "${DN}"/exec/libdo_monitor.py "${@}"
+else
+	errh "Python not found"
+fi

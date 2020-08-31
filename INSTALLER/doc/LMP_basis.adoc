@@ -39,6 +39,8 @@ Tested and fully supported.
 
 * The `split` program in FreeBSD is incompatiable with GNU `split`. Please install GNU CoreUtils if you want to use the splitting function in `autozip`.
 
+* We need you to mount `proc` under `proc`. This can be done by (root privilege ) adding `proc /proc procfs rw 0 0` to `/etc/fstab` and execute `mount -a` afterwards.
+
 == CYGWin
 
 * There are differences between CYGWin's and GNU/Linux's `ps`. Fixed.
