@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# AUTODL V1
+set -ue
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../etc/path.sh
+. "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libstr
+
+
