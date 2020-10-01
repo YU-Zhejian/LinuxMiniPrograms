@@ -38,7 +38,7 @@ for PROGNAME in tar gtar gzip cp mv mkdir chmod chown zip unzip find sort cat sp
 	. exec/findcoreutils.sh
 done
 "${mysed}" -i 's;^gtar;tar;' "${path_sh}"
-for PROGNAME in bgzip pigz xz bzip2 7z rar unrar lz4 zstd lzop brotli lzma aria2c curl wget axel git ;do
+for PROGNAME in bgzip pigz xz bzip2 7za 7z rar unrar lz4 zstd lzop brotli lzma aria2c curl wget axel git ;do
 	. exec/findornot.sh
 done
 . "${path_sh}"
