@@ -108,7 +108,7 @@ OPTIONS:
 			VAR_interactive=false
 			;;
 		*)
-			errh "Option '${opt}' invalid"
+			warnh "Option '${opt}' invalid. Ignored"
 			;;
 		esac
 	fi

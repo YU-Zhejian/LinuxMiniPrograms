@@ -36,7 +36,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		*)
-			errh "Option '${opt}' invalid"
+			warnh "Option '${opt}' invalid. Ignored"
 			;;
 		esac
 	else

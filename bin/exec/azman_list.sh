@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #AZMAN_LIST V2
 USESPLIT=false
+ISCAT=false
 unset STDS[0]
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
 for fulln in "${STDS[@]}"; do
@@ -29,19 +30,7 @@ for fulln in "${STDS[@]}"; do
 	case ${ext} in
 	"tar") # ============ tar ============
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		if ${USESPLIT}; then
-			file_i=1
-			in_i=001
-			while [ -f "${fulln}".${in_i} ]; do
-				"${mycat}" "${fulln}".${in_i} >>"${tempf}"
-				file_i=$((${file_i} + 1))
-				in_i=$(fixthree ${file_i})
-			done
-			unset file_i in_1
-			"${mytar}" -tvf "${tempf}"
-		else
-			"${mytar}" -tvf "${fulln}"
-		fi
+		if ${USESPLIT} ;then stdtl "${mycat}" ; else "${mytar}" -tzvf "${fulln}"; fi
 		;;
 	"tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
 		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist"

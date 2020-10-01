@@ -9,7 +9,7 @@ autozip - An automatic file compression tool.
 
 == SYNOPSIS
 
-`autozip [source] [ext] [level] [options]`
+`autozip-cat [source] [ext] [level] [options]`
 
 == DESCRIPTION
 

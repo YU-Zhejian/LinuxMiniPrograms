@@ -5,26 +5,6 @@ https://github.com/facebook/zstd (installed v1.3.4 in BSD, 1.4.2 in centos, 1.4.
 https://www.lzop.org/ (available v1.04 in BSD, 1.03 in centos/cygwin, *.lzo)
 https://github.com/google/brotli (N/A in BSD, pip install Brotli 1.0.7, 1.0.6 in centos, 1.0.7 in cygwin, *.br)
 (ncompress in cygwin)compress, .Z
-pxz
-zip -Zb to use bzip2
-rar
-              A       - audio compression;
-              C       - true color (RGB) data compression;
-              D       - delta compression;
-              E       - x86 executable compression;
-              I       - Intel Itanium executable compression;
-              T       - text compression.
-
-7z
-       DO NOT USE the 7-zip format for backup purpose on Linux/Unix because :
-        - 7-zip does not store the owner/group of the file.
-
-
-       On Linux/Unix, in order to backup directories you must use tar :
-        - to backup a directory  : tar cf - directory | 7za a -si directory.tar.7z
-        - to restore your backup : 7za x -so directory.tar.7z | tar xf -
-
-zip m={MethodID} Deflate Sets a method: Copy, Deflate, Deflate64, BZip2, LZMA, PPMd.
 
 PSS: @
 
@@ -42,3 +22,6 @@ ctorrent
 git-clone
 
 autodl-cat
+
+autozip-cat
+autounzip-cat
