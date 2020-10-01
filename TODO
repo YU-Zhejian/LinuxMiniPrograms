@@ -5,6 +5,8 @@ https://github.com/facebook/zstd (installed v1.3.4 in BSD, 1.4.2 in centos, 1.4.
 https://www.lzop.org/ (available v1.04 in BSD, 1.03 in centos/cygwin, *.lzo)
 https://github.com/google/brotli (N/A in BSD, pip install Brotli 1.0.7, 1.0.6 in centos, 1.0.7 in cygwin, *.br)
 (ncompress in cygwin)compress, .Z
+pax
+cpio
 
 PSS: @
 
