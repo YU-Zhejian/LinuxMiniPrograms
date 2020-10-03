@@ -1,4 +1,5 @@
 #LIBYLFILE.py V1
+from LMP_Pylib.libstr import *
 import os
 def ylread(filename:str)->str:
 	if not os.path.isfile(filename):

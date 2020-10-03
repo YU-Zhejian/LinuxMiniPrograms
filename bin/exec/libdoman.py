@@ -23,7 +23,7 @@ for sysarg in sys.argv[2:]:
 		elif sysarg.startswith('--output:'):
 			cmd=int(sysarg[9:])
 		else:
-			errh("Option "+sysarg+" invalid")
+			warnh("Option "+sysarg+" invalid")
 	else:
 		sstr.append(sysarg)
 

@@ -2,6 +2,7 @@
 #PLS.py V1EP7
 from LMP_Pylib.libisopt import *
 from LMP_Pylib.libpath import *
+from LMP_Pylib.libstr import *
 mylibpath=libpath("PATH")
 import sys,os,re
 def mygrep(mylist:list,regxp:str)->list:
@@ -54,7 +55,7 @@ for sysarg in sys.argv[1:]:
 				print(mypath)
 			exit(0)
 		else:
-			errh("Option "+sysarg+" invalid")
+			warnh("Option "+sysarg+" invalid")
 			exit(1)
 	else:
 		sstr.append(sysarg)

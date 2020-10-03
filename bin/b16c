@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# B64C v1
+set -ue
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../lib/libstr
+infoh "YuZJLab Base64Crypt"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
+. "${DN}"/../etc/path.sh
+mkdir -p "${DN}"/var/enigma.d
+if [ "${mypython}" != "ylukh" ] ;then "${mypython}" "${DN}"/exec/b16c.py "${PWD}" "${@}" ; else errh "No python found!"; fi
