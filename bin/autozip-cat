@@ -10,7 +10,7 @@ ISCAT=true
 ppopt "${@}"
 fn="${STDS[0]:-}"
 ! [ -z "${fn}" ] || fn="-"
-if [ "${fn}" != "-" ] && [ ! -f ${fn} ]; then
+if [ "${fn}" != "-" ] && [ ! -e "${fn}" ]; then
 	exit 1
 fi
 ext="${STDS[1]:-}"
@@ -18,6 +18,9 @@ ext="${STDS[1]:-}"
 LVL="${STDS[2]:-}"
 # ============ Start Compressing ============
 case ${ext} in
+"txt")
+	cmd="${mycat}"
+	;;
 "gz" | "GZ")
 	if [ "${mypigz}" != 'ylukh' ]; then
 		cklvl pigz
@@ -120,5 +123,5 @@ esac
 if [ ${fn} = '-' ]; then
 	${cmd}
 else
-	"${mycat}" "${fn}" | ${cmd}
+	fcat "${fn}" | ${cmd}
 fi

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# LIBDOMAN.py V2P2
+# LIBDOMAN.py V2EP3
 from LMP_Pylib.libisopt import *
 from LMP_Pylib.libmktbl import *
 from LMP_Pylib.libstr import *
@@ -13,7 +13,7 @@ for sysarg in sys.argv[2:]:
 			os.system('yldoc libdoman')
 			exit(0)
 		elif sysarg=='-v' or sysarg=='--version':
-			print('Version 2 patch 2 in Python, compatiable with libdo Version 2 & 3')
+			print('Version 2 Emergency Patch 3 in Python, compatiable with libdo Version 2 & 3')
 			exit(0)
 		elif sysarg == '-m' or sysarg == '--machine':
 			cmd=0
@@ -57,7 +57,13 @@ if cmd==0:
 				if line.startswith('LIBDO STARTED AT'):
 					Proj_time_s.append(line.replace('.', '')[17:])
 					i += 2
-					line = grep_lns[i]
+					try:
+						line = grep_lns[i]
+					except:
+						Proj_time_e.append('0')
+						Proj_exit.append('-1')
+						Proj_time.append('ERR')
+						continue
 				if ln == i:
 					Proj_time_e.append('0')
 					Proj_exit.append('-1')
@@ -136,6 +142,10 @@ else:
 			Time = yldo('bash "' + os.path.dirname(sys.argv[0]) + '"/datediff.sh ' + ' "' + Time_s + '" "' + Time_e + '"')
 			i += 1
 			line = grep_lns[i]
+		else:
+			Time_e = 0
+			Exit = "-1"
+			Time = "ERR"
 		if line.startswith('LIBDO EXITED SUCCESSFULLY'):
 			Exit="0"
 		elif line.startswith('LIBDO FAILED, GOT'):

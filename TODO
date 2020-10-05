@@ -10,20 +10,6 @@ cpio
 
 PSS: @
 
-autodl
-
-Supports:
-aria2 BitTorrent/Magnent/(URL in a file)/(From 2 sources: aria2c http://a/f.iso ftp://b/f.iso)https://aria2.github.io/
-axel
-wget
-curl
-scp
-ascp
-youtube-dl
-ctorrent
-git-clone
-
-autodl-cat
-
-autozip-cat
 autounzip-cat
+
+B16C in C

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# B64C.py V2P1
+# B16C.py V2P1
 import random
 
 from LMP_Pylib.libisopt import *
@@ -50,7 +50,7 @@ class enigma():
 			if not rgear in alh:
 				break
 		ylwrite(path + '/var/enigma.d/' + str(len(alh) + 1), rgear)
-		print(rgear)
+		print(str(len(alh) + 1),rgear)
 
 
 gear = []
