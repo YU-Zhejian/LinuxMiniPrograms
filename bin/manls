@@ -10,7 +10,7 @@ infoh "Copyright (C) 2019-2020 YU Zhejian"
 oldifs="${IFS}"
 
 more="${mymore}"
-INPATH="$(manpath 2>/dev/null||true)/usr/share/man:/usr/local/man:$("${mycat}" /usr/local/etc/man.d/*.conf 2>/dev/null | "${mygrep}" -v \# | "${mygrep}" MANPATH | "${mycut}" -f 2 -d ' ' | tr '\n' ':' || true)${MANPATH:-}"
+INPATH="$(manpath 2>/dev/null||true):/usr/share/man:/usr/local/man:/usr/local/share/man:$("${mycat}" /usr/local/etc/man.d/*.conf 2>/dev/null | "${mygrep}" -v \# | "${mygrep}" MANPATH | "${mycut}" -f 2 -d ' ' | tr '\n' ':' || true)${MANPATH:-}"
 . "${DN}"/../lib/libpath
 IFS=":"
 eachpath=(${valid_path})

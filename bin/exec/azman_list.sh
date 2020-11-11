@@ -30,7 +30,7 @@ for fulln in "${STDS[@]}"; do
 	case ${ext} in
 	"tar") # ============ tar ============
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		if ${USESPLIT} ;then stdtl "${mycat}" ; else "${mytar}" -tzvf "${fulln}"; fi
+		if ${USESPLIT} ;then stdtl "${mycat}" ; else "${mytar}" -tvf "${fulln}"; fi
 		;;
 	"tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
 		[ "${mygzip}" != 'ylukh' ] || errh "GZip NO exist"
