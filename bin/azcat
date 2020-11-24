@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# AZCAT V5
+# ============ Functions ============
+set -eu
+DN="$(readlink -f "$(dirname "${0}")")"
+ISAUTOZIP=true
+. "${DN}"/exec/libautozip.sh
+# ============ Start ============
+infoh "YuZJLab AutoZip"
+infoh "Copyright (C) 2019-2020 YU Zhejian"
+for opt in "${OPT[@]}"; do
+	case "${opt}" in
+	-p\:*)
+		THREAD=${opt:3}
+		;;
+	--parallel\:*)
+		THREAD=${opt:10}
+		;;
+	"-p" | "--parallel")
+		THREAD=${MAXTHREAD}
+		;;
+	*)
+		warnh "Option '${opt}' invalid. Ignored"
+		;;
+	esac
+done
+fn="${STDS[0]:-}"
+! [ -z "${fn}" ] || fn="-"
+if [ -z "${STDS[1]:-}" ]; then
+	if [ -f "${fn}" ]; then
+		ext="gz"
+	elif [ -d "${fn}" ]; then
+		fn=$(echo ${fn} | ${mysed} "s;/$;;")
+		ext="tar"
+	else
+		errh "Filename '${fn}' invalid"
+	fi
+else
+	ext=${STDS[1]}
+	ckext
+fi
+LVL="${STDS[2]:-}"
+SPL=''
+azcmd="${DN}/exec/azcmd -p:${THREAD}"
+case ${ext} in
+tar\.*)
+	ext="${ext//tar./}"
+	;;
+t*z)
+	ext="${ext//t/}"
+	;;
+*) ;;
+esac
+cmd="$(${DN}/exec/azcmd -p:${THREAD} ${ext} ${LVL})"
+infoh "${cmd}"
+if [ "${fn}" = "-" ]; then
+	${cmd}
+else
+	case ${ext} in
+	"bgz")
+		ext="gz"
+		;;
+	esac
+	fcat "${fn}" | ${cmd}
+fi

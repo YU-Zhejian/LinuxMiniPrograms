@@ -20,3 +20,6 @@ __pycache__
 *tmp*
 /.vs
 /venv
+/.git
+*.pyc
+/INSTALLER/C_src
