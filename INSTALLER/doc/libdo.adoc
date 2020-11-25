@@ -8,30 +8,36 @@
 libdo - A library to monitor process.
 
 == SYNOPSIS
+
 ```
 [VARIABLES]
 . /PATH/TO/LIBDO
 DO cmd
 ```
+
 == DESCRIPTION
 
 WARNING: We recently released an update of LibDO from V1* to V2. Please update all your previous files by `libdoman_update`
 
 Fistly, define variables like `LIBDO_LOG`.
 
-Then, use `. /PATH/TO/LIBDO` to import libdo. (Command `source` is equal to command `.`)
+Then, use `. /PATH/TO/LIBDO` to import libdo.
+(Command `source` is equal to command `.`)
 
 Lastly, use `DO cmd` to `execute `cmd`.
 
-Please pay attention that program `eval` is used to execute programs. So, if you want to use redirections, pipes or quotes, escape them first.
+Please pay attention that program `eval` is used to execute programs.
+So, if you want to use redirections, pipes or quotes, escape them first.
 
 == ENVIRONMENTAL VARIABLES
 
-* `LIBDO_TOP_PID` the `pid` to kill if failed. If blank, the program will not kill any process.
+* `LIBDO_TOP_PID` the `pid` to kill if failed.
+If blank, the program will not kill any process.
 
 * `LIBDO_PRIV` exit status.
 
-* `LIBDO_LOG` log name. If blank, there will be no logs.
+* `LIBDO_LOG` log name.
+If blank, there will be no logs.
 
 * `LIBDO_LOG_MODE` log mode.
 
@@ -90,7 +96,8 @@ LIBDO EXITED SUCCESSFULLY
 
 These examples are tested under CYGWin.
 
-Please be aware that we __DO NOT__ recommend using LibDO interactively. You may use it in a shell script.
+Please be aware that we __DO NOT__ recommend using LibDO interactively.
+You may use it in a shell script.
 
 ```
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms

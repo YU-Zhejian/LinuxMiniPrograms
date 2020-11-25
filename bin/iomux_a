@@ -2,5 +2,5 @@
 #IOMUX_ATTACHER V1
 echo "Experimental."
 exit
-cat out  &
+cat out &
 cat /dev/tty >> in

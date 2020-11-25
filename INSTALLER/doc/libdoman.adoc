@@ -19,11 +19,14 @@ Decode LibDO output information from logs.
 
 include::include/cmnopt.adoc[]
 
-* `--more:[program]` By default, the GNU/Linux program `more` will be used if there's too much output. Use `[program]` to replace `more`. e.g. `less`, `cat`, `head` or `tail` if you wish.
+* `--more:[program]` By default, the GNU/Linux program `more` will be used if there's too much output.
+Use `[program]` to replace `more`. e.g. `less`, `cat`, `head` or `tail` if you wish.
 
-* `-o:[item]|--output:[item]` Get more information about `[item]`. The numbering of items started from 1.
+* `-o:[item]|--output:[item]` Get more information about `[item]`.
+The numbering of items started from 1.
 
-* `-m|--machine` Use machine mode. Capable for pipelines.
+* `-m|--machine` Use machine mode.
+Capable for pipelines.
 
 == EXAMPLES
 

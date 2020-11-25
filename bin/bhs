@@ -22,7 +22,10 @@ for opt in "${@}"; do
 			;;
 		--more\:*)
 			more="${opt:7}"
-			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
+			if $(
+				"${more}" --help &> /dev/null
+				echo ${?}
+			) -eq 127; then
 				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
 				more="${mymore}"
 			else
@@ -37,7 +40,7 @@ for opt in "${@}"; do
 		STDS="${STDS}${opt} "
 	fi
 done
-STDS=$(echo "${STDS}"|"${mysed}" "s/ $//")
+STDS=$(echo "${STDS}" | "${mysed}" "s/ $//")
 if [ -n "${STDS}" ]; then
 	echo \"${STDS}\"
 	"${mycat}" -n ~/.bash_history | "${mygrep}" --color=auto -- "${STDS}" | "${more}"

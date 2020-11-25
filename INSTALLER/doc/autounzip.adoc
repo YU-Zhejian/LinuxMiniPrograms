@@ -13,11 +13,14 @@ autounzip - An automatic file decompression tool.
 
 == DESCRIPTION
 
-Extract `[SOURCE]`. If the archive is SPLITTED by `autozip`, suffix like "001" or "z01" should not be added. If `[SOURCE]` is omitted, the program will check the algorithms installed on your computer and display a list of available extension name.
+Extract `[SOURCE]`.
+If the archive is SPLITTED by `autozip`, suffix like "001" or "z01" should not be added.
+If `[SOURCE]` is omitted, the program will check the algorithms installed on your computer and display a list of available extension name.
 
 == KNOWN BUGS
 
-Cannot extract splitted zip files which contains only 1 file. When extracting zip format, we'll use `zip -FF` to merge the files.
+Cannot extract splitted zip files which contains only 1 file.
+When extracting zip format, we'll use `zip -FF` to merge the files.
 
 == OPTIONS
 
@@ -27,7 +30,8 @@ include::include/cmnopt.adoc[]
 
 * `--remove` Remove [sorce] if success.
 
-* `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when extracting the archive. `[thread]` should not be higher than the number of cores installed. If `[thread]` is omitted, will use the number of cores installed.
+* `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when extracting the archive. `[thread]` should not be higher than the number of cores installed.
+If `[thread]` is omitted, will use the number of cores installed.
 
 include::include/autozipcmn.adoc[]
 

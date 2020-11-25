@@ -4,6 +4,7 @@
 = includels(1)
 
 == NAME
+
 includels - A program to search C include paths
 
 == SYNOPSIS
@@ -12,13 +13,15 @@ includels [STRING] [[STRING2]...] [OPTIONS]
 
 == DESCRIPTION
 
-Search `[STRING]` in C include paths. If `[STRING]` is omitted, the program will list all contents in each valid C include paths.
+Search `[STRING]` in C include paths.
+If `[STRING]` is omitted, the program will list all contents in each valid C include paths.
 
 == OPTIONS
 
 include::include/cmnopt.adoc[]
 
-* `--more:[program]` The GNU/Linux program 'more' will be used if there's too much output. Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
+* `--more:[program]` The GNU/Linux program 'more' will be used if there's too much output.
+Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
 
 * `-l|--list` List all valid C include paths.
 

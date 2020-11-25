@@ -50,7 +50,7 @@ class enigma():
 			if not rgear in alh:
 				break
 		ylwrite(path + '/var/enigma.d/' + str(len(alh) + 1), rgear)
-		print(str(len(alh) + 1),rgear)
+		print(str(len(alh) + 1), rgear)
 
 
 gear = []

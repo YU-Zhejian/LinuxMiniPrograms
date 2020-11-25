@@ -10,16 +10,16 @@ for fn in "${@}"; do
 	"${mycat}" "${fn}" | while read line; do
 		if [[ "${line}" == "LIBDO STARTED AT"* ]] || [[ "${line}" == "LIBDO STOPPED AT"* ]]; then
 			mytime="$(echo ${line:17} | "${mysed}" "s/.$//")"
-			if [[ "$(date --version 2>&1 || true)" == *"GNU"* ]] ;then
-				newtime="$(date -d "${mytime}" +'%Y-%m-%d %H:%M:%S')" 
+			if [[ "$(date --version 2>&1 || true)" == *"GNU"* ]]; then
+				newtime="$(date -d "${mytime}" +'%Y-%m-%d %H:%M:%S')"
 			else
 				newtime="$(date -j -f '%a %b %d %T %Z %Y' "${mytime}" +'%Y-%m-%d %H:%M:%S')"
 			fi
-			echo "${line:0:17}${newtime}" >>"${fn}.2"
-		elif [[ "${line}" == "LIBDO FAILED, GOT"* ]]||[[ "${line}" == "LIBDO EXITED SUCCESSFULLY"* ]]; then
-			echo "${line}" | "${mysed}" "s/.$//" >>"${fn}.2"
+			echo "${line:0:17}${newtime}" >> "${fn}.2"
+		elif [[ "${line}" == "LIBDO FAILED, GOT"* ]] || [[ "${line}" == "LIBDO EXITED SUCCESSFULLY"* ]]; then
+			echo "${line}" | "${mysed}" "s/.$//" >> "${fn}.2"
 		else
-			echo "${line}" >>"${fn}.2"
+			echo "${line}" >> "${fn}.2"
 		fi
 	done
 done

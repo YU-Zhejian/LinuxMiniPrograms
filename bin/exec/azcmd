@@ -5,14 +5,13 @@ set -eu
 DN="$(readlink -f "$(dirname "${0}")/../")"
 GCMD=false
 DECOMPRESS=false
-LIST=false
 . "${DN}"/exec/libautozip.sh
 # Check level
 function cklvl() {
 	local lvl_able=""
 	local lvl_pref="-"
 	case "${1}" in
-	"tar"|"z"|"Z"|"lzfse")
+	"tar" | "z" | "Z" | "lzfse")
 		lvl_able="0"
 		;;
 	"xz" | "zip" | "br" | "lzip")
@@ -51,9 +50,9 @@ function cklvl() {
 	fi
 	if [ ${THREAD} -gt 1 ]; then
 		case "${1}" in
-		"xz" | "zst" | "rar" | "7z" | "bgz"|"pigz"|"pbzip2")
+		"xz" | "zst" | "rar" | "7z" | "bgz" | "pigz" | "pbzip2")
 			warnh "Will use parallel embedded in the algorithm"
-		;;
+			;;
 		"zip" | "tar" | "lzfse" | "z" | "br")
 			warnh "${1} do not support parallel. Thread will be resetted to 1"
 			THREAD=1
@@ -77,27 +76,23 @@ function cklvl() {
 # exec 2>/dev/null
 # ============ Start ============
 for opt in "${OPT[@]}"; do
-		case "${opt}" in
-		"-d" | "--decompress")
-			DECOMPRESS=true
-			;;
-		"-l"|"--list")
-		GCMD=true
-		LIST=true
+	case "${opt}" in
+	"-d" | "--decompress")
+		DECOMPRESS=true
 		;;
-		-p\:*)
-			THREAD=${opt:3}
-			;;
-		--parallel\:*)
-			THREAD=${opt:10}
-			;;
-		"-p" | "--parallel")
-			THREAD=${MAXTHREAD}
-			;;
-		*)
-			warnh "Option '${opt}' invalid. Ignored"
-			;;
-		esac
+	-p\:*)
+		THREAD=${opt:3}
+		;;
+	--parallel\:*)
+		THREAD=${opt:10}
+		;;
+	"-p" | "--parallel")
+		THREAD=${MAXTHREAD}
+		;;
+	*)
+		warnh "Option '${opt}' invalid. Ignored"
+		;;
+	esac
 done
 ext="${STDS[0]:-}"
 ! [ -z "${ext}" ] || ext="gz"
@@ -105,7 +100,7 @@ LVL="${STDS[1]:-}"
 
 if ${DECOMPRESS}; then
 	case ${ext} in
-	"txt"|"cat"|"tar")
+	"txt" | "cat" | "tar")
 		cmd="${mycat}"
 		;;
 	"gz" | "GZ" | "bgz")
@@ -185,63 +180,9 @@ if ${DECOMPRESS}; then
 		exit 1
 		;;
 	esac
-	elif ${LIST}; then
-	case ${ext} in
-	"txt"|"cat"|"tar")
-		cmd="${mycat}|${mywc}"
-		;;
-	"gz" | "GZ" | "bgz")
-		if [ "${mypigz}" != 'ylukh' ]; then
-			cmd="${mypigz} -clvf"
-		elif [ "${mygzip}" != 'ylukh' ]; then
-			cmd="${PAR} ${mygzip} -clvf"
-		fi
-		;;
-	"xz")
-		if [ "${myxz}" != 'ylukh' ]; then
-			cmd="${myxz} -clvvf -"
-		fi
-		;;
-	"lzma")
-		[ ${THREAD} -gt 1 ] && warnh "${1} do not support parallel. Thread will be resetted to 1"
-		if [ "${myxz}" != 'ylukh' ]; then
-			cmd="${myxz} -clvvf --format=lzma -"
-		elif [ "${mylzma}" != 'ylukh' ]; then
-			cmd="${mylzma} -clvf -"
-		fi
-		;;
-	"lz4")
-		[ "${mylz4}" != 'ylukh' ] || errh "NO valid lz4 exist"
-		cmd="${PAR} ${mylz4} -clvvf -"
-		;;
-	"zst")
-		[ "${myzstd}" != 'ylukh' ] || errh "NO valid zstd exist"
-		cmd="${myzstd} -clvvvf -"
-		;;
-	"lzo")
-		[ "${mylzop}" != 'ylukh' ] || errh "NO valid lzop exist"
-		cmd="${PAR} ${mylzop} -clvf -"
-		;;
-	"br")
-		[ "${mybrotli}" != 'ylukh' ] || errh "NO valid brotli exist"
-		cmd="${mybrotli} -clvf -"
-		;;
-	"Z" | "z")
-		[ "${mycompress}" != 'ylukh' ] || errh "NO valid compress exist"
-		cmd="${mycompress} -clvf -"
-		;;
-	"lz")
-		[ "${mylzip}" != 'ylukh' ] || errh "NO valid lzip exist"
-		cmd="${mylzip} -clvvf ${LVL} -"
-		;;
-	*)
-		errh "${ext} NOT SUPPORTED!"
-		;;
-	esac
-	exit 0
 else
 	case ${ext} in
-	"txt" | "tar"|"cat")
+	"txt" | "tar" | "cat")
 		cmd="${mycat}"
 		;;
 	"gz" | "GZ")
@@ -327,13 +268,13 @@ else
 		cklvl bgz
 		cmd="${mybgzip} -fc -@ ${THREAD} ${LVL}"
 		;;
-	#TODO: No implement
-	#"7z")
-	#	if [ "${my7za}" != 'ylukh' ]; then
-	#		cklvl 7z
-	#		cmd="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -t7z"
-	#	fi
-	#	;;
+		#TODO: No implement
+		#"7z")
+		#	if [ "${my7za}" != 'ylukh' ]; then
+		#		cklvl 7z
+		#		cmd="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -t7z"
+		#	fi
+		#	;;
 	"zip")
 		if [ "${my7za}" != 'ylukh' ]; then
 			cklvl 7z

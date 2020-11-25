@@ -14,7 +14,7 @@ for opt in "${@}"; do
 done
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
 for url in "${STDS[@]}"; do
-	grep_uuidtable "${url}" "${tmpf}" &>>/dev/null || warnh "${url} yields no results"
+	grep_uuidtable "${url}" "${tmpf}" &>> /dev/null || warnh "${url} yields no results"
 done
 "${mycat}" "${tmpf}" | while read line; do
 	IFS=$'\t'

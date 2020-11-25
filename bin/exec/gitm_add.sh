@@ -9,12 +9,12 @@ if ! echo -e "add\t${$}" > add.lock 2> /dev/null; then
 fi
 for url in "${STDS[@]}"; do
 	url=$(echo ${url} | "${mysed}" 's;^file://;;')
-	if ! "${mypython}" "${DN}"/exec/valid_url.py "${url}";then
+	if ! "${mypython}" "${DN}"/exec/valid_url.py "${url}"; then
 		warnh "Skipping bad URL ${url}"
 		continue
 	fi
 	tmpf="$(mktemp -t gitm.XXXXX)"
-	if grep_uuidtable "${url}" "${tmpf}" &>> /dev/null;then
+	if grep_uuidtable "${url}" "${tmpf}" &>> /dev/null; then
 		warnh "Skipping existing URL ${url}"
 		continue
 	fi

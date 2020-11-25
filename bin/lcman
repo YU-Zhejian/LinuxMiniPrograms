@@ -7,7 +7,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 infoh "YuZJLab LiveChat Manager"
 infoh "Copyright (C) 2019-2020 YU Zhejian"
-if ! [[ "$("${mymore}" --version 2>&1||true)" == *"util-linux"* ]]; then
+if ! [[ "$("${mymore}" --version 2>&1 || true)" == *"util-linux"* ]]; then
 	warnh "Will use ${mycat} as more"
 	mymore="${mycat}"
 fi
@@ -34,7 +34,10 @@ for opt in "${@}"; do
 			;;
 		--more\:*)
 			more="${opt:7}"
-			if [ $("${more}" --help &>/dev/null;echo ${?}) -eq 127 ]; then
+			if [ $(
+				"${more}" --help &> /dev/null
+				echo ${?}
+			) -eq 127 ]; then
 				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
 				more="${mymore}"
 			else
@@ -80,7 +83,7 @@ while read line; do
 	um[${i}]=false
 	unset msg_tmp
 	i=$(($i + 1))
-done <"${LVCD}"/MESSAGES
+done < "${LVCD}"/MESSAGES
 infoh "Filtering..."
 if [ ${#sf[@]} -eq 0 ]; then
 	for ((n = 0; n <= i; n++)); do
@@ -115,10 +118,10 @@ n=0
 while read line; do
 	if ${uf[${n}]} && ${um[${n}]}; then
 		msg_tmp=(${line})
-		echo -e "\033[31m[${msg_tmp[0]}]\033[0m \033[36m[${msg_tmp[1]}]\033[0m ${msg_tmp[2]}" >>"${tmpfff}"
+		echo -e "\033[31m[${msg_tmp[0]}]\033[0m \033[36m[${msg_tmp[1]}]\033[0m ${msg_tmp[2]}" >> "${tmpfff}"
 	fi
 	n=$((n + 1))
-done <${LVCD}/MESSAGES
+done < ${LVCD}/MESSAGES
 "${mycat}" "${tmpfff}" | "${mysort}" | "${more}"
 IFS=${OLD_IFS}
 exit 0

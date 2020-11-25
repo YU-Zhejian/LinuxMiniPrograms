@@ -22,7 +22,10 @@ for opt in "${@}"; do
 			;;
 		--more\:*)
 			more="${opt:7}"
-			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
+			if $(
+				"${more}" --help &> /dev/null
+				echo ${?}
+			) -eq 127; then
 				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
 				more="${mymore}"
 			else
@@ -39,19 +42,19 @@ for opt in "${@}"; do
 done
 psstmp=$(mktemp -t psstmp.XXXXXX)
 pssstmp=$(mktemp -t psstmp.XXXXXX)
-if ! "${myps}" --version &>> /dev/null;then
-	"${myps}" -alH &>"${psstmp}"
+if ! "${myps}" --version &>> /dev/null; then
+	"${myps}" -alH &> "${psstmp}"
 elif [[ $("${myps}" --version) == *"cygwin"* ]]; then
-	"${myps}" -aeW &>"${psstmp}"
+	"${myps}" -aeW &> "${psstmp}"
 else
-	"${myps}" -AT H all &>"${psstmp}"
+	"${myps}" -AT H all &> "${psstmp}"
 fi
 if [ ${#STDS[@]} -eq 0 ]; then
 	"${mycat}" "${psstmp}" | "${more}"
 else
 	${myhead} -n 1 ${psstmp}
 	for fn in "${STDS[@]}"; do
-		"${mycat}" "${psstmp}" | "${mygrep}" -- "${fn}" >>"${pssstmp}"
+		"${mycat}" "${psstmp}" | "${mygrep}" -- "${fn}" >> "${pssstmp}"
 	done
 	"${mycat}" "${pssstmp}" | "${more}"
 fi

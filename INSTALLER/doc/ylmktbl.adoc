@@ -15,11 +15,15 @@ include::include/cmnopt.adoc[]
 
 == DESCRIPTION
 
-On executing, the program will check whether there's an active Python installation in `etc/python.conf`. If so, a Python script will be used.
+On executing, the program will check whether there's an active Python installation in `etc/python.conf`.
+If so, a Python script will be used.
 
 Use `ylmktbl ${tabel_file}` to print table from a table file.
 
-The table file can be separated into two parts: column instructions and main body. Colum instruction is started with `#` and records the specific option of a particular column. Those started in S means if the length of this column exceeds the value after S, the column will be shrink by adding `...`. The colums are separated by `;`.
+The table file can be separated into two parts: column instructions and main body.
+Colum instruction is started with `#` and records the specific option of a particular column.
+Those started in S means if the length of this column exceeds the value after S, the column will be shrink by adding `...`.
+The colums are separated by `;`.
 
 == EXAMPLE
 
@@ -43,7 +47,6 @@ Outcome:
 |1  |bwa mem -M -R @RG"tID:case4_techrep_2tSM:case4_techrep_2tLB:WXStPL:Illumina" /gpfsdata/...|0   |3:47:51|
 ============================================================================================================|
 ```
-
 
 == SEE ALSO
 

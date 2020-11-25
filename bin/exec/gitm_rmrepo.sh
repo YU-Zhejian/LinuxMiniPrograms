@@ -43,7 +43,7 @@ if [ "${ANSWER}" = "Y" ]; then
 		infoh "Repository UUID=${fields[1]} rm started"
 		"${mymv}" "${fields[1]}" "${fields[1]}".rm
 		echo -e "$(timestamp)\tRM_MVDIR\tSUCCESS\t${fields[0]}\t${fields[1]}" >> act.log
-		if ! rmrec "${fields[1]}";then
+		if ! rmrec "${fields[1]}"; then
 			"${myrm}" -f "${tmpf}" rm.lock "${fields[1]}".lock
 			exit 1
 		fi

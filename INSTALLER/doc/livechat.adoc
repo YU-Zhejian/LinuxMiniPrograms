@@ -13,11 +13,13 @@ livechat [USER] [OPTIONS]
 
 == DESCRIPTION
 
-Logon as [USER] and start chatting! There's no need to register.
+Logon as [USER] and start chatting!
+There's no need to register.
 
 === On a None-Specific User
 
-* Situation: Multiple users operate one non-specific account for particular jobs, for example, different steps in a bio-informatical project. You need to set up a secret chatting server.
+* Situation: Multiple users operate one non-specific account for particular jobs, for example, different steps in a bio-informatical project.
+You need to set up a secret chatting server.
 
 * Installation: No further installation after executing `install.sh`.
 
@@ -47,7 +49,8 @@ include::include/cmnopt.adoc[]
 
 == WARNINGS
 
-When you start chatting, please use `logout` to exit chatting room instead of `Ctrl-C`. Using `Ctrl-C` will make the sub process "reciever" unable to exit.
+When you start chatting, please use `logout` to exit chatting room instead of `Ctrl-C`.
+Using `Ctrl-C` will make the sub process "reciever" unable to exit.
 
 == COMPATIBILITY
 

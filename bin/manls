@@ -10,7 +10,7 @@ infoh "Copyright (C) 2019-2020 YU Zhejian"
 oldifs="${IFS}"
 
 more="${mymore}"
-INPATH="$(manpath 2>/dev/null||true):/usr/share/man:/usr/local/man:/usr/local/share/man:$("${mycat}" /usr/local/etc/man.d/*.conf 2>/dev/null | "${mygrep}" -v \# | "${mygrep}" MANPATH | "${mycut}" -f 2 -d ' ' | tr '\n' ':' || true)${MANPATH:-}"
+INPATH="$(manpath 2> /dev/null || true):/usr/share/man:/usr/local/man:/usr/local/share/man:$("${mycat}" /usr/local/etc/man.d/*.conf 2> /dev/null | "${mygrep}" -v \# | "${mygrep}" MANPATH | "${mycut}" -f 2 -d ' ' | tr '\n' ':' || true)${MANPATH:-}"
 . "${DN}"/../lib/libpath
 IFS=":"
 eachpath=(${valid_path})
@@ -35,7 +35,10 @@ for opt in "${@}"; do
 			;;
 		--more\:*)
 			more=$"{opt:7}"
-			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
+			if $(
+				"${more}" --help &> /dev/null
+				echo ${?}
+			) -eq 127; then
 				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
 				more="${mymore}"
 			else
@@ -55,7 +58,7 @@ tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
 	"${myls}" -1 -F "${dir}" | "${mysed}" "s;^;$(echo "${dir}")/;" | "${mygrep}" man[^/]*/$ | while read line; do
-		"${myls}" -1 -F "${line}"|"${mysed}" "s;.gz;;"|"${mysed}" "s;^;$(echo "${line}");" >>"${tmpf}"
+		"${myls}" -1 -F "${line}" | "${mysed}" "s;.gz;;" | "${mysed}" "s;^;$(echo "${line}");" >> "${tmpf}"
 	done
 done
 if [ ${#STDS[@]} -eq 0 ]; then

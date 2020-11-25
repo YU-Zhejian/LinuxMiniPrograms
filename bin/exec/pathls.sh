@@ -4,7 +4,7 @@ oldifs="${IFS}"
 function my_grep() {
 	regstr="${1}"
 	local tmpff=$(mktemp -t pls.XXXXXX)
-	"${mycat}" "${tmpf}" | "${mygrep}" -v "${regstr}" >"${tmpff}"
+	"${mycat}" "${tmpf}" | "${mygrep}" -v "${regstr}" > "${tmpff}"
 	"${mymv}" "${tmpff}" "${tmpf}"
 }
 more="${mymore}"
@@ -51,7 +51,10 @@ for opt in "${@}"; do
 			;;
 		--more\:*)
 			more=$"{opt:7}"
-			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
+			if $(
+				"${more}" --help &> /dev/null
+				echo ${?}
+			) -eq 127; then
 				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
 				more="${mymore}"
 			else
@@ -70,7 +73,7 @@ unset invalid_path valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	"${myls}" -1 -F "${dir}" 2>/dev/null | "${mysed}" "s;^;$(echo "${dir}")/;" >>"${tmpf}" || true
+	"${myls}" -1 -F "${dir}" 2> /dev/null | "${mysed}" "s;^;$(echo "${dir}")/;" >> "${tmpf}" || true
 done
 ${allow_d} || my_grep '/$'
 ${allow_x} || my_grep '\*$'

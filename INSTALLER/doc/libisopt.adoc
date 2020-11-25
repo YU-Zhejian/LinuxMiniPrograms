@@ -15,7 +15,8 @@ libisopt - A library to check whether a parameter is a legal YuZJLab option.
 
 == DESCRIPTION
 
-Firstly, use `. /PATH/TO/LIBISOPT` to import libisopt. (Command `source` is equal to command `.`)
+Firstly, use `. /PATH/TO/LIBISOPT` to import libisopt.
+(Command `source` is equal to command `.`)
 
 Then, use loop to check if a parameter is an option.
 
@@ -59,6 +60,7 @@ for opt in "${@}"; do
 done
 ```
 
-After this loop, options and other parameters are separated into string `${OPT}` and `${STDS}`. If there're unrecognized option, the program will exit with exit code 1.
+After this loop, options and other parameters are separated into string `${OPT}` and `${STDS}`.
+If there're unrecognized option, the program will exit with exit code 1.
 
 include::include/copy.adoc[]

@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # AZLIST V5
 set -eu
-ISAOTOZIP=false
-USESPLIT=false
 PAR=''
 SUFF=''
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -11,20 +9,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 infoh "YuZJLab AutoUnZip"
 infoh "Copyright (C) 2019-2020 YU Zhejian"
 for opt in "${OPT[@]}"; do
-	case "${opt}" in
-	-p\:*)
-		THREAD=${opt:3}
-		;;
-	--parallel\:*)
-		THREAD=${opt:10}
-		;;
-	"-p" | "--parallel")
-		THREAD=${MAXTHREAD}
-		;;
-	*)
-		warnh "Option '${opt}' invalid. Ignored"
-		;;
-	esac
+	warnh "Option '${opt}' invalid. Ignored"
 done
 # ============ Possess arguments ============
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
@@ -38,19 +23,10 @@ for fulln in "${STDS[@]}"; do
 	fi
 	if [ -z "${fulln}" ]; then
 		autozipck
-	elif ! [ -f "${fulln}" ] && [ -f "${fulln}.001" ]; then
-		USESPLIT=true
-	elif ! [ -f "${fulln}" ] && [ -f "$(echo ${fulln} | "${mysed}" "s;.rar$;.part01.rar;")" ] && [ ${ext} = "rar" ]; then
-		fulln="$(echo ${fulln} | "${mysed}" "s;.rar$;.part01.rar;")"
-		USESPLIT=true
-	elif ! [ -f "${fulln}" ] && [ -f "$(echo ${fulln} | "${mysed}" "s;.rar$;.part1.rar;")" ] && [ ${ext} = "rar" ]; then
-		fulln="$(echo ${fulln} | "${mysed}" "s;.rar$;.part1.rar;")"
-		USESPLIT=true
-	elif ! [ -f "${fulln}" ]; then
+	else
 		warnh "Filename '${fulln}' invalid"
 		continue
 	fi
-	! ${USESPLIT} || mktmp
 	ckext
 	infoh "Received: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}"
 	# ============ Start Decompressing ============
@@ -58,11 +34,7 @@ for fulln in "${STDS[@]}"; do
 		cmd="$(${DN}/exec/azcmd --decompress ${1})"
 		infoh "${cmd}"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		if ${USESPLIT}; then
-			stdtl ${cmd}
-		else
 			fcat "${fulln}" | ${cmd} | "${mytar}" -tv -f -
-		fi
 	}
 	case ${ext} in
 	tar.*)
@@ -97,19 +69,57 @@ for fulln in "${STDS[@]}"; do
 		[ "${myunrar}" != 'ylukh' ] || errh "unrar NO exist"
 		"${myunrar}" v "${fulln}"
 		;;
-	*)
-		cmd="$("${DN}"/exec/azcmd --list ${ext})"
-		infoh "${cmd}"
-		if ${USESPLIT}; then
-			stdfx ${cmd}
-		else
-			fcat "${fulln}" | ${cmd} > "${fn}"
+	"gz" | "GZ" | "bgz")
+		if [ "${mypigz}" != 'ylukh' ]; then
+			cmd="${mypigz} -clvf"
+		elif [ "${mygzip}" != 'ylukh' ]; then
+			cmd="${PAR} ${mygzip} -clvf"
 		fi
 		;;
+	"xz")
+		if [ "${myxz}" != 'ylukh' ]; then
+			cmd="${myxz} -clvvf -"
+		fi
+		;;
+	"lzma")
+		[ ${THREAD} -gt 1 ] && warnh "${1} do not support parallel. Thread will be resetted to 1"
+		if [ "${myxz}" != 'ylukh' ]; then
+			cmd="${myxz} -clvvf --format=lzma -"
+		elif [ "${mylzma}" != 'ylukh' ]; then
+			cmd="${mylzma} -clvf -"
+		fi
+		;;
+	"lz4")
+		[ "${mylz4}" != 'ylukh' ] || errh "NO valid lz4 exist"
+		cmd="${PAR} ${mylz4} -clvvf -"
+		;;
+	"zst")
+		[ "${myzstd}" != 'ylukh' ] || errh "NO valid zstd exist"
+		cmd="${myzstd} -clvvvf -"
+		;;
+	"lzo")
+		[ "${mylzop}" != 'ylukh' ] || errh "NO valid lzop exist"
+		cmd="${PAR} ${mylzop} -clvf -"
+		;;
+	"br")
+		[ "${mybrotli}" != 'ylukh' ] || errh "NO valid brotli exist"
+		cmd="${mybrotli} -clvf -"
+		;;
+	"Z" | "z")
+		[ "${mycompress}" != 'ylukh' ] || errh "NO valid compress exist"
+		cmd="${mycompress} -clvf -"
+		;;
+	"lz")
+		[ "${mylzip}" != 'ylukh' ] || errh "NO valid lzip exist"
+		cmd="${mylzip} -clvvf ${LVL} -"
+		;;
+	*)
+		errh "${ext} NOT SUPPORTED!"
+		;;
+	esac
 	esac
 	# ============ Finished ============
 	infoh "Removing temporary resources..."
-	! ${USESPLIT} || "${myrm}" -rf "${tempdir}" "${tempf}"
 done
 # ============ Finished ============
 infoh "Finished"

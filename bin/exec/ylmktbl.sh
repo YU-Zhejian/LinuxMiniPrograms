@@ -56,7 +56,7 @@ while read line; do
 		row_instruction=(${row_instruction[@]} ${line:1})
 	fi
 	unset line
-done <"${STDS}"
+done < "${STDS}"
 j=0
 total_col_len=0
 for row_tmp_str in "${row[@]}"; do

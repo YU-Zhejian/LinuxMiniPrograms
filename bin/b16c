@@ -5,4 +5,4 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.sh
 mkdir -p "${DN}"/var/enigma.d
-if [ "${mypython}" != "ylukh" ] ;then "${mypython}" "${DN}"/exec/b16c.py "${DN}"/../ "${@}" ; else errh "No python found!"; fi
+if [ "${mypython}" != "ylukh" ]; then "${mypython}" "${DN}"/exec/b16c.py "${DN}"/../ "${@}"; else errh "No python found!"; fi

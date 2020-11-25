@@ -1,9 +1,9 @@
 #GITM_LSBRANCH.sh v1
 tmpf="$(mktemp -t gitm.XXXXX)"
 
-if [ ${#STDS[@]} -gt 0 ];then
+if [ ${#STDS[@]} -gt 0 ]; then
 	for url in "${STDS[@]}"; do
-		grep_uuidtable "${url}" "${tmpf}" &>>/dev/null|| warnh "${url} yields no results"
+		grep_uuidtable "${url}" "${tmpf}" &>> /dev/null || warnh "${url} yields no results"
 	done
 else
 	"${mycat}" uuidtable.d/* | tee "${tmpf}"

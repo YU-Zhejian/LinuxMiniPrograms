@@ -56,10 +56,5 @@ infoh "${cmd}"
 if [ "${fn}" = "-" ]; then
 	${cmd}
 else
-	case ${ext} in
-	"bgz")
-		ext="gz"
-		;;
-	esac
 	fcat "${fn}" | ${cmd}
 fi

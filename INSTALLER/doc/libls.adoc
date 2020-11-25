@@ -4,6 +4,7 @@
 = libls(1)
 
 == NAME
+
 libls - A program to search C lib paths
 
 == SYNOPSIS
@@ -12,13 +13,15 @@ libls [STRING] [[STRING2]...] [OPTIONS]
 
 == DESCRIPTION
 
-Search `[STRING]` in `${LIBRARY_PATH}` `${LD_LIBRARY_PATH}` and other system lib paths. If `[STRING]` is omitted, the program will list all contents in each valid lib paths.
+Search `[STRING]` in `${LIBRARY_PATH}` `${LD_LIBRARY_PATH}` and other system lib paths.
+If `[STRING]` is omitted, the program will list all contents in each valid lib paths.
 
 == OPTIONS
 
 include::include/cmnopt.adoc[]
 
-* `--more:[program]` The GNU/Linux program 'more' will be used if there's too much output. Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
+* `--more:[program]` The GNU/Linux program 'more' will be used if there's too much output.
+Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
 
 * `-l|--list` List all valid C include paths.
 

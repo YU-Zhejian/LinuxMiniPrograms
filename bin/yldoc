@@ -23,7 +23,10 @@ for opt in "${@}"; do
 			;;
 		--more\:*)
 			more="${opt:7}"
-			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
+			if $(
+				"${more}" --help &> /dev/null
+				echo ${?}
+			) -eq 127; then
 				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
 				more="${mymore}"
 			else
@@ -55,8 +58,8 @@ if [ -f "${DN}"/../etc/yldoc.conf ]; then
 				STDS[${i}]=${li[1]}
 			fi
 		done
-	done <"${DN}"/../etc/yldoc.conf
+	done < "${DN}"/../etc/yldoc.conf
 fi
 for fn in "${STDS[@]}"; do
-	if [ -f "${DN}"/../doc/"${fn}".usage ] ;then "${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}" ; else errh "${DN}/../doc/${fn}.usage not found"; fi
+	if [ -f "${DN}"/../doc/"${fn}".usage ]; then "${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}"; else errh "${DN}/../doc/${fn}.usage not found"; fi
 done

@@ -4,4 +4,4 @@ set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.sh
-if [ "${mypython}" != "ylukh" ] ;then "${mypython}" "${DN}"/exec/pst.py "${@}" ; else errh "No python found!"; fi
+if [ "${mypython}" != "ylukh" ]; then "${mypython}" "${DN}"/exec/pst.py "${@}"; else errh "No python found!"; fi

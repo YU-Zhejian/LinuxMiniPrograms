@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-function timestamp(){
+function timestamp() {
 	date '+%Y-%m-%d %H:%M:%S'
 }
 function grep_uuidtable() {
-	for fn in uuidtable.d/*;do
+	for fn in uuidtable.d/*; do
 		("${mygrep}" "${1}" "${fn}" >> "${2}" || true) &
 	done
 	wait
@@ -30,7 +30,7 @@ function rmrec() {
 	tmpff="$(mktemp -t gitm.XXXXX)"
 	for fn in uuidtable.d/*; do
 		"${mygrep}" -v "${1}" "${fn}" > "${tmpff}" || true
-		if [ $(wc -l "${fn}" | awk '{print $1}') -ne $(wc -l "${tmpff}" | awk '{print $1}') ];then
+		if [ $(wc -l "${fn}" | awk '{print $1}') -ne $(wc -l "${tmpff}" | awk '{print $1}') ]; then
 			"${mymv}" "${tmpff}" "${fn}"
 			break
 		fi

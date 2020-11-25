@@ -5,24 +5,24 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 . "${DN}"/../lib/libstr
 function sdmess() {
-	echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${MESS_SD}" >>MESSAGES
+	echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${MESS_SD}" >> MESSAGES
 }
 function F_REC() {
 	while true; do
-	#echo a
+		#echo a
 		IFS=""
 		sleep 1
 		local arr=$(wc -l MESSAGES | awk '{print $1}')
 		local en=$((${arr} - ${M_R}))
 		if [ ${en} -ne 0 ]; then
 			echo -ne "\007"
-			"${mytail}" -n $((${arr} - ${M_R})) MESSAGES >"URM_${LCUN}"
+			"${mytail}" -n $((${arr} - ${M_R})) MESSAGES > "URM_${LCUN}"
 			local M_R=${arr}
 			IFS=";"
 			while read line; do
 				local M_A=(${line})
 				echo -e "\033[31m[${M_A[0]}]\033[0m \033[36m[${M_A[1]}]\033[0m ${M_A[2]}"
-			done <"URM_${LCUN}"
+			done < "URM_${LCUN}"
 		fi
 	done
 }
@@ -68,7 +68,7 @@ else
 fi
 ! "${mygrep}" "${LCUN}" LCONLINE || errh "There's a user with the same name"
 unset BOOLONLINE
-echo "${LCUN}" >>LCONLINE
+echo "${LCUN}" >> LCONLINE
 MESS_SD="${LCUN} is now on line"
 sdmess SYSTEM
 infoh "The following users are now online:"
@@ -86,8 +86,8 @@ while true; do
 	else
 		MESS_SD="${LCUN} had quitted"
 		sdmess "SYSTEM"
-		kill -9 ${pid_rec} &>>/dev/null
-		"${mycat}" LCONLINE |"${mygrep}" -v "^${LCUN}$" >tmp
+		kill -9 ${pid_rec} &>> /dev/null
+		"${mycat}" LCONLINE | "${mygrep}" -v "^${LCUN}$" > tmp
 		"${mymv}" tmp LCONLINE
 		"${myrm}" "URM_${LCUN}"
 		infoh "Thanks for using this system"

@@ -9,7 +9,7 @@ function funct_exit() {
 	kill -9 ${$}
 }
 trap "funct_exit" SIGINT
-if [ "${mypython}" != "ylukh" ];then
+if [ "${mypython}" != "ylukh" ]; then
 	"${mypython}" "${DN}"/exec/libdo_monitor.py "${@}"
 else
 	errh "Python not found"

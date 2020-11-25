@@ -10,7 +10,8 @@ When processing bioinformatical data, please make sure that You should use GZIP 
 
 === USE OF BGZIP
 
-This is the right way to produce a _BLOCKED GNU ZIP FORMAT_ with `gz` extension. Because it is capable of GNU GZip, we'll not distinguish them when extracting data. `tar.gz` is not supported in bgz format because it sounds weird.
+This is the right way to produce a _BLOCKED GNU ZIP FORMAT_ with `gz` extension.
+Because it is capable of GNU GZip, we'll not distinguish them when extracting data. `tar.gz` is not supported in bgz format because it sounds weird.
 
 === USE OF LZMA SDK AND XZ UTILS
 
@@ -28,7 +29,9 @@ WARNING: RAR is a _PROPERTY_ software.
 
 == CONFIGURATION
 
-The configuration file of program `autozip` is `etc/autozip.conf`. There should be one line inside the file. If there're multiple lines, the lines behind will be ignored.
+The configuration file of program `autozip` is `etc/autozip.conf`.
+There should be one line inside the file.
+If there're multiple lines, the lines behind will be ignored.
 
 `PARALLEL` or `NOPARALLEL` (default) at line 1 indicates whether or not to use GNU Parallel.
 
@@ -100,7 +103,8 @@ drwxrwxrwx  0 0      0           0 4? 24 21:21 R/win-library/3.6/
 Finished.
 ```
 
-The following command is how we extract this archive. This command also removes pre-exist folder `R` and `R.tar.gz` if success.
+The following command is how we extract this archive.
+This command also removes pre-exist folder `R` and `R.tar.gz` if success.
 
 ```
 admin@DESKTOP-FFEV0AF ~/a

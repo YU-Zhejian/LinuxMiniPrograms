@@ -15,11 +15,10 @@ function my_grep() {
 
 more="${mymore}"
 locallib=$(for dir in /lib* \
-/usr/lib* \
-/usr/local/lib* \
-"${HOME}"/usr/lib* \
-"${HOME}"/usr/local/lib*
-do echo ${dir}; done  |"${mygrep}" -v '*'|"${mygrep}" -E '/lib((64)|(32)){0,1}$'| tr '\n' ':')
+	/usr/lib* \
+	/usr/local/lib* \
+	"${HOME}"/usr/lib* \
+	"${HOME}"/usr/local/lib*; do echo ${dir}; done | "${mygrep}" -v '*' | "${mygrep}" -E '/lib((64)|(32)){0,1}$' | tr '\n' ':')
 INPATH="${locallib}:${LD_LIBRARY_PATH:-}"${LIBRARY_PATH:-}
 . "${DN}"/../lib/libpath
 IFS=":"
@@ -46,21 +45,21 @@ for opt in "${@}"; do
 			unset valid_path
 			exit 0
 			;;
-		"-a"|"--static-only")
+		"-a" | "--static-only")
 			allow_a=true
 			allow_s=false
 			;;
-		"-s"|"--dynamic-only")
+		"-s" | "--dynamic-only")
 			allow_s=true
 			allow_a=false
 			;;
-		"-w"|"--windows")
+		"-w" | "--windows")
 			WINDOWS=true
 			;;
 		--more\:*)
 			more=$"{opt:7}"
 			if $(
-				"${more}" --help &>/dev/null
+				"${more}" --help &> /dev/null
 				echo ${?}
 			) -eq 127; then
 				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
@@ -81,10 +80,10 @@ unset valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	"${myfind}" "${dir}" 2> /dev/null >>"${tmpf}" || true
+	"${myfind}" "${dir}" 2> /dev/null >> "${tmpf}" || true
 done
 tmpff=$(mktemp -t pls.XXXXXX)
-if ${WINDOWS};then
+if ${WINDOWS}; then
 	! ${allow_s} || my_grep '\.dll$'
 	! ${allow_s} || my_grep '\.DLL$'
 	! ${allow_a} || my_grep '\.lib$'
@@ -95,7 +94,7 @@ else
 fi
 "${mymv}" "${tmpff}" "${tmpf}"
 if [ ${#STDS[@]} -eq 0 ]; then
-	"${mycat}" "${tmpf}"| "${more}"
+	"${mycat}" "${tmpf}" | "${more}"
 else
 	IFS=''
 	grepstr=''

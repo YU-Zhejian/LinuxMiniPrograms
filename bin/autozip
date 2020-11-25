@@ -27,59 +27,11 @@ for opt in "${OPT[@]}"; do
 	"-p" | "--parallel")
 		THREAD=${MAXTHREAD}
 		;;
-	"-s" | "--split")
-		SPLIT="1024M"
-		;;
-	-s\:*)
-		SPLIT=${opt:3}
-		;;
-	--split\:*)
-		SPLIT=${opt:8}
-		;;
 	*)
 		warnh "Option '${opt}' invalid. Ignored"
 		;;
 	esac
 done
-if [ -n "${SPLIT:-}" ]; then
-	VALIDSPLIT=""
-	case "${1}" in
-	"rar")
-		SPLIT="${SPLIT//B/b}"
-		SPLIT="${SPLIT//K/k}"
-		SPLIT="${SPLIT//M/m}"
-		VALIDSPLIT="^[0-9]+[bkm]$"
-		;;
-	"zip")
-		SPLIT="${SPLIT//K/k}"
-		SPLIT="${SPLIT//M/m}"
-		SPLIT="${SPLIT//G/g}"
-		SPLIT="${SPLIT//T/t}"
-		VALIDSPLIT="^[0-9]+[kmgt]$"
-		;;
-	"7z")
-		SPLIT="${SPLIT//B/b}"
-		SPLIT="${SPLIT//K/k}"
-		SPLIT="${SPLIT//M/m}"
-		SPLIT="${SPLIT//G/g}"
-		VALIDSPLIT="^[0-9]+[bkmg]$"
-		;;
-	"bgz")
-		warnh "BGZip do not support split"
-		;;
-	*)
-		VALIDSPLIT="^[0-9]+([KMGTPEZY]B{0,1}){0,1}$"
-		"${mysplit}" --help &>> /dev/null || errh "'${mysplit}' is BSD split, which is not supported"
-		;;
-	esac
-	if [[ "${SPLIT}" =~ ${VALIDSPLIT} ]]; then
-		infoh "Will split the archive to ${SPLIT}"
-		mktmp
-	else
-		errh "SPLIT value '${SPLIT}' invalid"
-	fi
-	unset VALIDSPLIT
-fi
 ! ${ISFORCE} && warnh "Will rename the archive if exists"
 fn="${STDS[0]:-}"
 ! [ -z "${fn}" ] || autozipck
@@ -88,7 +40,7 @@ if [ -z "${STDS[1]:-}" ]; then
 		ext="gz"
 	elif [ -d "${fn}" ]; then
 		fn=$(echo ${fn} | ${mysed} "s;/$;;")
-		ext="tar.gz"
+		ext="tar"
 	else
 		errh "Filename '${fn}' invalid"
 	fi
@@ -117,38 +69,8 @@ else
 fi
 LVL="${STDS[2]:-}"
 if ${ISFORCE}; then
-	if [ -n "${SPLIT:-}" ]; then
-		if { "${myls}" "${fn}".part[0-9][0-9].rar &>> /dev/null || ls "${fn}".part[0-9].rar &>> /dev/null; } && [ ${ext} = "rar" ]; then
-			"${myrm}" -rf "${fn}".part[0-9].rar "${fn}".part[0-9][0-9].rar
-		elif "${myls}" "${fn}".z[0-9][0-9] &>> /dev/null && [ ${ext} = "zip" ]; then
-			"${myrm}" -rf "${fn}".z[0-9][0-9] ${fn}.zip
-		elif "${myls}" "${fn}".${ext}.[0-9][0-9][0-9] &>> /dev/null; then
-			"${myrm}" -rf "${fn}".${ext}.[0-9][0-9][0-9]
-		fi
-	fi
 	[ ! -f "${fn}.${ext}" ] || "${myrm}" -rf "${fn}.${ext}"
 else
-	if [ -n "${SPLIT:-}" ]; then
-		if "${myls}" "${fn}".part[0-9][0-9].rar &>> /dev/null && [ ${ext} = "rar" ]; then
-			for tfn in "${fn}".part[0-9][0-9].rar; do
-				"${mymv}" -f "${tfn}" "${tfn}".bak
-			done
-		elif "${myls}" "${fn}".part[0-9].rar &>> /dev/null && [ ${ext} = "rar" ]; then
-			for tfn in "${fn}".part[0-9].rar; do
-				"${mymv}" -f "${tfn}" "${tfn}".bak
-			done
-		elif "${myls}" "${fn}".z[0-9][0-9] &>> /dev/null && [ ${ext} = 'zip' ]; then
-			for tfn in "${fn}".z[0-9][0-9]; do
-				"${mymv}" -f "${tfn}" "${tfn}".bak
-			done
-			"${mymv}" -f "${fn}".zip "${fn}".zip.bak || true
-		elif [ -f "${fn}".${ext}.001 ]; then
-			for tfn in "${fn}".${ext}.[0-9][0-9][0-9]; do
-				"${mymv}" -f "${tfn}" "${tfn}".bak
-			done
-		fi
-		unset tfn
-	fi
 	[ ! -f "${fn}.${ext}" ] || "${mymv}" -f "${fn}.${ext}" "${fn}.${ext}".bak
 fi
 SPL=''
@@ -156,20 +78,10 @@ SPL=''
 function do_job() {
 	infoh "${cmd}"
 	cmd="$(${DN}/exec/azcmd -p:${THREAD} ${1} ${LVL})"
-	if [ -n "${SPLIT:-}" ]; then
-		stdac ${cmd}
-	else
-		fcat "${fn}" | ${cmd} > "${fn}"."${ext}"
-	fi
+	fcat "${fn}" | ${cmd} > "${fn}"."${ext}"
 }
 azcmd="${DN}/exec/azcmd -p:${THREAD}"
 case ${ext} in
-tar\.*)
-	do_job "${ext//tar./}"
-	;;
-t*z)
-	do_job "${ext//t/}"
-	;;
 "bgz")
 	ext="gz"
 	do_job "bgz"
@@ -177,32 +89,27 @@ t*z)
 "7z")
 	[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
 	cklvl 7z
-	! [ -n "${SPLIT:-}" ] || SPL="-v${SPLIT}"
 	"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -t7z
 	;;
 "zip")
 	if [ "${my7za}" != 'ylukh' ]; then
 		cklvl 7z
-		[ -z "${SPLIT:-}" ] || SPL="-v${SPLIT}"
 		"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -tzip
 	elif [ "${myzip}" != 'ylukh' ]; then
 		cklvl zip
-		[ -z "${SPLIT:-}" ] || SPL="-s ${SPLIT}"
-		"${myzip}" --verbose --split-verbose ${SPL} -r "${fn}".${ext} "${fn}" ${LVL}
+		"${myzip}" --verbose ${SPL} -r "${fn}".${ext} "${fn}" ${LVL}
 	else
 		errh "No valid zip/7zip exist"
 	fi
 	;;
 "rar")
 	[ "${myrar}" != 'ylukh' ] || errh "rar NO exist"
-	! [ -n "${SPLIT:-}" ] || SPL="-v${SPLIT}"
 	"${myrar}" -mt${THREAD} ${SPL} a "${fn}".${ext} "${fn}"
 	;;
 *)
-	do_job "${ext}"
+	${DN}/exec/azcat -p:${THREAD} ${fn} ${ext} ${LVL} > "${fn}.${ext}"
 	;;
 esac
 # ============ Finished ============
 infoh "Removing temporary resources..."
-[ -z "${SPLIT:-}" ] || "${myrm}" -rf "${tempdir}" "${tempf}"
 ! ${REMOVE} || "${myrm}" -rf ${fn}

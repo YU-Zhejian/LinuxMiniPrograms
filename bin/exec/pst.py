@@ -1,24 +1,26 @@
 #!/usr/bin/env python
-#PST.py V1
+# PST.py V1
 import os
-import sys
 import threading
 import time
+
 from LMP_Pylib.libisopt import *
 from LMP_Pylib.libstr import *
-ISMACHINE=False
+
+ISMACHINE = False
 for sysarg in sys.argv[1:]:
 	if isopt(sysarg):
-		if sysarg=='-h' or sysarg=='--help':
+		if sysarg == '-h' or sysarg == '--help':
 			os.system('yldoc pst')
 			exit(0)
-		elif sysarg=='-v' or sysarg=='--version':
+		elif sysarg == '-v' or sysarg == '--version':
 			print('Version 1 in Python')
 			exit(0)
 		elif sysarg == '-m' or sysarg == '--machine':
-			ISMACHINE=True
+			ISMACHINE = True
 		else:
-			warnh("Option "+sysarg+" invalid")
+			warnh("Option " + sysarg + " invalid")
+
 
 class readThread(threading.Thread):
 	def __init__(self):
@@ -47,17 +49,17 @@ class writeThread(threading.Thread):
 		print("I am alive")
 		se = open(sys.stderr.fileno(), mode='wt')
 		iold = self.RT.i
-		t=0
+		t = 0
 		if ISMACHINE:
 			while self.RT.is_alive():
-				t=t+1
+				t = t + 1
 				time.sleep(1)
 				i = self.RT.i
-				se.write(str(i) +"\t"+str(t)+ "\t" + str(i-iold)+"\n")
+				se.write(str(i) + "\t" + str(t) + "\t" + str(i - iold) + "\n")
 				iold = i
 		else:
 			while self.RT.is_alive():
-				t=t+1
+				t = t + 1
 				time.sleep(1)
 				i = self.RT.i
 				se.write("\n\033[1A")
@@ -72,9 +74,10 @@ class writeThread(threading.Thread):
 				if diff > 1024:
 					diff /= 1024
 					dc = "gb/s"
-				se.write("CC=" + str(i) +", TE="+str(t)+ ", SPEED=" + str(diff) + dc)
+				se.write("CC=" + str(i) + ", TE=" + str(t) + ", SPEED=" + str(diff) + dc)
 				iold = i
 		se.close()
+
 
 RT = readThread()
 RT.start()

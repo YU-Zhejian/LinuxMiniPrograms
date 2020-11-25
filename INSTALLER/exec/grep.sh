@@ -6,9 +6,9 @@ if [ -z "${mygrep:-}" ]; then
 	for dir in "${eachpath[@]}"; do
 		! ${GNU_found} || break
 		tmpf=$(mktemp -t configpath.XXXXXX)
-		"${myls}" -F -1 "${dir}" | grep '.\*$' | sed "s;\*\$;;" | grep '^grep\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >"${tmpf}"
+		"${myls}" -F -1 "${dir}" | grep '.\*$' | sed "s;\*\$;;" | grep '^grep\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" > "${tmpf}"
 		while read line; do
-			grep_ver=$("${line}" --version 2>&1||true)
+			grep_ver=$("${line}" --version 2>&1 || true)
 			if [[ "${grep_ver}" == *"GNU"* ]]; then
 				if [[ "${grep_ver}" == *"BSD"* ]]; then
 					type="GNU version in BSD systems"
@@ -18,16 +18,16 @@ if [ -z "${mygrep:-}" ]; then
 					type="GNU version in GNU/Linux systems"
 				fi
 				echo "grep found in ${line}, ${type}"
-				echo "mygrep=\"${line}\" #${type}" >>"${path_sh}"
+				echo "mygrep=\"${line}\" #${type}" >> "${path_sh}"
 				break
 			fi
-		done <"${tmpf}"
+		done < "${tmpf}"
 		rm "${tmpf}"
 		unset tmpf dir grep_ver line
 	done
 	. "${path_sh}"
 	if [ -z "${mygrep:-}" ]; then
-		echo "mygrep=\"ylukh\" #UNKNOWN" >>"${path_sh}"
+		echo "mygrep=\"ylukh\" #UNKNOWN" >> "${path_sh}"
 		warnh "grep still not found. Please configure it manually in $(readlink -f "${path_sh}")"
 	fi
 else

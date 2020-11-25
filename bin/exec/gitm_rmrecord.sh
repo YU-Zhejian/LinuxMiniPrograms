@@ -20,7 +20,7 @@ if [ "${ANSWER}" = "Y" ]; then
 		IFS=$'\t'
 		fields=(${line})
 		IFS=''
-		if [ -d "${fields[1]}" ];then
+		if [ -d "${fields[1]}" ]; then
 			warnh "Directory of this repo still exists"
 			continue
 		fi

@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 # LIBMAN V1
 function getuser() {
-	if [ -n "${USER:-}" ] ;then
+	if [ -n "${USER:-}" ]; then
 		printf "${USER}"
 		return
-	elif [ -n "${USERNAME:-}" ] ;then
+	elif [ -n "${USERNAME:-}" ]; then
 		printf "${USERNAME}"
 		return
 	else
 		return 1
 	fi
 }
-function getcorenumber(){
-	if [[ ${myos} == *"BSD"* ]];then
-		sysctl -a|grep hw.ncpu|awk '{print $2;}'
+function getcorenumber() {
+	if [[ ${myos} == *"BSD"* ]]; then
+		sysctl -a | grep hw.ncpu | awk '{print $2;}'
 	else
 		"${mycat}" /proc/cpuinfo | "${mygrep}" '^processor\s: ' | wc -l | awk '{print $1}'
 	fi

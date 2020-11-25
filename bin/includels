@@ -10,34 +10,32 @@ infoh "Copyright (C) 2019-2020 YU Zhejian"
 oldifs="${IFS}"
 more="${mymore}"
 
-gccinclude=$(for dir in  /lib*/gcc*/*/*/include \
-/usr/lib*/gcc*/*/*/include \
-/usr/local/lib*/gcc*/*/*/include \
-"${HOME}"/usr/lib*/gcc*/*/*/include \
-"${HOME}"/usr/local/lib*/gcc*/*/*/include \
-/lib*/gcc*/*/include \
-/usr/lib*/gcc*/*/include \
-/usr/local/lib*/gcc*/*/include \
-"${HOME}"/usr/lib*/gcc*/*/include \
-"${HOME}"/usr/local/lib*/gcc*/*/include \
-/lib*/gcc*/include \
-/usr/lib*/gcc*/include \
-/usr/local/lib*/gcc*/include \
-"${HOME}"/usr/lib*/gcc*/include \
-"${HOME}"/usr/local/lib*/gcc*/include
-do echo ${dir}; done |"${mygrep}" -v '*'| tr '\n' ':')
+gccinclude=$(for dir in /lib*/gcc*/*/*/include \
+	/usr/lib*/gcc*/*/*/include \
+	/usr/local/lib*/gcc*/*/*/include \
+	"${HOME}"/usr/lib*/gcc*/*/*/include \
+	"${HOME}"/usr/local/lib*/gcc*/*/*/include \
+	/lib*/gcc*/*/include \
+	/usr/lib*/gcc*/*/include \
+	/usr/local/lib*/gcc*/*/include \
+	"${HOME}"/usr/lib*/gcc*/*/include \
+	"${HOME}"/usr/local/lib*/gcc*/*/include \
+	/lib*/gcc*/include \
+	/usr/lib*/gcc*/include \
+	/usr/local/lib*/gcc*/include \
+	"${HOME}"/usr/lib*/gcc*/include \
+	"${HOME}"/usr/local/lib*/gcc*/include; do echo ${dir}; done | "${mygrep}" -v '*' | tr '\n' ':')
 
 clanginclude=$(for dir in /lib*/clang*/*/include \
-/usr/lib*/clang*/*/include \
-/usr/local/lib*/clang*/*/include \
-"${HOME}"/usr/lib/clang*/*/include \
-"${HOME}"/usr/local/lib/clang*/*/include \
-/lib*/clang*/include \
-/usr/lib*/clang*/include \
-/usr/local/lib*/clang*/include \
-"${HOME}"/usr/lib/clang*/include \
-"${HOME}"/usr/local/lib/clang*/include
-do echo ${dir}; done |"${mygrep}" -v '*'| tr '\n' ':')
+	/usr/lib*/clang*/*/include \
+	/usr/local/lib*/clang*/*/include \
+	"${HOME}"/usr/lib/clang*/*/include \
+	"${HOME}"/usr/local/lib/clang*/*/include \
+	/lib*/clang*/include \
+	/usr/lib*/clang*/include \
+	/usr/local/lib*/clang*/include \
+	"${HOME}"/usr/lib/clang*/include \
+	"${HOME}"/usr/local/lib/clang*/include; do echo ${dir}; done | "${mygrep}" -v '*' | tr '\n' ':')
 
 INPATH="/usr/include:/usr/local/include:${HOME}/include:${HOME}/usr/include:${HOME}/usr/local/include:${gccinclude}:${clanginclude}:${C_INCLUDE_PATH:-}"${CPLUS_INCLUDE_PATH:-}
 . "${DN}"/../lib/libpath
@@ -65,7 +63,7 @@ for opt in "${@}"; do
 		--more\:*)
 			more=$"{opt:7}"
 			if $(
-				"${more}" --help &>/dev/null
+				"${more}" --help &> /dev/null
 				echo ${?}
 			) -eq 127; then
 				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
@@ -86,7 +84,7 @@ unset valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	"${myfind}" "${dir}" 2> /dev/null >>"${tmpf}" || true
+	"${myfind}" "${dir}" 2> /dev/null >> "${tmpf}" || true
 done
 if [ ${#STDS[@]} -eq 0 ]; then
 	"${mycat}" "${tmpf}" | "${more}"

@@ -2,7 +2,7 @@
 # INSTALLER V3P4
 set -eu
 OLDIFS="${IFS}"
-if ！ readlink -f . &>/dev/null;then
+if ！ readlink -f . &> /dev/null; then
 	echo -e "\033[31mERROR: NO readlink available.\033[0m"
 	exit 1
 fi
@@ -127,11 +127,11 @@ if ${VAR_update}; then
 		echo ${?}
 	)
 	ADOC=$(
-		asciidoctor --help &>>/dev/null
+		asciidoctor --help &>> /dev/null
 		echo ${?}
 	)
 	ADOC_PDF=$(
-		asciidoctor-pdf --help &>>/dev/null
+		asciidoctor-pdf --help &>> /dev/null
 		echo ${?}
 	)
 else
@@ -230,14 +230,14 @@ if ${VAR_install_man}; then
 	IFS=''
 	MANCONF=false
 	for item in ${eachpath}; do
-		if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}/man")" ] ; then
+		if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "${DN}/man")" ]; then
 			infoh "MANPATH configured"
 			MANCONF=true
 			break
 		fi
 	done
 	if ! ${MANCONF}; then
-		echo "export MANPATH=\"${DN}/man/\""':${MANPATH}' >>"${HOME}"/.bashrc
+		echo "export MANPATH=\"${DN}/man/\""':${MANPATH}' >> "${HOME}"/.bashrc
 		infoh "Will configure MANPATH...\033[32mPASSED"
 	fi
 fi
@@ -260,14 +260,14 @@ eachpath=(${valid_path})
 IFS=''
 PYCONF=false
 for item in ${eachpath}; do
-	if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}")" ] ; then
+	if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "${DN}")" ]; then
 		infoh "PYTHONPATH configured"
 		PYCONF=true
 		break
 	fi
 done
 if ! ${PYCONF}; then
-	echo "export PYTHONPATH=\"${DN}/\""':${PYTHONPATH}' >>"${HOME}"/.bashrc
+	echo "export PYTHONPATH=\"${DN}/\""':${PYTHONPATH}' >> "${HOME}"/.bashrc
 	infoh "Will configure PYTHONPATH...\033[32mPASSED"
 fi
 
@@ -279,14 +279,14 @@ eachpath=(${valid_path})
 IFS=''
 PACONF=false
 for item in ${eachpath}; do
-	if [ "$(readlink -f "${item}"||true)" = "$(readlink -f "${DN}/bin")" ] ; then
+	if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "${DN}/bin")" ]; then
 		infoh "PATH configured"
 		PACONF=true
 		break
 	fi
 done
 if ! ${PACONF}; then
-	echo "export PATH=\"${DN}/bin/\""':${PATH}' >>"${HOME}"/.bashrc
+	echo "export PATH=\"${DN}/bin/\""':${PATH}' >> "${HOME}"/.bashrc
 	infoh "Will configure PATH...\033[32mPASSED"
 fi
 #========Install Permissions========
