@@ -3,6 +3,7 @@
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")/../")"
+PAR=""
 GCMD=false
 DECOMPRESS=false
 . "${DN}"/exec/libautozip.sh
@@ -60,7 +61,6 @@ function cklvl() {
 		*)
 			if [ "${myparallel}" = 'ylukh' ]; then
 				warnh "No parallel available. Thread will be resetted to 1"
-				PAR=''
 				THREAD=1
 			else
 				PAR="${myparallel} -j ${THREAD} --pipe --recend '' -k"
@@ -68,7 +68,6 @@ function cklvl() {
 			;;
 		esac
 	else
-		PAR=''
 		THREAD=1
 	fi
 

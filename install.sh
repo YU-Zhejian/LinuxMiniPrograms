@@ -306,7 +306,6 @@ infoh "Modifying file permissions..."
 "${mychown}" -R $(id -u) *
 "${mychmod}" -R +r+w *
 add_dir
-"${mychmod}" +x bin/*
-"${mychmod}" +x *.sh
+"${mychmod}" +x bin/* *.sh bin/exec/azcmd
 IFS="${OLDIFS}"
 infoh "Finished. Please execute 'exec bash' to restart bash"

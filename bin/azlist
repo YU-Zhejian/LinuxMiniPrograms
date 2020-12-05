@@ -12,7 +12,7 @@ for opt in "${OPT[@]}"; do
 	warnh "Option '${opt}' invalid. Ignored"
 done
 # ============ Possess arguments ============
-[ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
+[ ${#STDS[@]} -gt 0 ] || autozipck
 for fulln in "${STDS[@]}"; do
 	ISBLANK=false
 	fn="$(echo ${fulln%.*} | "${mysed}" "s;.part1$;;" | "${mysed}" "s;.part01$;;")"
@@ -21,9 +21,7 @@ for fulln in "${STDS[@]}"; do
 		ext="tar.${ext}"
 		fn="${fn%.*}"
 	fi
-	if [ -z "${fulln}" ]; then
-		autozipck
-	else
+	if [ ! -e "${fulln}" ]; then
 		warnh "Filename '${fulln}' invalid"
 		continue
 	fi
@@ -116,7 +114,6 @@ for fulln in "${STDS[@]}"; do
 	*)
 		errh "${ext} NOT SUPPORTED!"
 		;;
-	esac
 	esac
 	# ============ Finished ============
 	infoh "Removing temporary resources..."
