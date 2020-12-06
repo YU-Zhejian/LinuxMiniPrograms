@@ -22,4 +22,6 @@ __pycache__
 /venv
 /.git
 *.pyc
-/INSTALLER/C_src
+.project
+.cproject
+*.out

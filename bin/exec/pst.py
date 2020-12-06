@@ -44,9 +44,21 @@ class writeThread(threading.Thread):
 		super().__init__()
 		self.RT = RT
 
+	def tohuman(self,diff:int) -> str:
+		dc = "b"
+		if diff > 1024:
+			diff /= 1024
+			dc = "kb"
+		if diff > 1024:
+			diff /= 1024
+			dc = "mb"
+		if diff > 1024:
+			diff /= 1024
+			dc = "gb"
+		return str(diff)+dc
+
 	def run(self):
 		global ISMACHINE
-		print("I am alive")
 		se = open(sys.stderr.fileno(), mode='wt')
 		iold = self.RT.i
 		t = 0
@@ -64,19 +76,10 @@ class writeThread(threading.Thread):
 				i = self.RT.i
 				se.write("\n\033[1A")
 				diff = i - iold
-				dc = "b/s"
-				if diff > 1024:
-					diff /= 1024
-					dc = "kb/s"
-				if diff > 1024:
-					diff /= 1024
-					dc = "mb/s"
-				if diff > 1024:
-					diff /= 1024
-					dc = "gb/s"
-				se.write("CC=" + str(i) + ", TE=" + str(t) + ", SPEED=" + str(diff) + dc)
+				se.write("CC=" + self.tohuman(i) + ", TE=" + str(t) + ", SPEED=" + self.tohuman(diff)+"/s")
 				iold = i
 		se.close()
+
 
 
 RT = readThread()
