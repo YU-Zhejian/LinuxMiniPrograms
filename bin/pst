@@ -6,7 +6,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 for fn in "${DN}"/exec/pst.co "${DN}"/exec/pst.co.exe;do
 	if [ -e "${fn}" ];then
-		exec "${fn}"
+		exec "${fn}" "${@}"
 	fi
 done
 if [ "${mypython}" != "ylukh" ]; then exec "${mypython}" "${DN}"/exec/pst.py "${@}"; else errh "No python found!"; fi

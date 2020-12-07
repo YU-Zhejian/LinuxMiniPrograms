@@ -41,7 +41,6 @@ else
 fi
 LVL="${STDS[2]:-}"
 SPL=''
-azcmd.sh="${DN}/exec/azcmd.sh -p:${THREAD}"
 case ${ext} in
 tar\.*)
 	ext="${ext//tar./}"

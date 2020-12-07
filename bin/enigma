@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# B16C v1
+set -ue
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../lib/libstr
+. "${DN}"/../etc/path.sh
+mkdir -p "${DN}"/../var/enigma.d
+for fn in "${DN}"/exec/enigma.co "${DN}"/exec/enigma.co.exe;do
+	if [ -e "${fn}" ];then
+		exec "${fn}" "${@}"
+	fi
+done
+if [ "${mypython}" != "ylukh" ]; then "${mypython}" "${DN}"/exec/enigma.py "${@}"; else errh "No python found!"; fi
