@@ -8,15 +8,11 @@ all: $(TARGETS)
 
 $(TARGETS): mkdir $(OBJECTS)
 
-
 mkdir:
 	$(MKDIR) bin obj
 
-
-
 obj/%.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
+	$(CC) $(CFLAGS) -I../include -c $< -o $@
 
 clean:
 	$(RM) obj bin

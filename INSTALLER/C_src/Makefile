@@ -16,4 +16,3 @@ all: $(SRC_SUBDIRS)
 
 $(SRC_SUBDIRS):
 	@-$(MAKE) -C $@
-

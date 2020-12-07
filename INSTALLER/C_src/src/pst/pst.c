@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <isopt.h>
 
 void *print_l(void *args);
 
@@ -14,7 +15,21 @@ int ISMACHINE = 0;
 char *dc, *lhm,*ldhm;
 
 
-int main() {
+int main(int argc, char *argv[]) {
+	int i;
+	for (i = 0; i < argc; i++) {
+		if (! isopt(argv[i])){
+			if (strcmp(argv[i], "-h") == 0 | strcmp(argv[i], "--help") == 0) {
+				system("yldoc pst");
+				return 0;
+			} else if (strcmp(argv[i], "-v") == 0 | strcmp(argv[i], "--version") == 0) {
+				printf("Version 1 in C\n");
+				return 0;
+			} else if (strcmp(argv[i], "-m") == 0 | strcmp(argv[i], "--machine") == 0) {
+				ISMACHINE = 1;
+			}
+		}
+	}
 	char a;
 	pthread_t thrd1;
 	pthread_create(&thrd1, NULL, print_l, NULL);
