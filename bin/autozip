@@ -77,10 +77,10 @@ SPL=''
 # ============ Start Compressing ============
 function do_job() {
 	infoh "${cmd}"
-	cmd="$(${DN}/exec/azcmd -p:${THREAD} ${1} ${LVL})"
+	cmd="$(${DN}/exec/azcmd.sh -p:${THREAD} ${1} ${LVL})"
 	fcat "${fn}" | ${cmd} > "${fn}"."${ext}"
 }
-azcmd="${DN}/exec/azcmd -p:${THREAD}"
+azcmd.sh="${DN}/exec/azcmd.sh -p:${THREAD}"
 case ${ext} in
 "bgz")
 	ext="gz"

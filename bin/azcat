@@ -41,7 +41,7 @@ else
 fi
 LVL="${STDS[2]:-}"
 SPL=''
-azcmd="${DN}/exec/azcmd -p:${THREAD}"
+azcmd.sh="${DN}/exec/azcmd.sh -p:${THREAD}"
 case ${ext} in
 tar\.*)
 	ext="${ext//tar./}"
@@ -51,7 +51,7 @@ t*z)
 	;;
 *) ;;
 esac
-cmd="$(${DN}/exec/azcmd -p:${THREAD} ${ext} ${LVL})"
+cmd="$(${DN}/exec/azcmd.sh -p:${THREAD} ${ext} ${LVL})"
 infoh "${cmd}"
 if [ "${fn}" = "-" ]; then
 	${cmd}
