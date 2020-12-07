@@ -1,4 +1,4 @@
-TARGETS := bin/pst
+TARGETS := bin/pst.co
 SOURCES := $(wildcard *.c)
 OBJECTS := $(foreach fn, $(SOURCES), $(addprefix obj/, $(fn)))
 OBJECTS := $(OBJECTS:.c=.o)

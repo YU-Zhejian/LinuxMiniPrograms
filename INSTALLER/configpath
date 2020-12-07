@@ -32,7 +32,7 @@ echo ${valid_path} | tr ':' '\n'
 infoh "End locating valid path"
 unset valid_path
 for PROGNAME in ls grep sed rm python ps parallel; do
-	. exec/${PROGNAME}.sh
+	. exec/find${PROGNAME}.sh
 done
 for PROGNAME in cat chmod chown cp cut find gtar gzip head mkdir more mv sort split tail tar unzip zip; do
 	. exec/findcoreutils.sh

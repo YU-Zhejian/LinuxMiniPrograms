@@ -29,30 +29,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-h" | "--help")
-			echo \
-				"This is the installation script of LinuxMiniPrograms.
-
-SYNOPSIS: bash install.sh [opt]
-
-FOR THE IMPATIENT:
-	NEW COMPLETE INSTALLATION: bash install.sh --all
-
-OPTIONS:
-	-h|--help Display this help.
-	-v|--version Show version information.
-	-a|--all Install all compoments.
-	--install-config (Re)Install configuration files in 'etc'.
-	--clear-history Clear all previous histories in 'var'.
-	--install-doc Install all documentations, need 'asciidoctor' 'asciidoctor-pdf' (available from Ruby's 'pem') and python 3.
-	--install-man Install doc in Groff man, need 'asciidoctor'.
-	--install-usage Install yldoc usage, need python 3.
-	--install-pdf Install doc in pdf, need 'asciidoctor-pdf'.
-	--install-html Install doc in html, need 'asciidoctor'.
-	--update Update an existing installation.
-	--update-path Update the etc/path.sh
-
-	If no opt is given, the 'all' mode will be used.
-	"
+			cat INSTALLER/doc/installer.txt
 			exit 0
 			;;
 		"-a" | "--all")
@@ -127,16 +104,18 @@ cd INSTALLER/doc
 . build.sh
 cd ../../
 #========Install PATH========
+MANCONF=false
+PACONF=false
+PYCONF=false
 INPATH="${PATH:-}"
 . "${DN}"/lib/libpath
 unset invalid_path duplicated_path
 IFS=':'
 eachpath=(${valid_path})
 IFS=''
-PACONF=false
 for item in ${eachpath}; do
 	if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "${DN}/bin")" ]; then
-		infoh "PATH configured"
+		infoh "PATH already configured"
 		PACONF=true
 		break
 	fi
@@ -153,10 +132,9 @@ if [ "${mypython}" != "ylukh" ];then
 	IFS=':'
 	eachpath=(${valid_path})
 	IFS=''
-	PYCONF=false
 	for item in ${eachpath}; do
 		if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "${DN}")" ]; then
-			infoh "PYTHONPATH configured"
+			infoh "PYTHONPATH already configured"
 			PYCONF=true
 			break
 		fi
@@ -174,10 +152,9 @@ if ${VAR_install_man}; then
 	IFS=':'
 	eachpath=(${valid_path})
 	IFS=''
-	MANCONF=false
 	for item in ${eachpath}; do
 		if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "${DN}/man")" ]; then
-			infoh "MANPATH configured"
+			infoh "MANPATH already configured"
 			MANCONF=true
 			break
 		fi
