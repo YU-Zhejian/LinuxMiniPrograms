@@ -51,7 +51,7 @@ function cklvl() {
 	fi
 	if [ ${THREAD} -gt 1 ]; then
 		case "${1}" in
-		"xz" | "zst" | "rar" | "7z" | "bgz" | "pigz" | "pbzip2")
+		"xz" | "zst" | "rar" | "7z" | "bgz" | "pigz" | "pbz2")
 			warnh "Will use parallel embedded in the algorithm"
 			;;
 		"zip" | "tar" | "lzfse" | "z" | "br")
@@ -119,8 +119,8 @@ if ${DECOMPRESS}; then
 		fi
 		;;
 	"bz2")
-		if [ "${mypbzip2}" != 'ylukh' ]; then
-			cmd="${mypbzip2} -cdvf"
+		if [ "${mypbz2}" != 'ylukh' ]; then
+			cmd="${mypbz2} -cdvf"
 		elif [ "${mybzip2}" != 'ylukh' ]; then
 			cmd="${PAR} ${mybzip2} -cdvf"
 		elif [ "${my7za}" != 'ylukh' ]; then
@@ -206,9 +206,9 @@ else
 		fi
 		;;
 	"bz2")
-		if [ "${mypbzip2}" != 'ylukh' ]; then
+		if [ "${mypbz2}" != 'ylukh' ]; then
 			cklvl bzip2
-			cmd="${mypbzip2} -cvf -p${THREAD}  ${LVL}"
+			cmd="${mypbz2} -cvf -p${THREAD}  ${LVL}"
 		elif [ "${mybzip2}" != 'ylukh' ]; then
 			cklvl bzip2
 			cmd="${PAR} ${mybzip2} -cvf ${LVL}"

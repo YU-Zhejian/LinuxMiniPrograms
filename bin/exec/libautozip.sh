@@ -56,7 +56,7 @@ function autozipck() {
 	ckavail "tar" tar && TAR=true || TAR=false
 	ckavail "gz GZ" pigz gzip 7za 7z && GZ=true || GZ=false
 	ckavail "bgz" bgzip && BGZ=true || BGZ=false
-	ckavail "bz2" pbzip2 bzip2 7za 7z && BZ2=true || BZ2=false
+	ckavail "bz2" pbz2 bzip2 7za 7z && BZ2=true || BZ2=false
 	ckavail "xz" xz 7za 7z && XZ=true || XZ=false
 	ckavail "lzma" xz lzma && LZMA=true || LZMA=false
 	ckavail "lz4" lz4 && LZ4=true || LZ4=false

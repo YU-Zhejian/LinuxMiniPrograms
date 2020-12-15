@@ -26,3 +26,5 @@ __pycache__
 .cproject
 *.out
 *.co
+*.cbp
+*.layout

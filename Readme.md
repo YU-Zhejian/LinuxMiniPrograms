@@ -50,10 +50,11 @@ For most programs written in Shell, these programs will be needed and GNU versio
   * `wc`
   * `uniq`
   
+
 Mandatory for BSD or MacOS. It can be installed by compiling the source code (BSD) or `brew` (MacOS).
-  
+
 For MacOS users, if you use `brew`, please add the `bin` directory which contains binaries without leading "`g`" to your `${PATH}` environment variable. There will be instructions.
-  
+
 * `GNU grep>=2.20` available from <https://ftp.gnu.org/gnu/sed/>. Those installed in `FreeBSD>=12.1` will also work.
 
 * `GNU sed>=4.4` available from <https://ftp.gnu.org/gnu/sed/>. Those installed in `FreeBSD>=12.1` will also work.
@@ -82,16 +83,27 @@ All documentations are written in `asciidoctor`.If you wish to compile them into
 
 To enable all archive utilities in `autozip` series, please install the following packages:
 
-* `gzip>=1.8` available from <https://ftp.gnu.org/gnu/gzip/>.
-* `pigz>=2.4` available from <http://www.zlib.net/pigz/>.
-* `bsdtar>=3.3.2` or `gtar>=1.26` (available from <https://ftp.gnu.org/gnu/tar/>).
-* `xz>=5.2.4` available from <https://tukaani.org/xz/>.
-* `bzip2>=1.0.8` available from <https://sourceforge.net/projects/bzip2/>.
-* `zip>=3.0` and `unzip>=6.0.0` can be installed by your package manager or `conda`.
-* `unrar>=5.80` can be installed by your package manager but can be downloaded from <https://www.rarlab.com/> in binary form.
-* `p7zip` or `p7zip-full` with `7za>=15.14`, available from <http://p7zip.sourceforge.net/> can be installed by your package manager or `conda`.
-* `rar>=5.80` is property software, but can be downloaded from <https://www.rarlab.com/> in binary form.
-* `bgzip>=1.10.2-23-g6b72368` is a part of `htslib` (originally `tabix`) which is available from <https://github.com/samtools/htslib>. You may also install `htslib` (or `tabix`) by your package manager.
+
+| Software              | Version | URL                                          |
+| --------------------- | ------- | -------------------------------------------- |
+| 7za (p7zip)           | TBD     | <http://p7zip.sourceforge.net/>              |
+| 7za (Windows)         | 1900    | <https://www.7-zip.org/>                     |
+| brotli                | TBD     | <https://github.com/google/brotli>           |
+| bzip2                 | TBD     | <https://sourceforge.net/projects/bzip2/>    |
+| bgzip (HTSLib)        | TBD     | <https://github.com/samtools/htslib>         |
+| compress (ncompress)  | TBD     | <https://github.com/vapier/ncompress>        |
+| gzip (GNU GZip)       | TBD     | <https://www.gnu.org/software/gzip/>         |
+| lz4                   | TBD     | <https://github.com/lz4/lz4>                 |
+| lzip                  | TBD     | <https://www.nongnu.org/lzip/>               |
+| lzop                  | TBD     | <https://www.lzop.org/>                      |
+| Modern 7Z             | TBD     | <https://www.tc4shell.com/en/7zip/modern7z/> |
+| pbz2                  | TBD     | <http://compression.ca/pbz2/>                |
+| pigz                  | TBD     | <http://www.zlib.net/pigz/>                  |
+| tar (GNU Tar)         | TBD     | <https://www.gnu.org/software/tar/>          |
+| rar, unrar, WinRAR    | TBD     | <https://www.rarlab.com/>                    |
+| xz                    | TBD     | <https://tukaani.org/xz/>                    |
+| zip, unzip (Info-Zip) | TBD     | <http://infozip.sourceforge.net/>            |
+| zstd                  | TBD     | <https://github.com/facebook/zstd>           |
 
 Some packages such as `libmktbl` have its Python version, which is faster than those written in Shell script. There are also programs written purely in Python, like `libdo-monitor`. Please read `LMP_basis` to configure Python.
 

@@ -34,10 +34,10 @@ unset valid_path
 for PROGNAME in ls grep sed rm python ps parallel; do
 	. exec/find${PROGNAME}.sh
 done
-for PROGNAME in cat chmod chown cp cut find gtar gzip head mkdir more mv sort split tail tar unzip zip; do
+for PROGNAME in cat chmod chown cp cut find gtar gzip head mkdir more mv sort split tail tar; do
 	. exec/findcoreutils.sh
 done
-for PROGNAME in 7z 7za bgzip brotli bzip2 compress lz4 lzfse lzip lzma lzop pbzip2 pigz rar unrar xz zstd git asciidoctor-pdf asciidoctor; do
+for PROGNAME in 7z 7za bgzip brotli bzip2 compress lz4 lzfse lzip lzma lzop pbz2 pigz rar unzip unrar xz zip zstd git asciidoctor-pdf asciidoctor; do
 	. exec/findornot.sh
 done
 "${mysed}" -i 's;^mygtar;mytar;' "${path_sh}"
