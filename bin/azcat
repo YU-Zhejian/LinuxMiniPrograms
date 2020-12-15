@@ -27,11 +27,9 @@ done
 fn="${STDS[0]:-}"
 ! [ -z "${fn}" ] || fn="-"
 if [ -z "${STDS[1]:-}" ]; then
-	if [ -f "${fn}" ]; then
-		ext="gz"
-	elif [ -d "${fn}" ]; then
-		fn=$(echo ${fn} | ${mysed} "s;/$;;")
-		ext="tar"
+	fn=$(echo ${fn} | ${mysed} "s;/$;;")
+	if [ -e "${fn}" ]; then
+		ext="cat"
 	else
 		errh "Filename '${fn}' invalid"
 	fi
@@ -48,7 +46,6 @@ tar\.*)
 t*z)
 	ext="${ext//t/}"
 	;;
-*) ;;
 esac
 cmd="$(${DN}/exec/azcmd.sh -p:${THREAD} ${ext} ${LVL})"
 infoh "${cmd}"
