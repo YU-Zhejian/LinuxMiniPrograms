@@ -6,6 +6,6 @@ DN="$(readlink -f "$(dirname "${0}")")"
 cd "${DN}"
 . ../../etc/path.sh
 make
-for fn in build/*;do
+for fn in src/*/bin/*;do
 	"${mymv}" "${fn}" ../../bin/exec/"$(basename "${fn}")"
 done

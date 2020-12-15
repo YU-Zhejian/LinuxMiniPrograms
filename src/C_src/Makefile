@@ -12,7 +12,6 @@ SRC_SUBDIRS := $(wildcard src/*/)
 .PHONY : all $(SRC_SUBDIRS) clean $(CLEAN_SUBDIRS)
 
 all: $(SRC_SUBDIRS)
-	mv src/*/bin/* build
 
 $(SRC_SUBDIRS):
 	@-$(MAKE) -C $@
