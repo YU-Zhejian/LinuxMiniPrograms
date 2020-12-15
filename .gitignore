@@ -6,9 +6,9 @@
 /man
 /html
 /pdf
-/INSTALLER/doc/*.1
-/INSTALLER/doc/*.html
-/INSTALLER/doc/*.pdf
+/src/doc/*.1
+/src/doc/*.html
+/src/doc/*.pdf
 __pycache__
 *.stackdump
 /gnome-keyring-daemo.core

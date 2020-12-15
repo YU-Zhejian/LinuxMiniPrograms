@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # CONFIGPATH V1P1
 set -eu
-cd INSTALLER
+cd src
 . ../lib/libstr
 path_sh="../etc/path.sh"
 if ! [ -f "${path_sh}" ]; then
@@ -31,7 +31,15 @@ unset binpath
 echo ${valid_path} | tr ':' '\n'
 infoh "End locating valid path"
 unset valid_path
-for PROGNAME in ls grep sed rm python ps parallel; do
+
+myls="ls"
+mygrep="grep"
+mysed="sed"
+myrm="rm"
+for PROGNAME in ls grep sed rm ; do
+	. exec/findcoreutils.sh
+done
+for PROGNAME in python ps parallel; do
 	. exec/find${PROGNAME}.sh
 done
 for PROGNAME in cat chmod chown cp cut find gtar gzip head mkdir more mv sort split tail tar; do

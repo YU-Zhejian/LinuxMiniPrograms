@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# INSTALLER V3P5
+# src V3P5
 set -eu
 OLDIFS="${IFS}"
 if ! readlink -f . &> /dev/null; then
@@ -29,7 +29,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-h" | "--help")
-			cat INSTALLER/doc/installer.txt
+			cat src/doc/installer.txt
 			exit 0
 			;;
 		"-a" | "--all")
@@ -73,7 +73,7 @@ done
 # ========Check========
 infoh "Checking FileSystem..."
 ! ${VAR_update_path} || rm -f 'etc/path.sh'
-[ -f 'etc/path.sh' ] || bash INSTALLER/configpath
+[ -f 'etc/path.sh' ] || bash src/configpath
 . etc/path.sh
 infoh "Installing..."
 #========Install ETC========
@@ -84,7 +84,7 @@ if ${VAR_install_config}; then
 		"${myrm}" -rf etc/*
 		infoh "Backing up settings...\033[32mPASSED"
 	fi
-	"${mycp}" -fr INSTALLER/etc/* etc/
+	"${mycp}" -fr src/etc/* etc/
 	infoh "Installing config...\033[32mPASSED"
 fi
 #========Install VAR========
@@ -95,18 +95,18 @@ if ${VAR_clear_history}; then
 		"${myrm}" -rf var/*
 		infoh "Backing up histories...\033[32mPASSED"
 	fi
-	"${mycp}" -fr INSTALLER/var/* var/
+	"${mycp}" -fr src/var/* var/
 fi
 #========Install C Programs========
-bash INSTALLER/C_src/build.sh
+bash src/C_src/build.sh
 #========Install DOC========
-cd INSTALLER/doc
+cd src/doc
 . build.sh
 cd ../../
 #========Install PATH========
-MANCONF=false
+MANCONF=true
 PACONF=false
-PYCONF=false
+PYCONF=true
 INPATH="${PATH:-}"
 . "${DN}"/lib/libpath
 unset invalid_path duplicated_path
@@ -114,18 +114,19 @@ IFS=':'
 eachpath=(${valid_path})
 IFS=''
 for item in ${eachpath}; do
-	if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "${DN}/bin")" ]; then
+	if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "${DN}/bin/")" ]; then
 		infoh "PATH already configured"
 		PACONF=true
 		break
 	fi
 done
 if ! ${PACONF}; then
-	echo "export PATH=\"${DN}/bin/\""':${PATH}' >> "${HOME}"/.bashrc
+	echo "export PATH=\"${DN}/bin/:${PATH:-}\"" >> "${HOME}"/.bashrc
 	infoh "Will configure PATH...\033[32mPASSED"
 fi
 #========Install PYTHONPATH========
 if [ "${mypython}" != "ylukh" ];then
+	PYCONF=false
 	INPATH="${PYTHONPATH:-}"
 	. "${DN}"/lib/libpath
 	unset invalid_path duplicated_path
@@ -133,7 +134,7 @@ if [ "${mypython}" != "ylukh" ];then
 	eachpath=(${valid_path})
 	IFS=''
 	for item in ${eachpath}; do
-		if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "${DN}")" ]; then
+		if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "${DN}/libpy/")" ]; then
 			infoh "PYTHONPATH already configured"
 			PYCONF=true
 			break
@@ -141,11 +142,12 @@ if [ "${mypython}" != "ylukh" ];then
 	done
 fi
 if ! ${PYCONF}; then
-	echo "export PYTHONPATH=\"${DN}/\""':${PYTHONPATH}' >> "${HOME}"/.bashrc
+	echo "export PYTHONPATH=\"${DN}/libpy/:${PYTHONPATH:-}\"" >> "${HOME}"/.bashrc
 	infoh "Will configure PYTHONPATH...\033[32mPASSED"
 fi
 #========Install MANPATH========
 if ${VAR_install_man}; then
+	MANCONF=false
 	INPATH="${MANPATH:-}"
 	. "${DN}"/lib/libpath
 	unset invalid_path duplicated_path
@@ -161,7 +163,7 @@ if ${VAR_install_man}; then
 	done
 fi
 if ! ${MANCONF}; then
-	echo "export MANPATH=\"${DN}/man/\""':${MANPATH}' >> "${HOME}"/.bashrc
+	echo "export MANPATH=\"${DN}/man/:${MANPATH:-}\"" >> "${HOME}"/.bashrc
 	infoh "Will configure MANPATH...\033[32mPASSED"
 fi
 #========Install Permissions========

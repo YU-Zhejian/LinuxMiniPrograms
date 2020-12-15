@@ -67,7 +67,7 @@ LIBDO PID 1049
 # Following are the output of the process.
 total 75K
 -rwxrwxr-x+ 1 admin None   96 Jun  3 20:37 BeforeAdd.sh*
-drwxrwxr-x+ 1 admin None    0 Jun  4 19:39 INSTALLER/
+drwxrwxr-x+ 1 admin None    0 Jun  4 19:39 src/
 -rwxrwxr-x+ 1 admin None   84 Jun  3 20:37 In_case_of_fire.sh*
 -rw-rw-r--+ 1 admin None  35K Jun  3 20:37 LICENSE.md
 drwxrwxr-x+ 1 admin None    0 Jun  3 21:14 LMP_Pylib/
@@ -111,7 +111,7 @@ LIBDO STARTED AT 2020-06-06 00:27:38
 LIBDO PID 1491
 total 77K
 -rwxrwxr-x+ 1 admin None   96 Jun  3 20:37 BeforeAdd.sh*
-drwxrwxr-x+ 1 admin None    0 Jun  4 19:39 INSTALLER/
+drwxrwxr-x+ 1 admin None    0 Jun  4 19:39 src/
 -rwxrwxr-x+ 1 admin None   84 Jun  3 20:37 In_case_of_fire.sh*
 -rw-rw-r--+ 1 admin None  35K Jun  3 20:37 LICENSE.md
 drwxrwxr-x+ 1 admin None    0 Jun  3 21:14 LMP_Pylib/
@@ -155,7 +155,7 @@ LIBDO IS GOING TO EXECUTE ls
 LIBDO STARTED AT 2020-06-06 00:26:18
 LIBDO PID 1463
 BeforeAdd.sh
-INSTALLER
+src
 In_case_of_fire.sh
 LICENSE.md
 LMP_Pylib

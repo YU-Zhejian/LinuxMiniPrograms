@@ -58,7 +58,7 @@ ELAPSED_TIME : 2020-06-06 00:26:18 to 2020-06-06 00:26:18, Total 0:0:0
 EXIT_STATUS  : 0
 ________________JOB_________OUTPUT________________
 BeforeAdd.sh
-INSTALLER
+src
 In_case_of_fire.sh
 LICENSE.md
 LMP_Pylib

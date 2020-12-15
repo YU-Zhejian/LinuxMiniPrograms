@@ -16,7 +16,7 @@ yldoc [STRING] [[STRING2]...] [OPTIONS]
 Search [STRING] in 'doc' folder.
 
 YuZJLab Usage is a very simple documentation format which supports all terminals and operating systems.
-It is directly compiled from dource code in `asciidoc` format located in `INSTALLER/doc` by a Bash script and a Python script.
+It is directly compiled from dource code in `asciidoc` format located in `src/doc` by a Bash script and a Python script.
 
 * Lines are breaked by 90 characters except those in a code block, where there would be no additional line breaks.
 
