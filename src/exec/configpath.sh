@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CONFIGPATH V1P1
+# CONFIGPATH V1P2
 set -eu
 cd src
 . ../lib/libstr
@@ -23,11 +23,7 @@ fi
 infoh "Enumerating valid path..."
 INPATH="${PATH}"
 . ../lib/libpath
-unset invalid_path duplicated_path
-IFS=':'
-eachpath=(${valid_path})
-IFS=''
-unset binpath
+unset invalid_path duplicated_path binpath
 echo ${valid_path} | tr ':' '\n'
 infoh "End locating valid path"
 unset valid_path

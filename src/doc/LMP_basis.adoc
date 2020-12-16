@@ -30,7 +30,7 @@ WARNING: For those wo use Windows, please use `python3` in CygWin & MSY2. Using 
 
 WARNING: If ypu spot any problems, please firstly search for manual and `Readme.md`.
 
-=== GNU/Linux Distributions
+=== GNU/Linux Distributions. including Windows Subsystem of Linux (WSL)
 
 Tested and fully supported.
 
@@ -67,16 +67,11 @@ Not and will not be fixed.
 
 === MSY2
 
-Not tested.
+Tested. Sadly, we will not provide support for such system. If're interested, please use CYGWin instead.
 
 === MacOS
 
-Tested with problems.
-Will not be fixed in this `testing`.
-
-=== Windows Subsystem of Linux
-
-Not tested.
+Tested. Sadly, we will not provide support for such system.
 
 == THE DOCUMENTATION SYSTEMS
 

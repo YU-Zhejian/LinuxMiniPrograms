@@ -73,7 +73,7 @@ done
 # ========Check========
 infoh "Checking FileSystem..."
 ! ${VAR_update_path} || rm -f 'etc/path.sh'
-[ -f 'etc/path.sh' ] || bash src/configpath
+[ -f 'etc/path.sh' ] || bash src/exec/configpath.sh
 . etc/path.sh
 infoh "Installing..."
 #========Install ETC========
@@ -98,7 +98,7 @@ if ${VAR_clear_history}; then
 	"${mycp}" -fr src/var/* var/
 fi
 #========Install C Programs========
-bash src/C_src/build.sh
+bash src/C/build.sh
 #========Install DOC========
 cd src/doc
 . build.sh
@@ -121,7 +121,7 @@ for item in ${eachpath}; do
 	fi
 done
 if ! ${PACONF}; then
-	echo "export PATH=\"${DN}/bin/:${PATH:-}\"" >> "${HOME}"/.bashrc
+	echo "export PATH=\"${DN}/bin/:\${PATH:-}\"" >> "${HOME}"/.bashrc
 	infoh "Will configure PATH...\033[32mPASSED"
 fi
 #========Install PYTHONPATH========
@@ -142,7 +142,7 @@ if [ "${mypython}" != "ylukh" ];then
 	done
 fi
 if ! ${PYCONF}; then
-	echo "export PYTHONPATH=\"${DN}/libpy/:${PYTHONPATH:-}\"" >> "${HOME}"/.bashrc
+	echo "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\"" >> "${HOME}"/.bashrc
 	infoh "Will configure PYTHONPATH...\033[32mPASSED"
 fi
 #========Install MANPATH========
@@ -163,7 +163,7 @@ if ${VAR_install_man}; then
 	done
 fi
 if ! ${MANCONF}; then
-	echo "export MANPATH=\"${DN}/man/:${MANPATH:-}\"" >> "${HOME}"/.bashrc
+	echo "export MANPATH=\"${DN}/man/:\${MANPATH:-}\"" >> "${HOME}"/.bashrc
 	infoh "Will configure MANPATH...\033[32mPASSED"
 fi
 #========Install Permissions========

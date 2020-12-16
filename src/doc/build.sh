@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 #BUILD_DOC V1
 if ! [ "${myasciidoctor}" != "ylukh" ]; then
-	VAR_install_html=false
 	VAR_install_man=false
+	if ! [ "${myasciidoc}" != "ylukh" ]; then
+		VAR_install_html=false
+	fi
 fi
-[ "${myasciidoctor_pdf}" != "ylukh" ] || VAR_install_pdf=false
 [ "${myasciidoctor_pdf}" != "ylukh" ] || VAR_install_pdf=false
 if ${VAR_install_pdf}; then
 	"${myrm}" -rf ../../pdf
@@ -17,10 +18,18 @@ if ${VAR_install_pdf}; then
 fi
 if ${VAR_install_html}; then
 	"${mymkdir}" -p ../../html
-	for fn in *.adoc; do
-		"${myasciidoctor}" -a allow-uri-read ${fn} -b html5
-		[ ${?} -eq 0 ] && infoh "Compiling ${fn} in html5...\033[32mPASSED" || infoh "Compiling ${fn} in html5...\033[31mFAILED"
-	done
+	if ! [ "${myasciidoctor}" != "ylukh" ]; then
+		for fn in *.adoc; do
+			"${myasciidoctor}" -a allow-uri-read ${fn} -b html5
+			[ ${?} -eq 0 ] && infoh "Compiling ${fn} in html5...\033[32mPASSED" || infoh "Compiling ${fn} in html5...\033[31mFAILED"
+		done
+	else
+		for fn in *.adoc; do
+			"${myasciidoc}" ${fn}
+			[ ${?} -eq 0 ] && infoh "Compiling ${fn} in html5...\033[32mPASSED" || infoh "Compiling ${fn} in html5...\033[31mFAILED"
+		done
+	fi
+
 	"${mymv}" *.html ../../html
 fi
 if ${VAR_install_man}; then

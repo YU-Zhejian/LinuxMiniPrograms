@@ -40,11 +40,11 @@ For most programs written in Shell, these programs will be needed and GNU versio
   * `kill`
   * `ls`
   * `mkdir`
-  * `readlink` (Mandatory )
+  * `readlink` (Mandatory)
   * `rm`
   * `sleep`
   * `sort`
-  * `split` (Mandatory )
+  * `split` (Mandatory)
   * `tail`
   * `tr`
   * `wc`
@@ -78,6 +78,7 @@ All documentations are written in `asciidoctor`.If you wish to compile them into
 * `python>=3.6` can be installed by your package manager or `conda`\*.
 * Ruby, at least `ruby-gems>=3.0.3`\*, can be installed by your package manager or by compiling the source code.
 * `Ruby gems` package `asciidoctor>=2.0.10` and `asciidoctor-pdf>=1.5.3` can be installed by `gem`.
+* If you only need to compile html, you may install `asciidoc>=9.0.4`
 
 \*: If you use CYGWin, you should **ONLY** use `python`/`ruby` installed by `CYGWin installer`.
 
