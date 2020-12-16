@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #BUILD_DOC V1
-if ! [ "${myasciidoctor}" != "ylukh" ]; then
+if [ "${myasciidoctor}" == "ylukh" ]; then
 	VAR_install_man=false
-	if ! [ "${myasciidoc}" != "ylukh" ]; then
+	if [ "${myasciidoc}" == "ylukh" ]; then
 		VAR_install_html=false
 	fi
 fi
@@ -18,7 +18,7 @@ if ${VAR_install_pdf}; then
 fi
 if ${VAR_install_html}; then
 	"${mymkdir}" -p ../../html
-	if ! [ "${myasciidoctor}" != "ylukh" ]; then
+	if [ "${myasciidoctor}" != "ylukh" ]; then
 		for fn in *.adoc; do
 			"${myasciidoctor}" -a allow-uri-read ${fn} -b html5
 			[ ${?} -eq 0 ] && infoh "Compiling ${fn} in html5...\033[32mPASSED" || infoh "Compiling ${fn} in html5...\033[31mFAILED"

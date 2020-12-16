@@ -16,6 +16,6 @@ OPTIONS:
 	--install-usage Install yldoc usage, need python 3.
 	--install-pdf Install doc in pdf, need 'asciidoctor-pdf'.
 	--install-html Install doc in html, need 'asciidoctor'.
-	--update-path Update the etc/path.sh
+	--skip-path Do not update etc/path.sh
 
-	If no opt is given, the 'all' mode will be used.
+	If no opt is given, the default mode will be used.

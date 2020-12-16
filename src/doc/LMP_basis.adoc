@@ -19,13 +19,6 @@ This is a descriptional manual; it shows you the basic configuration in LinuxMin
 
 When installing the program, the installer will seach for dependent executables inside the `$PATH` variable and locate thir GNU version as the default program of the LMP. All path information will be recorded in `etc/path.sh`.
 
-== PYTHON IN LMP
-
-Although the frmework of LMP is written in Shell, we use Python to accelerate some processes.
-When installing the program, the installer will seach for all Python 3 inside the `$PATH` variable and locate the newest Python as the default Python of the LMP. However, you can modify this by editting `etc/path.sh` to specific your own Python.
-
-WARNING: For those wo use Windows, please use `python3` in CygWin & MSY2. Using those provided by `conda`, Windows Store or its official installer is *NOT* recommended.
-
 == COMPABILITY
 
 WARNING: If ypu spot any problems, please firstly search for manual and `Readme.md`.
