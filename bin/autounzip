@@ -54,7 +54,7 @@ for fulln in "${STDS[@]}"; do
 	fi
 	# ============ Start Decompressing ============
 	function do_job() {
-		cmd="$(${DN}/exec/azcmd.sh --decompress ${1})"
+		cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${1})"
 		infoh "${cmd}"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
 		fcat "${fulln}" | ${cmd} | "${mytar}" -tv -f -

@@ -182,7 +182,7 @@ function add_dir() {
 "${mychown}" -R $(id -u) *
 "${mychmod}" -R +r+w *
 add_dir
-"${mychmod}" +x bin/* *.sh bin/exec/azcmd.sh
+"${mychmod}" +x bin/* *.sh bin/exec/*.co*
 infoh "Modifying file permissions...\033[32mPASSED"
 IFS="${OLDIFS}"
 infoh "Finished. Please execute 'exec bash' to restart bash"
