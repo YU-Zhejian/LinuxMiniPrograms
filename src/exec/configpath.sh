@@ -23,27 +23,22 @@ fi
 infoh "Enumerating valid path..."
 INPATH="${PATH}"
 . ../lib/libpath
-unset invalid_path duplicated_path binpath
+unset invalid_path duplicated_path
+IFS=':'
+eachpath=(${valid_path})
+IFS=''
+unset binpath
 echo ${valid_path} | tr ':' '\n'
 infoh "End locating valid path"
 unset valid_path
-
 myls="ls"
 mygrep="grep"
 mysed="sed"
 myrm="rm"
-for PROGNAME in ls grep sed rm ; do
-	. exec/findcoreutils.sh
-done
-for PROGNAME in python ps parallel; do
-	. exec/find${PROGNAME}.sh
-done
-for PROGNAME in cat chmod chown cp cut find gtar gzip head mkdir more mv sort split tail tar; do
-	. exec/findcoreutils.sh
-done
-for PROGNAME in 7z 7za bgzip brotli bzip2 compress lz4 lzfse lzip lzma lzop pbz2 pigz rar unzip unrar xz zip zstd git asciidoctor-pdf asciidoctor; do
-	. exec/findornot.sh
-done
+for PROGNAME in ls grep sed rm ; do . exec/findcoreutils.sh; done
+for PROGNAME in python ps parallel; do . exec/find${PROGNAME}.sh; done
+for PROGNAME in cat chmod chown cp cut find gtar gzip head mkdir more mv sort split tail tar; do . exec/findcoreutils.sh; done
+for PROGNAME in 7z 7za bgzip brotli bzip2 compress lz4 lzfse lzip lzma lzop pbz2 pigz rar unzip unrar xz zip zstd asciidoc asciidoctor-pdf asciidoctor git; do . exec/findornot.sh; done
 "${mysed}" -i 's;^mygtar;mytar;' "${path_sh}"
 "${mysed}" -i 's;^myasciidoctor-pdf;myasciidoctor_pdf;' "${path_sh}"
 . "${path_sh}"
