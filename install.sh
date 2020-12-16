@@ -64,6 +64,9 @@ for opt in "${@}"; do
 		"--install-usage")
 			VAR_install_usage=true
 			;;
+		"--skip-path")
+			VAR_update_path=false
+			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
 			;;

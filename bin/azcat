@@ -30,7 +30,7 @@ if [ -z "${STDS[1]:-}" ]; then
 	fn=$(echo ${fn} | ${mysed} "s;/$;;")
 	if [ -e "${fn}" ]; then
 		ext="cat"
-	else
+	elif [ "${fn}" != "-" ];then
 		errh "Filename '${fn}' invalid"
 	fi
 else
