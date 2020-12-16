@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# B16C.py V2P1
+# B16C.py V2P2
 
 from LMP_Pylib.libisopt import *
 from LMP_Pylib.libylfile import *
@@ -11,20 +11,17 @@ for sysarg in sys.argv[1:]:
 			os.system('yldoc b16c')
 			exit(0)
 		elif sysarg == '-v' or sysarg == '--version':
-			print('Version 1 in Python')
+			print('Version 12 Patch 2 in Python')
 			exit(0)
-		elif sysarg == '-d':
+		elif sysarg == '-d' or sysarg == '--decode':
 			decode = True
 if decode:
 	f = open(sys.stdin.fileno(), mode='r')
 	o = open(sys.stdout.fileno(), mode='wb')
-	otmp = []
 	while True:
 		inp = f.read(2)
 		if len(inp) < 2: break
-		otmp.append((ord(inp[0]) - 65) * 16 + ord(inp[1]) - 65)
-		o.write(bytes(otmp))
-		otmp.pop()
+		o.write(bytes((ord(inp[0]) - 65) * 16 + ord(inp[1]) - 65))
 	o.close()
 else:
 	f = open(sys.stdin.fileno(), mode='rb')
@@ -32,7 +29,5 @@ else:
 		inp = f.read(1)
 		if not inp: break
 		inp = ord(inp)
-		b1 = inp // 16
-		b2 = inp % 16
-		sys.stdout.write(chr(b1 + 65) + chr(b2 + 65))
+		sys.stdout.write(chr(inp // 16 + 65) + chr(inp % 16 + 65))
 f.close()
