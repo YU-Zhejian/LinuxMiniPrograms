@@ -280,7 +280,7 @@ else
 			cmd="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -tzip"
 		elif [ "${myzip}" != 'ylukh' ]; then
 			cklvl zip
-			cmd="${myzip} --verbose --split-verbose ${LVL}"
+			cmd="${myzip} --verbose ${LVL}"
 		fi
 		;;
 	*)

@@ -37,7 +37,7 @@ mysed="sed"
 myrm="rm"
 for PROGNAME in ls grep sed rm ; do . exec/findcoreutils.sh; done
 for PROGNAME in python ps parallel; do . exec/find${PROGNAME}.sh; done
-for PROGNAME in cat chmod chown cp cut find gtar gzip head mkdir more mv sort split tail tar; do . exec/findcoreutils.sh; done
+for PROGNAME in cat chmod chown cp cut find gtar gzip head mkdir more mv sort tail tar; do . exec/findcoreutils.sh; done
 for PROGNAME in 7z 7za bgzip brotli bzip2 compress lz4 lzfse lzip lzma lzop pbz2 pbzip pigz rar unzip unrar xz zip zstd asciidoc asciidoctor-pdf asciidoctor git; do . exec/findornot.sh; done
 "${mysed}" -i 's;^mygtar;mytar;' "${path_sh}"
 "${mysed}" -i 's;^mypbzip2;mypbz2;' "${path_sh}"

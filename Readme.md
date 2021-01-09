@@ -23,7 +23,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 "Package management systems" or "Package manager" refers to software such as `apt` on Ubuntu Linux, `CYGWin installer` in CYGWin, `homebrew` under MacOS or  `pkg`/`ports` systems under FreeBSD.
 
-All the program relies on `bash >= 4.4.12(3)`. For MacOS users, please update the default `bash`. For users using CentOS/Debian stable, CentOS or other "stable" distributions, please upgrade it by compiling the source code (<https://ftp.gnu.org/gnu/bash/>).
+All the program relies on `bash >= 4.4.12(3)`. For macOS users, please update the default `bash`. For users using CentOS/Debian stable, CentOS or other "stable" distributions, please upgrade it by compiling the source code (<https://ftp.gnu.org/gnu/bash/>).
 
 For most programs written in Shell, these programs will be needed and GNU version would be better:
 
@@ -44,15 +44,14 @@ For most programs written in Shell, these programs will be needed and GNU versio
   * `rm`
   * `sleep`
   * `sort`
-  * `split` (Mandatory)
   * `tail`
   * `tr`
   * `wc`
   * `uniq`
 
-  Mandatory for BSD or MacOS. It can be installed by compiling the source code (BSD) or `brew` (MacOS).
+  Mandatory for BSD or macOS. It can be installed by compiling the source code (BSD) or `brew` (macOS).
 
-  For MacOS users, if you use `brew`, please add the `bin` directory which contains binaries without leading "`g`" to your `${PATH}` environment variable. There will be instructions.
+  For macOS users, if you use `brew`, please add the `bin` directory which contains binaries without leading "`g`" to your `${PATH}` environment variable. There will be instructions.
 
 * Other essential GNU utils may include:
 
@@ -73,7 +72,7 @@ For most programs written in Shell, these programs will be needed and GNU versio
 
 * If you would like to use `git-mirror`, install `git>=2.21`.
 
-  The entire `LinuxMiniProgram` needs `git>=2.21`\* to be downloaded or upgraded. It can be installed by your package manager or by compiling its source code. If there's no `git` available, please download a zipped archive from GitHub (See below.). However, you may unable to get updates in this way. If you would like to use `git-mirror`, `git` would be mandatory.
+  The entire `LinuxMiniProgram` needs `git>=2.21`\* to be downloaded or upgraded. It can be installed by your package manager or by compiling its source code. If there's no `git` available, please download a zipped archive from GitHub (See below.). However, you may be unable to get updates in this way. If you would like to use `git-mirror`, `git` would be mandatory.
 
   \*: If you use CYGWin, you should **ONLY** use `git` installed by `CYGWin installer` instead of `winGit`. Otherwise, you may see *Dealing with CRLF*.
 
@@ -142,7 +141,7 @@ Please read the documents of each program and `LMP_basis` to check if the progra
 
 ### Dealing with CRLF
 
-For those who use `WinGit`, you may experience problems caused by line endings. They may looks like `bash: line 1: $'true\r': command not found`.
+For those who use `WinGit`, you may experience problems caused by line endings. They may look like `bash: line 1: $'true\r': command not found`.
 
 That is because Windows uses `CRLF` while *ix use `LF`, and your `git` distribution automatically converts `LF` to `CRLF` when getting the file. To remove this issue, please do as follows:
 

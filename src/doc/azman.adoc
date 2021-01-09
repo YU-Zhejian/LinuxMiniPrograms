@@ -41,9 +41,6 @@ Tested with all functions supported.
 
 Tested with all functions supported.
 
-== KNOWN BUGS
-
-Cannot list splitted zip files which contains only 1 file.
 
 == SEE ALSO
 

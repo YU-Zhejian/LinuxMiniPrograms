@@ -1,0 +1,7 @@
+= News: Splitting Feature Removed from AutoZip Series
+
+After in-depth discussion with colleagues, we finally removed support for creating, listing and extracting split archives in AutoZip Series. Split recorded in documentations will also be removed soon.
+
+The reason for making such modification is, with the development of high-speed internet, there's no need for data to be transformed by segments. We realized that creating split archives is not a primary need for GNU/Linux users. What is needed is better compression algorithms with better archiving rate and less time. To solve this problem, we are currently assessing all algorithms supported by AutoZIp series and other domain-specific archiving methods used in bioinformatics field.
+
+For BSD users, dependency of GNU split is removed. However, you still required to install GNU CoreUtils because `readlink -f` is still needed.

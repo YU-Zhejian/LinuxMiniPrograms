@@ -15,8 +15,8 @@ autozip - An automatic file compression tool.
 
 This program will compress files and folders with extension [ext] to [level].
 You can make [level] 1 (fastest) to 9 (best).
-Some algorithms (e.g. xzip, zip) may support 0 which means to be store only without compression.
-If [level] is omitted, this program will use default value provided by algorithm.
+Some algorithms (e.g. LZMA, Deflate) may support 0 which means to be store only without compression.
+If [level] is omitted, this program will use default value provided by the algorithm.
 If [ext] is also omitted, this program will use gz & tar.gz by default.
 If [source] is omitted, this program will check the algorithms installed on your computer and return a list of available extension name.
 
@@ -26,29 +26,14 @@ include::include/cmnopt.adoc[]
 
 * `--force` Remove the target if exists.
 
-* `--remove` Remove [sorce] if success.
+* `--remove` Remove [source] if success.
 
-* `-s[:[split]]|-split[:[split]]` Split the archive by `[split]`.
-This is realized by using GNU CoreUtils `split` or those provided by corresponding algorithms like 7zip, zip or rar.
-If `[split]` is omitted, it will be treated as 1G. legal [split] are those which can be recognized by GNU CoreUtils `split` or corresponding algorithms.
-That is:
-
-** rar=`^[0-9]+[bkm]$` (e.g. 1024m);
-** zip=`^[0-9]+[kmgt]$` (e.g. 1024m);
-** 7z=`^[0-9]+[bkmg]$` (e.g. 1024m);
-** Others=`^[0-9]+$` (e.g. 1048576) or `^[0-9]+[KMGTPEZY]$` (e.g. 1024M) or `^[0-9]+[KMGTPEZY]B$` (e.g. 1024MB).
-
-Note: The above `[split]` works for legacy versions of `autozip`.
-The new version allows you to use CAPITAL letters when using rar, zip or 7z.
 
 * `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when creating the archive. `[thread]` should not be higher than the number of cores installed.
 If `[thread]` is omitted, will use the number of cores installed.
 
-Please be aware that __WE DO NOT SUPPORT BSD SPLIT__.
 
-When making a tar.?z archive, this will split the tar file and compress them orderly.
-
-== USEING GNU PARALLEL
+== USING GNU PARALLEL
 
 It is recommended to use GNU Parallel to accelerate the speed of compression.
 You can change the first line of `etc/autozip.conf` to `PARALLEL` to enable this feature.
