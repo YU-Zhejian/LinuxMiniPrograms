@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# src V3P5
+# INSTALL V3P5
 set -eu
 OLDIFS="${IFS}"
 if ! readlink -f . &> /dev/null; then
@@ -25,7 +25,7 @@ for opt in "${@}"; do
 	if isopt ${opt}; then
 		case ${opt} in
 		"-v" | "--version")
-			echo "Version 3 Patch 5"
+			echo "Version 3 Patch 6"
 			exit 0
 			;;
 		"-h" | "--help")
@@ -92,19 +92,32 @@ if ${VAR_install_config}; then
 fi
 #========Install VAR========
 if ${VAR_clear_history}; then
-	"${mymkdir}" -p var
 	if [ -d "var" ]; then
 		"${mytar}" czf var_backup.tgz var
-		"${myrm}" -rf var/*
 		infoh "Backing up histories...\033[32mPASSED"
 	fi
+	"${myrm}" -rf var
+	"${mymkdir}" -p var
 	"${mycp}" -fr src/var/* var/
 fi
 #========Install C Programs========
-bash src/C/build.sh
+bash src/C
+make
+cd ../../
 #========Install DOC========
 cd src/doc
-. build.sh
+if [ "${myasciidoctor}" == "ylukh" ]; then
+	VAR_install_man=false
+	[ "${myasciidoc}" == "ylukh" ] && VAR_install_html=false
+fi
+[ "${myasciidoctor_pdf}" != "ylukh" ] || VAR_install_pdf=false
+[ "${mypython}" != "ylukh" ] || VAR_install_usage=false
+${VAR_install_pdf} && make pdf ADOC="${myasciidoctor_pdf}"
+${VAR_install_man} && make man ADOC="${myasciidoctor}"
+${VAR_install_usage} && make man PYTHON="${mypython}"
+if ${VAR_install_html}; then
+	[ "${myasciidoctor}" != "ylukh" ] &&  html ADOC="${myasciidoctor}" || make html ADOC="${myasciidoc}" AOPTS=""
+fi
 cd ../../
 #========Install PATH========
 MANCONF=true

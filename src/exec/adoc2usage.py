@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# AD2U.py V2
+# AD2U.py V2P1
 import re
 import sys
 
@@ -78,7 +78,7 @@ blank_len = (fix_tgt - 13 - len(dochead)) // 2
 fdoc_out_lines.insert(0, '')
 fdoc_out_lines.insert(0, 'YuZJLab' + ' ' * blank_len + dochead + ' ' * blank_len + 'MANUAL')
 fdoc_out_lines.append('YuZJLab' + ' ' * 34 + '2019-2020' + ' ' * 34 + 'MANUAL')
-fdoc_out_handle = open(dochead + '.usage', 'w')
+fdoc_out_handle = open(sys.argv[2], 'w')
 for line in fdoc_out_lines:
 	fdoc_out_handle.write(line.rstrip() + '\n')
 fdoc_out_handle.close()

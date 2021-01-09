@@ -6,9 +6,6 @@
 /man
 /html
 /pdf
-/src/doc/*.1
-/src/doc/*.html
-/src/doc/*.pdf
 __pycache__
 *.stackdump
 /gnome-keyring-daemo.core

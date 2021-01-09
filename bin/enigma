@@ -10,4 +10,4 @@ for fn in "${DN}"/exec/enigma.co "${DN}"/exec/enigma.co.exe;do
 		exec "${fn}" "${@}"
 	fi
 done
-if [ "${mypython}" != "ylukh" ]; then "${mypython}" "${DN}"/exec/enigma.py "${@}"; else errh "No python found!"; fi
+if [ "${mypython}" != "ylukh" ]; then "${mypython}" "${DN}"/exec/enigma.py "${DN}"/../ "${@}"; else errh "No python found!"; fi

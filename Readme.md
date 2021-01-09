@@ -61,10 +61,11 @@ For MacOS users, if you use `brew`, please add the `bin` directory which contain
   * `GNU sed>=4.4` available from <https://ftp.gnu.org/gnu/sed/>. Those installed in `FreeBSD>=12.1` will also work.
   * `GNU parallel>=20200122` available from <https://ftp.gnu.org/gnu/parallel/>.
   * `ps>=procps-ng version 3.3.10` available from <https://sourceforge.net/projects/procps-ng/> or `ps (cygwin) 3.1.4`. Those installed in `FreeBSD>=12.1` will also work.
+  * `GNU make>=4.3` (Available from <https://www.gnu.org/software/make/>).
 
 * Some programs such as `libmktbl` have its Python version (Need `python>=3.6`), which is faster than those written in Shell script. There are also programs written purely in Python, like `libdo-monitor`. When installing the program, the installer will search for all Python 3 interpreter inside the `${PATH}` variable and locate the newest Python interpreter as the default Python interpreter of the LMP. However, you can modify this by editing `etc/path.sh` to specific your own Python interpreter.
 
-* Some programs such as `pst` have its C version, which is faster than those written in Python. You may need to install `make>=4.3` (Available from <https://www.gnu.org/software/make/>) and `gcc>=10.2.1-1ubuntu1` (Available from <http://gcc.gnu.org/>) to build these programs.
+* Some programs such as `pst` have its C version, which is faster than those written in Python. You may need to install `gcc>=10.2.1-1ubuntu1` (Available from <http://gcc.gnu.org/>) to build these programs.
 
 * If you would like to use libDO v3 instead of v2, you need following dependencies:
 
