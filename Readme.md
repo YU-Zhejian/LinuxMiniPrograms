@@ -3,7 +3,7 @@
 
 These programs are designed to cut down time a bioinformatician spent on doing sys-admin work.
 
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
@@ -50,10 +50,9 @@ For most programs written in Shell, these programs will be needed and GNU versio
   * `wc`
   * `uniq`
 
+  Mandatory for BSD or MacOS. It can be installed by compiling the source code (BSD) or `brew` (MacOS).
 
-Mandatory for BSD or MacOS. It can be installed by compiling the source code (BSD) or `brew` (MacOS).
-
-For MacOS users, if you use `brew`, please add the `bin` directory which contains binaries without leading "`g`" to your `${PATH}` environment variable. There will be instructions.
+  For MacOS users, if you use `brew`, please add the `bin` directory which contains binaries without leading "`g`" to your `${PATH}` environment variable. There will be instructions.
 
 * Other essential GNU utils may include:
 
@@ -156,9 +155,28 @@ dos2unix BeforeAdd.sh
 ./BeforeAdd.sh
 ```
 
+## Help for GreenHands
+
+The following scripts will set up a basic environment for development and everyday use.
+
+```bash
+cd opt/envgen
+chmod +x envgen
+sed -i 's/\r$//g' envgen
+./envgen
+```
+
+The following script will generate a bug report.
+
+```bash
+cd opt/envgen
+chmod +x ckenv
+sed -i 's/\r$//g' ckenv
+./ckenv
+```
+
 ## Help & Documentation
 
 After installation, you can execute `yldoc -l` to get a complete list of all available documentations and view them by using `yldoc [name]`. You can also find PDF, HTML and other documentation formats in corresponding folder.
 
 It is recommended to read the `LMP_basis` to know the basic configurations to Linux Mini Programs.
-

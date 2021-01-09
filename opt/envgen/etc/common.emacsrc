@@ -1,0 +1,5 @@
+(package-initialize)
+(custom-set-variables)
+(global-linum-mode 1) ;
+(setq linum-format "%d ");
+(setq backup-directory-alist (quote (("." . "~/.emacs-backups"))))

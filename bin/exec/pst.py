@@ -44,7 +44,7 @@ class writeThread(threading.Thread):
 		super().__init__()
 		self.RT = RT
 
-	def tohuman(self,diff:int) -> str:
+	def tohuman(self, diff: int) -> str:
 		dc = "b"
 		if diff > 1024:
 			diff /= 1024
@@ -55,7 +55,7 @@ class writeThread(threading.Thread):
 		if diff > 1024:
 			diff /= 1024
 			dc = "gb"
-		return str(diff)+dc
+		return str(diff) + dc
 
 	def run(self):
 		global ISMACHINE
@@ -76,10 +76,9 @@ class writeThread(threading.Thread):
 				i = self.RT.i
 				se.write("\n\033[1A")
 				diff = i - iold
-				se.write("CC=" + self.tohuman(i) + ", TE=" + str(t) + ", SPEED=" + self.tohuman(diff)+"/s")
+				se.write("CC=" + self.tohuman(i) + ", TE=" + str(t) + ", SPEED=" + self.tohuman(diff) + "/s")
 				iold = i
 		se.close()
-
 
 
 RT = readThread()

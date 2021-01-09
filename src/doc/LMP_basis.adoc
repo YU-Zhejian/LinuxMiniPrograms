@@ -13,17 +13,68 @@ LMP_Basis - The basic configuration of LinuxMiniPrograms.
 
 == DESCRIPTION
 
-This is a descriptional manual; it shows you the basic configuration in LinuxMiniPrograms.
+This is a description manual; it shows you the basic configuration in LinuxMiniPrograms.
 
-== EXECUTABLES
+== FOLDER STRUCTURE
 
-When installing the program, the installer will seach for dependent executables inside the `$PATH` variable and locate thir GNU version as the default program of the LMP. All path information will be recorded in `etc/path.sh`.
+All codes and binaries of LinuxMiniProgram are installed in a well-organized order like those specified in FHS.
+
+Following shows a list of all directories which may be useful in this program. Comments added are presented behind `#`.
+
+```
+./.git/ # [DEVELOPER ONLY] Git, a version control system.
+
+./.gitignore # [DEVELOPER ONLY] Another file for Git.
+
+./.idea/ # [DEVELOPER ONLY] Files for JetBrains IDEs.
+
+./.vs/ # [DEVELOPER ONLY] Files for Visual Studio Code.
+
+./BeforeAdd.sh # Files for changing line endings. If you met problems in line endings, this file should be executed.
+
+./bin # Here are the path of BINARIES; That is, what will get exected when you input names of them in a shell.
+
+./bin/exec # Supplementary executable files for those in ./bin/
+
+
+./doc # Help files in YuZJLab Usage. You may use command yldoc to view these files.
+
+# ./etc/ # Configuratio files.
+
+./html # Help files in HTML. You may use an internet browser to view these files.
+
+./install.sh # The installer you've just used.
+
+./lib # Libraries written in Shell Script which is used by executables in ./bin/ and may be useful in your own program.
+
+./libpy # Python libraries.
+
+./LICENSE.md # The license file.
+
+./man # Help files in Groff Manpages. You may use command man to view these files. [NOT SUPPORTED ON BSD]
+
+./opt # Optional programs.
+
+./pdf # Help files in PDF. You may use a PDF viewer to view these files.
+
+./Readme.md # The Readme.
+
+./src # [DEVELOPER ONLY] Source code.
+
+./TODO # What will happen net.
+
+./var/ # Variable files like logs.
+```
+
+== EXECUTABLES USED IN THIS PROGRAM
+
+When installing the program, the installer will search for dependent executables inside the `${PATH}` variable and locate thir GNU version as the default program of the LMP. All path information will be recorded in `etc/path.sh`.
 
 == COMPABILITY
 
 WARNING: If ypu spot any problems, please firstly search for manual and `Readme.md`.
 
-=== GNU/Linux Distributions. including Windows Subsystem of Linux (WSL)
+=== GNU/Linux Distributions, including Windows Subsystem of Linux (WSL)
 
 Tested and fully supported.
 
