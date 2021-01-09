@@ -101,7 +101,7 @@ if ${VAR_clear_history}; then
 	"${mycp}" -fr src/var/* var/
 fi
 #========Install C Programs========
-bash src/C
+cd src/C
 make
 cd ../../
 #========Install DOC========
