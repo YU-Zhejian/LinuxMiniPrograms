@@ -116,7 +116,7 @@ ${VAR_install_pdf} && make pdf ADOC="${myasciidoctor_pdf}"
 ${VAR_install_man} && make man ADOC="${myasciidoctor}"
 ${VAR_install_usage} && make man PYTHON="${mypython}"
 if ${VAR_install_html}; then
-	[ "${myasciidoctor}" != "ylukh" ] &&  html ADOC="${myasciidoctor}" || make html ADOC="${myasciidoc}" AOPTS=""
+	[ "${myasciidoctor}" != "ylukh" ] && ADOC="${myasciidoctor}" || make html ADOC="${myasciidoc}" AOPTS=""
 fi
 cd ../../
 #========Install PATH========
@@ -199,6 +199,7 @@ function add_dir() {
 "${mychmod}" -R +r+w *
 add_dir
 "${mychmod}" +x bin/* *.sh bin/exec/*.co*
+make opt permissions
 infoh "Modifying file permissions...\033[32mPASSED"
 IFS="${OLDIFS}"
 infoh "Finished. Please execute 'exec bash' to restart bash"

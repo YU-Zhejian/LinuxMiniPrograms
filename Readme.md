@@ -174,7 +174,7 @@ sed -i 's/\r$//g' ckenv
 ./ckenv
 ```
 
-## Help & Documentation
+## Help \& Documentation \& Supporting
 
 After installation, you can execute `yldoc -l` to get a complete list of all available documentations and view them by using `yldoc [name]`. You can also find PDF, HTML and other documentation formats in corresponding folder.
 

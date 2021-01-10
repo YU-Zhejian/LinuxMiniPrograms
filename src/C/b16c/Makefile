@@ -4,11 +4,11 @@ OBJECTS := $(foreach fn, $(SOURCES), $(addprefix obj/, $(fn)))
 OBJECTS := $(OBJECTS:.c=.o)
 
 all: $(TARGETS)
+
+$(TARGETS): obj $(OBJECTS)
 	$(CC) $(OBJECTS) -o $<
 
-$(TARGETS): mkdir $(OBJECTS)
-
-mkdir:
+obj:
 	$(MKDIR) obj
 
 obj/%.o: %.c
