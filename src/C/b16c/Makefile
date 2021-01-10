@@ -3,6 +3,8 @@ SOURCES := $(wildcard *.c)
 OBJECTS := $(foreach fn, $(SOURCES), $(addprefix obj/, $(fn)))
 OBJECTS := $(OBJECTS:.c=.o)
 
+.PHONY : all $(TARGETS) $(OBJECTS) clean
+
 all: $(TARGETS)
 
 $(TARGETS): obj $(OBJECTS)

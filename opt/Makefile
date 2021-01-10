@@ -1,4 +1,6 @@
-all:permissions
+.PHONY : all permissions
 
-permissions:
+all : permissions
+
+permissions :
 	chmod +x envgen/*.sh

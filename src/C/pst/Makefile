@@ -3,13 +3,15 @@ SOURCES := $(wildcard *.c)
 OBJECTS := $(foreach fn, $(SOURCES), $(addprefix obj/, $(fn)))
 OBJECTS := $(OBJECTS:.c=.o)
 
+.PHONY : all $(TARGETS) $(OBJECTS) clean
+
 all: $(TARGETS)
-	$(CC) $(OBJECTS) -lpthread -o $<
 
-$(TARGETS): mkdir $(OBJECTS)
+$(TARGETS): obj $(OBJECTS)
+	$(CC) $(OBJECTS) -o $<
 
-mkdir:
-	$(MKDIR) bin obj
+obj:
+	$(MKDIR) obj
 
 obj/%.o: %.c
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
