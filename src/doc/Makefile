@@ -25,10 +25,13 @@ usage:../../doc/ $(USAGE_OBJECTS)
 
 ../../pdf/:
 	$(MKDIR) ../../pdf/
+
 ../../html/:
 	$(MKDIR) ../../html/
+
 ../../man/man1/:
 	$(MKDIR) ../../man/man1/
+
 ../../doc/:
 	$(MKDIR) ../../doc/
 

@@ -8,7 +8,7 @@ OBJECTS := $(OBJECTS:.c=.o)
 all: $(TARGETS)
 
 $(TARGETS): obj $(OBJECTS)
-	$(CC) $(OBJECTS) -o $<
+	$(CC) $(OBJECTS) -o $(OBJECTS)
 
 obj:
 	$(MKDIR) obj
