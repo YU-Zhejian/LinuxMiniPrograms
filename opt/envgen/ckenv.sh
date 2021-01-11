@@ -42,6 +42,23 @@ function parse_stderr(){
     fi
     LINE_NUMBERS=$((${LINE_NUMBERS}+1))
 }
+function my_rc_cat() {
+    for file in /etc/rc*/*;do echo \# ----------${file}----------;cat ${file};done
+}
+function my_cron_cat() {
+	for files in /var/spool/cron/* \
+/etc/crontab \
+/etc/cron.d/* \
+/etc/cron.daily/* \
+/etc/cron.hourly/* \
+/etc/cron.monthly/* \
+/etc/cron.weekly/* \
+/etc/anacrontab \
+/var/spool/anacron/* ;do echo \# ----------${file}----------;cat ${file};done
+}
+function my_log_cat() {
+	find /var/log | grep -v '/$' | while read file;do echo \# ----------${file}----------;cat ${file};done
+}
 
 cat << EOF | \
 grep -v '^$' | \
@@ -61,6 +78,15 @@ echo "${PWD}"
 uname -a
 cat /etc/issue
 
+# ________________________Boot Info________________________
+uptime
+runlevel
+my_rc_cat
+crontab -l
+my_cron_cat
+chkconfig --list
+service --status-all
+
 # ________________________Hardware Info________________________
 free -h
 cat /proc/cpuinfo
@@ -75,10 +101,15 @@ hwinfo
 # ________________________Users and Groups________________________
 cat /etc/passwd
 cat /etc/group
+who --all
+w --ip-addr
+last --fulltimes  --fullnames
+lastlog
 
 # ________________________Partition Info________________________
 lsblk
 df -h
+df -i
 ls -lFh /dev
 cat /etc/fstab
 mount
@@ -89,10 +120,14 @@ ifconfig -a
 iwconfig
 ip addr
 nmap -p 1-65535 -T4 -A -v localhost
+netstat -atlp
+netstat -antlp
 
 # ________________________Process Info________________________
 pstree -ap
 top -H -b -n 1 c
+ps -AT H all
+lsof -s
 
 # ________________________Package Info________________________
 apt list
@@ -313,7 +348,11 @@ WHERE m4
 m4 --version
 
 # ________________________GNU CoreUtils________________________
-WHERE dd\dd --version
+WHERE dd
+dd --version
+
+# ________________________Logs________________________
+my_log_cat
 
 # ________________________Archiving Utils________________________
 WHERE 7z
