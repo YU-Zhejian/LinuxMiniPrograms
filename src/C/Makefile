@@ -1,7 +1,3 @@
-export CC=gcc
-export RM=rm -rf
-export VERBOSE = TRUE
-export MKDIR = mkdir -p
 export PROJDIR := $(CURDIR)
 export SOURCEDIR := $(PROJDIR)/src
 export INCLUDES := $(PROJDIR)/include

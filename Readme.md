@@ -119,8 +119,8 @@ Detailed code:
 ```bash
 git clone https://github.com/YuZJLab/LinuxMiniPrograms
 cd LinuxMiniPrograms
-chmod +x install.sh
-./install.sh --all
+chmod +x configure
+./configure --all
 ```
 
 If there's no `git` available, you may use the following way to download the code:

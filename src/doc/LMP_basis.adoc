@@ -136,7 +136,7 @@ However, as you may see the support information in FreeBSD, differences still ex
 
 == THE DOCUMENTATION SYSTEMS FOR USERS
 
-All documentation for user is written in Asciidoc except the help file of `install.sh`, or some programs located under `opt/`.
+All documentation for user is written in Asciidoc except the help file of `configure`, or some programs located under `opt/`.
 
 There are multiple documentation format supported.
 When installing the software by `./install.sh`, you can choose to build specific formats.

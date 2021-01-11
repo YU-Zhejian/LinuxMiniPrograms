@@ -21,7 +21,7 @@ There's no need to register.
 * Situation: Multiple users operate one non-specific account for particular jobs, for example, different steps in a bio-informatical project.
 You need to set up a secret chatting server.
 
-* Installation: No further installation after executing `install.sh`.
+* Installation: No further installation after executing `configure`.
 
 * Usage: No specific usage.
 

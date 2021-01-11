@@ -1,10 +1,3 @@
-export ADOC=asciidoctor
-export PYTHON=python
-export RM=rm -rf
-export VERBOSE = TRUE
-export MKDIR = mkdir -p
-export AOPTS= -a allow-uri-read
-
 SOURCES := $(wildcard *.adoc)
 PDF_OBJECTS := $(foreach fn, $(SOURCES), $(addprefix ../../pdf/, $(fn)))
 PDF_OBJECTS := $(PDF_OBJECTS:.adoc=.pdf)
@@ -36,7 +29,7 @@ usage:../../doc/ $(USAGE_OBJECTS)
 	$(MKDIR) ../../doc/
 
 ../../pdf/%.pdf: %.adoc
-	$(ADOC) $(AOPTS) $< -o $@
+	$(ADOC_PDF) $(AOPTS) $< -o $@
 
 ../../html/%.html: %.adoc
 	$(ADOC) $(AOPTS) -b html5 $< -o $@

@@ -1,0 +1,8 @@
+export CC=gcc
+export RM=rm -rf
+export VERBOSE = TRUE
+export MKDIR = mkdir -p
+export ADOC=asciidoctor
+export ADOC_PDF=asciidoctor-pdf
+export PYTHON=python
+export AOPTS= -a allow-uri-read
