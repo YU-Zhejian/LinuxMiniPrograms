@@ -1,8 +1,37 @@
 export CC=gcc
 export RM=rm -rf
+export CP=cp -rf
 export VERBOSE = TRUE
+export MAKE=make
 export MKDIR = mkdir -p
 export ADOC=asciidoctor
 export ADOC_PDF=asciidoctor-pdf
 export PYTHON=python
 export AOPTS= -a allow-uri-read
+
+.PHONY : all pp
+
+etc:
+	$(CP) src/etc/* etc/
+
+var:
+	$(CP) -fr src/var/* var/
+
+C:
+	@-$(MAKE) -C src/C
+
+pdf:
+	@-$(MAKE) -C src/doc pdf
+
+html:
+	@-$(MAKE) -C src/doc html
+
+man:
+	@-$(MAKE) -C src/doc man
+
+usage:
+	@-$(MAKE) -C src/doc usage
+
+pp:
+	bash -v src/exec/install_path_permissions.sh
+	@-$(MAKE) -C opt permissions

@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
-# INSTALL V3P5
+# CONFIGURE v1
 set -eu
 OLDIFS="${IFS}"
 if ! readlink -f . &> /dev/null; then
 	echo -e "\033[31mERROR: NO readlink available.\033[0m"
 	exit 1
 fi
-DN="$(readlink -f "$(dirname "${0}")")"
-cd "${DN}"
+cd "$(readlink -f "$(dirname "${0}")")"
 . lib/libisopt
 . lib/libstr
-infoh "YuZJLab Installer"
-infoh "Copyright (C) 2019-2020 YU Zhejian"
+infoh "Configure file for YuZJLab Installer"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
 # ========Def Var========
 VAR_install_config=false
 VAR_clear_history=false
@@ -20,12 +19,14 @@ VAR_install_html=false
 VAR_install_pdf=false
 VAR_install_usage=false
 VAR_update_path=true
+MAKE_TARGETS=""
+MAKE_ARGS=""
 # ========Read Opt========
 for opt in "${@}"; do
 	if isopt ${opt}; then
 		case ${opt} in
 		"-v" | "--version")
-			echo "Version 3 Patch 6"
+			echo "Version 1"
 			exit 0
 			;;
 		"-h" | "--help")
@@ -76,34 +77,59 @@ done
 # ========Check========
 infoh "Checking FileSystem..."
 ! ${VAR_update_path} || rm -f 'etc/path.sh'
-[ -f 'etc/path.sh' ] || bash src/exec/configpath.sh
+if [ -f 'etc/path.sh' ] ;then
+path_sh="etc/path.sh"
+mkdir -p etc
+touch "${path_sh}"
+#=====os=====
+if [ -z "${myos:-}" ]; then
+	os_type=$(uname -mrs)
+	echo "Current OS: ${os_type}"
+	os_type_main=$(echo ${os_type} | cut -f 1 -d ' ')
+	os_type_version=$(echo ${os_type} | cut -f 2 -d ' ')
+	echo "myos=\"${os_type_main}\" #${os_type_version}" >> "${path_sh}"
+	unset os_type os_type_main os_type_version
+fi
+#=====path=====
+infoh "Enumerating valid path..."
+INPATH="${PATH}"
+. lib/libpath
+unset invalid_path duplicated_path
+IFS=':'
+eachpath=(${valid_path})
+IFS=''
+unset binpath
+echo ${valid_path} | tr ':' '\n'
+infoh "End locating valid path"
+unset valid_path
+myls="ls"
+mygrep="grep"
+mysed="sed"
+myrm="rm"
+for PROGNAME in ls grep sed rm ; do . src/exec/findcoreutils.sh; done
+for PROGNAME in python ps parallel; do . src/exec/find${PROGNAME}.sh; done
+for PROGNAME in cat chmod chown cp cut find gtar gzip head mkdir more mv sort tail tar; do . src/exec/findcoreutils.sh; done
+for PROGNAME in 7z 7za bgzip brotli bzip2 compress lz4 lzfse lzip lzma lzop pbz2 pbzip pigz rar unzip unrar xz zip zstd asciidoc asciidoctor-pdf asciidoctor git; do . src/exec/findornot.sh; done
+"${mysed}" -i 's;^mygtar;mytar;' "${path_sh}"
+"${mysed}" -i 's;^mypbzip2;mypbz2;' "${path_sh}"
+"${mysed}" -i 's;^myasciidoctor-pdf;myasciidoctor_pdf;' "${path_sh}"
+. "${path_sh}"
+infoh "All configurations are printed as follows:"
+"${mycat}" "${path_sh}" | "${mygrep}" -v '^$' | "${mygrep}" -v '^#' | "${mysed}" 's/^my//' | "${mysed}" 's/=/\\\\033[33m in \\\\033[0m/ ' | "${mysed}" 's/ #/\\\\033[33m, \\\\033[32m/' | "${mysort}" | while read line; do echo -e "${line}\033[0m"; done
+fi
 . etc/path.sh
-infoh "Installing..."
+
 #========Install ETC========
-if ${VAR_install_config}; then
-	"${mymkdir}" -p etc
-	if [ -d "etc" ]; then
-		"${mytar}" czf etc_backup.tgz etc
-		"${myrm}" -rf etc/*
-		infoh "Backing up settings...\033[32mPASSED"
-	fi
-	"${mycp}" -fr src/etc/* etc/
-	infoh "Installing config...\033[32mPASSED"
+if ${VAR_install_config} && [ -d "etc" ]; then
+	"${mytar}" czf etc_backup.tgz etc
+	infoh "Backing up settings...\033[32mPASSED"
 fi
 #========Install VAR========
-if ${VAR_clear_history}; then
-	if [ -d "var" ]; then
-		"${mytar}" czf var_backup.tgz var
-		infoh "Backing up histories...\033[32mPASSED"
-	fi
-	"${myrm}" -rf var
-	"${mymkdir}" -p var
-	"${mycp}" -fr src/var/* var/
+if ${VAR_clear_history} && [ -d "var" ]; then
+	"${mytar}" czf var_backup.tgz var
+	infoh "Backing up histories...\033[32mPASSED"
 fi
-#========Install C Programs========
-cd src/C
-make
-cd ../../
+
 #========Install DOC========
 cd src/doc
 if [ "${myasciidoctor}" == "ylukh" ]; then
@@ -119,87 +145,5 @@ if ${VAR_install_html}; then
 	[ "${myasciidoctor}" != "ylukh" ] && ADOC="${myasciidoctor}" || make html ADOC="${myasciidoc}" AOPTS=""
 fi
 cd ../../
-#========Install PATH========
-MANCONF=true
-PACONF=false
-PYCONF=true
-INPATH="${PATH:-}"
-. "${DN}"/lib/libpath
-unset invalid_path duplicated_path
-IFS=':'
-eachpath=(${valid_path})
-IFS=''
-for item in ${eachpath}; do
-	if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "${DN}/bin/")" ]; then
-		infoh "PATH already configured"
-		PACONF=true
-		break
-	fi
-done
-if ! ${PACONF}; then
-	echo "export PATH=\"${DN}/bin/:\${PATH:-}\"" >> "${HOME}"/.bashrc
-	infoh "Will configure PATH...\033[32mPASSED"
-fi
-#========Install PYTHONPATH========
-if [ "${mypython}" != "ylukh" ];then
-	PYCONF=false
-	INPATH="${PYTHONPATH:-}"
-	. "${DN}"/lib/libpath
-	unset invalid_path duplicated_path
-	IFS=':'
-	eachpath=(${valid_path})
-	IFS=''
-	for item in ${eachpath}; do
-		if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "${DN}/libpy/")" ]; then
-			infoh "PYTHONPATH already configured"
-			PYCONF=true
-			break
-		fi
-	done
-fi
-if ! ${PYCONF}; then
-	echo "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\"" >> "${HOME}"/.bashrc
-	infoh "Will configure PYTHONPATH...\033[32mPASSED"
-fi
-#========Install MANPATH========
-if ${VAR_install_man}; then
-	MANCONF=false
-	INPATH="${MANPATH:-}"
-	. "${DN}"/lib/libpath
-	unset invalid_path duplicated_path
-	IFS=':'
-	eachpath=(${valid_path})
-	IFS=''
-	for item in ${eachpath}; do
-		if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "${DN}/man")" ]; then
-			infoh "MANPATH already configured"
-			MANCONF=true
-			break
-		fi
-	done
-fi
-if ! ${MANCONF}; then
-	echo "export MANPATH=\"${DN}/man/:\${MANPATH:-}\"" >> "${HOME}"/.bashrc
-	infoh "Will configure MANPATH...\033[32mPASSED"
-fi
-#========Install Permissions========
-function add_dir() {
-	"${myls}" -1 | while read file_name; do
-		if [ -f ${file_name} ]; then
-			"${mychmod}" -x ${file_name}
-		else
-			"${mychmod}" +x ${file_name}
-			cd ${file_name}
-			add_dir
-			cd ..
-		fi
-	done
-}
-"${mychown}" -R $(id -u) *
-"${mychmod}" -R +r+w *
-add_dir
-"${mychmod}" +x bin/* *.sh bin/exec/*.co*
-make opt permissions
-infoh "Modifying file permissions...\033[32mPASSED"
-IFS="${OLDIFS}"
+
 infoh "Finished. Please execute 'exec bash' to restart bash"
