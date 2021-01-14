@@ -14,7 +14,7 @@ software. There will be no documentations to this software except this one.
 Initiating..."
 
 mkdir -p "${HOME}"/envgen_"$(date +%Y-%m-%d_%H-%M-%S)"
-cp -r * "${HOME}"/envgen_"$(date +%Y-%m-%d_%H-%M-%S)"/
+cp -r "$(readlink -f "$(dirname "${0}")")"/* "${HOME}"/envgen_"$(date +%Y-%m-%d_%H-%M-%S)"/
 cd "${HOME}"/envgen_"$(date +%Y-%m-%d_%H-%M-%S)"
 
 sed -i 's/\r$//g' etc/* || true
@@ -42,6 +42,10 @@ mv etc/common.emacsrc "${HOME}"/.emacsrc
 # ________________________R Settings________________________
 mv "${HOME}"/.Rprofile .Rprofile.bak || true
 mv etc/common.Rprofile "${HOME}"/.Rprofile
+
+# ________________________Ruby Settings________________________
+mv "${HOME}"/.gemrc .gemrc.bak || true
+mv etc/common.gemrc "${HOME}"/.gemrc
 
 # ________________________Installing Conda Packages________________________
 . "${HOME}"/.bashrc || true

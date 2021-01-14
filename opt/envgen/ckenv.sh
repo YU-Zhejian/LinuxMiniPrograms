@@ -28,6 +28,7 @@ declare -i LINE_NUMBERS
 LINE_NUMBERS=1
 [ -n "${1:-}" ] && out_file="${1}" || out_file=Report_"$(date +%Y-%m-%d_%H-%M-%S)".log
 tmpsh=$(mktemp -t envgen_XXXXX.sh)
+DN="$(readlink -f "$(dirname "${0}")")"
 
 function parse_stderr(){
     if [ "${1:-}" = '#' ];then
@@ -43,7 +44,7 @@ function parse_stderr(){
     LINE_NUMBERS=$((${LINE_NUMBERS}+1))
 }
 function my_rc_cat() {
-    for file in /etc/rc*/*;do echo \# ----------${file}----------;cat ${file};done
+    for file in /etc/rc*/*;do echo \# ----------${file}----------;cat ${file} || true;done
 }
 function my_cron_cat() {
 	for files in /var/spool/cron/* \
@@ -54,10 +55,10 @@ function my_cron_cat() {
 /etc/cron.monthly/* \
 /etc/cron.weekly/* \
 /etc/anacrontab \
-/var/spool/anacron/* ;do echo \# ----------${file}----------;cat ${file};done
+/var/spool/anacron/* ;do echo \# ----------${file}----------;cat ${file} || true;done
 }
 function my_log_cat() {
-	find /var/log | grep -v '/$' | while read file;do echo \# ----------${file}----------;cat ${file};done
+	find /var/log | grep -v '/$' | while read file;do echo \# ----------${file}----------;cat ${file} || true;done
 }
 
 cat << EOF | \
@@ -140,6 +141,7 @@ cat /etc/yum.repos.d/*.repo
 pacman -Sl
 pacman -Qv
 cat /etc/pacman.d/mirrorlist.*
+mingw-get list
 
 # ________________________Shell Environment________________________
 declare
@@ -178,6 +180,18 @@ WHERE fish
 cat ${HOME}/.zshrc
 fish --version
 
+# ________________________Version Control Systems________________________
+WHERE git
+git --version
+git config --show-origin --show-scope -l
+WHERE hg
+hg --version --verbose
+hg config
+WHERE svn
+svn --version --verbose
+WHERE cvs
+cvs --version
+
 # ________________________Python________________________
 WHERE python
 python --version
@@ -207,9 +221,14 @@ cat ${HOME}/.condarc
 
 # ________________________Perl________________________
 WHERE perl
+perl -v
 perl -V
+perl "${DN}"/exec/list_packages.pl
+echo -e 'l\\\nq' \| instmodsh
 WHERE cpan
+echo "m" \| cpan
 WHERE perldoc
+perldoc -V
 
 # ________________________R________________________
 WHERE R
@@ -243,6 +262,7 @@ echo '' \| cpp --verbose
 
 WHERE tcc
 tcc --version
+tcc -vv
 
 WHERE clang
 clang --version
@@ -256,13 +276,32 @@ icc --version
 WHERE ifpc
 ifpc --version
 
+# ________________________Rust________________________
+WHERE cargo
+cargo --version --verbose
+WHERE rustc
+rustc --version --verbose
+
+# ________________________Ruby________________________
+WHERE gem
+gem list
+gem query -ab
+gem search -ab
+gem outdated
+gem environment
+WHERE ruby
+ruby --version
+
 # ________________________FORTRAN________________________
 WHERE gfortran
 gfortran --version
+echo \| gfortran --verbose
 WHERE ifort
 ifort --version
 
 # ________________________Text Processor/Editor________________________
+WHERE grep
+grep --version
 WHERE sed
 sed --version
 WHERE awk
@@ -298,11 +337,21 @@ WHERE info
 info --version
 
 WHERE asciidoc
+asciidoc --version
 WHERE asciidoctor
+asciidoctor --version
 WHERE asciidoctor-pdf
+asciidoctor-pdf --version
 WHERE pandoc
+pandoc --version
+pandoc --list-input-formats
+pandoc --list-output-formats
+pandoc --list-extensions
+pandoc --list-highlight-languages
+pandoc --list-highlight-styles
 
 WHERE tex
+tex --version
 WHERE latex
 WHERE pdftex
 WHERE pdflatex
@@ -317,7 +366,16 @@ WHERE biber
 WHERE texdoc
 WHERE texdoc-tk
 WHERE miktex-console
+WHERE initexmf
+initexmf --version
+initexmf --list-modes
+initexmf  --list-formats
 WHERE tlmgr
+tlmgr repository list
+tlmgr option showall
+tlmgr key list
+tlmgr info
+tlmgr conf
 
 # ________________________BinUtils________________________
 WHERE pkgconf
@@ -386,7 +444,7 @@ printf "Generating TOC..." >&2
 
 
 echo "# ________________________TOC________________________" > "${out_file}".tmp
-cat "${out_file}" -n | grep -v 'OO ' | grep -v 'EE ' >> "${out_file}".tmp && \
+cat "${out_file}" -n | grep --text -v 'OO ' | grep --text -v 'EE ' >> "${out_file}".tmp && \
 cat "${out_file}".tmp >> "${out_file}" && \
 rm "${out_file}".tmp && \
 echo -e "\033[032mPASS\033[0m" >&2 || echo -e "\033[031mFAIL\033[0m" >&2

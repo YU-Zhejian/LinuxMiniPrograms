@@ -88,3 +88,4 @@ add_dir
 "${mychmod}" +x bin/* *.sh bin/exec/*.co* || true
 infoh "Modifying file permissions...\033[32mPASSED"
 IFS="${OLDIFS}"
+infoh "Finished. Please execute 'exec bash' to restart bash"

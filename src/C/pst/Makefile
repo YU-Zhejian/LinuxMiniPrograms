@@ -8,7 +8,7 @@ OBJECTS := $(OBJECTS:.c=.o)
 all: $(TARGETS)
 
 $(TARGETS): obj $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(OBJECTS)
+	$(CC) $(OBJECTS) -lpthread -o $(TARGETS)
 
 obj:
 	$(MKDIR) obj

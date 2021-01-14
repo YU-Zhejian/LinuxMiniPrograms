@@ -32,7 +32,7 @@ usage:../../doc/ $(USAGE_OBJECTS)
 	$(ADOC_PDF) $(AOPTS) $< -o $@
 
 ../../html/%.html: %.adoc
-	$(ADOC) $(AOPTS) -b html5 $< -o $@
+	$(ADOC) $(AOPTS) $< -o $@
 
 ../../man/man1/%.1: %.adoc
 	$(ADOC) $(AOPTS) -b manpage $< -o $@
