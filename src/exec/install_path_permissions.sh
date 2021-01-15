@@ -2,70 +2,22 @@
 # CONFIGURE v1
 set -eu
 OLDIFS="${IFS}"
-DN="$(readlink -f "$(dirname "${0}")")"
+DN="$(readlink -f "$(dirname "${0}")")/../../"
 cd "${DN}"
-. ../../lib/libstr
-. ../../etc/path.sh
+. lib/libstr
+. etc/path.sh
 #========Install PATH========
-MANCONF=true
-PACONF=false
-PYCONF=true
-INPATH="${PATH:-}"
-. ../../lib/libpath
-unset invalid_path duplicated_path
-IFS=':'
-eachpath=(${valid_path})
-IFS=''
-for item in ${eachpath}; do
-	if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "bin")" ]; then
-		infoh "PATH already configured"
-		PACONF=true
-		break
-	fi
-done
-if ! ${PACONF}; then
+if ! which yldoc &> /dev/null; then
 	echo "export PATH=\"${DN}/bin/:\${PATH:-}\"" >> "${HOME}"/.bashrc
 	infoh "Will configure PATH...\033[32mPASSED"
 fi
 #========Install PYTHONPATH========
-if [ "${mypython}" != "ylukh" ];then
-	PYCONF=false
-	INPATH="${PYTHONPATH:-}"
-	. "${DN}"/lib/libpath
-	unset invalid_path duplicated_path
-	IFS=':'
-	eachpath=(${valid_path})
-	IFS=''
-	for item in ${eachpath}; do
-		if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "libpy")" ]; then
-			infoh "PYTHONPATH already configured"
-			PYCONF=true
-			break
-		fi
-	done
-fi
-if ! ${PYCONF}; then
+if [ "${mypython}" != "ylukh" ] && ! echo "from LMP_Pylib.libylfile import *" | "${mypython}"; then
 	echo "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\"" >> "${HOME}"/.bashrc
 	infoh "Will configure PYTHONPATH...\033[32mPASSED"
 fi
 #========Install MANPATH========
-if [ -e man/man1 ]; then
-	MANCONF=false
-	INPATH="${MANPATH:-}"
-	. "${DN}"/lib/libpath
-	unset invalid_path duplicated_path
-	IFS=':'
-	eachpath=(${valid_path})
-	IFS=''
-	for item in ${eachpath}; do
-		if [ "$(readlink -f "${item}" || true)" = "$(readlink -f "man")" ]; then
-			infoh "MANPATH already configured"
-			MANCONF=true
-			break
-		fi
-	done
-fi
-if ! ${MANCONF}; then
+if [ -e man/man1 ] && ! man yldoc &>> /dev/null ; then
 	echo "export MANPATH=\"${DN}/man/:\${MANPATH:-}\"" >> "${HOME}"/.bashrc
 	infoh "Will configure MANPATH...\033[32mPASSED"
 fi
