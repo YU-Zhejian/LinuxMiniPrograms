@@ -106,7 +106,7 @@ case ${ext} in
 	"${myrar}" -mt${THREAD} ${SPL} a "${fn}".${ext} "${fn}"
 	;;
 *)
-	${DN}/exec/azcat -p:${THREAD} ${fn} ${ext} ${LVL} > "${fn}.${ext}"
+	bash ${DN}/azcat -p:${THREAD} ${fn} ${ext} ${LVL} > "${fn}.${ext}"
 	;;
 esac
 # ============ Finished ============

@@ -89,7 +89,7 @@ for fulln in "${STDS[@]}"; do
 		"${myunrar}" ${PAR} x "${fulln}"
 		;;
 	*)
-		cmd="$(${azcmd.sh} ${ext})"
+		cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${ext})"
 		fcat "${fulln}" | ${cmd} > "${fn}"
 		;;
 	esac
