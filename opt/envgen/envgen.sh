@@ -27,8 +27,8 @@ mv etc/common.bashrc ${HOME}/.bashrc
 
 # ________________________Installing Miniconda________________________
 if ! conda --help &>> /dev/null; then
-	wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda-latest-Linux-x86_64.sh
-	bash Miniconda-latest-Linux-x86_64.sh -b -p conda
+	wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
+	bash Miniconda3-latest-Linux-x86_64.sh -b -p ${HOME}/conda
 	mv "${HOME}"/.condarc .condarc.bak || true
 	mv etc/.condarc "${HOME}"/.condarc
 	cat etc/conda.bashrc >> "${HOME}"/.bashrc
