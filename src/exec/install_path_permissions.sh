@@ -4,14 +4,14 @@ set -eu
 OLDIFS="${IFS}"
 DN="$(readlink -f "$(dirname "${0}")")"
 cd "${DN}"
-. lib/libstr
-. etc/path.sh
+. ../../lib/libstr
+. ../../etc/path.sh
 #========Install PATH========
 MANCONF=true
 PACONF=false
 PYCONF=true
 INPATH="${PATH:-}"
-. lib/libpath
+. ../../lib/libpath
 unset invalid_path duplicated_path
 IFS=':'
 eachpath=(${valid_path})
