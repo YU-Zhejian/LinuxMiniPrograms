@@ -10,7 +10,7 @@ function funct_exit() {
 }
 trap "funct_exit" SIGINT
 if [ "${mypython}" != "ylukh" ]; then
-	"${mypython}" "${DN}"/exec/libdo_monitor.py "${@}"
+	exec "${mypython}" "${DN}"/exec/libdo_monitor.py "${@}"
 else
 	errh "Python not found"
 fi

@@ -10,7 +10,8 @@ from LMP_Pylib.libstr import *
 sstr = []
 cmd = 0
 ISMACHINE = False
-for sysarg in sys.argv[2:]:
+path = os.path.abspath(os.path.dirname(sys.argv[0])+"/../")+'/'
+for sysarg in sys.argv[1:]:
 	if isopt(sysarg):
 		if sysarg == '-h' or sysarg == '--help':
 			os.system('yldoc libdoman')
@@ -32,9 +33,13 @@ for sysarg in sys.argv[2:]:
 
 if cmd == 0:
 	for fn in sstr:
-		fn = sys.argv[1].strip() + '/' + fn.strip()
-		if not os.path.isfile(fn):
-			errh("Filename " + fn + " invalid. Use libdoman -h for help")
+		fn_ = path + fn
+		if not os.path.isfile(fn_):
+			if os.path.isfile(fn):
+				fn_ = fn
+			else:
+				errh("Filename " + fn_ + " invalid. Use libdoman -h for help")
+		fn=fn_
 		if not ISMACHINE:
 			infoh("Loading" + fn + "...0 item proceeded")
 		Proj = -1
@@ -78,11 +83,11 @@ if cmd == 0:
 					line = grep_lns[i]
 					if ISMACHINE:
 						time_calc = yldo(
-							'bash "' + os.path.dirname(sys.argv[0]) + '"/datediff.sh ' + ' "' + Proj_time_s[
+							'bash "' + path + '"exec/datediff.sh ' + ' "' + Proj_time_s[
 								Proj] + '" "' + Proj_time_e[Proj] + '" machine')
 					else:
 						time_calc = yldo(
-							'bash "' + os.path.dirname(sys.argv[0]) + '"/datediff.sh ' + ' "' + Proj_time_s[
+							'bash "' + path + '"exec/datediff.sh ' + ' "' + Proj_time_s[
 								Proj] + '" "' + Proj_time_e[Proj] + '"')
 					Proj_time.append(time_calc)
 				elif line.startswith('LIBDO IS GOING TO EXECUTE'):
@@ -109,9 +114,12 @@ if cmd == 0:
 			mktbl(tmpf)
 			os.remove(tmpf)
 else:
-	fn = sys.argv[1].strip() + '/' + sstr[0]
+	fn = path + sstr[0]
 	if not os.path.isfile(fn):
-		errh("Filename " + fn + " invalid. Use libdoman -h for help")
+		if os.path.isfile(sstr[0]):
+			fn = sstr[0]
+		else:
+			errh("Filename " + fn + " invalid. Use libdoman -h for help")
 	ln_s = 0
 	ln_e = 0
 	tmpf = mktemp("libdo_man.XXXXXX")
@@ -147,7 +155,7 @@ else:
 			Time_e = line[17:]
 			line = grep_lns[i]
 			Time = yldo(
-				'bash "' + os.path.dirname(sys.argv[0]) + '"/datediff.sh ' + ' "' + Time_s + '" "' + Time_e + '"')
+				'bash "' + path + '"exec/datediff.sh ' + ' "' + Time_s + '" "' + Time_e + '"')
 			i += 1
 			line = grep_lns[i]
 		else:

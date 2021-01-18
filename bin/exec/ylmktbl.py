@@ -4,7 +4,6 @@ from LMP_Pylib.libisopt import *
 from LMP_Pylib.libmktbl import *
 from LMP_Pylib.libstr import *
 
-sys.argv.pop(0)
 sstr = []
 for sysarg in sys.argv[1:]:
 	if isopt(sysarg):

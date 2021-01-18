@@ -37,6 +37,6 @@ def mktemp(S: str) -> str:
 def pywcl(filename: str) -> int:
 	count = 0
 	f = open(filename, "r")
-	for line in f.readlines():
+	while f.readline():
 		count = count + 1
 	return count

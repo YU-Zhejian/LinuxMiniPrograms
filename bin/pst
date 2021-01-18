@@ -9,4 +9,8 @@ for fn in "${DN}"/exec/pst.co "${DN}"/exec/pst.co.exe; do
 		exec "${fn}" "${@}"
 	fi
 done
-if [ "${mypython}" != "ylukh" ]; then exec "${mypython}" "${DN}"/exec/pst.py "${@}"; else errh "No python found!"; fi
+if [ "${mypython}" != "ylukh" ];then
+	exec "${mypython}" "${DN}"/exec/pst.py "${@}"
+else
+	errh "No python found!"
+fi

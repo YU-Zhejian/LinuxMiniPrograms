@@ -33,31 +33,31 @@ class enigma():
 		self._inc_gear()
 		return ord(instr) - 65
 
-	def __init__(self, ss: str, gear: list, path: str):
+	def __init__(self, ss: str, gear: list):
 		self.all_gear = []
 		self.all_gear_s = []
 		for i in range(0, len(gear)):
-			self.all_gear.append(ylread(path + '/var/enigma.d/' + str(gear[i])))
+			self.all_gear.append(ylread(str(gear[i])))
 			self.all_gear_s.append(self.all_gear[-1].index(ss[i]))
 
 	@staticmethod
-	def gengear(path: str):
+	def gengear():
 		alh = []
-		for fn in os.listdir(path + '/var/enigma.d/'):
-			alh.append(ylread(path + '/var/enigma.d/' + fn))
+		for fn in os.listdir("."):
+			alh.append(ylread(fn))
 		while True:
 			rgear = ''.join([chr(x + 65) for x in random.sample(range(16), 16)])
 			if not rgear in alh:
 				break
-		ylwrite(path + '/var/enigma.d/' + str(len(alh) + 1), rgear)
+		ylwrite(str(len(alh) + 1), rgear)
 		print(str(len(alh) + 1), rgear)
 
 
 gear = []
 ss = ""
-path = sys.argv[1]
+os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])+"/../../var/enigma.d/"))
 decode = False
-for sysarg in sys.argv[2:]:
+for sysarg in sys.argv[1:]:
 	if isopt(sysarg):
 		if sysarg == '-h' or sysarg == '--help':
 			os.system('yldoc b16c')
@@ -65,8 +65,8 @@ for sysarg in sys.argv[2:]:
 		elif sysarg == '-v' or sysarg == '--version':
 			print('Version 1 in Python')
 			exit(0)
-		elif sysarg == '-g':
-			enigma.gengear(path)
+		elif sysarg == '-g' or sysarg == '--gengear':
+			enigma.gengear()
 			exit(0)
 		elif sysarg == '-d':
 			decode = True
@@ -87,7 +87,7 @@ if decode:
 			o.write(bytes(otmp))
 			otmp.pop()
 	else:
-		myenigma = enigma(ss, gear, path)
+		myenigma = enigma(ss, gear)
 		while True:
 			inp = f.read(2)
 			if len(inp) < 2: break
@@ -108,7 +108,7 @@ else:
 			sys.stdout.write(chr(b1 + 65) + chr(b2 + 65))
 
 	else:
-		myenigma = enigma(ss, gear, path)
+		myenigma = enigma(ss, gear)
 		while True:
 			inp = f.read(1)
 			if not inp: break

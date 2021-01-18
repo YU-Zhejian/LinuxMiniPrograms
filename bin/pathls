@@ -6,4 +6,8 @@ DN="$(readlink -f "$(dirname "${0}")")"
 infoh "YuZJLab PATH ls"
 infoh "Copyright (C) 2019-2020 YU Zhejian"
 . "${DN}"/../etc/path.sh
-if [ "${mypython}" != "ylukh" ]; then "${mypython}" "${DN}"/exec/pathls.py "${DN}/../" "${@}"; else . "${DN}"/exec/pathls.sh; fi
+if [ "${mypython}" != "ylukh" ]; then
+	exec "${mypython}" "${DN}"/exec/pathls.py "${@}"
+else
+	. "${DN}"/exec/pathls.sh
+fi

@@ -35,7 +35,6 @@ def do_search(P: str) -> list:
 allow_x = True
 allow_d = False
 allow_o = True
-sys.argv.pop(0)
 sstr = []
 for sysarg in sys.argv[1:]:
 	if isopt(sysarg):
