@@ -37,6 +37,7 @@ function __psv() {
 	${PST} && pstree -ap ${1} || pss ${1}
 	${TOP} && top -H -p ${1} -bc -n1
 }
+
 function __psc() {
 	table=$(mktemp -t ylsjs_ps.XXXXXX)
 	echo -e "#1\n#S90\n#1" > "${table}"

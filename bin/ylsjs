@@ -5,6 +5,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 . "${DN}"/../lib/libstr
 . "${DN}"/../lib/libisopt
+mkdir -p "${DN}"/../var/ylsjs.d
 # ============ Possess arguments ============
 STDS=""
 for opt in "${@}"; do
@@ -19,12 +20,11 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		esac
-			else
-		STDS="${opt}"
+	else
+		[ "${STDS}" = "" ] && STDS="${opt}"
 	fi
-
 done
-mkdir -p "${DN}"/../var/ylsjs.d
+
 if [ -z "${STDS:-}" ]; then
 	yldoc ylsjs
 	exit 0
