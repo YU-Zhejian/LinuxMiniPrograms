@@ -5,10 +5,10 @@ set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 . "${DN}"/../lib/libstr
-function funct_exit() {
+function __exit() {
 	kill -9 ${$}
 }
-trap "funct_exit" SIGINT
+trap "__exit" SIGINT
 if [ "${mypython}" != "ylukh" ]; then
 	exec "${mypython}" "${DN}"/exec/libdo_monitor.py "${@}"
 else

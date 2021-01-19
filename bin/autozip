@@ -75,7 +75,7 @@ else
 fi
 SPL=''
 # ============ Start Compressing ============
-function do_job() {
+function __do_job() {
 	infoh "${cmd}"
 	cmd="$(bash ${DN}/exec/azcmd.sh -p:${THREAD} ${1} ${LVL})"
 	fcat "${fn}" | ${cmd} > "${fn}"."${ext}"
@@ -83,7 +83,7 @@ function do_job() {
 case ${ext} in
 "bgz")
 	ext="gz"
-	do_job "bgz"
+	__do_job "bgz"
 	;;
 "7z")
 	[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"

@@ -1,6 +1,6 @@
 #GITM_RM.sh v1
 tmpf="$(mktemp -t gitm.XXXXX)"
-function rmrepodir() {
+function __rm() {
 	"${myrm}" -fr "${fields[1]}".rm logs/"${fields[1]}"
 	infoh "Repository UUID=${fields[1]} rm success"
 	echo -e "$(timestamp)\tRMDIR\tSUCCESS\t${fields[0]}\t${fields[1]}" >> act.log
@@ -48,7 +48,7 @@ if [ "${ANSWER}" = "Y" ]; then
 			exit 1
 		fi
 		"${myrm}" -f "${fields[1]}".lock
-		rmrepodir
+		__rm
 	done
 fi
 "${myrm}" -f "${tmpf}" rm.lock

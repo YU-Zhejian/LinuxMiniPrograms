@@ -30,24 +30,24 @@ LINE_NUMBERS=1
 tmpsh=$(mktemp -t envgen_XXXXX.sh)
 DN="$(readlink -f "$(dirname "${0}")")"
 
-function parse_stderr(){
-    if [ "${1:-}" = '#' ];then
-        echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
-    else
-        local PF="\033[032mPASS\033[0m"
-        printf "${LINE_NUMBERS}/${ALL_LINE_NUMBERS} ${*}..." >&2
-        echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
-        eval ${*} > >(sed 's;^;OO ;')  2> >(sed 's;^;EE ;') | \
-        sed 's;^OO EE;EE;' | \
-        cat -n || PF="\033[031mFAIL\033[0m"
-        echo -e "${PF}" >&2
-    fi
-    LINE_NUMBERS=$((${LINE_NUMBERS}+1))
+function __exec(){
+	if [ "${1:-}" = '#' ];then
+		echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
+	else
+		local PF="\033[032mPASS\033[0m"
+		printf "${LINE_NUMBERS}/${ALL_LINE_NUMBERS} ${*}..." >&2
+		echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
+		eval ${*} > >(sed 's;^;OO ;')  2> >(sed 's;^;EE ;') | \
+		sed 's;^OO EE;EE;' | \
+		cat -n || PF="\033[031mFAIL\033[0m"
+		echo -e "${PF}" >&2
+	fi
+	LINE_NUMBERS=$((${LINE_NUMBERS}+1))
 }
-function my_rc_cat() {
-    for file in /etc/rc*/*;do echo \# ----------${file}----------;cat ${file} || true;done
+function __rc_cat() {
+	for file in /etc/rc*/*;do echo \# ----------${file}----------;cat ${file} || true;done
 }
-function my_cron_cat() {
+function __cron_cat() {
 	for files in /var/spool/cron/* \
 /etc/crontab \
 /etc/cron.d/* \
@@ -58,7 +58,7 @@ function my_cron_cat() {
 /etc/anacrontab \
 /var/spool/anacron/* ;do echo \# ----------${file}----------;cat ${file} || true;done
 }
-function my_log_cat() {
+function __log_cat() {
 	find /var/log | grep -v '/$' | while read file;do echo \# ----------${file}----------;cat ${file} || true;done
 }
 
@@ -66,7 +66,7 @@ cat << EOF | \
 grep -v '^$' | \
 sed 's;^#;\\#;' | \
 sed 's;^WHERE \(.*\);whereis -b \1\nwhereis -m \1\nwhich \1;' | \
-sed 's;^;parse_stderr ;' > "${tmpsh}"
+sed 's;^;__exec ;' > "${tmpsh}"
 # Program Started.
 # Please make comments like this example.
 # You need to leave a space before your contents,
@@ -83,9 +83,9 @@ cat /etc/issue
 # ________________________Boot Info________________________
 uptime
 runlevel
-my_rc_cat
+__rc_cat
 crontab -l
-my_cron_cat
+__cron_cat
 chkconfig --list
 service --status-all
 
@@ -411,7 +411,7 @@ WHERE dd
 dd --version
 
 # ________________________Logs________________________
-my_log_cat
+__log_cat
 
 # ________________________Archiving Utils________________________
 WHERE 7z
@@ -438,7 +438,7 @@ WHERE xz
 WHERE zip
 WHERE zstd
 EOF
-ALL_LINE_NUMBERS=$(wc -l "${tmpsh}" | cut -f 1 -d ' ')
+ALL_LINE_NUMBERS=$(wc -l "${tmpsh}" | awk '{print $1}')
 . "${tmpsh}" > "${out_file}"
 # ________________________TOC________________________
 printf "Generating TOC..." >&2

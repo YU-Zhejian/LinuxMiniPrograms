@@ -18,7 +18,7 @@ log=bash_"$(date '+%Y-%m-%d_%H-%M-%S')".log
 
 trap 'pass_int' SIGINT
 
-function getps1() {
+function __ps1() {
 	[ ${prev_out} -eq 0 ] && _po="0" || _po="\e[31m${prev_out}\e[0m"
 	echo -e "\e[32m$(getuser)@${HOSTNAME}\e[0m:${_po}:\e[33m${PWD}\e[0m\n${ps1_ed} "
 }
@@ -38,7 +38,7 @@ elif [ -f "${HOME}/.profile" ]; then
 	. "${HOME}/.profile"
 fi
 
-while read -p "$(getps1)" line; do
+while read -p "$(__ps1)" line; do
 	line=$(trimstr "${line}")
 	${UNFILL} && buffer="${buffer:0:-1} ${line}" || buffer="${line}"
 	[[ "${line}" == *'\' ]] && UNFILL=true || UNFILL=false

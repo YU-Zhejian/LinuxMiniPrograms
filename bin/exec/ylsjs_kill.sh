@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 #YLSJS_KILL v1
-cd "${DN}"/../var/ylsjs.d
 STDS=()
 n=15
 for opt in "${@}"; do
@@ -25,12 +24,9 @@ else
 			warnh "Process ${ps_name} not found"
 			continue
 		fi
-		kill -${n} ${ps_name} || true
+		PID=$("${mycat}" ${ps_name} | tail -n 1)
+		kill -${n} ${PID} || true
 		sleep 1
-		if ps -p ${ps_name} &>> /dev/null;then
-			errh "Failed to kill ${ps_name}. Retry with -n:9 option"
-		else
-			"${myrm}" "${ps_name}" "${ps_name}.sh"
-		fi
+		ps -p ${PID} &>> /dev/null && warnh "Failed to kill ${ps_name} with PID=${PID}. Retry with -n:9 option"
 	done
 fi

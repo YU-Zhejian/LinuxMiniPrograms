@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#YLSJS v1
+#YLSJSD v1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
@@ -7,8 +7,6 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
 mkdir -p "${DN}"/../var/ylsjs.d
 cd "${DN}"/../var/ylsjs.d
-ylsjsd start
-# ============ Possess arguments ============
 STDS=""
 for opt in "${@}"; do
 	if isopt "${opt}"; then
@@ -26,15 +24,10 @@ for opt in "${@}"; do
 		[ "${STDS}" = "" ] && STDS="${opt}"
 	fi
 done
-
-if [ -z "${STDS:-}" ]; then
-	yldoc ylsjs
-	exit 0
-elif [ -f "${DN}"/exec/ylsjs_"${STDS}".py ]; then
-	[ "${mypython}" != "ylukh" ] || errh "Python not found"
-	"${mypython}" "${DN}"/exec/ylsjs_"${STDS}".py "${@}"
-elif [ -f "${DN}"/exec/ylsjs_"${STDS}".sh ]; then
-	. "${DN}"/exec/ylsjs_"${STDS}".sh
+if [ "${STDS:-}" = "start" ]; then
+	[ ! -f ylsjsd.lock ] && bash "${DN}"/exec/ylsjsd.sh &
+elif [ "${STDS:-}" = "stop" ]; then
+	[ -f ylsjsd.lock ] && kill -15 "$("${mycat}" ylsjsd.lock)"
 else
-	errh "subcommand '${STDS}' invalid"
+	errh "Command '"${STDS:-}"' unknown"
 fi

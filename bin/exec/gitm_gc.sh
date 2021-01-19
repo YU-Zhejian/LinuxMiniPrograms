@@ -1,6 +1,6 @@
 #GITM_GC.sh v1
 tmpf="$(mktemp -t gitm.XXXXX)"
-function mygc() {
+function __gc() {
 	infoh "Repository UUID=${fields[1]} gc started"
 	"${myrm}" -fr "${fields[1]}".gc
 	"${mycp}" -r "${fields[1]}" "${fields[1]}".gc
@@ -38,6 +38,6 @@ fi
 		continue
 	fi
 	set +C
-	mygc
+	__gc
 done
 "${myrm}" -f "${tmpf}" gc.lock

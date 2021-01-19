@@ -1,6 +1,6 @@
 #GITM_SYNC.sh v1
 tmpf="$(mktemp -t gitm.XXXXX)"
-function sync() {
+function __sync() {
 	infoh "Repository UUID=${fields[1]} sync started"
 	"${myrm}" -fr "${fields[1]}".sync
 	"${mycp}" -r "${fields[1]}" "${fields[1]}".sync
@@ -39,6 +39,6 @@ set +C
 		continue
 	fi
 	set +C
-	sync
+	__sync
 done
 "${myrm}" -f "${tmpf}" sync.lock

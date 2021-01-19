@@ -5,7 +5,7 @@
 . "${HOME}"/.git-prompt.sh
 
 # Fantastic $PS1 with additional linebreak.
-	function __prevp (){
+function __prevp (){
 	local r=${?}
 	[ ${r} -eq 0 ] && echo -e "\e[42m\e[30m${r}\e[32m\e[46m \e[0m" || echo -e "\e[41m\e[30m${r}\e[31m\e[46m \e[0m"
 }

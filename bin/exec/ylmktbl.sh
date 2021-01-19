@@ -7,7 +7,7 @@ for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
 		"-h" | "--help")
-			yldoc ylmktbl
+			yldoc yl_
 			exit 0
 			;;
 		"-v" | "--version")
@@ -24,7 +24,7 @@ for opt in "${@}"; do
 done
 [ -f "${STDS}" ] || errh "Table file ${STDS} invalid"
 
-function mktbl_GetLongestString_max_str() {
+function __GetLongestString_max_str() {
 	for item in "${@}"; do
 		if [ ${#item} -gt ${mlen} ]; then
 			mlen=${#item}
@@ -33,12 +33,12 @@ function mktbl_GetLongestString_max_str() {
 	done
 	return ${mitem}
 }
-function mktbl_GetLongestString() {
-	mktbl_GetLongestString_max_str=''
+function __GetLongestString() {
+	local max_str=''
 	for item in "${@}"; do
-		! [ ${#item} -gt ${#mktbl_GetLongestString_max_str} ] || mktbl_GetLongestString_max_str=${item}
+		! [ ${#item} -gt ${#max_str} ] || max_str=${item}
 	done
-	echo ${mktbl_GetLongestString_max_str}
+	echo ${max_str}
 }
 oldifs=${IFS}
 while read line; do
@@ -64,7 +64,7 @@ for row_tmp_str in "${row[@]}"; do
 	row_tmp=(${row_tmp_str})
 	unset row_tmp_str
 	IFS=''
-	row_tmp_len=$(mktbl_GetLongestString "${row_tmp[@]}")
+	row_tmp_len=$(__GetLongestString "${row_tmp[@]}")
 	row_len=${#row_tmp_len}
 	unset row_tmp_len
 	curr_row=''

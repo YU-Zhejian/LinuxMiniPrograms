@@ -28,7 +28,7 @@ for fulln in "${STDS[@]}"; do
 	ckext
 	infoh "Received: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}"
 	# ============ Start Decompressing ============
-	function do_job() {
+	function __do_job() {
 		cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${1})"
 		infoh "${cmd}"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
@@ -36,13 +36,13 @@ for fulln in "${STDS[@]}"; do
 	}
 	case ${ext} in
 	tar.*)
-		do_job "${ext//tar./}"
+		__do_job "${ext//tar./}"
 		;;
 	"tar")
-		do_job "tar"
+		__do_job "tar"
 		;;
 	t*z)
-		do_job "${ext//t/}"
+		__do_job "${ext//t/}"
 		;;
 	"7z")
 		[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"

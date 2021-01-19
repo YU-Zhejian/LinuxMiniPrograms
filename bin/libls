@@ -8,7 +8,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 infoh "YuZJLab LIBRARY ls"
 infoh "Copyright (C) 2019-2020 YU Zhejian"
 oldifs="${IFS}"
-function my_grep() {
+function _grep() {
 	regstr="${1}"
 	"${mycat}" "${tmpf}" | "${mygrep}" "${regstr}" >> "${tmpff}"
 }
@@ -84,13 +84,13 @@ for dir in "${eachpath[@]}"; do
 done
 tmpff=$(mktemp -t pls.XXXXXX)
 if ${WINDOWS}; then
-	! ${allow_s} || my_grep '\.dll$'
-	! ${allow_s} || my_grep '\.DLL$'
-	! ${allow_a} || my_grep '\.lib$'
-	! ${allow_a} || my_grep '\.LIB$'
+	! ${allow_s} || _grep '\.dll$'
+	! ${allow_s} || _grep '\.DLL$'
+	! ${allow_a} || _grep '\.lib$'
+	! ${allow_a} || _grep '\.LIB$'
 else
-	! ${allow_s} || my_grep '\.so\(\..*\)*$'
-	! ${allow_a} || my_grep '\.a\(\..*\)*$'
+	! ${allow_s} || _grep '\.so\(\..*\)*$'
+	! ${allow_a} || _grep '\.a\(\..*\)*$'
 fi
 "${mymv}" "${tmpff}" "${tmpf}"
 if [ ${#STDS[@]} -eq 0 ]; then
