@@ -52,20 +52,18 @@ function __psc() {
 	echo "NO.;NAME;PID;EXECTIME;STATUS" >>"${table}"
 	for ps_name in "${@}"; do
 		[ -f "${ps_name}" ] && echo "${ps_name};$("${mycat}" ${ps_name} | xargs | tr ' ' ';' );$(bash "${DN}"/exec/datediff.sh $(stat --printf=%Z ${ps_name}) $(date +%s) s);EXEC" >>"${table}"
-		[ -f "${ps_name}.q" ] && echo "${ps_name};$("${mycat}" ${ps_name} | xargs | tr ' ' ';');$(bash "${DN}"/exec/datediff.sh $(stat --printf=%Z ${ps_name}) $(date +%s) s);PEND" >>"${table}"
-		[ -f "${ps_name}.f" ] && echo "${ps_name};$("${mycat}" ${ps_name} | xargs | tr ' ' ';');$(bash "${DN}"/exec/datediff.sh $(stat --printf=%Z ${ps_name}) $(date +%s) s);DONE" >>"${table}"
+		[ -f "${ps_name}.q" ] && echo "${ps_name};$("${mycat}" ${ps_name}.q);UK;$(bash "${DN}"/exec/datediff.sh $(stat --printf=%Z ${ps_name}.q) $(date +%s) s);PEND" >>"${table}"
+		[ -f "${ps_name}.f" ] && echo "${ps_name};$("${mycat}" ${ps_name}.f | xargs | tr ' ' ';');$(bash "${DN}"/exec/datediff.sh $(stat --printf=%Z ${ps_name}.f) $(date +%s) s);DONE" >>"${table}"
 	done
-	# cat "${table}"
 	ylmktbl "${table}"
 	"${myrm}" "${table}"
 }
 
-
 if [ ${#STDS[@]} -eq 0 ]; then
 	if ${VERBOSE}; then
-		__psv $("${myls}" -1 | "${mygrep}" '^[0-9]\(\.[qf]\)*$' | xargs)
+		__psv $("${myls}" -1 | "${mygrep}" '^[0-9]*\(\.[qf]\)*$' | "${mysed}" 's;.[qf]$;;' | xargs)
 	else
-		__psc $("${myls}" -1 | "${mygrep}" '^[0-9]\(\.[qf]\)*$' | xargs)
+		__psc $("${myls}" -1 | "${mygrep}" '^[0-9]*\(\.[qf]\)*$' | "${mysed}" 's;.[qf]$;;' | xargs)
 	fi
 else
 	if ${VERBOSE}; then
