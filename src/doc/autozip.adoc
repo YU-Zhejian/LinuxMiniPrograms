@@ -49,7 +49,7 @@ include::include/autozipcmn.adoc[]
 
 Tested with all functions supported.
 
-=== CYGWin
+=== Cygwin
 
 Tested with all functions supported.
 

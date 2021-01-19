@@ -111,23 +111,23 @@ There should be no compatibility problems in this platform because this is what 
 
 * Other BSD distributions like NetBSD or OpenBSD is not tested. We do not have that much time.
 
-=== CYGWin
+=== Cygwin
 
-* There are differences between CYGWin's and GNU/Linux's `ps`. Fixed.
+* There are differences between Cygwin's and GNU/Linux's `ps`. Fixed.
 
-* Please use CYGWin's Python and Ruby instead of those provided by Conda/Official Python distribution. Not but will be fixed. A way to determine whether this interpreter is compiled under CYGWin or Microsoft Windows is being developed.
+* Please use Cygwin's Python and Ruby instead of those provided by Conda/Official Python distribution. Not but will be fixed. A way to determine whether this interpreter is compiled under Cygwin or Microsoft Windows is being developed.
 
 === Git Bash
 
-Git bash is considered a modified version of CYGWin. So only limited support is provided.
+Git bash is considered a modified version of Cygwin. So only limited support is provided.
 
-* If you install both CYGWin and Git Bash, there would be disagreement in a version of `CYGWin.dll`. Not and will not be fixed. Can be fixed by uninstalling one of them or, at least, remove `CYGWin.dll` of one distribution from the `${PATH}` environment variable of Windows. You should not worry about unable to use binaries provided by the distribution. You may specify the ${PATH}` environment variable in the startup script of your shell, like `${HOME}/.bashrc`.
+* If you install both Cygwin and Git Bash, there would be disagreement in a version of `Cygwin.dll`. Not and will not be fixed. Can be fixed by uninstalling one of them or, at least, remove `Cygwin.dll` of one distribution from the `${PATH}` environment variable of Windows. You should not worry about unable to use binaries provided by the distribution. You may specify the ${PATH}` environment variable in the startup script of your shell, like `${HOME}/.bashrc`.
 
-* Python and Ruby may fail: Refer to CYGWin.
+* Python and Ruby may fail: Refer to Cygwin.
 
 === MSYS2
 
-Tested with severe incompatibilities. Sadly, we will not provide support for such system. If you're interested, please use CYGWin instead.
+Tested with severe incompatibilities. Sadly, we will not provide support for such system. If you're interested, please use Cygwin instead.
 
 === MacOS
 

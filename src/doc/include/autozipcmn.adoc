@@ -37,7 +37,7 @@ If there're multiple lines, the lines behind will be ignored.
 
 == EXAMPLE
 
-These examples are tested under CYGWin.
+These examples are tested under Cygwin.
 
 The following example is the checking step:
 

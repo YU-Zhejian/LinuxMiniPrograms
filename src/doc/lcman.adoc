@@ -29,7 +29,7 @@ include::include/cmnopt.adoc[]
 
 == EXAMPLE
 
-These examples are tested under CYGWin.
+These examples are tested under Cygwin.
 
 ```
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
@@ -59,7 +59,7 @@ Filtering...
 
 Tested with all functions except `more` supported.
 
-=== CYGWin
+=== Cygwin
 
 Tested with all functions supported.
 

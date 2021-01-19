@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # PYTHON.sh V1P1
-# TODO: Method needed to determine whether it is compiled under CYGWin or MS Windows.
+# TODO: Method needed to determine whether it is compiled under Cygwin or MS Windows.
 . "${path_sh}"
 if [ -z "${mypython:-}" ]; then
 	python_ver=3

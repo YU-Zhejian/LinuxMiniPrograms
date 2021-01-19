@@ -21,7 +21,7 @@ Update libdo logs from 1 to 2.
 
 Tested with all functions supported.
 
-=== CYGWin
+=== Cygwin
 
 Tested with all functions supported.
 

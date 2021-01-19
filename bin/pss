@@ -31,7 +31,7 @@ psstmp=$(mktemp -t psstmp.XXXXXX)
 pssstmp=$(mktemp -t psstmp.XXXXXX)
 if ! "${myps}" --version &>> /dev/null; then
 	"${myps}" -alH &> "${psstmp}"
-elif [[ $("${myps}" --version) == *"cygwin"* ]]; then
+elif [[ $("${myps}" --version) == *"Cygwin"* ]]; then
 	"${myps}" -aeW &> "${psstmp}"
 else
 	"${myps}" -AT H all &> "${psstmp}"

@@ -91,7 +91,7 @@ Reading database...
 
 Tested with all functions supported.
 
-=== CYGWin
+=== Cygwin
 
 Tested with all functions supported.
 

@@ -27,7 +27,7 @@ Capable for pipelines.
 
 == EXAMPLES
 
-These examples are tested under CYGWin.
+These examples are tested under Cygwin.
 
 ```
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
@@ -82,7 +82,7 @@ Finished.
 
 Tested with all functions supported.
 
-=== CYGWin
+=== Cygwin
 
 Tested with all functions supported.
 

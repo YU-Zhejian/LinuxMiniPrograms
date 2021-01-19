@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# BHS V1P6
+# BHS V1P7
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
-
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 infoh "YuZJLab Bash History Searcher"
@@ -25,13 +24,13 @@ for opt in "${@}"; do
 			;;
 		esac
 	else
-		STDS="${STDS}${opt} "
+		STDS="${STDS} -e '${opt}'"
 	fi
 done
 STDS=$(echo "${STDS}" | "${mysed}" "s/ $//")
 if [ -n "${STDS}" ]; then
-	echo \"${STDS}\"
-	"${mycat}" -n ~/.bash_history | "${mygrep}" --color=auto -- "${STDS}"
+	echo "${STDS}"
+	eval "${mycat}" -n ~/.bash_history \| "${mygrep}" --color=auto "${STDS}"
 else
 	"${mycat}" -n ~/.bash_history
 fi

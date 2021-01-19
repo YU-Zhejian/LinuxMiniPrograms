@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 ### Dependencies
 
-"Package management systems" or "Package manager" refers to software such as `apt` on Ubuntu Linux, `CYGWin installer` in CYGWin, `homebrew` under MacOS or  `pkg`/`ports` systems under FreeBSD.
+"Package management systems" or "Package manager" refers to software such as `apt` on Ubuntu Linux, `Cygwin installer` in Cygwin, `homebrew` under MacOS or  `pkg`/`ports` systems under FreeBSD.
 
 All the program relies on `bash >= 4.4.12(3)`. For macOS users, please update the default `bash`. For users using CentOS/Debian stable, CentOS or other "stable" distributions, please upgrade it by compiling the source code (<https://ftp.gnu.org/gnu/bash/>).
 
@@ -58,7 +58,7 @@ For most programs written in Shell, these programs will be needed and GNU versio
   * `GNU grep>=2.20` available from <https://ftp.gnu.org/gnu/sed/>. Those installed in `FreeBSD>=12.1` will also work.
   * `GNU sed>=4.4` available from <https://ftp.gnu.org/gnu/sed/>. Those installed in `FreeBSD>=12.1` will also work.
   * `GNU parallel>=20200122` available from <https://ftp.gnu.org/gnu/parallel/>.
-  * `ps>=procps-ng version 3.3.10` available from <https://sourceforge.net/projects/procps-ng/> or `ps (cygwin) 3.1.4`. Those installed in `FreeBSD>=12.1` will also work.
+  * `ps>=procps-ng version 3.3.10` available from <https://sourceforge.net/projects/procps-ng/> or `ps (Cygwin) 3.1.4`. Those installed in `FreeBSD>=12.1` will also work.
   * `GNU make>=4.3` (Available from <https://www.gnu.org/software/make/>).
 
 * Some programs such as `libmktbl` have its Python version (Need `python>=3.6`), which is faster than those written in Shell script. There are also programs written purely in Python, like `libdo-monitor`. When installing the program, the installer will search for all Python 3 interpreter inside the `${PATH}` variable and locate the newest Python interpreter as the default Python interpreter of the LMP. However, you can modify this by editing `etc/path.sh` to specific your own Python interpreter.
@@ -74,7 +74,7 @@ For most programs written in Shell, these programs will be needed and GNU versio
 
   The entire `LinuxMiniProgram` needs `git>=2.21`\* to be downloaded or upgraded. It can be installed by your package manager or by compiling its source code. If there's no `git` available, please download a zipped archive from GitHub (See below.). However, you may be unable to get updates in this way. If you would like to use `git-mirror`, `git` would be mandatory.
 
-  \*: If you use CYGWin, you should **ONLY** use `git` installed by `CYGWin installer` instead of `winGit`. Otherwise, you may see *Dealing with CRLF*.
+  \*: If you use Cygwin, you should **ONLY** use `git` installed by `Cygwin installer` instead of `winGit`. Otherwise, you may see *Dealing with CRLF*.
 
 * All documentation are written in AsciiDoc, a modern Markup Language. If you wish to compile them into Groff man, PDF, HTML and YuZJLab Usage, please install the following dependencies:
 
@@ -83,7 +83,7 @@ For most programs written in Shell, these programs will be needed and GNU versio
   * Asciidoc compiler `asciidoctor>=2.0.10` and `asciidoctor-pdf>=1.5.3` can be installed by `gem`.
   * If you only need to compile HTML, you may install `asciidoc>=9.0.4`, a Python package, instead. However, the rendering effect may be worse.
 
-  \*: If you use CYGWin, you should **ONLY** use `python`/`ruby` installed by `CYGWin installer`. You may not use those provided by `Conda`/`Anaconda` or `WinPython`.
+  \*: If you use Cygwin, you should **ONLY** use `python`/`ruby` installed by `Cygwin installer`. You may not use those provided by `Conda`/`Anaconda` or `WinPython`.
 
 * To enable all archive utilities in `autozip` series, please install the following packages:
 

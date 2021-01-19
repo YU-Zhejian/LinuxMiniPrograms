@@ -27,7 +27,7 @@ WARNING: The process you'd like to monitor must run for at lease 1 minute.
 
 Not supported.
 
-=== CYGWin
+=== Cygwin
 
 Not supported.
 

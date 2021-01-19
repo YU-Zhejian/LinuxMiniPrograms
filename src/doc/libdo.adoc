@@ -94,7 +94,7 @@ LIBDO EXITED SUCCESSFULLY
 
 == EXAMPLES
 
-These examples are tested under CYGWin.
+These examples are tested under Cygwin.
 
 Please be aware that we __DO NOT__ recommend using LibDO interactively.
 You may use it in a shell script.
@@ -182,7 +182,7 @@ LIBDO EXITED SUCCESSFULLY
 
 Tested with all functions supported.
 
-=== CYGWin
+=== Cygwin
 
 Tested with all functions supported.
 

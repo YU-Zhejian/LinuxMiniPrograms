@@ -34,7 +34,7 @@ Available MODE:
 
 == EXAMPLES
 
-These examples are tested under CYGWin.
+These examples are tested under Cygwin.
 
 ```
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
@@ -102,7 +102,7 @@ Reading database...
 
 Tested with all functions supported.
 
-=== CYGWin
+=== Cygwin
 
 Tested with all functions supported.
 

@@ -33,7 +33,7 @@ Will be added later.
 
 Not supported.
 
-=== CYGWin
+=== Cygwin
 
 Not supported.
 

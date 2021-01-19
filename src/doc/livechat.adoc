@@ -58,7 +58,7 @@ Using `Ctrl-C` will make the sub process "reciever" unable to exit.
 
 Tested with all functions supported.
 
-=== CYGWin
+=== Cygwin
 
 Tested with all functions supported.
 

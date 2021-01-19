@@ -116,7 +116,7 @@ List all registered git-mirrors and their UUIDs.
 
 Tested with all functions supported.
 
-=== CYGWin
+=== Cygwin
 
 Tested with all functions supported.
 

@@ -10,7 +10,7 @@ if [ -z "${myps:-}" ]; then
 		while read line; do
 			lntmp="${line}"
 			ps_ver=$("${line}" --version 2>&1 || true)
-			if [[ "${ps_ver}" == *"cygwin"* ]]; then
+			if [[ "${ps_ver}" == *"Cygwin"* ]]; then
 				type="Cygwin ps"
 			elif [[ "${ps_ver}" == *"procps-ng"* ]]; then
 				GNU_found=true

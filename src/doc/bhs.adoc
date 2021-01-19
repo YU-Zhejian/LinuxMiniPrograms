@@ -9,11 +9,11 @@ bhs - Bash History Searcher.
 
 == SYNOPSIS
 
-`bhs [STRING] [OPTIONS]`
+`bhs [[STRING] [STRING] ...] [OPTIONS]`
 
 == DESCRIPTION
 
-Search `[STRING]` in ~/.bash_history with 'grep'.
+Search `[STRING]` in ~/.bash_history with 'grep'. Search for multiple targets are done spontaneously.
 
 == OPTIONS
 
@@ -21,7 +21,7 @@ include::include/cmnopt.adoc[]
 
 == EXAMPLES
 
-These examples are tested under CYGWin.
+These examples are tested under Cygwin.
 
 ```
 admin@DESKTOP-FFEV0AF ~
@@ -46,10 +46,31 @@ admin@DESKTOP-FFEV0AF ~
 $ bhs 'git push'
 YuZJLab Bash History Searcher
 Copyright (C) 2019-2021 YU Zhejian
-"git push"
+ -e 'git push'
 	30  git push
 	31  git push
    185  git push
+```
+
+```
+admin@DESKTOP-FFEV0AF ~
+$ bhs git apt
+YuZJLab Bash History Searcher
+Copyright (C) 2019-2021 YU Zhejian
+ -e 'git' -e 'apt'
+     3  git clone https://github.com/YuZJLab/LinuxMiniPrograms
+     4  sudo apt install git
+     5  sudo apt install git -y
+     6  git clone https://github.com/YuZJLab/LinuxMiniPrograms
+     8  git checkout BSD
+    13  sudo apt install make
+    29  git status
+	30  git push
+	31  git push
+    32  git config --global user.email theafamily@126.com
+    33  git config --global user.name  YuZJ
+    34  git commit -m "Small bugs fixed"
+    35  git push
 ```
 
 == COMPATIBILITY
@@ -58,7 +79,7 @@ Copyright (C) 2019-2021 YU Zhejian
 
 Tested with all functions supported.
 
-=== CYGWin
+=== Cygwin
 
 Tested with all functions supported.
 
