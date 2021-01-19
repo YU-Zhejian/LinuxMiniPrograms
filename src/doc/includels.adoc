@@ -20,9 +20,6 @@ If `[STRING]` is omitted, the program will list all contents in each valid C inc
 
 include::include/cmnopt.adoc[]
 
-* `--more:[program]` The GNU/Linux program 'more' will be used if there's too much output.
-Use [program] to replace 'more'. e.g. 'less', 'cat', 'head' or 'tail'.
-
 * `-l|--list` List all valid C include paths.
 
 == EXAMPLES

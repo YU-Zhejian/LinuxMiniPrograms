@@ -13,7 +13,6 @@ function _grep() {
 	"${mycat}" "${tmpf}" | "${mygrep}" "${regstr}" >> "${tmpff}"
 }
 
-more="${mymore}"
 locallib=$(for dir in /lib* \
 	/usr/lib* \
 	/usr/local/lib* \
@@ -56,18 +55,6 @@ for opt in "${@}"; do
 		"-w" | "--windows")
 			WINDOWS=true
 			;;
-		--more\:*)
-			more=$"{opt:7}"
-			if $(
-				"${more}" --help &> /dev/null
-				echo ${?}
-			) -eq 127; then
-				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
-				more="${mymore}"
-			else
-				infoh "Will use '${more}' as More"
-			fi
-			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
 			;;
@@ -94,14 +81,14 @@ else
 fi
 "${mymv}" "${tmpff}" "${tmpf}"
 if [ ${#STDS[@]} -eq 0 ]; then
-	"${mycat}" "${tmpf}" | "${more}"
+	"${mycat}" "${tmpf}"
 else
 	IFS=''
 	grepstr=''
 	for fn in "${STDS[@]}"; do
 		grepstr="${grepstr} -e ${fn}"
 	done
-	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"\|"${more}"
+	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"
 fi
 rm "${tmpf}"
 IFS="${oldifs}"

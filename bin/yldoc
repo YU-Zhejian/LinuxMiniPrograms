@@ -8,7 +8,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 infoh "YuZJLab Documentation System"
 infoh "Copyright (C) 2019-2020 YU Zhejian"
 
-more="${mymore}"
+
 STDS=()
 for opt in "${@}"; do
 	if isopt "${opt}"; then
@@ -21,21 +21,9 @@ for opt in "${@}"; do
 			echo "Version 1 Patch 7"
 			exit 0
 			;;
-		--more\:*)
-			more="${opt:7}"
-			if $(
-				"${more}" --help &> /dev/null
-				echo ${?}
-			) -eq 127; then
-				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
-				more="${mymore}"
-			else
-				infoh "Will use '${more}' as More"
-			fi
-			;;
 		"-l" | "--list")
 			infoh "Reading database..."
-			"${myls}" -1 "${DN}"/../doc | "${mysort}" | "${mysed}" 's/.usage$//' | "${more}"
+			"${myls}" -1 "${DN}"/../doc | "${mysort}" | "${mysed}" 's/.usage$//'
 			exit 0
 			;;
 		*)
@@ -61,5 +49,5 @@ if [ -f "${DN}"/../etc/yldoc.conf ]; then
 	done < "${DN}"/../etc/yldoc.conf
 fi
 for fn in "${STDS[@]}"; do
-	if [ -f "${DN}"/../doc/"${fn}".usage ]; then "${mycat}" "${DN}"/../doc/"${fn}".usage | "${more}"; else errh "${DN}/../doc/${fn}.usage not found"; fi
+	if [ -f "${DN}"/../doc/"${fn}".usage ]; then "${mycat}" "${DN}"/../doc/"${fn}".usage ; else errh "${DN}/../doc/${fn}.usage not found"; fi
 done

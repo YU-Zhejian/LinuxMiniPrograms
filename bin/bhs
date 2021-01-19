@@ -3,7 +3,7 @@
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
-more="${mymore}"
+
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 infoh "YuZJLab Bash History Searcher"
@@ -20,18 +20,6 @@ for opt in "${@}"; do
 			echo "Version 1 Patch 6"
 			exit 0
 			;;
-		--more\:*)
-			more="${opt:7}"
-			if $(
-				"${more}" --help &> /dev/null
-				echo ${?}
-			) -eq 127; then
-				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
-				more="${mymore}"
-			else
-				infoh "Will use '${more}' as More"
-			fi
-			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
 			;;
@@ -43,7 +31,7 @@ done
 STDS=$(echo "${STDS}" | "${mysed}" "s/ $//")
 if [ -n "${STDS}" ]; then
 	echo \"${STDS}\"
-	"${mycat}" -n ~/.bash_history | "${mygrep}" --color=auto -- "${STDS}" | "${more}"
+	"${mycat}" -n ~/.bash_history | "${mygrep}" --color=auto -- "${STDS}"
 else
-	"${mycat}" -n ~/.bash_history | "${more}"
+	"${mycat}" -n ~/.bash_history
 fi

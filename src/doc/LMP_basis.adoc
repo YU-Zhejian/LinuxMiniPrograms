@@ -72,23 +72,26 @@ Following shows a list of all directories which may be useful. Comments added ar
 
 |./var/
 |Variable files like logs.
+
+|./.vs/
+|[DEVELOPER ONLY] Files for Visual Studio Code.
+
+|./BeforeAdd.sh
+|Files for changing line endings. If you met problems in line endings, this file should be executed.
+
+|./bin
+|Here are the path of BINARIES; That is, what will get exected when you input names of them in a shell.
+
+|./bin/exec
+|Supplementary executable files for those in ./bin/
+
+|./doc
+|Help files in YuZJLab Usage. You may use command yldoc to view these files.
 |===
-
-
-
-./.vs/ # [DEVELOPER ONLY] Files for Visual Studio Code.
-
-./BeforeAdd.sh # Files for changing line endings. If you met problems in line endings, this file should be executed.
-
-./bin # Here are the path of BINARIES; That is, what will get exected when you input names of them in a shell.
-
-./bin/exec # Supplementary executable files for those in ./bin/
-
-./doc # Help files in YuZJLab Usage. You may use command yldoc to view these files.
 
 == EXECUTABLES USED IN THIS PROGRAM
 
-When installing the program, the installer will search for dependent executables inside the `${PATH}` variable and locate their GNU version as the default program of the LMP. All path information will be recorded in `etc/path.sh`.
+During installation, the installer will search for dependent executables inside the `${PATH}` variable and locate their GNU version as the default program of the LinuxMiniProgram. All path information will be recorded in `etc/path.sh` and will be used in programs written in Shell Script. The reason why we make an extra `etc/path.sh` instead of using the first executable found in `${PATH}` is that users in BSD systems may not want to use GNU executables by default, or there are multiple versions installed. In this circumstance, one may manually specify which to use.
 
 == COMPATIBILITY
 
@@ -98,15 +101,11 @@ WARNING: If ypu spot any problems, please firstly search for the manual of each 
 
 === GNU/Linux Distributions, including Windows Subsystem of Linux (WSL)
 
-There should be no compatibility problems in this platform because this is what this suite of program designed for.
-Tested and fully supported.
+There should be no compatibility problems in this platform because this is what this suite of program designed for. Tested and fully supported.
 
 === FreeBSD
 
-* `readlink` needs to support `-f` option. This can be done by installing GNU CoreUtils. No and will not be fixed.
-
-* The `more` program in FreeBSD is actually `less`.
-To avoid problems, `cat` will be used by Default in `lcman`.
+* `readlink` needs to support `-f` option. This can be solved by installing GNU CoreUtils. No and will not be fixed.
 
 * We need you to mount `proc` under `proc`.
 This can be done by (root privilege ) adding `proc /proc procfs rw 0 0` to `/etc/fstab` and execute `a mount -a` afterwards.
@@ -124,10 +123,6 @@ Not fixed, but will be fixed. A way to determine whether this interpreter is com
 === Git Bash
 
 Git bash is considered a modified version of CYGWin. So only limited support is provided.
-
-* Lack `more`.
-Not and will not be fixed.
-Please use `--more:cat` to disable `more`.
 
 * If you install both CYGWin and Git Bash, there would be disagreement in a version of `CYGWin.dll`.
 Not and will not be fixed.

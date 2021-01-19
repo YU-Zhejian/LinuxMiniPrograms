@@ -7,11 +7,6 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 infoh "YuZJLab LiveChat Manager"
 infoh "Copyright (C) 2019-2020 YU Zhejian"
-if ! [[ "$("${mymore}" --version 2>&1 || true)" == *"util-linux"* ]]; then
-	warnh "Will use ${mycat} as more"
-	mymore="${mycat}"
-fi
-more="${mymore}"
 LVCD="${DN}/../var/livechat.d"
 [ -e "${LVCD}"/MESSAGES ] || errh "livechat.d/MESSAGES not exist"
 OLD_IFS="${IFS}"
@@ -32,18 +27,7 @@ for opt in "${@}"; do
 			yldoc lcman
 			exit 0
 			;;
-		--more\:*)
-			more="${opt:7}"
-			if [ $(
-				"${more}" --help &> /dev/null
-				echo ${?}
-			) -eq 127 ]; then
-				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
-				more="${mymore}"
-			else
-				infoh "Will use '${more}' as More"
-			fi
-			;;
+
 		-f\:*)
 			sf=(${sf[@]} ${opt:3})
 			;;
@@ -122,6 +106,6 @@ while read line; do
 	fi
 	n=$((n + 1))
 done < ${LVCD}/MESSAGES
-"${mycat}" "${tmpfff}" | "${mysort}" | "${more}"
+"${mycat}" "${tmpfff}" | "${mysort}"
 IFS=${OLD_IFS}
 exit 0

@@ -19,9 +19,6 @@ Search `[STRING]` in ~/.bash_history with 'grep'.
 
 include::include/cmnopt.adoc[]
 
-* `--more:[program]` By default, the GNU/Linux program `more` will be used if there's too much output.
-Use `[program]` to replace `more`. e.g. `less`, `cat`, `head` or `tail` if you wish.
-
 == EXAMPLES
 
 These examples are tested under CYGWin.

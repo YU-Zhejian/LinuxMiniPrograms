@@ -2,7 +2,6 @@
 #LIBDOMAN.sh V7P1
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
-more="${mymore}"
 cmd=0
 STDS=()
 ISMACHINE=false
@@ -27,18 +26,6 @@ for opt in "${@}"; do
 		--output\:*)
 			cmd=${opt:9}
 			;;
-		--more\:*)
-			more="${opt:7}"
-			if $(
-				"${more}" --help &> /dev/null
-				echo ${?}
-			) -eq 127; then
-				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
-				more="${mymore}"
-			else
-				infoh "Will use '${more}' as More"
-			fi
-			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
 			;;
@@ -54,8 +41,6 @@ elif [ ${#STDS[@]} -lt 1 ]; then
 	errh "No file"
 fi
 if [ ${cmd} -eq 0 ]; then
-	more="${mycat}"
-	infoh "Will use '${more}' as More"
 	for fn in "${STDS[@]}"; do
 		[ -f "${fn}" ] || errh "Filename '${fn}' invalid"
 		infoh "Loading ${fn}...0 item proceeded"
@@ -121,7 +106,7 @@ if [ ${cmd} -eq 0 ]; then
 			for ((i = 1; i <= ${Proj}; i++)); do
 				echo "${i};${Proj_CMD[${i}]};${Proj_Exit[${i}]};${Proj_Time[${i}]}" >> "${table}"
 			done
-			ylmktbl "${table}" | "${more}"
+			ylmktbl "${table}"
 			"${myrm}" "${ffn}" "${table}"
 		fi
 		unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table ffn all_lines
@@ -183,9 +168,9 @@ else
 	if [ ${ln_e} -le ${tls} ]; then
 		infoh "NO_OUTPUT"
 	elif [ "${Exit}" = "-1" ]; then
-		"${myhead}" -n ${ln_e} "${fn}" | "${mytail}" -n $((${tls} - ${ln_e})) | "${more}"
+		"${myhead}" -n ${ln_e} "${fn}" | "${mytail}" -n $((${tls} - ${ln_e}))
 	else
-		"${myhead}" -n ${els} "${fn}" | "${mytail}" -n $((${tls} - ${els})) | "${more}"
+		"${myhead}" -n ${els} "${fn}" | "${mytail}" -n $((${tls} - ${els}))
 	fi
 	infoh "________________OUTPUT____FINISHED________________" >&2
 	rm "${tmpprj}"

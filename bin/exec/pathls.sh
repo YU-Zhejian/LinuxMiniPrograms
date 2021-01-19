@@ -7,7 +7,6 @@ function _grep() {
 	"${mycat}" "${tmpf}" | "${mygrep}" -v "${regstr}" > "${tmpff}"
 	"${mymv}" "${tmpff}" "${tmpf}"
 }
-more="${mymore}"
 . "${DN}"/../lib/libisopt
 INPATH="${PATH}"
 . "${DN}"/../lib/libpath
@@ -49,18 +48,6 @@ for opt in "${@}"; do
 			unset invalid_set invalid_path valid_path
 			exit 0
 			;;
-		--more\:*)
-			more=$"{opt:7}"
-			if $(
-				"${more}" --help &> /dev/null
-				echo ${?}
-			) -eq 127; then
-				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
-				more="${mymore}"
-			else
-				infoh "Will use '${more}' as More"
-			fi
-			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
 			;;
@@ -79,14 +66,14 @@ ${allow_d} || _grep '/$'
 ${allow_x} || _grep '\*$'
 ${allow_o} || _grep '[^\*/]$'
 if [ ${#STDS[@]} -eq 0 ]; then
-	"${mycat}" "${tmpf}" | "${more}"
+	"${mycat}" "${tmpf}"
 else
 	IFS=''
 	grepstr=''
 	for fn in "${STDS[@]}"; do
 		grepstr="${grepstr} -e ${fn}"
 	done
-	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"\|"${more}"
+	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"
 fi
 "${myrm}" "${tmpf}"
 IFS="${oldifs}"

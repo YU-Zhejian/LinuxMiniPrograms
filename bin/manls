@@ -9,7 +9,6 @@ infoh "YuZJLab MANPATH ls"
 infoh "Copyright (C) 2019-2020 YU Zhejian"
 oldifs="${IFS}"
 
-more="${mymore}"
 INPATH="$(manpath 2> /dev/null || true):/usr/share/man:/usr/local/man:/usr/local/share/man:$("${mycat}" /usr/local/etc/man.d/*.conf 2> /dev/null | "${mygrep}" -v \# | "${mygrep}" MANPATH | "${mycut}" -f 2 -d ' ' | tr '\n' ':' || true)${MANPATH:-}"
 . "${DN}"/../lib/libpath
 IFS=":"
@@ -33,18 +32,6 @@ for opt in "${@}"; do
 			unset valid_path
 			exit 0
 			;;
-		--more\:*)
-			more=$"{opt:7}"
-			if $(
-				"${more}" --help &> /dev/null
-				echo ${?}
-			) -eq 127; then
-				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
-				more="${mymore}"
-			else
-				infoh "Will use '${more}' as More"
-			fi
-			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
 			;;
@@ -62,14 +49,14 @@ for dir in "${eachpath[@]}"; do
 	done
 done
 if [ ${#STDS[@]} -eq 0 ]; then
-	"${mycat}" "${tmpf}" | "${more}"
+	"${mycat}" "${tmpf}"
 else
 	IFS=''
 	grepstr=''
 	for fn in "${STDS[@]}"; do
 		grepstr="${grepstr} -e ${fn}"
 	done
-	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"\|"${more}"
+	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"
 fi
 rm "${tmpf}"
 IFS="${oldifs}"
