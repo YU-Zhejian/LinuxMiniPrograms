@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LCMAN V3EP5
+# LCMAN V3P6
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
@@ -8,7 +8,8 @@ DN="$(readlink -f "$(dirname "${0}")")"
 infoh "YuZJLab LiveChat Manager"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 LVCD="${DN}/../var/livechat.d"
-[ -e "${LVCD}"/MESSAGES ] || errh "livechat.d/MESSAGES not exist"
+mkdir -p "${LVCD}"
+touch "${LVCD}"/SYSTEM "${LVCD}"/LCONLINE
 OLD_IFS="${IFS}"
 IFS=";"
 tmpfff="$(mktemp -t lcman.XXXXXX)"
@@ -20,7 +21,7 @@ for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
 		"-v" | "--version")
-			infoh "Version 3 Emergency Patch 5, compatible with LiveChat Version 1 & 2"
+			infoh "Version 3 Patch 6, compatible with LiveChat Version 1 & 2"
 			exit 0
 			;;
 		"-h" | "--help")
@@ -67,7 +68,7 @@ while read line; do
 	um[${i}]=false
 	unset msg_tmp
 	i=$(($i + 1))
-done < "${LVCD}"/MESSAGES
+done < "${LVCD}"/SYSTEM
 infoh "Filtering..."
 if [ ${#sf[@]} -eq 0 ]; then
 	for ((n = 0; n <= i; n++)); do
@@ -105,7 +106,7 @@ while read line; do
 		echo -e "\033[31m[${msg_tmp[0]}]\033[0m \033[36m[${msg_tmp[1]}]\033[0m ${msg_tmp[2]}" >> "${tmpfff}"
 	fi
 	n=$((n + 1))
-done < ${LVCD}/MESSAGES
+done < "${LVCD}"/SYSTEM
 "${mycat}" "${tmpfff}" | "${mysort}"
 IFS=${OLD_IFS}
 exit 0

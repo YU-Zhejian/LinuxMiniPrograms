@@ -66,8 +66,6 @@ Test
     exec
     git-mirror
     includels
-    iomux
-    iomux_a
     lcman
     libdoman
     libdoman_upgrade

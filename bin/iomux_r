@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+#IOMUX_RECIEVER V1
+cat out &

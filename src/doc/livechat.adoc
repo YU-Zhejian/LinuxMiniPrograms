@@ -14,7 +14,16 @@ livechat [USER] [OPTIONS]
 == DESCRIPTION
 
 Logon as [USER] and start chatting!
-There's no need to register.
+
+== USAGE
+
+There's no need to register. However, you cannot take `SYSTEM` as your account.
+
+When you start chatting, please use `logout`/`exit`/`quit` or press `Ctrl-C` to exit the chatting room.
+
+You may execute shell commands with the prefix "!". For example, `!ls` will execute `ls` and send the result to the network.
+
+Every time there're people joining or leaving, the account named SYSTEM will announce.
 
 === On a None-Specific User
 
@@ -41,16 +50,11 @@ livechat
 exit
 ```
 
-* Usage: On client, use `ssh chat@server_ip_addr` to access the chatting server.
+* Usage: On the client, use `ssh chat@server_ip_addr` to access the chatting server.
 
 == OPTIONS
 
 include::include/cmnopt.adoc[]
-
-== WARNINGS
-
-When you start chatting, please use `logout` to exit chatting room instead of `Ctrl-C`.
-Using `Ctrl-C` will make the sub process "reciever" unable to exit.
 
 == COMPATIBILITY
 
@@ -64,11 +68,7 @@ Tested with all functions supported.
 
 == FILES
 
-* var/livechat.d
-
-* var/livechat.d/LCONLINE
-
-* var/livechat.d/MESSAGES
+. `var/livechat.d/SYSTEM` The file containing all messages.
 
 == SEE ALSO
 

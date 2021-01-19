@@ -5,7 +5,7 @@
 
 == NAME
 
-lcman - LiveChat History Manager
+lcman - LiveChat History Manager for livechat version 1 and 2.
 
 == SYNOPSIS
 
@@ -65,9 +65,7 @@ Tested with all functions supported.
 
 == FILES
 
-. `var/livechat.d/LCONLINE` The file containing information about online users.
-
-. `var/livechat.d/MESSAGES` The file containing all messages.
+. `var/livechat.d/SYSTEM` The file containing all messages.
 
 == SEE ALSO
 
