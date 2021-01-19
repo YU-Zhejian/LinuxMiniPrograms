@@ -35,3 +35,4 @@ alias rm="rm -i" # Safer $(rm).
 alias git-log="git log --pretty=oneline --abbrev-commit --graph --branches" # More readable git log.
 alias top="htop" # htop is a task manager better than top.
 alias emacs="emacs -nw"
+eval "$(thefuck -a)"

@@ -35,11 +35,12 @@ function parse_stderr(){
         echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
     else
         local PF="\033[032mPASS\033[0m"
+        printf "${LINE_NUMBERS}/${ALL_LINE_NUMBERS} ${*}..." >&2
         echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
         eval ${*} > >(sed 's;^;OO ;')  2> >(sed 's;^;EE ;') | \
         sed 's;^OO EE;EE;' | \
         cat -n || PF="\033[031mFAIL\033[0m"
-        echo -e "${LINE_NUMBERS}/${ALL_LINE_NUMBERS} ${*}...${PF}" >&2
+        echo -e "${PF}" >&2
     fi
     LINE_NUMBERS=$((${LINE_NUMBERS}+1))
 }
