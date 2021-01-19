@@ -27,12 +27,7 @@ Every time there're people joining or leaving, the account named SYSTEM will ann
 
 === On a None-Specific User
 
-* Situation: Multiple users operate one non-specific account for particular jobs, for example, different steps in a bio-informatical project.
-You need to set up a secret chatting server.
-
-* Installation: No further installation after executing `configure`.
-
-* Usage: No specific usage.
+* Situation: Multiple users operate one non-specific account for particular jobs, for example, different steps in a bioinformatics project. You need to set up a secret chatting server.
 
 === On a Specific User
 
@@ -40,17 +35,54 @@ You need to set up a secret chatting server.
 
 * Installation:
 
-. Add a specific user on your server. e.g. user `chat`
+. Add a specific user on your server. e.g. user `chat`.
 
-. Modify the `.bashrc` file as follows:
+. Modify the `.profile` file as follows:
 
 ```
 echo -e "\033[33mChatting server on LAN ***.\033[0m"
 livechat
+logout
 exit
 ```
 
+and have `.bashrc`, `.bash_profile` removed.
+
 * Usage: On the client, use `ssh chat@server_ip_addr` to access the chatting server.
+
+== EXAMPLE
+
+```
+(base) 137 2021-01-19_17-54-39 /home/ubuntu/LinuxMiniPrograms  (BSD) 
+$ livechat yuzj
+Welcome to YuZJLab LiveChat
+Copyright (C) 2019-2021 YU Zhejian
+The following users are now online:
+SYSTEM
+yuzj
+Please use 'logout'/'exit'/'quit' or Ctrl-C to exit
+PID of reciever: 53674
+>[2021-01-19,18:03:58] [SYSTEM] yuzj is now on line
+>[2021-01-19,18:04:01] [yuzj] test
+! ls
+>[2021-01-19,18:04:04] [yuzj] BeforeAdd.sh
+[2021-01-19,18:04:04] [yuzj] bin
+[2021-01-19,18:04:04] [yuzj] configure
+[2021-01-19,18:04:04] [yuzj] doc
+[2021-01-19,18:04:04] [yuzj] etc
+[2021-01-19,18:04:04] [yuzj] lib
+[2021-01-19,18:04:04] [yuzj] libpy
+[2021-01-19,18:04:04] [yuzj] LICENSE.md
+[2021-01-19,18:04:04] [yuzj] Makefile
+[2021-01-19,18:04:04] [yuzj] opt
+[2021-01-19,18:04:04] [yuzj] Readme.md
+[2021-01-19,18:04:04] [yuzj] src
+[2021-01-19,18:04:04] [yuzj] TODO
+[2021-01-19,18:04:04] [yuzj] var
+exit
+Thanks for using this system
+Killed
+```
 
 == OPTIONS
 
