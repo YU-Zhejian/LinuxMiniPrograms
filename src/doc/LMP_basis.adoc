@@ -5,7 +5,7 @@
 
 == NAME
 
-LMP_Basis - The basic configuration of LinuxMiniPrograms.
+LMP_Basis - Basic configuration for YuZJLab LinuxMiniPrograms.
 
 == SYNOPSIS
 
@@ -13,21 +13,68 @@ LMP_Basis - The basic configuration of LinuxMiniPrograms.
 
 == DESCRIPTION
 
-This is a description manual; it shows you the basic configuration in LinuxMiniPrograms.
+This is a description manual; it shows you the basic configuration for YuZJLab LinuxMiniPrograms.
 
 == FOLDER STRUCTURE
 
-All codes and binaries of LinuxMiniProgram are installed in a well-organized order like those specified in FHS.
+All codes and binaries of LinuxMiniProgram are installed in a well-organized order resembling FHS.
 
-Following shows a list of all directories which may be useful in this program. Comments added are presented behind `#`.
+Following shows a list of all directories which may be useful. Comments added are presented behind `#`.
 
-[source]
-----
-./.git/ # [DEVELOPER ONLY] Git, a version control system.
 
-./.gitignore # [DEVELOPER ONLY] Another file for Git.
+|===
+|Header 1 |Header 2
 
-./.idea/ # [DEVELOPER ONLY] Files for JetBrains IDEs.
+|./.git/
+|[DEVELOPER ONLY] Git, a version control system.
+
+|./.gitignore
+|[DEVELOPER ONLY] Another file for Git, telling which to ignore.
+
+|./.idea/
+|[DEVELOPER ONLY] Files for JetBrains IDEs.
+
+|./etc/
+|Configuration files.
+
+|./html
+|Help files in HTML. You may use an internet browser to view these files.
+
+|./install.sh
+|The installer you've just used.
+
+|./lib
+|Libraries written in Shell Script which is used by executables in ./bin/ and may be useful in your own program.
+
+|./libpy
+|Python libraries. They may be useful in your own program.
+
+|./LICENSE.md
+|The license file.
+
+|./man
+|Help files in Groff Manpages. You may use command man to view these files. [NOT SUPPORTED ON BSD]
+
+|./opt
+|Optional programs.
+
+|./pdf
+|Help files in PDF. You may use a PDF viewer to view these files.
+
+|./Readme.md
+|The Readme.
+
+|./src
+|[DEVELOPER ONLY] Source code.
+
+|./TODO
+|What will happen net.
+
+|./var/
+|Variable files like logs.
+|===
+
+
 
 ./.vs/ # [DEVELOPER ONLY] Files for Visual Studio Code.
 
@@ -38,33 +85,6 @@ Following shows a list of all directories which may be useful in this program. C
 ./bin/exec # Supplementary executable files for those in ./bin/
 
 ./doc # Help files in YuZJLab Usage. You may use command yldoc to view these files.
-
-# ./etc/ # Configuratio files.
-
-./html # Help files in HTML. You may use an internet browser to view these files.
-
-./install.sh # The installer you've just used.
-
-./lib # Libraries written in Shell Script which is used by executables in ./bin/ and may be useful in your own program.
-
-./libpy # Python libraries.
-
-./LICENSE.md # The license file.
-
-./man # Help files in Groff Manpages. You may use command man to view these files. [NOT SUPPORTED ON BSD]
-
-./opt # Optional programs.
-
-./pdf # Help files in PDF. You may use a PDF viewer to view these files.
-
-./Readme.md # The Readme.
-
-./src # [DEVELOPER ONLY] Source code.
-
-./TODO # What will happen net.
-
-./var/ # Variable files like logs.
-----
 
 == EXECUTABLES USED IN THIS PROGRAM
 

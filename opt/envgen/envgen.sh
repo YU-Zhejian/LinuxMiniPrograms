@@ -14,9 +14,10 @@ software. There will be no documentations to this software except this one.
 
 Initiating..."
 
-mkdir -p "${HOME}"/envgen_"$(date +%Y-%m-%d_%H-%M-%S)"
-cp -r "$(readlink -f "$(dirname "${0}")")"/* "${HOME}"/envgen_"$(date +%Y-%m-%d_%H-%M-%S)"/
-cd "${HOME}"/envgen_"$(date +%Y-%m-%d_%H-%M-%S)"
+DN="${HOME}"/envgen_"$(date +%Y-%m-%d_%H-%M-%S)"
+mkdir -p "${DN}"
+cp -r "$(readlink -f "$(dirname "${0}")")"/* "${DN}"
+cd "${DN}"
 
 sed -i 's/\r$//g' etc/*
 

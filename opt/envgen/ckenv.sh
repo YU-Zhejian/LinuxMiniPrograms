@@ -5,10 +5,10 @@ Copyright 2021 (C) YuZJLab
 
 WARNING: This application have the capacity of collecting sensitive information
 on your system! If you use this application to generate a report for
-maintainance, please make sure that the commands you're unfamiliar with are
+maintenance, please make sure that the commands you're unfamiliar with are
 disabled!
 
-Please note that athough sensitive information will be collected, it will not be
+Please note that although sensitive information will be collected, it will not be
 sent to anyone anywhere. All output generated will be a single file, named
 Report_2021-01-04_00-27-09.log or something like that. THIS FILE MAY CONTAIN
 SENSITIVE INFORMATION ABOUT YOUR SYSTEM SO USE WITH CARE.
@@ -21,7 +21,7 @@ Usage:
 	envgen.sh [OUTPUT]
 
 	Report generated will be saved to [OUTPUT]. If not specified, will save
-	to ypur working directory.
+	to your working directory.
 
 Initiating..."
 declare -i LINE_NUMBERS
