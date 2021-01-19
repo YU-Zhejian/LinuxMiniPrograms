@@ -30,7 +30,7 @@ These examples are tested under Ubuntu GNU/Linux 20.10.
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ manls -l
 YuZJLab MANPATH ls
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 /usr/bin/cat: '/usr/local/etc/man.d/*.conf': No such file or directory
 /usr/share/man
 /usr/local/share/man
@@ -42,7 +42,7 @@ Copyright (C) 2019-2020 YU Zhejian
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ manls
 YuZJLab MANPATH ls
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 /usr/bin/cat: '/usr/local/etc/man.d/*.conf': No such file or directory
 Reading database...
 /usr/share/man/man1/[.1@
@@ -58,7 +58,7 @@ Reading database...
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ manls zip
 YuZJLab MANPATH ls
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 /usr/bin/cat: '/usr/local/etc/man.d/*.conf': No such file or directory
 Reading database...
 /usr/share/man/man1/bunzip2.1@

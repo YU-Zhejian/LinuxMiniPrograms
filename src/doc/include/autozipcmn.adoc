@@ -47,7 +47,7 @@ $ autounzip
 libisopt, libdo loaded.
 libautozip loaded.
 YuZJLab AutoUnZip
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 Will use GNU Parallel if possible.
 Start checking all compoments...
 Checking for 'tar'...OK
@@ -74,7 +74,7 @@ $ autozip R
 libisopt, libdo loaded.
 libautozip loaded.
 YuZJLab AutoZip
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 Will use GNU Parallel if possible.
 WARNING: Compression level '' undefined. You can use [123456789] for tar.gz extension. Will use default value provided by corresponding algorism.
 Received: /d/Software/LinuxMiniPrograms/bin/autozip R tar.gz
@@ -112,7 +112,7 @@ $ autounzip R.tar.gz --remove --force
 libisopt, libdo loaded.
 libautozip loaded.
 YuZJLab AutoUnZip
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 Will use GNU Parallel if possible.
 WARNING: Will remove  if success.
 Received: /d/Software/LinuxMiniPrograms/bin/autounzip R.tar.gz  --remove --force ==>Extension=tar.gz
@@ -132,7 +132,7 @@ $ autozip Desktop txz -s:10M
 libisopt, libdo loaded.
 libautozip loaded.
 YuZJLab AutoZip
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 Will use GNU Parallel if possible.
 Will split the archive to 10M
 WARNING: Compression level '' undefined. You can use [0123456789] for txz extension. Will use default value provided by corresponding algorism.
@@ -155,7 +155,7 @@ $ autounzip Desktop.txz
 libisopt, libdo loaded.
 libautozip loaded.
 YuZJLab AutoUnZip
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 Will use GNU Parallel if possible.
 Received: /d/Software/LinuxMiniPrograms/bin/autounzip Desktop.txz  ==>Extension=txz
 TEMP file '/tmp/autozip.PV6RNx' and directory '/tmp/autozip.Ibs37M' made.

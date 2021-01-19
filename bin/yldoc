@@ -6,7 +6,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 . "${DN}"/../lib/libstr
 infoh "YuZJLab Documentation System"
-infoh "Copyright (C) 2019-2020 YU Zhejian"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
 
 
 STDS=()

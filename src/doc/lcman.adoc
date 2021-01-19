@@ -35,7 +35,7 @@ These examples are tested under CYGWin.
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ lcman
 YuZJLab LiveChat Manager
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 Reading Databases...
 Filtering...
 [2019-12-23,11:27:01] [SYSTEM] test is now on line.
@@ -47,7 +47,7 @@ Filtering...
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ lcman -s
 YuZJLab LiveChat Manager
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 Reading Databases...
 Filtering...
 [2019-12-23,11:27:11] [test] test

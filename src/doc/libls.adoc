@@ -34,7 +34,7 @@ These examples are tested under Ubuntu GNU/Linux 20.10.
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ libls -l
 YuZJLab LIB ls
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 /usr/lib
 /usr/lib32
 /usr/lib64
@@ -46,7 +46,7 @@ Copyright (C) 2019-2020 YU Zhejian
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ libls
 YuZJLab LIB ls
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 Reading database...
 /usr/lib/thunderbird/libnssdbm3.so
 /usr/lib/thunderbird/libsmime3.so
@@ -61,7 +61,7 @@ Reading database...
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ libls ncurses
 YuZJLab LIB ls
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 Reading database...
 /usr/lib/i386-linux-gnu/libncurses.so.6
 /usr/lib/i386-linux-gnu/libncursesw.so.6
@@ -77,7 +77,7 @@ Reading database...
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ libls -a ncurses
 YuZJLab LIB ls
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
 Reading database...
 /usr/lib/x86_64-linux-gnu/libncursesw.a
 /usr/lib/x86_64-linux-gnu/libncurses++.a

@@ -6,7 +6,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.sh
 infoh "YuZJLab LIBRARY ls"
-infoh "Copyright (C) 2019-2020 YU Zhejian"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
 oldifs="${IFS}"
 function _grep() {
 	regstr="${1}"

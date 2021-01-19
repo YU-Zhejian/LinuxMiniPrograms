@@ -4,7 +4,7 @@ set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 infoh "YuZJLab PATH ls"
-infoh "Copyright (C) 2019-2020 YU Zhejian"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
 . "${DN}"/../etc/path.sh
 if [ "${mypython}" != "ylukh" ]; then
 	exec "${mypython}" "${DN}"/exec/pathls.py "${@}"

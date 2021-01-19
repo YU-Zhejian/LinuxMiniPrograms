@@ -28,7 +28,7 @@ These examples are tested under CYGWin.
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ pss
 YuZJLab Process Snapshot Searcher
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
   PID PPID PGID WINPID   TTY UID    STIME COMMAND
 65540    0    0      4  ?      0   May 31 System
 65660    0    0    124  ?      0   May 31 Registry
@@ -43,7 +43,7 @@ Copyright (C) 2019-2020 YU Zhejian
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ pss /bin
 YuZJLab Process Snapshot Searcher
-Copyright (C) 2019-2020 YU Zhejian
+Copyright (C) 2019-2021 YU Zhejian
   PID PPID PGID WINPID  TTY     UID    STIME COMMAND
  1043    1 1043  13536 cons0 197609 23:41:17 /usr/bin/bash
  1240    1 1240  20308 cons1 197609 00:12:21 /usr/bin/bash
