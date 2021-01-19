@@ -1,4 +1,6 @@
 # Source global definitions
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+
 [ -f /etc/bashrc ] && . /etc/bashrc
 
 # Git helper, can be found at git's source code.
@@ -13,6 +15,7 @@ export PS1='$(__prevp)\e[30m\e[46m$(date +%Y-%m-%d_%H-%M-%S)\e[43m\e[36m \e[30m$
 
 # Conda setup scripts omitted.
 
+export PATH="${HOME}/bin:${HOME}/usr/bin:${HOME}/usr/local/bin:${PATH}"
 export CMAKE_PREFIX_PATH="${HOME}/usr/local/CMAKE_PREFIX:${CMAKE_PREFIX_PATH:-}"
 export PKG_CONFIG_PATH="${HOME}/usr/local/lib/pkgconfig/:${HOME}/usr/local/lib64/pkgconfig/:${PKG_CONFIG_PATH:-}"
 export PKG_CONFIG_LIBFIR="${HOME}/usr/local/lib64/pkgconfig/:${HOME}/usr/local/lib/pkgconfig/:${PKG_CONFIG_LIBFIR:-}"

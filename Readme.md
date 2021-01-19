@@ -112,7 +112,7 @@ For most programs written in Shell, these programs will be needed and GNU versio
 
 
 ### General Guide
-After downloading, you can now execute `install.sh` to install all the programs for yourself. You can also run this script to change your settings to the defaults.
+After downloading, you can now execute `configure` to install all the programs for yourself. You can also run this script to change your settings to the defaults.
 
 Detailed code:
 
@@ -133,7 +133,7 @@ unzip LinuxMiniPrograms-master
 mv LinuxMiniPrograms-master LinuxMiniPrograms
 ```
 
-Execute `./install.sh -h` to get help about the installer.
+Execute `./configure -h` to get help about the installer.
 
 ## Compatibility
 

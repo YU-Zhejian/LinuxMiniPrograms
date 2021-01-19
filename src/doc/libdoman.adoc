@@ -65,7 +65,7 @@ doc
 etc
 etc_backup.tgz
 html
-install.sh
+configure
 lib
 ls.log
 ls.sh

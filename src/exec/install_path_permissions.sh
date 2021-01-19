@@ -37,7 +37,7 @@ function __change_dir_permissions() {
 "${mychown}" -R $(id -u) *
 "${mychmod}" -R +r+w *
 __change_dir_permissions
-"${mychmod}" +x bin/* *.sh bin/exec/*.co* || true
+"${mychmod}" +x configure bin/* *.sh bin/exec/*.co* || true
 infoh "Modifying file permissions...\033[32mPASSED"
 IFS="${OLDIFS}"
 infoh "Finished. Please execute 'exec bash' to restart bash"

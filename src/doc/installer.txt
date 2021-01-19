@@ -1,9 +1,9 @@
 This is the installation script of LinuxMiniPrograms.
 
-SYNOPSIS: bash install.sh [opt]
+SYNOPSIS: bash configure [opt]
 
 FOR THE IMPATIENT:
-	NEW COMPLETE INSTALLATION: bash install.sh --all
+	NEW COMPLETE INSTALLATION: bash configure --all
 
 OPTIONS:
 	-h|--help Display this help.

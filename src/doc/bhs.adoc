@@ -34,8 +34,8 @@ Copyright (C) 2019-2020 YU Zhejian
 	 4  git status
 	 5  git checkout origin/BSD
 	 6  git switch -c BSD
-	 7  ./install.sh --help
-	 8  ./install.sh --all
+	 7  ./configure --help
+	 8  ./configure --all
 	 9  exec bash
 [...]
 	29  git status
