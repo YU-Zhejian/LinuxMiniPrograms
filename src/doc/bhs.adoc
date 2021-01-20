@@ -23,7 +23,8 @@ include::include/cmnopt.adoc[]
 
 These examples are tested under Cygwin.
 
-```
+[source]
+----
 admin@DESKTOP-FFEV0AF ~
 $ bhs
 YuZJLab Bash History Searcher
@@ -39,9 +40,10 @@ Copyright (C) 2019-2021 YU Zhejian
 	 9  exec bash
 [...]
 	29  git status
-```
+----
 
-```
+[source]
+----
 admin@DESKTOP-FFEV0AF ~
 $ bhs 'git push'
 YuZJLab Bash History Searcher
@@ -50,9 +52,10 @@ Copyright (C) 2019-2021 YU Zhejian
 	30  git push
 	31  git push
    185  git push
-```
+----
 
-```
+[source]
+----
 admin@DESKTOP-FFEV0AF ~
 $ bhs git apt
 YuZJLab Bash History Searcher
@@ -71,7 +74,7 @@ Copyright (C) 2019-2021 YU Zhejian
     33  git config --global user.name  YuZJ
     34  git commit -m "Small bugs fixed"
     35  git push
-```
+----
 
 == COMPATIBILITY
 

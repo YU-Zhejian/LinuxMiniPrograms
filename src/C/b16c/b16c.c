@@ -13,24 +13,24 @@ int main(int argc, char *argv[]) {
 				system("yldoc b16c");
 				return 0;
 			} else if (strcmp(argv[i], "-v") == 0 | strcmp(argv[i], "--version") == 0) {
-				printf("Version 1 in C\n");
+				printf("Version 1 Patch 1 in C\n");
 				return 0;
 			} else if (strcmp(argv[i], "-d") == 0 | strcmp(argv[i], "--decode") == 0) {
 				DECODE = 1;
 			}
 		}
 	}
-	char a;
+	int a;
 	if (DECODE) {
-		char b;
-		while (EOF != (a = getchar())) {
-			b = getchar();
+        int b;
+		while ((a = getchar()) != EOF & (b = getchar()) != EOF) {
 			putchar((a - 65) * 16 + b - 65);
 		}
 	} else {
-		while (EOF != (a = getchar())) {
+        while ((a = getchar()) != EOF ) {
 			putchar(a / 16 + 65);
-			putchar(a - a / 16 * 16 + 65);
+			putchar(a % 16 + 65);
+			//printf("%d %d %d\n",a,a / 16, a%16);
 		}
 	}
 	return 0;
