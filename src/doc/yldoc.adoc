@@ -13,7 +13,7 @@ yldoc [STRING] [[STRING2]...] [OPTIONS]
 
 == DESCRIPTION
 
-Search [STRING] in 'doc' folder.
+Search [STRING] in 'usage' folder.
 
 YuZJLab Usage is a very simple documentation format which supports all terminals and operating systems.
 It is directly compiled from dource code in `asciidoc` format located in `src/doc` by a Bash script and a Python script.
@@ -46,6 +46,6 @@ Tested with all functions supported.
 
 == FILE
 
-`doc/*.usage`
+`usage/*.usage`
 
 include::include/copy.adoc[]

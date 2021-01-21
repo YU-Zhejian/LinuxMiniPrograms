@@ -80,3 +80,5 @@ Test
     ylukh
     libdo
     libdo3
+
+make install
