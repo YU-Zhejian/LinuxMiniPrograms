@@ -24,7 +24,7 @@ if ! "${mygrep}" ^"my${PROGNAME}"= "${path_sh}"; then
 		"${myrm}" "${tmpf}"
 		unset tmpf dir
 	done
-	if ! "${mygrep}" ^"my${PROGNAME}"= "${path_sh}"; then
+	if ! "${mygrep}" ^"my${PROGNAME}"= "${path_sh}" &> /dev/null; then
 		if [ -z "${lntmp:-}" ]; then
 			echo "my${PROGNAME}=\"ylukh\" #UNKNOWN" >> "${path_sh}"
 			warnh "${PROGNAME} still not found. Please configure it manually in $(readlink -f "${path_sh}")"
