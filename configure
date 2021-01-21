@@ -109,8 +109,11 @@ if [ ! -f 'etc/path.sh' ]; then
 	for PROGNAME in ls grep sed rm; do . src/exec/findcoreutils.sh; done
 	for PROGNAME in python ps parallel; do . src/exec/find${PROGNAME}.sh; done
 	for PROGNAME in cat chmod chown cp cut find gtar gzip head mkdir more mv sort tail tar; do . src/exec/findcoreutils.sh; done
-	for PROGNAME in 7z 7za bgzip brotli bzip2 compress lz4 lzfse lzip lzma lzop pbz2 pbzip pigz rar unzip unrar xz zip zstd asciidoc asciidoctor-pdf asciidoctor git clang gcc make; do . src/exec/findornot.sh; done
+	for PROGNAME in 7z 7za bgzip brotli bzip2 compress lz4 lzfse lzip lzma lzop pbz2 pbzip pigz rar unzip unrar xz zip zstd \
+	asciidoc asciidoctor-pdf asciidoctor \
+	git clang gcc gmake make; do . src/exec/findornot.sh; done
 	"${mysed}" -i 's;^mygtar;mytar;' "${path_sh}"
+	"${mysed}" -i 's;^mygmake;mymake;' "${path_sh}"
 	"${mysed}" -i 's;^mypbzip2;mypbz2;' "${path_sh}"
 	"${mysed}" -i 's;^myasciidoctor-pdf;myasciidoctor_pdf;' "${path_sh}"
 	. "${path_sh}"

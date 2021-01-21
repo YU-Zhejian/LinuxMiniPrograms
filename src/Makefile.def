@@ -1,6 +1,4 @@
-export CC=gcc
 export VERBOSE = TRUE
-export MAKE=make
 
 .PHONY : all pp
 
