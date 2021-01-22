@@ -1,5 +1,4 @@
-#!/bin/bash
-# BADD V2
+#!/usr/bin/env bash
 set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 cd "${DN}"
