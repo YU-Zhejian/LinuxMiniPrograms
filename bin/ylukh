@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-#YLUKH V1P1
-echo "YuZJLab UnKnown Handler: command not found. Please check LMP_base/etc/path.sh"
+#YLUKH V2
+echo "YuZJLab UnKnown Handler: command not found. Please check $(readlink -f "$(dirname "${0}")/../etc/path.sh")"
 exit 127

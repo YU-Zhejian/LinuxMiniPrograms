@@ -30,7 +30,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-h" | "--help")
-			cat src/doc/installer.txt
+			cat src/doc/configure.txt
 			exit 0
 			;;
 		"-a" | "--all")

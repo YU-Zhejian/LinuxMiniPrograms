@@ -13,11 +13,7 @@ b16c - YuZJLab Base16 Codex
 
 == DESCRIPTION
 
-`b16c` will read from standard input and pumps what is encoded/decoded to standard output.
-
-== USAGE
-
-`b16c` is firstly integrated into `enigma`. It is later separated and developed into C and Python version.
+b16c is used to transform binary or text from standard input to standard output, or decode what is encoded by `b16c`. It is firstly integrated into `enigma` and later separated and developed into C and Python version.
 
 == OPTIONS
 
