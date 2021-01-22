@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/LinuxMiniPrograms.iml" filepath="$PROJECT_DIR$/.idea/LinuxMiniPrograms.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../Smst3/PyCastle/.idea/PyCastle.iml" filepath="$PROJECT_DIR$/../../Smst3/PyCastle/.idea/PyCastle.iml" />
     </modules>
   </component>
 </project>
