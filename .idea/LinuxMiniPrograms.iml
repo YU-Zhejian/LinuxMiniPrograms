@@ -24,7 +24,7 @@
       <excludeFolder url="file://$MODULE_DIR$/pdf" />
       <excludeFolder url="file://$MODULE_DIR$/usage" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9 (2)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.9" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="PyCastle" />
   </component>
