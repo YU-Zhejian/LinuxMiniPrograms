@@ -79,5 +79,6 @@ Test
     ylsjsd
     libdo
     libdo3
+    configure
 
 make install
