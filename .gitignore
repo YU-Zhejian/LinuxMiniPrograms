@@ -13,7 +13,7 @@ __pycache__
 *ylacd*
 *log
 *tmp*
-/.vs
+.vs
 /venv
 /.git
 *.pyc
@@ -24,3 +24,4 @@ __pycache__
 *.cbp
 *.layout
 /Makefile
+CppProperties.json
