@@ -117,6 +117,7 @@ After downloading, you can now execute `configure` to install all the programs f
 Detailed code:
 
 ```bash
+git config --global core.autocrlf input
 git clone https://github.com/YuZJLab/LinuxMiniPrograms
 cd LinuxMiniPrograms
 chmod +x configure

@@ -5,3 +5,5 @@ MAX_JOB=$("${myls}" -1 | "${mygrep}" -v 'sh' | "${mygrep}" -v 'lock' | "${mysed}
 MAX_JOB=$((${MAX_JOB}+1))
 echo "UK" > ${MAX_JOB}.q
 "${mycat}" /dev/stdin > ${MAX_JOB}.sh
+echo ${MAX_JOB}
+infoh "$("${mycat}" ${MAX_JOB}.q)"

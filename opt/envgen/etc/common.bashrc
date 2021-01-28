@@ -36,6 +36,7 @@ alias reboot="echo What the hell you\'re thinking?\!"
 alias sudo="echo What the hell you\'re thinking?\!"
 alias rm="rm -i" # Safer $(rm).
 alias git-log="git log --pretty=oneline --abbrev-commit --graph --branches" # More readable git log.
+alias git-gc="git gc --aggressive --prune=now" # Clean git up
 alias top="htop" # htop is a task manager better than top.
 alias emacs="emacs -nw"
 eval "$(thefuck -a)"
