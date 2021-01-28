@@ -26,11 +26,11 @@ else
 		elif [ -f "${ps_name}".f ]; then
 			warnh "Process ${ps_name} finished"
 			continue
-		elif ! [ -f ${ps_name} ]; then
+		elif ! [ -f ${ps_name}.i ]; then
 			warnh "Process ${ps_name} not found"
 			continue
 		fi
-		PID=$("${mycat}" ${ps_name} | tail -n 1)
+		PID=$("${mycat}" ${ps_name}.i | tail -n 1)
 		kill -${n} ${PID} || true
 		sleep 1
 		ps -p ${PID} &>>/dev/null && warnh "Failed to kill ${ps_name} with PID=${PID}. Retry with -n:9 option"

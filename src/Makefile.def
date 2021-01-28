@@ -4,9 +4,11 @@ export MKDIR = mkdir -p
 .PHONY : all pp
 
 etc:
+	$(MKDIR) -p etc/
 	$(CP) src/etc/* etc/
 
 var:
+	$(MKDIR) -p var/
 	$(CP) -fr src/var/* var/
 
 C:

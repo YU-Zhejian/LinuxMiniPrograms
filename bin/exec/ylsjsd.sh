@@ -21,15 +21,17 @@ while true; do
 	sleep 1
 	# Rmove done jobs
 	"${myls}" -1 | "${mygrep}" -v '\.' | while read ps_name; do
-		PID=$("${mycat}" ${ps_name} | tail -n 1)
-		! ps -p ${PID} &>>/dev/null && "${mymv}" "${ps_name}" "${ps_name}.f"
+		PID=$("${mycat}" ${ps_name}.i | tail -n 1)
+		! "${myps}" -p ${PID} &>>/dev/null && "${mymv}" "${ps_name}.i" "${ps_name}.f"
 	done
 	# Check the queue
-	while [ $("${myls}" -1 | "${mygrep}" -v '\.' | wc -l | awk '{ printf $1 }') -lt ${MAX_JOB} ]; do
+	while [ $("${myls}" -1 | "${mygrep}" '\*.i' | wc -l | awk '{ printf $1 }') -lt ${MAX_JOB} ]; do
 		lastq=$("${myls}" -1 | "${mygrep}" '\.q$' | "${mysort}" -n | head -n 1 | "${mysed}" 's;.q$;;')
 		if [ "${lastq}" = "" ]; then break; fi
-		bash ${lastq}.sh &
+		cd "$("${mycat}" "${lastq}.wd")"
+		bash "${DN}"/../var/ylsjs.d/${lastq}.sh &
+		cd "${DN}"/../var/ylsjs.d
 		echo "${!}" >>"${lastq}".q
-		"${mymv}" "${lastq}".q "${lastq}"
+		"${mymv}" "${lastq}.q" "${lastq}.i"
 	done
 done

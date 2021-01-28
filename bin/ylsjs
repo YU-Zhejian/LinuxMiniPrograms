@@ -2,6 +2,7 @@
 #YLSJS v1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
+WD="$(pwd)"
 . "${DN}"/../etc/path.sh
 . "${DN}"/../lib/libstr
 . "${DN}"/../lib/libisopt
@@ -30,9 +31,6 @@ done
 if [ -z "${STDS:-}" ]; then
 	yldoc ylsjs
 	exit 0
-elif [ -f "${DN}"/exec/ylsjs_"${STDS}".py ]; then
-	[ "${mypython}" != "ylukh" ] || errh "Python not found"
-	"${mypython}" "${DN}"/exec/ylsjs_"${STDS}".py "${@}"
 elif [ -f "${DN}"/exec/ylsjs_"${STDS}".sh ]; then
 	. "${DN}"/exec/ylsjs_"${STDS}".sh
 else
