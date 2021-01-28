@@ -10,7 +10,6 @@ __pycache__
 /gnome-keyring-daemo.core
 .vscode
 /usr
-*ylacd*
 *log
 *tmp*
 .vs

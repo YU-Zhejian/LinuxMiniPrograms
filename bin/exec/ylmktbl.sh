@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# YLMKTNL.sh V3P3
+# YLMKTBL.sh V3P3
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 STDS=''
