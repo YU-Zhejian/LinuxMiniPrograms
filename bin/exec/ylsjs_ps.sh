@@ -32,16 +32,37 @@ function __psv() {
 	local PID
 	for ps_name in "${@}"; do
 		if [ -f "${ps_name}.i" ]; then
-			PID=$("${mycat}" ${ps_name} | tail -n 1)
+			PID=$("${mycat}" "${ps_name}.i" | tail -n 1)
+			echo $PID
 			echo "# ---------------No=${ps_name}, NAME=$("${mycat}" ${ps_name}.i | head -n 1), PID=${PID}---------------"
 			if ${CAT};then
 				echo "    # ---------------Submitted ${ps_name}.sh---------------"
-				"${mycat}" -n ${ps_name%.*}.sh
+				"${mycat}" -n ${ps_name}.sh
 			fi
 			echo "    # ---------------ps ${ps_name}---------------"
 			ps -p ${PID} || true
 			${PST} && pstree -ap ${PID} || true
 			${TOP} && top -H -p ${PID} -bc -n1 || true
+		elif [ -f "${ps_name}.f" ]; then
+			PID=$("${mycat}" "${ps_name}.f" | tail -n 1)
+			echo $PID
+			echo "# ---------------No=${ps_name}, NAME=$("${mycat}" ${ps_name}.i | head -n 1), PID=${PID}---------------"
+			if ${CAT};then
+				echo "    # ---------------Submitted ${ps_name}.sh---------------"
+				"${mycat}" -n ${ps_name}.sh
+			fi
+			echo "    # ---------------ps ${ps_name}---------------"
+			ps -p ${PID} || true
+			${PST} && pstree -ap ${PID} || true
+			${TOP} && top -H -p ${PID} -bc -n1 || true
+		elif [ -f "${ps_name}.q" ]; then
+			PID=$("${mycat}" "${ps_name}.q" | tail -n 1)
+			echo $PID
+			echo "# ---------------No=${ps_name}, NAME=$("${mycat}" ${ps_name}.i | head -n 1), PID=UK---------------"
+			if ${CAT};then
+				echo "    # ---------------Submitted ${ps_name}.sh---------------"
+				"${mycat}" -n ${ps_name}.sh
+			fi
 		fi
 	done
 }
