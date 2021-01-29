@@ -68,13 +68,10 @@ Test
     libdoman_upgrade
     libdo_monitor
     libdosh
-    libls
     manls
     pathls
     pss
     pst
-    yldoc
-    ylmktbl
     ylsjs
     ylsjsd
     libdo

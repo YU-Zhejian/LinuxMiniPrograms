@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# AD2U.py V2P1
+# AD2U.py V2P2
 import re
 import sys
 
@@ -46,12 +46,12 @@ for i in range(len(fdoc_lines) - 1, -1, -1):
 	if fdoc_lines[i] == '' or fdoc_lines[i].startswith(r'image::') or re.match(r'^\:.+\:.*$', fdoc_lines[i]):
 		fdoc_lines.pop(i)
 for line in fdoc_lines:
-	if line.startswith(r"```") and Currindent.__contains__(r'| '):
+	if line == r"----" and Currindent.__contains__(r'| '):
 		Currindent = Currindent[0:-2]
 		fdoc_out_lines.append('')
 	elif Currindent.__contains__(r'| '):
 		fdoc_out_lines.append(Currindent + line)
-	elif line.startswith(r"```"):
+	elif line == r"----":
 		Currindent = Currindent + r'| '
 		fdoc_out_lines.append('')
 	elif line.startswith(r'='):

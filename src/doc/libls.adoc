@@ -5,7 +5,7 @@
 
 == NAME
 
-libls - A program to search C lib paths
+libls - A program to search C library paths
 
 == SYNOPSIS
 
@@ -22,15 +22,18 @@ include::include/cmnopt.adoc[]
 
 * `-l|--list` List all valid C include paths.
 
-* `-s|--dynamic-only` Dynamically linked libs (`.so`) only.
+* `-s|--dynamic-only` Dynamically linked libs (Shared objects) (`.so`) only.
 
 * `-a|--static-only` Statically linked libs (`.a`) only.
+
+* `-w|--windows` Allow Microsoft Windows Libraries (`.dll` for dynamically linked libs and `.lib` for statically linked libs )
 
 == EXAMPLES
 
 These examples are tested under Ubuntu GNU/Linux 20.10.
 
-```
+[source]
+----
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ libls -l
 YuZJLab LIB ls
@@ -38,11 +41,11 @@ Copyright (C) 2019-2021 YU Zhejian
 /usr/lib
 /usr/lib32
 /usr/lib64
-/usr/libx32
-/usr/libexec
-```
+/usr/local/lib
+----
 
-```
+[source]
+----
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ libls
 YuZJLab LIB ls
@@ -55,9 +58,10 @@ Reading database...
 /usr/lib/thunderbird/libnspr4.so
 /usr/lib/thunderbird/libplc4.so
 /usr/lib/thunderbird/libssl3.so
-```
+----
 
-```
+[source]
+----
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ libls ncurses
 YuZJLab LIB ls
@@ -71,9 +75,10 @@ Reading database...
 /usr/lib/x86_64-linux-gnu/libncurses.so.6
 /usr/lib/x86_64-linux-gnu/libncursesw.so.6
 [...]
-```
+----
 
-```
+[source]
+----
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ libls -a ncurses
 YuZJLab LIB ls
@@ -83,7 +88,7 @@ Reading database...
 /usr/lib/x86_64-linux-gnu/libncurses++.a
 /usr/lib/x86_64-linux-gnu/libncurses++w.a
 /usr/lib/x86_64-linux-gnu/libncurses.a
-```
+----
 
 == COMPATIBILITY
 

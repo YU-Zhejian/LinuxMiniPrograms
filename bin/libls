@@ -32,7 +32,7 @@ for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
 		"-h" | "--help")
-			yldoc pls
+			yldoc libls
 			exit 0
 			;;
 		"-v" | "--version")
@@ -64,12 +64,12 @@ for opt in "${@}"; do
 	fi
 done
 unset valid_path
-tmpf="$(mktemp -t pls.XXXXXX)"
+tmpf="$(mktemp -t libls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
 	"${myfind}" "${dir}" 2> /dev/null >> "${tmpf}" || true
 done
-tmpff=$(mktemp -t pls.XXXXXX)
+tmpff=$(mktemp -t libls.XXXXXX)
 if ${WINDOWS}; then
 	! ${allow_s} || _grep '\.dll$'
 	! ${allow_s} || _grep '\.DLL$'
