@@ -17,15 +17,11 @@ Monitor `[LIBDO_PID]` and its sub-processes/threads by watching its CPU, memory 
 
 == OPTIONS
 
-None.
+include::include/cmnopt.adoc[]
 
 == EXAMPLES
 
-These examples are tested under Ubuntu GNU/Linux 20.10.
-
-```
-Will be added later.
-```
+See libdo3
 
 == COMPATIBILITY
 
@@ -36,5 +32,9 @@ Not supported.
 === Cygwin
 
 Not supported.
+
+== SEE ALSO
+
+libdo3
 
 include::include/copy.adoc[]

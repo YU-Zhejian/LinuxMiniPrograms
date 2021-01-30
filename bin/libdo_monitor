@@ -3,14 +3,36 @@
 set -ue
 
 DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../lib/libisopt
 . "${DN}"/../etc/path.sh
 . "${DN}"/../lib/libstr
 function __exit() {
 	kill -9 ${$}
 }
+STDS=()
+for opt in "${@}"; do
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-h" | "--help")
+			yldoc libdo_monitor
+			exit 0
+			;;
+		"-v" | "--version")
+			echo "Version 1"
+			exit 0
+			;;
+		*)
+			warnh "Option '${opt}' invalid. Ignored"
+			;;
+		esac
+	else
+		STDS=(${STDS[@]} "${opt}")
+	fi
+done
+
 trap "__exit" SIGINT
 if [ "${mypython}" != "ylukh" ]; then
-	exec "${mypython}" "${DN}"/exec/libdo_monitor.py "${@}"
+	exec "${mypython}" "${DN}"/exec/libdo_monitor.py "${STDS@}"
 else
 	errh "Python not found"
 fi

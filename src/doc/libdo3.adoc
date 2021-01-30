@@ -80,6 +80,6 @@ Not supported.
 
 == SEE ALSO
 
-libdo, libdo_monitor
+libdo, libdoman, libdoman_monitor
 
 include::include/copy.adoc[]
