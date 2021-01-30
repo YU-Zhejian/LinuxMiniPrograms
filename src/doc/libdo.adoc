@@ -9,11 +9,12 @@ libdo - A library to monitor process.
 
 == SYNOPSIS
 
-```
+[source]
+----
 [VARIABLES]
 . /PATH/TO/LIBDO
 DO cmd
-```
+----
 
 == DESCRIPTION
 
@@ -57,7 +58,8 @@ WARNING: This specifications is based on version 2 of LibDO.
 
 The additional instructions are commented.
 
-```
+[source]
+----
 LIBDO IS GOING TO EXECUTE ls
 # Line 1 print out the command.
 LIBDO STARTED AT 2020-06-05-23-41-26
@@ -90,7 +92,7 @@ LIBDO EXITED SUCCESSFULLY
 # "LIBDO FAILED, GOT $?=${LIBDO_PRIV}".
 # If you set ${LIBDO_TOP_PID}, it will be killed and print
 # "LIBDO WILL KILL ${LIBDO_TOP_PID}"
-```
+----
 
 == EXAMPLES
 

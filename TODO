@@ -73,12 +73,10 @@ Test
     pathls
     pss
     pst
-    yldoc
     ylmktbl
     ylsjs
     ylsjsd
     libdo
     libdo3
-    configure
 
 make install
