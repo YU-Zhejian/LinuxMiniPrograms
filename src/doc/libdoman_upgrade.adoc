@@ -9,7 +9,7 @@ libdoman-update - LibDO log updater.
 
 == SYNOPSIS
 
-`libdoman-update [log1] [[log2] ...]`
+`libdoman_upgrade [log1] [[log2] ...]`
 
 == DESCRIPTION
 

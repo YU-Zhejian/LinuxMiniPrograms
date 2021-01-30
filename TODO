@@ -63,8 +63,6 @@ Test
     azlist
     enigma
     git-mirror
-    libdoman
-    libdoman_upgrade
     libdo_monitor
     libdosh
     pathls

@@ -19,17 +19,16 @@ Decode LibDO output information from logs.
 
 include::include/cmnopt.adoc[]
 
-* `-o:[item]|--output:[item]` Get more information about `[item]`.
-The numbering of items started from 1.
+* `-o:[item]|--output:[item]` Get more information about `[item]`. The numbering of items started from 1.
 
-* `-m|--machine` Use machine mode.
-Capable for pipelines.
+* `-m|--machine` Use machine mode, output tables in Tab Separated Values (TSV). Capable for pipelines.
 
 == EXAMPLES
 
 These examples are tested under Cygwin.
 
-```
+[source]
+----
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ libdoman ls.log
 YuZJLab LibDO Manager.
@@ -43,9 +42,10 @@ File /d/Software/LinuxMiniPrograms/ls.log loaded. Making table...
 |1  |ls                       [...]                 |0   |0:0:0|
 |=============================[...]============================|
 Finished.
-```
+----
 
-```
+[source]
+----
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ libdoman ls.log -o:1
 YuZJLab LibDO Manager.
@@ -74,7 +74,20 @@ pdf
 var
 ________________OUTPUT____FINISHED________________
 Finished.
-```
+----
+
+[source]
+----
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ libdoman ls.log
+YuZJLab LibDO Manager.
+Copyright (C) 2020 YU Zhejian
+Loading /d/Software/LinuxMiniPrograms/ls.log ...0 item proceeded.
+Loading /d/Software/LinuxMiniPrograms/ls.log ...1 item proceeded.
+File /d/Software/LinuxMiniPrograms/ls.log loaded. Making table...
+ls      0       0
+Finished.
+----
 
 == COMPATIBILITY
 
@@ -88,6 +101,6 @@ Tested with all functions supported.
 
 == SEE ALSO
 
-libdo, libdoman-update
+libdo, libdoman_upgrade
 
 include::include/copy.adoc[]
