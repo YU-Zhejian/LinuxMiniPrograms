@@ -26,7 +26,8 @@ include::include/cmnopt.adoc[]
 
 These examples are tested under Ubuntu GNU/Linux 20.10.
 
-```
+[source]
+----
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ includels -l
 YuZJLab INCLUDEPATH ls
@@ -36,9 +37,10 @@ Copyright (C) 2019-2021 YU Zhejian
 /usr/local/share/man
 /usr/lib/gcc/x86_64-linux-gnu/10/include
 /usr/lib/gcc/x86_64-linux-gnu/9/include
-```
+----
 
-```
+[source]
+----
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ includels
 YuZJLab INCLUDEPATH ls
@@ -51,9 +53,10 @@ Reading database...
 /usr/include/mtd/ubi-user.h
 /usr/include/mtd/mtd-user.h
 [...]
-```
+----
 
-```
+[source]
+----
 (base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
 $ includels ncurses
 YuZJLab INCLUDEPATH ls
@@ -63,7 +66,7 @@ Reading database...
 /usr/include/ncursesw
 /usr/include/ncursesw/curses.h
 [...]
-```
+----
 
 == COMPATIBILITY
 

@@ -63,18 +63,14 @@ Test
     azlist
     enigma
     git-mirror
-    includels
     libdoman
     libdoman_upgrade
     libdo_monitor
     libdosh
-    manls
     pathls
     pss
     pst
     ylsjs
     ylsjsd
-    libdo
-    libdo3
 
 make install
