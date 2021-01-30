@@ -6,7 +6,7 @@ SUFF=''
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/exec/libautozip.sh
 # ============ Start ============
-infoh "YuZJLab AutoUnZip"
+infoh "YuZJLab AZList"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 for opt in "${OPT[@]}"; do
 	warnh "Option '${opt}' invalid. Ignored"
