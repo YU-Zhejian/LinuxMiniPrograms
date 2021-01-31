@@ -33,7 +33,7 @@ elif [ "${STDS:-}" = "restart" ]; then
 	ylsjsd stop
 	ylsjsd start
 elif [ "${STDS:-}" = "clear" ]; then
-	[ -f ylsjsd.lock ] && kill -15 "$("${mycat}" ylsjsd.lock)"
+	ylsjsd stop
 	"${myrm}" -rf * || true
 else
 	errh "Command '"${STDS:-}"' unknown"
