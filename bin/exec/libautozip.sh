@@ -105,7 +105,7 @@ function fcat() {
 	if [ -d "${1}" ]; then
 		"${mytar}" -f - -cv "${1}"
 	elif [ -f "${1}" ]; then
-		"${mycat}" "${1}"
+		cat "${1}"
 	else
 		errh "${1} do not exist"
 	fi

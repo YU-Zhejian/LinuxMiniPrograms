@@ -107,6 +107,6 @@ while read line; do
 	fi
 	n=$((n + 1))
 done < "${LVCD}"/SYSTEM
-"${mycat}" "${tmpfff}" | "${mysort}"
+cat "${tmpfff}" | sort
 IFS=${OLD_IFS}
 exit 0

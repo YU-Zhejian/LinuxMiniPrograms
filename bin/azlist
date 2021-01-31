@@ -15,7 +15,7 @@ done
 [ ${#STDS[@]} -gt 0 ] || autozipck
 for fulln in "${STDS[@]}"; do
 	ISBLANK=false
-	fn="$(echo ${fulln%.*} | "${mysed}" "s;.part1$;;" | "${mysed}" "s;.part01$;;")"
+	fn="$(echo ${fulln%.*} | sed "s;.part1$;;" | sed "s;.part01$;;")"
 	ext="${fulln##*.}"
 	if [ "${fn##*.}" = "tar" ]; then
 		ext="tar.${ext}"
@@ -56,7 +56,7 @@ for fulln in "${STDS[@]}"; do
 		if [ -f "${fn}".z01 ]; then
 			[ "${myzip}" != 'ylukh' ] || errh "zip NO exist"
 			mktmp
-			"${mycp}" "${fn}".z* "${tempdir}"/
+			cp "${fn}".z* "${tempdir}"/
 			"${myzip}" -FF "${tempdir}"/"${fn}".zip --out "${tempdir}"/"${fn}".fzip
 			"${myunzip}" -v "${tempdir}"/"${fn}".fzip
 		else

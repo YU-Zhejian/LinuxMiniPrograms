@@ -4,8 +4,8 @@ oldifs="${IFS}"
 function _grep() {
 	regstr="${1}"
 	local tmpff=$(mktemp -t pls.XXXXXX)
-	"${mycat}" "${tmpf}" | "${mygrep}" -v "${regstr}" > "${tmpff}"
-	"${mymv}" "${tmpff}" "${tmpf}"
+	cat "${tmpf}" | grep -v "${regstr}" > "${tmpff}"
+	mv "${tmpff}" "${tmpf}"
 }
 . "${DN}"/../lib/libisopt
 INPATH="${PATH}"
@@ -60,20 +60,20 @@ unset invalid_path valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	"${myls}" -1 -F "${dir}" 2> /dev/null | "${mysed}" "s;^;$(echo "${dir}")/;" >> "${tmpf}" || true
+	ls -1 -F "${dir}" 2> /dev/null | sed "s;^;$(echo "${dir}")/;" >> "${tmpf}" || true
 done
 ${allow_d} || _grep '/$'
 ${allow_x} || _grep '\*$'
 ${allow_o} || _grep '[^\*/]$'
 if [ ${#STDS[@]} -eq 0 ]; then
-	"${mycat}" "${tmpf}"
+	cat "${tmpf}"
 else
 	IFS=''
 	grepstr=''
 	for fn in "${STDS[@]}"; do
 		grepstr="${grepstr} -e ${fn}"
 	done
-	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"
+	eval cat \"${tmpf}\"\|grep "${grepstr}"
 fi
-"${myrm}" "${tmpf}"
+rm "${tmpf}"
 IFS="${oldifs}"

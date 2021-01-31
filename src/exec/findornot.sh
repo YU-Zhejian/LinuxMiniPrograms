@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # FINDORNOT.sh V2
-if ! "${mygrep}" ^"${PROGNAME}"= "${path_sh}"; then
+if ! grep ^"${PROGNAME}"= "${path_sh}"; then
 	if which "${PROGNAME}" &>> /dev/null; then
 		line="$(which "${PROGNAME}")"
 		echo "my${PROGNAME}=\"${line}\" #UNIVERSE" >> "${path_sh}"

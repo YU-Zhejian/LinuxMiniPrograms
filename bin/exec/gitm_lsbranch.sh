@@ -6,14 +6,14 @@ if [ ${#STDS[@]} -gt 0 ]; then
 		grep_uuidtable "${url}" "${tmpf}" &>> /dev/null || warnh "${url} yields no results"
 	done
 else
-	"${mycat}" uuidtable.d/* | tee "${tmpf}"
+	cat uuidtable.d/* | tee "${tmpf}"
 fi
-"${mycat}" "${tmpf}" | while read line; do
+cat "${tmpf}" | while read line; do
 	IFS=$'\t'
 	fields=(${line})
 	IFS=''
 	infoh "${fields[0]}"
-	[ ! -f "${fields[1]}".lock ] || warnh "Repo locked by $("${mycat}" "${fields[1]}".lock)"
+	[ ! -f "${fields[1]}".lock ] || warnh "Repo locked by $(cat "${fields[1]}".lock)"
 	cd "${fields[1]}"
 	if git branch --verbose 2>&1 | tee ../logs/"${fields[1]}"/lsbranch-"$(date '+%Y-%m-%d_%H-%M-%S')".log; then
 		cd ..
@@ -24,4 +24,4 @@ fi
 		warnh "Repository UUID=${fields[1]} lsbranch failed. Will skip this repo"
 	fi
 done
-"${myrm}" -f "${tmpf}"
+rm -f "${tmpf}"

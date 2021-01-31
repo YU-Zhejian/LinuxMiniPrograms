@@ -27,7 +27,7 @@ done
 fn="${STDS[0]:-}"
 ! [ -z "${fn}" ] || fn="-"
 if [ -z "${STDS[1]:-}" ]; then
-	fn=$(echo ${fn} | ${mysed} "s;/$;;")
+	fn=$(echo ${fn} | sed "s;/$;;")
 	if [ -e "${fn}" ]; then
 		ext="cat"
 	elif [ "${fn}" != "-" ];then

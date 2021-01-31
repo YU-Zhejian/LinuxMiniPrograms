@@ -29,7 +29,7 @@ unset STDS[0]
 [ ! -z "${git_mirror_dir:-}" ] || errh "Config file not found"
 mkdir -p "${git_mirror_dir}" "${git_mirror_dir}/logs/" "${git_mirror_dir}/uuidtable.d/"
 cd "${git_mirror_dir}"
-"${myls}" uuidtable.d/* &>> /dev/null || touch uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')"
+ls uuidtable.d/* &>> /dev/null || touch uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')"
 touch act.log
 if [ -f "${DN}"/exec/gitm_"${gmcmd}".sh ]; then
 	. "${DN}"/exec/gitm_"${gmcmd}".sh

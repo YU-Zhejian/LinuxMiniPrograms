@@ -16,23 +16,31 @@ done
 
 unset STDS[0]
 
+function __kill() {
+	if [ -f "${1}".q ]; then
+			mv "${1}".q "${ps_name}".f
+			return
+	elif [ -f "${1}".f ]; then
+			warnh "Process ${1} finished"
+			return
+		elif ! [ -f ${1}.i ]; then
+			warnh "Process ${1} not found"
+			return
+		fi
+		PID=$(cat ${1}.i | tail -n 1)
+		kill -${n} -- -${PID} || true
+		sleep 1
+		if ps -p ${PID} &>>/dev/null ;then
+			warnh "Failed to kill ${1} with PID=${PID}. Retry with -n:9 option"
+		else
+			infoh "${1} killed"
+		fi
+}
+
 if [ ${#STDS[@]} -eq 0 ]; then
 	errh "Which process to kill?"
 else
 	for ps_name in "${STDS[@]}"; do
-		if [ -f "${ps_name}".q ]; then
-			"${mymv}" "${ps_name}".q "${ps_name}".f
-			continue
-		elif [ -f "${ps_name}".f ]; then
-			warnh "Process ${ps_name} finished"
-			continue
-		elif ! [ -f ${ps_name}.i ]; then
-			warnh "Process ${ps_name} not found"
-			continue
-		fi
-		PID=$("${mycat}" ${ps_name}.i | tail -n 1)
-		kill -${n} ${PID} || true
-		sleep 1
-		ps -p ${PID} &>>/dev/null && warnh "Failed to kill ${ps_name} with PID=${PID}. Retry with -n:9 option"
+		__kill ${ps_name} &
 	done
 fi

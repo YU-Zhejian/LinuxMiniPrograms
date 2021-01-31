@@ -9,7 +9,7 @@ infoh "YuZJLab MANPATH ls"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 oldifs="${IFS}"
 
-INPATH="$(manpath 2> /dev/null || true):/usr/share/man:/usr/local/man:/usr/local/share/man:$("${mycat}" /usr/local/etc/man.d/*.conf 2> /dev/null | "${mygrep}" -v \# | "${mygrep}" MANPATH | "${mycut}" -f 2 -d ' ' | tr '\n' ':' || true)${MANPATH:-}"
+INPATH="$(manpath 2> /dev/null || true):/usr/share/man:/usr/local/man:/usr/local/share/man:$(cat /usr/local/etc/man.d/*.conf 2> /dev/null | grep -v \# | grep MANPATH | cut -f 2 -d ' ' | tr '\n' ':' || true)${MANPATH:-}"
 . "${DN}"/../lib/libpath
 IFS=":"
 eachpath=(${valid_path})
@@ -44,19 +44,19 @@ unset invalid_path valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	"${myls}" -1 -F "${dir}" | "${mysed}" "s;^;$(echo "${dir}")/;" | "${mygrep}" man[^/]*/$ | while read line; do
-		"${myls}" -1 -F "${line}" | "${mysed}" "s;.gz;;" | "${mysed}" "s;^;$(echo "${line}");" >> "${tmpf}"
+	ls -1 -F "${dir}" | sed "s;^;$(echo "${dir}")/;" | grep man[^/]*/$ | while read line; do
+		ls -1 -F "${line}" | sed "s;.gz;;" | sed "s;^;$(echo "${line}");" >> "${tmpf}"
 	done
 done
 if [ ${#STDS[@]} -eq 0 ]; then
-	"${mycat}" "${tmpf}"
+	cat "${tmpf}"
 else
 	IFS=''
 	grepstr=''
 	for fn in "${STDS[@]}"; do
 		grepstr="${grepstr} -e ${fn}"
 	done
-	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"
+	eval cat \"${tmpf}\"\|grep "${grepstr}"
 fi
 rm "${tmpf}"
 IFS="${oldifs}"

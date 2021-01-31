@@ -13,9 +13,9 @@ done
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
 case "${STDS[1]}" in
 "ls")
-	if "${myls}" *.lock &>> /dev/null; then
+	if ls *.lock &>> /dev/null; then
 		for fn in *.lock; do
-			echo ${fn}"\t"$("${mycat}" ${fn})
+			echo ${fn}"\t"$(cat ${fn})
 		done
 		echo -e "$(timestamp)\tLOCKLS\tSUCCESS" >> act.log
 		infoh "Repository lock ls success"
@@ -33,7 +33,7 @@ case "${STDS[1]}" in
 			grep_uuidtable "${url}" "${tmpf}" || warnh "${url} yields no results"
 		done
 	else
-		"${mycat}" uuidtable.d/* > "${tmpf}"
+		cat uuidtable.d/* > "${tmpf}"
 	fi
 	while read line; do
 		IFS=$'\t'
@@ -44,32 +44,32 @@ case "${STDS[1]}" in
 	[ $(wc -l "${tmpff}" | awk '{print $1}') -ne 0 ] || FORCE=true
 	if ! ${FORCE}; then read -p "Will remove locks of above repos. Continue? [Y/n] >" ANSWER; else ANSWER="Y"; fi
 	if [ "${ANSWER}" = "Y" ]; then
-		"${mycat}" "${tmpff}" | while read line; do
+		cat "${tmpff}" | while read line; do
 			IFS=$'\t'
 			fields=(${line})
 			IFS=''
-			if ps -p $("${mycat}" "${fields[1]}.lock" | awk '{print $2}') &>> /dev/null; then
+			if ps -p $(cat "${fields[1]}.lock" | awk '{print $2}') &>> /dev/null; then
 				echo -e "$(timestamp)\tRMLOCK\tOCCUPIED\t${fields[0]}\t${fields[1]}" >> act.log
 				warnh "Process still running for UUID=${fields[1]}. Will skip this repo"
 				continue
 			fi
-			"${myrm}" -f "${fields[1]}".lock
+			rm -f "${fields[1]}".lock
 			echo -e "$(timestamp)\tRMLOCK\tSUCCESS\t${fields[0]}\t${fields[1]}" >> act.log
 			infoh "Repository UUID=${fields[1]} rmlock success"
 		done
 	fi
-	"${myrm}" -f "${tmpf}" "${tmpff}"
+	rm -f "${tmpf}" "${tmpff}"
 	for fn in sync.lock rm.lock archive.lock gc.lock uuidtable.lock add.lock; do
-		if ps -p $("${mycat}" "${fn}" 2> /dev/null | awk '{print $2}') &>> /dev/null; then
+		if ps -p $(cat "${fn}" 2> /dev/null | awk '{print $2}') &>> /dev/null; then
 			warnh "Process still running for ${fn}. Will skip this lock."
 			continue
 		elif [ ! -e ${fn} ]; then
 			continue
 		fi
 		if ! ${FORCE}; then
-			"${myrm}" -i "${fn}"
+			rm -i "${fn}"
 		else
-			"${myrm}" -f "${fn}" &> /dev/null
+			rm -f "${fn}" &> /dev/null
 		fi
 	done
 	;;
@@ -82,7 +82,7 @@ case "${STDS[1]}" in
 	done
 	if ! ${FORCE}; then read -p "Will add locks to above repos. Continue? [Y/n] >" ANSWER; else ANSWER="Y"; fi
 	if [ "${ANSWER}" = "Y" ]; then
-		"${mycat}" "${tmpf}" | while read line; do
+		cat "${tmpf}" | while read line; do
 			IFS=$'\t'
 			fields=(${line})
 			IFS=''
@@ -91,7 +91,7 @@ case "${STDS[1]}" in
 			infoh "Repository UUID=${fields[1]} addlock success"
 		done
 	fi
-	"${myrm}" -f "${tmpf}"
+	rm -f "${tmpf}"
 	;;
 *)
 	errh "Invalid sub-sub command '${STDS[1]}'"

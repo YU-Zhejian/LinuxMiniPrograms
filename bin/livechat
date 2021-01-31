@@ -11,7 +11,7 @@ function __send() {
 }
 function __reciever() {
 	trap "__exit" SIGINT SIGTERM
-	"${mytail}" -f "${LVCD}"/SYSTEM | while read line; do
+	tail -f "${LVCD}"/SYSTEM | while read line; do
 		IFS=";"
 		local M_A=(${line})
 		echo -e "\033[31m[${M_A[0]}]\033[0m \033[36m[${M_A[1]}]\033[0m ${M_A[2]}"
@@ -21,7 +21,7 @@ function __reciever() {
 function __exit() {
 	trap "__exit" SIGINT SIGTERM
 	__send "SYSTEM" "${LCUN} had quitted"
-	"${myrm}" -f "${LVCD}"/"${LCUN}"
+	rm -f "${LVCD}"/"${LCUN}"
 	infoh "Thanks for using this system"
 	IFS="${OLD_IFS}"
 	kill -9 -${$}
@@ -67,7 +67,7 @@ fi
 touch "${LVCD}"/"${LCUN}"
 __send "SYSTEM" "${LCUN} is now on line"
 infoh "The following users are now online:"
-"${myls}" -1 "${LVCD}"
+ls -1 "${LVCD}"
 infoh "Please use 'logout'/'exit'/'quit' or Ctrl-C to exit"
 export M_R=0
 (__reciever) &

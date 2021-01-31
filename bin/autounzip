@@ -37,7 +37,7 @@ done
 [ ${#STDS[@]} -gt 0 ] || autozipck
 for fulln in "${STDS[@]}"; do
 	ISBLANK=false
-	fn="$(echo ${fulln%.*} | "${mysed}" "s;.part1$;;" | "${mysed}" "s;.part01$;;")"
+	fn="$(echo ${fulln%.*} | sed "s;.part1$;;" | sed "s;.part01$;;")"
 	ext="${fulln##*.}"
 	if [ "${fn##*.}" = "tar" ]; then
 		ext="tar.${ext}"
@@ -50,14 +50,14 @@ for fulln in "${STDS[@]}"; do
 	ckext
 	infoh "Received: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}"
 	if [ -e "${fn}" ]; then
-		if ${ISFORCE}; then ${myrm} -rf "${fn}"; else ${mymv} -f "${fn}" "${fn}".bak; fi
+		if ${ISFORCE}; then rm -rf "${fn}"; else mv -f "${fn}" "${fn}".bak; fi
 	fi
 	# ============ Start Decompressing ============
 	function __do_job() {
 		cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${1})"
 		infoh "${cmd}"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		"${mycat}" "${fulln}" | ${cmd} | "${mytar}" -xv -f -
+		cat "${fulln}" | ${cmd} | "${mytar}" -xv -f -
 	}
 	case ${ext} in
 	tar.*)
@@ -95,7 +95,7 @@ for fulln in "${STDS[@]}"; do
 	esac
 	# ============ Finished ============
 	infoh "Removing temporary resources..."
-	${REMOVE} && "${myrm}" -rf "${fulln}"
+	${REMOVE} && rm -rf "${fulln}"
 done
 # ============ Finished ============
 infoh "Finished"

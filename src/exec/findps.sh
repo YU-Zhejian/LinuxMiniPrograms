@@ -6,7 +6,7 @@ if [ -z "${myps:-}" ]; then
 	for dir in "${eachpath[@]}"; do
 		! ${GNU_found} || break
 		tmpf=$(mktemp -t configpath.XXXXXX)
-		"${myls}" -F -1 "${dir}" | "${mygrep}" '.[*@]$' | "${mysed}" 's;[*@]$;;' | "${mygrep}" '^ps\(\.exe\)*$' | "${mysed}" "s;^;$(echo ${dir})/;" > "${tmpf}"
+		ls -F -1 "${dir}" | grep '.[*@]$' | sed 's;[*@]$;;' | grep '^ps\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" > "${tmpf}"
 		while read line; do
 			lntmp="${line}"
 			ps_ver=$("${line}" --version 2>&1 || true)
@@ -24,7 +24,7 @@ if [ -z "${myps:-}" ]; then
 				break
 			fi
 		done < "${tmpf}"
-		"${myrm}" "${tmpf}"
+		rm "${tmpf}"
 		unset tmpf dir
 	done
 	. "${path_sh}"

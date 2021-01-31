@@ -23,21 +23,21 @@ if [ -e man/man1 ] && ! man yldoc &>> /dev/null ; then
 fi
 #========Install Permissions========
 function __change_dir_permissions() {
-	"${myls}" -1 | while read file_name; do
+	ls -1 | while read file_name; do
 		if [ -f ${file_name} ]; then
-			"${mychmod}" -x ${file_name}
+			chmod -x ${file_name}
 		else
-			"${mychmod}" +x ${file_name}
+			chmod +x ${file_name}
 			cd ${file_name}
 			__change_dir_permissions
 			cd ..
 		fi
 	done
 }
-"${mychown}" -R $(id -u) *
-"${mychmod}" -R +r+w *
+chown -R $(id -u) *
+chmod -R +r+w *
 __change_dir_permissions
-"${mychmod}" +x configure bin/* *.sh bin/exec/*.co* || true
+chmod +x configure bin/* *.sh bin/exec/*.co* || true
 infoh "Modifying file permissions...\033[32mPASSED"
 IFS="${OLDIFS}"
 infoh "Finished. Please execute 'exec bash' to restart bash"

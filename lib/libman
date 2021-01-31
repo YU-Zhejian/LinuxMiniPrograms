@@ -15,6 +15,6 @@ function getcorenumber() {
 	if [[ ${myos} == *"BSD"* ]]; then
 		sysctl -a | grep hw.ncpu | awk '{print $2;}'
 	else
-		"${mycat}" /proc/cpuinfo | "${mygrep}" '^processor\s: ' | wc -l | awk '{print $1}'
+		cat /proc/cpuinfo | grep '^processor\s: ' | wc -l | awk '{print $1}'
 	fi
 }

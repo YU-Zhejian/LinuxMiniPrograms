@@ -102,23 +102,18 @@ if [ ! -f 'etc/path.sh' ]; then
 	echo ${valid_path} | tr ':' '\n'
 	infoh "End locating valid path"
 	unset valid_path
-	myls="ls"
-	mygrep="grep"
-	mysed="sed"
-	myrm="rm"
-	for PROGNAME in ls grep sed rm; do . src/exec/findcoreutils.sh; done
-	for PROGNAME in python ps parallel; do . src/exec/find${PROGNAME}.sh; done
-	for PROGNAME in cat chmod chown cp cut find gtar gzip head mkdir more mv sort tail tar; do . src/exec/findcoreutils.sh; done
-	for PROGNAME in 7z 7za bgzip brotli bzip2 compress lz4 lzfse lzip lzma lzop pbz2 pbzip pigz rar unzip unrar xz zip zstd \
+	for PROGNAME in ps python; do . src/exec/find${PROGNAME}.sh; done
+	for PROGNAME in 7z 7za bgzip brotli bzip2 compress gtar gzip lz4 lzfse lzip lzma lzop pbz2 pbzip pigz rar unzip unrar xz zip zstd \
 	asciidoc asciidoctor-pdf asciidoctor \
+	parallel \
 	git clang gcc gmake make; do . src/exec/findornot.sh; done
-	"${mysed}" -i 's;^mygtar;mytar;' "${path_sh}"
-	"${mysed}" -i 's;^mygmake;mymake;' "${path_sh}"
-	"${mysed}" -i 's;^mypbzip2;mypbz2;' "${path_sh}"
-	"${mysed}" -i 's;^myasciidoctor-pdf;myasciidoctor_pdf;' "${path_sh}"
+	sed -i 's;^mygtar;mytar;' "${path_sh}"
+	sed -i 's;^mygmake;mymake;' "${path_sh}"
+	sed -i 's;^mypbzip2;mypbz2;' "${path_sh}"
+	sed -i 's;^myasciidoctor-pdf;myasciidoctor_pdf;' "${path_sh}"
 	. "${path_sh}"
 	infoh "All configurations are printed as follows:"
-	"${mycat}" "${path_sh}" | "${mygrep}" -v '^$' | "${mygrep}" -v '^#' | "${mysed}" 's/^my//' | "${mysed}" 's/=/\\\\033[33m in \\\\033[0m/ ' | "${mysed}" 's/ #/\\\\033[33m, \\\\033[32m/' | "${mysort}" | while read line; do echo -e "${line}\033[0m"; done
+	cat "${path_sh}" | grep -v '^$' | grep -v '^#' | sed 's/^my//' | sed 's/=/\\\\033[33m in \\\\033[0m/ ' | sed 's/ #/\\\\033[33m, \\\\033[32m/' | sort | while read line; do echo -e "${line}\033[0m"; done
 fi
 . etc/path.sh
 [ "${mymake}" = "ylukh" ] && errh "GNU Make not found"
@@ -167,8 +162,8 @@ elif [ "${myclang}" != "ylukh" ];then
 	MAKE_ARGS="${MAKE_ARGS}:CC=${myclang}"
 fi
 #========Makefile Generation========
-MAKE_ARGS="${MAKE_ARGS}:PYTHON=${mypython}:RM=${myrm} -rf:CP=${mycp} -rf"
-echo "${MAKE_ARGS}" | "${mysed}" 's;:;\nexport ;g' | sort | uniq >Makefile
+MAKE_ARGS="${MAKE_ARGS}:PYTHON=${mypython}:RM=rm -rf:CP=cp -rf"
+echo "${MAKE_ARGS}" | sed 's;:;\nexport ;g' | sort | uniq >Makefile
 echo "all: ${MAKE_TARGETS}" >>Makefile
 cat src/Makefile.def >>Makefile
 infoh "Finished. Please execute 'make' to build the program"

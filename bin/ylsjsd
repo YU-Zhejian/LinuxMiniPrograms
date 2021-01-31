@@ -27,14 +27,16 @@ done
 if [ "${STDS:-}" = "start" ]; then
 	[ ! -f ylsjsd.lock ] && bash "${DN}"/exec/ylsjsd.sh &
 elif [ "${STDS:-}" = "stop" ]; then
-	[ -f ylsjsd.lock ] && kill -15 "$("${mycat}" ylsjsd.lock)" || true
-	"${myrm}" -f ylsjsd.lock
+	[ -f ylsjsd.lock ] && kill -15 "$(cat ylsjsd.lock)" || true
+	rm -f ylsjsd.lock
 elif [ "${STDS:-}" = "restart" ]; then
 	ylsjsd stop
 	ylsjsd start
 elif [ "${STDS:-}" = "clear" ]; then
 	ylsjsd stop
-	"${myrm}" -rf * || true
+	rm -rf * || true
+elif [ "${STDS:-}" = "status" ]; then
+	cat ylsjsd.lock
 else
 	errh "Command '"${STDS:-}"' unknown"
 fi

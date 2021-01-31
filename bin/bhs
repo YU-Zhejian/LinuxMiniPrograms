@@ -27,10 +27,10 @@ for opt in "${@}"; do
 		STDS="${STDS} -e '${opt}'"
 	fi
 done
-STDS=$(echo "${STDS}" | "${mysed}" "s/ $//")
+STDS=$(echo "${STDS}" | sed "s/ $//")
 if [ -n "${STDS}" ]; then
 	echo "${STDS}"
-	eval "${mycat}" -n ~/.bash_history \| "${mygrep}" --color=auto "${STDS}"
+	eval cat -n ~/.bash_history \| grep --color=auto "${STDS}"
 else
-	"${mycat}" -n ~/.bash_history
+	cat -n ~/.bash_history
 fi

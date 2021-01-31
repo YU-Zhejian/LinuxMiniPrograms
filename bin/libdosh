@@ -49,9 +49,9 @@ while read -p "$(__ps1)" line; do
 				tmpf="$(mktemp -t libdosh.XXXXX)"
 				infoh "Builtin"
 				echo "${buffer}"' 2>&1 | tee -a "${log}" && prev_out=0 || prev_out=${?}' > "${tmpf}"
-				"${mycat}" "${tmpf}"
+				cat "${tmpf}"
 				. "${tmpf}"
-				"${myrm}" "${tmpf}"
+				rm "${tmpf}"
 				break
 			fi
 		done

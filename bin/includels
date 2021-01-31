@@ -23,7 +23,7 @@ gccinclude=$(for dir in /lib*/gcc*/*/*/include \
 	/usr/lib*/gcc*/include \
 	/usr/local/lib*/gcc*/include \
 	"${HOME}"/usr/lib*/gcc*/include \
-	"${HOME}"/usr/local/lib*/gcc*/include; do echo ${dir}; done | "${mygrep}" -v '*' | tr '\n' ':')
+	"${HOME}"/usr/local/lib*/gcc*/include; do echo ${dir}; done | grep -v '*' | tr '\n' ':')
 
 clanginclude=$(for dir in /lib*/clang*/*/include \
 	/usr/lib*/clang*/*/include \
@@ -34,7 +34,7 @@ clanginclude=$(for dir in /lib*/clang*/*/include \
 	/usr/lib*/clang*/include \
 	/usr/local/lib*/clang*/include \
 	"${HOME}"/usr/lib/clang*/include \
-	"${HOME}"/usr/local/lib/clang*/include; do echo ${dir}; done | "${mygrep}" -v '*' | tr '\n' ':')
+	"${HOME}"/usr/local/lib/clang*/include; do echo ${dir}; done | grep -v '*' | tr '\n' ':')
 
 INPATH="/usr/include:/usr/local/include:${HOME}/include:${HOME}/usr/include:${HOME}/usr/local/include:${gccinclude}:${clanginclude}:${C_INCLUDE_PATH:-}"${CPLUS_INCLUDE_PATH:-}
 . "${DN}"/../lib/libpath
@@ -74,14 +74,14 @@ for dir in "${eachpath[@]}"; do
 	"${myfind}" "${dir}" 2> /dev/null >> "${tmpf}" || true
 done
 if [ ${#STDS[@]} -eq 0 ]; then
-	"${mycat}" "${tmpf}"
+	cat "${tmpf}"
 else
 	IFS=''
 	grepstr=''
 	for fn in "${STDS[@]}"; do
 		grepstr="${grepstr} -e ${fn}"
 	done
-	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"
+	eval cat \"${tmpf}\"\|grep "${grepstr}"
 fi
 rm "${tmpf}"
 IFS="${oldifs}"

@@ -39,7 +39,7 @@ if [ -z "${STDS[1]:-}" ]; then
 	if [ -f "${fn}" ]; then
 		ext="gz"
 	elif [ -d "${fn}" ]; then
-		fn=$(echo ${fn} | ${mysed} "s;/$;;")
+		fn=$(echo ${fn} | sed "s;/$;;")
 		ext="tar"
 	else
 		errh "Filename '${fn}' invalid"
@@ -48,7 +48,7 @@ else
 	ext=${STDS[1]}
 	ckext
 	if [ -d "${fn}" ]; then
-		fn=$(echo "${fn}" | "${mysed}" 's;/$;;')
+		fn=$(echo "${fn}" | sed 's;/$;;')
 		case "${ext}" in
 		t* | "rar" | "zip" | "7z") ;;
 		*)
@@ -69,9 +69,9 @@ else
 fi
 LVL="${STDS[2]:-}"
 if ${ISFORCE}; then
-	[ ! -f "${fn}.${ext}" ] || "${myrm}" -rf "${fn}.${ext}"
+	[ ! -f "${fn}.${ext}" ] || rm -rf "${fn}.${ext}"
 else
-	[ ! -f "${fn}.${ext}" ] || "${mymv}" -f "${fn}.${ext}" "${fn}.${ext}".bak
+	[ ! -f "${fn}.${ext}" ] || mv -f "${fn}.${ext}" "${fn}.${ext}".bak
 fi
 SPL=''
 # ============ Start Compressing ============
@@ -111,4 +111,4 @@ case ${ext} in
 esac
 # ============ Finished ============
 infoh "Removing temporary resources..."
-! ${REMOVE} || "${myrm}" -rf ${fn}
+! ${REMOVE} || rm -rf ${fn}

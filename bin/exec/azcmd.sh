@@ -100,7 +100,7 @@ LVL="${STDS[1]:-}"
 if ${DECOMPRESS}; then
 	case ${ext} in
 	"txt" | "cat" | "tar")
-		cmd="${mycat}"
+		cmd=cat
 		;;
 	"gz" | "GZ" | "bgz")
 		if [ "${mypigz}" != 'ylukh' ]; then
@@ -182,7 +182,7 @@ if ${DECOMPRESS}; then
 else
 	case ${ext} in
 	"txt" | "tar" | "cat")
-		cmd="${mycat}"
+		cmd=cat
 		;;
 	"gz" | "GZ")
 		if [ "${mypigz}" != 'ylukh' ]; then
