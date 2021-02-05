@@ -35,6 +35,7 @@ elif [ "${STDS:-}" = "restart" ]; then
 elif [ "${STDS:-}" = "clear" ]; then
 	ylsjsd stop
 	rm -rf * || true
+	ylsjsd start
 elif [ "${STDS:-}" = "status" ]; then
 	cat ylsjsd.lock
 else

@@ -9,8 +9,8 @@ infoh "YuZJLab Process Snapshot Searcher"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 STDS=()
 for opt in "${@}"; do
-	if isopt ${opt}; then
-		case ${opt} in
+	if isopt "${opt}"; then
+		case "${opt}" in
 		"-h" | "--help")
 			yldoc pss
 			exit 0

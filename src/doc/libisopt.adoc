@@ -11,7 +11,7 @@ libisopt - A library to check whether a parameter is a legal YuZJLab option.
 
 `. /PATH/TO/LIBISOPT`
 
-`isopt ${OPT}`
+`isopt "${opt}"`
 
 == DESCRIPTION
 
@@ -38,8 +38,8 @@ That is, those parameter which matches the regular expression `-[^-\s]|--\S+|-[^
 OPT=()
 STDS=()
 for opt in "${@}"; do
-	if isopt ${opt}; then
-		case ${opt} in
+	if isopt "${opt}"; then
+		case "${opt}" in
 		"-h" | "--help")
 			# DOC command
 			exit 0
@@ -60,7 +60,7 @@ for opt in "${@}"; do
 done
 ```
 
-After this loop, options and other parameters are separated into string `${OPT}` and `${STDS}`.
+After this loop, options and other parameters are separated into string `"${opt}"` and `${STDS}`.
 If there're unrecognized option, the program will exit with exit code 1.
 
 include::include/copy.adoc[]

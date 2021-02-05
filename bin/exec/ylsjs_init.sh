@@ -3,17 +3,19 @@
 STDS=()
 NAME="UK"
 for opt in "${@}"; do
-	case "${opt}" in
-	-n\:*)
-		NAME=${opt:3}
-		;;
-	--name\:*)
-		NAME=${opt:7}
-		;;
-	*)
-		warnh "Option '${opt}' invalid. Ignored"
-		;;
-	esac
+	if isopt "${opt}";then
+		case "${opt}" in
+		-n\:*)
+			NAME=${opt:3}
+			;;
+		--name\:*)
+			NAME=${opt:7}
+			;;
+		*)
+			warnh "Option '${opt}' invalid. Ignored"
+			;;
+		esac
+	fi
 done
 MAX_JOB=$(ls -1 *.sh | wc -l | awk '{print $1}')
 MAX_JOB=$((${MAX_JOB}+1))

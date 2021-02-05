@@ -14,6 +14,14 @@ for opt in "${@}"; do
 	fi
 done
 
+function __killtree() {
+    kill -19 ${1}
+    for CPID in $(ps -o pid --no-headers --ppid ${1}); do
+        __killtree ${CPID} ${2}
+    done
+    kill -${2} ${1}
+}
+
 unset STDS[0]
 
 function __kill() {
@@ -28,7 +36,7 @@ function __kill() {
 			return
 		fi
 		PID=$(cat ${1}.i | tail -n 1)
-		kill -${n} -- -${PID} || true
+		__killtree ${PID} ${n} || true
 		sleep 1
 		if ps -p ${PID} &>>/dev/null ;then
 			warnh "Failed to kill ${1} with PID=${PID}. Retry with -n:9 option"

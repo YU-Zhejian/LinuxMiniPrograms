@@ -23,8 +23,8 @@ MAKE_TARGETS="etc var pp"
 MAKE_ARGS=""
 # ========Read Opt========
 for opt in "${@}"; do
-	if isopt ${opt}; then
-		case ${opt} in
+	if isopt "${opt}"; then
+		case "${opt}" in
 		"-v" | "--version")
 			echo "Version 1"
 			exit 0
@@ -103,7 +103,7 @@ if [ ! -f 'etc/path.sh' ]; then
 	infoh "End locating valid path"
 	unset valid_path
 	for PROGNAME in ps python; do . src/exec/find${PROGNAME}.sh; done
-	for PROGNAME in 7z 7za bgzip brotli bzip2 compress gtar gzip lz4 lzfse lzip lzma lzop pbz2 pbzip pigz rar unzip unrar xz zip zstd \
+	for PROGNAME in 7z 7za bgzip brotli bzip2 compress gtar gzip lz4 lzfse lzip lzma lzop pbz2 pbzip pigz rar tar unzip unrar xz zip zstd \
 	asciidoc asciidoctor-pdf asciidoctor \
 	parallel \
 	git clang gcc gmake make; do . src/exec/findornot.sh; done
