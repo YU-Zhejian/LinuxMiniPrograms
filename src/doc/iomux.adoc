@@ -17,6 +17,8 @@ iomux - Input/Output MUltipleXer.
 
 [NOT STABLE] Input/Output MUltipleXer, allowing cross-terminal communication.
 
+WARNING: This program is no longer monitored and updates may not be provided!
+
 == OPTIONS
 
 No option provided.
@@ -45,5 +47,9 @@ Tested with all functions supported.
 
 . `in` The fifo file used to pump stdin as a tty.
 . `out` The fifo file used to pump stdout and stderr.
+
+== SEE ALSO
+
+LMP_deprecated
 
 include::include/copy.adoc[]

@@ -193,8 +193,12 @@ Here are the instructions on how to upgrade LinuxMiniPrograms.
 
 . Use `./configure` to re-generate `etc/path.sh`. You may also re-compile the documentations.
 
+== LIFE CYCLE
+
+Deprecated programs are noted in LMP_deprecated. Execute `yldoc LMP_deprecated` for more details.
+
 == SEE ALSO
 
-libisopt, yldoc
+libisopt, yldoc, LMP_license, LMP_deprecated
 
 include::include/copy.adoc[]

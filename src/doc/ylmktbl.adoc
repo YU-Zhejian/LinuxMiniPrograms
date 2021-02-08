@@ -19,7 +19,9 @@ On executing, the program will check whether there's an active Python installati
 
 Use `ylmktbl ${tabel_file}` to print table from a table file.
 
-The table file can be separated into two parts: column instructions and main body. Colum's instruction is started with `#` and records the specific option of a particular column. Those started in S means if the length of this column exceeds the value after S, the column will be shrunk by adding `...`. The columns are separated by `;`.
+The table file can be separated into two parts: column instructions and main body. Colum's instruction is started with `#` and records the specific option of a particular column. Those started in S means if the length of this column exceeds the value after S, the column will be shrunk by adding `...`. The columns should be separated by `;`.
+
+Please note that the `ylmktbl` written in Shell script is no longer monitored and updates may not be provided. Please use the Python version instead.
 
 == EXAMPLE
 

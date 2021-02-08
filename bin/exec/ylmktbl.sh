@@ -2,6 +2,7 @@
 # YLMKTBL.sh V3P3
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
+warnh "This program is no longer monitored and updates may not be provided"
 STDS=''
 for opt in "${@}"; do
 	if isopt "${opt}"; then
