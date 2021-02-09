@@ -1,7 +1,7 @@
 export VERBOSE = TRUE
 export MKDIR = mkdir -p
 
-.PHONY : all pp
+.PHONY : all pp test
 
 etc:
 	$(MKDIR) -p etc/
@@ -29,3 +29,6 @@ usage:
 pp:
 	bash src/exec/install_path_permissions.sh
 	@-$(MAKE) -C opt permissions
+
+test:
+	bash src/test/00_install.sh

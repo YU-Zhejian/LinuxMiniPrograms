@@ -8,6 +8,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libman
 infoh "YuZJLab libDO Shell"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
+warnh "This program is no longer monitored and updates may not be provided"
 
 [ ${UID} -eq 0 ] && ps1_ed="#" || ps1_ed="$"
 _PID=0

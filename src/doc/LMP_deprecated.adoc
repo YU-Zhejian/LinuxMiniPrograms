@@ -21,6 +21,8 @@ Here gives a list of deprecated programs in YuZJLab LinuxMiniPrograms.
 .. `bin/iomux_r`
 . ylmktbl (part)
 .. `bin/exec/ylmktbl.sh`
+. libdosh
+.. `bin/libdosh`
 
 == SEE ALSO
 

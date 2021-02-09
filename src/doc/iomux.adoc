@@ -13,6 +13,8 @@ iomux - Input/Output MUltipleXer.
 
 `iomux_a`
 
+`iomux_r`
+
 == DESCRIPTION
 
 [NOT STABLE] Input/Output MUltipleXer, allowing cross-terminal communication.
