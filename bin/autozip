@@ -53,8 +53,6 @@ if [ -z "${STDS[1]:-}" ]; then
 	elif [ -d "${fn}" ]; then
 		fn=$(echo ${fn} | sed "s;/$;;")
 		ext="tar"
-	else
-		errh "Filename '${fn}' invalid"
 	fi
 else
 	ext=${STDS[1]}
@@ -67,7 +65,7 @@ else
 			errh "You're about to compress FOLDER '${fn}' with extension '${ext}', which is designed for compressing SINGLE FILE"
 			;;
 		esac
-	elif [ -f "${fn}" ]; then
+	elif [ -f "${fn}" ] || [ "${fn}" = "/dev/stdin" ]; then
 		case "${ext}" in
 		"gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz" | "rar" | "zip" | "7z" | "lz4" | "lzo" | "zst" | "br" | "z" | "Z" | "lzfse") ;;
 		*)
@@ -90,9 +88,9 @@ function __do_job() {
 	cmd="$(bash ${DN}/exec/azcmd.sh -p:${THREAD} "${1}" ${LVL})"
 	infoh "${cmd}"
 	if ${STDOUT}; then
-		fcat "${fn}" | ${cmd} > /dev/stdout
+		fcat "${fn}" | ${cmd} >/dev/stdout
 	else
-		fcat "${fn}" | ${cmd} > "${fn}.${ext}"
+		fcat "${fn}" | ${cmd} >"${fn}.${ext}"
 	fi
 }
 case ${ext} in
@@ -119,33 +117,47 @@ t*z)
 "7z")
 	[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
 	__cklvl 7z
-	if ${STDOUT}; then
-		"${my7za}" a -aoa -y /dev/stdout "${fn}" -mmt=${THREAD} ${LVL} -t7z
-	else
-		"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -t7z
+	# TODO: No implement
+	if [ "${fn}" = "/dev/stdin" ] || ${STDOUT}; then
+		errh "Not implemented in 7zip"
 	fi
+	# TODO: No implement
+	#if ${STDOUT}; then
+	#	"${my7za}" a -aoa -so "${fn}" -mmt=${THREAD} ${LVL} -t7z
+	#else
+	"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -t7z
+	#fi
 	;;
 "zip")
-	if [ "${my7za}" != 'ylukh' ]; then
-		__cklvl 7z
-		if ${STDOUT}; then
-			"${my7za}" a -aoa -y /dev/stdout "${fn}" -mmt=${THREAD} ${LVL} -tzip
-		else
-			"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -tzip
-		fi
-	elif [ "${myzip}" != 'ylukh' ]; then
-		__cklvl zip
-		if ${STDOUT}; then
-			"${myzip}" --verbose -r /dev/stdout "${fn}" ${LVL}
-		else
-			"${myzip}" --verbose -r "${fn}".${ext} "${fn}" ${LVL}
-		fi
-	else
-		errh "No valid zip/7zip exist"
+	# TODO: No implement
+	if [ "${fn}" = "/dev/stdin" ]; then
+		errh "Not implemented in zip"
 	fi
+		if [ "${my7za}" != 'ylukh' ]; then
+			__cklvl 7z
+			if ${STDOUT}; then
+				"${my7za}" a -aoa -so "${fn}" -mmt=${THREAD} ${LVL} -tzip
+			else
+				"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -tzip
+			fi
+		elif [ "${myzip}" != 'ylukh' ]; then
+			__cklvl zip
+			if ${STDOUT}; then
+				"${myzip}" --verbose -r /dev/stdout "${fn}" ${LVL}
+			else
+				"${myzip}" --verbose -r "${fn}".${ext} "${fn}" ${LVL}
+			fi
+		else
+			errh "No valid zip/7zip exist"
+		fi
+
 	;;
 "rar")
 	[ "${myrar}" != 'ylukh' ] || errh "rar NO exist"
+	# TODO: No implement
+	if [ "${fn}" = "/dev/stdin" ]; then
+		errh "Not implemented in RAR"
+	fi
 	# TODO: No implement
 	#if ${STDOUT}; then
 	#	"${myrar}" -mt${THREAD} a /dev/stdout "${fn}"

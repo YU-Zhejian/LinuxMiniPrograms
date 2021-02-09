@@ -1,52 +1,40 @@
 #!/usr/bin/env bash
+# AUTOZIP.t.sh v1
 set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../../lib/libdo
 LIBDO_TOP_PID=${$}
-mkdir -p autozip_$(date +%Y-%m-%d_%H-%M-%S).t
-cd autozip_$(date +%Y-%m-%d_%H-%M-%S).t
+TDN="autozip_$(date +%Y-%m-%d_%H-%M-%S).t"
+mkdir -p "${TDN}"
+cd "${TDN}"
 LIBDO_LOG_MODE=4
 LIBDO_LOG="autozip.log"
+# AUTOZIP WITH FILES
 DO dd if=/dev/zero of=tf bs=512 count=1
-AZ_CMD="autozip tf --force --parallel"
-DO "${AZ_CMD}"
-DO "${AZ_CMD}" gz
-DO "${AZ_CMD}" bgz
-DO "${AZ_CMD}" -5 gz
-DO "${AZ_CMD}" gz 5
-DO "${AZ_CMD}" gz
-DO "${AZ_CMD}" xz
-DO "${AZ_CMD}" bz2
-DO "${AZ_CMD}" lzma
-DO "${AZ_CMD}" lz4
-DO "${AZ_CMD}" zst
-DO "${AZ_CMD}" lzo
-DO "${AZ_CMD}" lz
-DO "${AZ_CMD}" br
-DO "${AZ_CMD}" 7z
-DO "${AZ_CMD}" zip
-DO "${AZ_CMD}" rar
+for ext in gz bgz xz bz2 lzma lz4 zst lzo lz br Z;do
+	DO autozip --force --parallel tf "${ext}" 1
+	DO cat tf \| azcat --parallel - "${ext}" 1 \> tf.azc.${ext}
+done
+for ext in 7z zip rar;do
+	DO autozip --force --parallel tf "${ext}" 1
+done
+DO autozip --force --parallel tf
+DO cat tf \| azcat --parallel \> tf.azc.ne
+DO autozip --force --parallel -1 tf gz
+DO cat tf \| azcat --parallel -1 - gz \> tf.azc.${ext}
+# AUTOZIP WITH DIRECTORY
 mkdir -p td
 for i in {1..20};do
 	DO dd if=/dev/zero of=td/${i} bs=512 count=1
 done
-AZ_CMD="autozip td --force --parallel"
-DO "${AZ_CMD}"
-DO "${AZ_CMD}" tar
-DO "${AZ_CMD}" tbz
-DO "${AZ_CMD}" tar.gz
-DO "${AZ_CMD}" tar.xz
-DO "${AZ_CMD}" tar.bz2
-DO "${AZ_CMD}" tar.lzma
-DO "${AZ_CMD}" tar.lz4
-DO "${AZ_CMD}" tar.zst
-DO "${AZ_CMD}" tar.lzo
-DO "${AZ_CMD}" tar.lz
-DO "${AZ_CMD}" tar.br
-DO "${AZ_CMD}" tar.7z
-DO "${AZ_CMD}" tar.zip
-DO "${AZ_CMD}" 7z
-DO "${AZ_CMD}" zip
-DO "${AZ_CMD}" rar
+DO autozip td --force --parallel -1
+DO azcat --parallel td \> tf.azc.ne
+for ext in tar tbz tar.gz tar.xz tar.bz2 tar.lzma tar.lz4 tar.zst tar.lzo tar.lz tar.br tar.7z tar.zip tar.Z;do
+	DO autozip td --force --parallel -1 "${ext}"
+	DO azcat --parallel td "${ext}" -1 \> tf.azc.${ext}
+done
+for ext in 7z zip rar;do
+	DO autozip td --force --parallel -1 "${ext}"
+done
 cd ..
-rm -rf autozip_$(date +%Y-%m-%d_%H-%M-%S).t
+rm -rf "${TDN}"

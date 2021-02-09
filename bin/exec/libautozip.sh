@@ -148,6 +148,9 @@ function __cklvl() {
 	"zst")
 		lvl_able='(1[01234567899])|[123456789]'
 		;;
+	"bgz")
+		lvl_pref="-l "
+		;;
 	*)
 		lvl_able="[123456789]"
 		;;
