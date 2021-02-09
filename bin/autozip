@@ -87,8 +87,8 @@ fi
 SPL=''
 # ============ Start Compressing ============
 function __do_job() {
-	infoh "${cmd}"
 	cmd="$(bash ${DN}/exec/azcmd.sh -p:${THREAD} ${1} ${LVL})"
+	infoh "${cmd}"
 	if ${STDOUT}; then
 		fcat "${fn}" | ${cmd} > /dev/stdout
 	else

@@ -88,13 +88,13 @@ function autozipck() {
 }
 # Check extension name
 function __ckext() {
-	for name in "gz" "xz" "bz2" "lzma" "GZ" "lz" "zip" "7z" "lz4" "lzo" "zst" "Z" "z" "lzfse"; do
+	for name in "gz" "xz" "bz2" "lzma" "GZ" "lz" "zip" "7z" "lz4" "lzo" "zst" "Z" "z" "lzfse" "br"; do
 		if [ "${ext}" = "${name}" ] || [ "${ext}" = "tar.${name}" ]; then
 			return
 		fi
 	done
 	case "${ext}" in
-	"tar" | t[bglx]z | "rar") ;;
+	"tar" | t[bglx]z | "rar" | "bgz") ;;
 	*)
 		errh "Extension name '${ext}' invalid.\nYou can execute 'autozip' without any argument or option to check available method and extension"
 		;;
@@ -119,5 +119,69 @@ function __extract_tar() {
 		cat "${1}" | ${cmd} | "${mytar}" -xv -f -
 	else
 		errh "${1} do not exist"
+	fi
+}
+# Check level
+function __cklvl() {
+	local lvl_able=""
+	local lvl_pref="-"
+	case "${1}" in
+	"tar" | "z" | "Z" | "lzfse")
+		lvl_able="0"
+		;;
+	"xz" | "zip" | "br" | "lzip")
+		lvl_able="[0123456789]"
+		;;
+	"rar")
+		lvl_able="[012345]"
+		;;
+	"7z")
+		lvl_pref="-mx="
+		lvl_able="[013579]"
+		;;
+	"lz4")
+		lvl_able='(1[012])|[123456789]'
+		;;
+	"pigz")
+		lvl_able='(11)|[0123456789]'
+		;;
+	"zst")
+		lvl_able='(1[01234567899])|[123456789]'
+		;;
+	*)
+		lvl_able="[123456789]"
+		;;
+	esac
+	if [[ ! "${LVL}" == ${lvl_able} ]]; then
+		warnh "Compression level '${LVL}' undefined. You can use ${lvl_able} for ${1} algorithm.\nWill use default value provided by corresponding algorithm"
+		LVL=''
+	else
+		LVL="${lvl_pref}${LVL}"
+	fi
+	unset lvl_able lvl_pref
+	if [ ${THREAD} -gt ${MAXTHREAD} ]; then
+		warnh "Too many threads. Will be resetted to ${MAXTHREAD}"
+		THREAD=${MAXTHREAD}
+	fi
+	if [ ${THREAD} -gt 1 ]; then
+		case "${1}" in
+		"xz" | "zst" | "rar" | "7z" | "bgz" | "pigz" | "pbz2")
+			warnh "Will use parallel embedded in the algorithm"
+			;;
+		"zip" | "tar" | "lzfse" | "z" | "br")
+			warnh "${1} do not support parallel. Thread will be resetted to 1"
+			THREAD=1
+			;;
+		*)
+			if [ "${myparallel}" = 'ylukh' ]; then
+				warnh "No parallel available. Thread will be resetted to 1"
+				THREAD=1
+			else
+				PAR="${myparallel} -j ${THREAD} --pipe --recend '' -k"
+			fi
+			;;
+		esac
+	else
+		THREAD=1
 	fi
 }
