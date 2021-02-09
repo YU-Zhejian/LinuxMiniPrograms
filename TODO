@@ -62,7 +62,5 @@ Test
     azcat
     azlist
     enigma
-    ylsjs
-    ylsjsd
 
 make install

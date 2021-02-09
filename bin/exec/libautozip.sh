@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LIBAUTOZIP V5
+# LIBAUTOZIP V6
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.sh
@@ -87,7 +87,7 @@ function autozipck() {
 	exit 0
 }
 # Check extension name
-function ckext() {
+function __ckext() {
 	for name in "gz" "xz" "bz2" "lzma" "GZ" "lz" "zip" "7z" "lz4" "lzo" "zst" "Z" "z" "lzfse"; do
 		if [ "${ext}" = "${name}" ] || [ "${ext}" = "tar.${name}" ]; then
 			return

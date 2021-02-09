@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# AUTOZIP V5
+# AUTOZIP V6
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 ISAUTOZIP=true
+STDOUT=false
 . "${DN}"/exec/libautozip.sh
 # ============ Start ============
 infoh "YuZJLab AutoZip"
@@ -30,6 +31,12 @@ for opt in "${OPT[@]}"; do
 	"-d" | "--decompress")
 		"${DN}"/autounzip "${@}"
 		;;
+	"-c" | "--stdout")
+		STDOUT=true
+		;;
+	-[123456789]*)
+		LVL=${opt:2}
+		;;
 	*)
 		warnh "Option '${opt}' invalid. Ignored"
 		;;
@@ -37,6 +44,7 @@ for opt in "${OPT[@]}"; do
 done
 ! ${ISFORCE} && warnh "Will rename the archive if exists"
 fn="${STDS[0]:-}"
+[ "${fn}" = "-" ] && fn="/dev/stdin"
 ! [ -z "${fn}" ] || autozipck
 if [ -z "${STDS[1]:-}" ]; then
 	if [ -f "${fn}" ]; then
@@ -49,7 +57,7 @@ if [ -z "${STDS[1]:-}" ]; then
 	fi
 else
 	ext=${STDS[1]}
-	ckext
+	__ckext
 	if [ -d "${fn}" ]; then
 		fn=$(echo "${fn}" | sed 's;/$;;')
 		case "${ext}" in
@@ -81,7 +89,11 @@ SPL=''
 function __do_job() {
 	infoh "${cmd}"
 	cmd="$(bash ${DN}/exec/azcmd.sh -p:${THREAD} ${1} ${LVL})"
-	fcat "${fn}" | ${cmd} > "${fn}"."${ext}"
+	if ${STDOUT}; then
+		fcat "${fn}" | ${cmd} > /dev/stdout
+	else
+		fcat "${fn}" | ${cmd} > "${fn}.${ext}"
+	fi
 }
 case ${ext} in
 "bgz")
@@ -90,26 +102,43 @@ case ${ext} in
 	;;
 "7z")
 	[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
-	cklvl 7z
-	"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -t7z
+	__cklvl 7z
+	if ${STDOUT}; then
+		"${my7za}" a -aoa -y /dev/stdout "${fn}" -mmt=${THREAD} ${LVL} -t7z
+	else
+		"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -t7z
+	fi
 	;;
 "zip")
 	if [ "${my7za}" != 'ylukh' ]; then
-		cklvl 7z
+		__cklvl 7z
+			if ${STDOUT}; then
+		"${my7za}" a -aoa -y /dev/stdout "${fn}" -mmt=${THREAD} ${LVL} -tzip
+	else
 		"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -tzip
+	fi
 	elif [ "${myzip}" != 'ylukh' ]; then
-		cklvl zip
+		__cklvl zip
+			if ${STDOUT}; then
+		"${myzip}" --verbose ${SPL} -r /dev/stdout "${fn}" ${LVL}
+	else
 		"${myzip}" --verbose ${SPL} -r "${fn}".${ext} "${fn}" ${LVL}
+	fi
 	else
 		errh "No valid zip/7zip exist"
 	fi
 	;;
 "rar")
 	[ "${myrar}" != 'ylukh' ] || errh "rar NO exist"
+				if ${STDOUT}; then
+		"${myrar}" -mt${THREAD} ${SPL} a /dev/stdout "${fn}"
+	else
+		"${myrar}" -mt${THREAD} ${SPL} a "${fn}".${ext} "${fn}"
+	fi
 	"${myrar}" -mt${THREAD} ${SPL} a "${fn}".${ext} "${fn}"
 	;;
 *)
-	bash "${DN}"/azcat -p:${THREAD} ${fn} ${ext} ${LVL} > "${fn}.${ext}"
+	__do_job "${ext}"
 	;;
 esac
 # ============ Finished ============

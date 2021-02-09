@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# AZCMD V5
+# AZCMD V6
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")/../")"
@@ -8,7 +8,7 @@ GCMD=false
 DECOMPRESS=false
 . "${DN}"/exec/libautozip.sh
 # Check level
-function cklvl() {
+function __cklvl() {
 	local lvl_able=""
 	local lvl_pref="-"
 	case "${1}" in
@@ -70,7 +70,6 @@ function cklvl() {
 	else
 		THREAD=1
 	fi
-
 }
 # exec 2>/dev/null
 # ============ Start ============
@@ -186,100 +185,100 @@ else
 		;;
 	"gz" | "GZ")
 		if [ "${mypigz}" != 'ylukh' ]; then
-			cklvl pigz
+			__cklvl pigz
 			cmd="${mypigz} -cvf ${LVL} -p ${THREAD}"
 		elif [ "${mygzip}" != 'ylukh' ]; then
-			cklvl gz
+			__cklvl gz
 			cmd="${PAR} ${mygzip} -cvf ${LVL}"
 		elif [ "${my7za}" != 'ylukh' ]; then
-			cklvl 7z
+			__cklvl 7z
 			cmd="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -tgzip"
 		fi
 		;;
 	"xz")
 		if [ "${myxz}" != 'ylukh' ]; then
-			cklvl xz
+			__cklvl xz
 			cmd="${myxz} -cvvf --threads=${THREAD} ${LVL} -"
 		elif [ "${my7za}" != 'ylukh' ]; then
-			cklvl 7z
+			__cklvl 7z
 			cmd="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -txz"
 		fi
 		;;
 	"bz2")
 		if [ "${mypbz2}" != 'ylukh' ]; then
-			cklvl bzip2
+			__cklvl bzip2
 			cmd="${mypbz2} -cvf -p${THREAD}  ${LVL}"
 		elif [ "${mybzip2}" != 'ylukh' ]; then
-			cklvl bzip2
+			__cklvl bzip2
 			cmd="${PAR} ${mybzip2} -cvf ${LVL}"
 		elif [ "${my7za}" != 'ylukh' ]; then
-			cklvl 7z
+			__cklvl 7z
 			cmd="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -tbzip2"
 		fi
 		;;
 	"lzma")
 		[ ${THREAD} -gt 1 ] && warnh "${1} do not support parallel. Thread will be resetted to 1"
 		if [ "${myxz}" != 'ylukh' ]; then
-			cklvl xz
+			__cklvl xz
 			cmd="${myxz} -fcvv --format=lzma ${LVL} -"
 		elif [ "${mylzma}" != 'ylukh' ]; then
-			cklvl xz
+			__cklvl xz
 			cmd="${mylzma} -cvf ${LVL} -"
 		fi
 		;;
 	"lz4")
 		[ "${mylz4}" != 'ylukh' ] || errh "NO valid lz4 exist"
-		cklvl lz4
+		__cklvl lz4
 		cmd="${PAR} ${mylz4} -cvvf ${LVL} -"
 		;;
 	"zst")
 		[ "${myzstd}" != 'ylukh' ] || errh "NO valid zstd exist"
-		cklvl zst
+		__cklvl zst
 		cmd="${myzstd} -cvvvf ${LVL} -T${THREAD} -"
 		;;
 	"lzo")
 		[ "${mylzop}" != 'ylukh' ] || errh "NO valid lzop exist"
-		cklvl lzop
+		__cklvl lzop
 		cmd="${PAR} ${mylzop} -cvf ${LVL} -"
 		;;
 	"br")
 		[ "${mybrotli}" != 'ylukh' ] || errh "NO valid brotli exist"
-		cklvl br
+		__cklvl br
 		cmd="${mybrotli} -cvf ${LVL} -"
 		;;
 	"Z" | "z")
 		[ "${mycompress}" != 'ylukh' ] || errh "NO valid compress exist"
-		cklvl z
+		__cklvl z
 		cmd="${mycompress} -cvf -"
 		;;
 	"lzfse")
 		[ "${mylzfse}" != 'ylukh' ] || errh "NO valid lzfse exist"
-		cklvl lzfse
+		__cklvl lzfse
 		cmd="${mylzfse} -encode"
 		;;
 	"lz")
 		[ "${mylzip}" != 'ylukh' ] || errh "NO valid lzip exist"
-		cklvl lzip
+		__cklvl lzip
 		cmd="${mylzip} -cvvf ${LVL} -"
 		;;
 	"bgz")
 		[ "${mybgzip}" != 'ylukh' ] || errh "BGZip NO exist"
-		cklvl bgz
+		__cklvl bgz
 		cmd="${mybgzip} -fc -@ ${THREAD} ${LVL}"
 		;;
 		#TODO: No implement
 		#"7z")
 		#	if [ "${my7za}" != 'ylukh' ]; then
-		#		cklvl 7z
+		#		__cklvl 7z
 		#		cmd="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -t7z"
 		#	fi
 		#	;;
 	"zip")
 		if [ "${my7za}" != 'ylukh' ]; then
-			cklvl 7z
+			__cklvl 7z
 			cmd="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -tzip"
 		elif [ "${myzip}" != 'ylukh' ]; then
-			cklvl zip
+			__cklvl zip
 			cmd="${myzip} --verbose ${LVL}"
 		fi
 		;;
