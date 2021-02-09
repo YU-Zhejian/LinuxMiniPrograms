@@ -27,6 +27,9 @@ for opt in "${OPT[@]}"; do
 	"-p" | "--parallel")
 		THREAD=${MAXTHREAD}
 		;;
+	"-d" | "--decompress")
+		"${DN}"/autounzip "${@}"
+		;;
 	*)
 		warnh "Option '${opt}' invalid. Ignored"
 		;;
@@ -106,7 +109,7 @@ case ${ext} in
 	"${myrar}" -mt${THREAD} ${SPL} a "${fn}".${ext} "${fn}"
 	;;
 *)
-	bash ${DN}/azcat -p:${THREAD} ${fn} ${ext} ${LVL} > "${fn}.${ext}"
+	bash "${DN}"/azcat -p:${THREAD} ${fn} ${ext} ${LVL} > "${fn}.${ext}"
 	;;
 esac
 # ============ Finished ============

@@ -28,6 +28,9 @@ for opt in "${OPT[@]}"; do
 	"-p" | "--parallel")
 		THREAD=${MAXTHREAD}
 		;;
+	"-d" | "--decompress")
+		true 
+		;;
 	*)
 		warnh "Option '${opt}' invalid. Ignored"
 		;;
@@ -53,21 +56,15 @@ for fulln in "${STDS[@]}"; do
 		if ${ISFORCE}; then rm -rf "${fn}"; else mv -f "${fn}" "${fn}".bak; fi
 	fi
 	# ============ Start Decompressing ============
-	function __do_job() {
-		cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${1})"
-		infoh "${cmd}"
-		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-		cat "${fulln}" | ${cmd} | "${mytar}" -xv -f -
-	}
 	case ${ext} in
 	tar.*)
-		__do_job "${ext//tar./}"
+		__extract_tar "${fulln}" "${ext//tar./}"
 		;;
 	"tar")
-		__do_job "tar"
+		__extract_tar "${fulln}" "tar"
 		;;
 	t*z)
-		__do_job "${ext//t/}"
+		__extract_tar "${fulln}" "${ext//t/}"
 		;;
 	"7z")
 		[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
