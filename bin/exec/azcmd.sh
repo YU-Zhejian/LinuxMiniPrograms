@@ -96,7 +96,7 @@ if ${DECOMPRESS}; then
 		;;
 	"lz")
 		[ "${mylzip}" != 'ylukh' ] || errh "NO valid lzip exist"
-		cmd="${mylzip} -cdvvf ${LVL} -"
+		cmd="${mylzip} -cdvvf -"
 		;;
 	"7z")
 		if [ "${my7za}" != 'ylukh' ]; then
@@ -202,22 +202,30 @@ else
 		__cklvl bgz
 		cmd="${mybgzip} -fc -@ ${THREAD} ${LVL}"
 		;;
-		#TODO: No implement
-		#"7z")
-		#	if [ "${my7za}" != 'ylukh' ]; then
-		#		__cklvl 7z
-		#		cmd="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -t7z"
-		#	fi
-		#	;;
+	# TODO: No implement
+	#"7z")
+	#	if [ "${my7za}" != 'ylukh' ]; then
+	#		__cklvl 7z
+	#		cmd="${my7za} a -aoa -y /dev/stdout /dev/stdin -mmt=${THREAD} ${LVL} -t7z"
+	#	fi
+	#	;;
 	"zip")
-		if [ "${my7za}" != 'ylukh' ]; then
-			__cklvl 7z
-			cmd="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -tzip"
-		elif [ "${myzip}" != 'ylukh' ]; then
+		# TODO: No implement
+		#if [ "${my7za}" != 'ylukh' ]; then
+		#	__cklvl 7z
+		#	cmd="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -tzip"
+		if [ "${myzip}" != 'ylukh' ]; then
 			__cklvl zip
 			cmd="${myzip} --verbose ${LVL}"
 		fi
 		;;
+	# TODO: No implement
+	#"rar")
+	#	if [ "${myrar}" != 'ylukh' ]; then
+	#		__cklvl rar
+	#		cmd="${myrar} -mt${THREAD} a /dev/stdout /dev/stdin"
+	#	fi
+	#	;;
 	*)
 		exit 1
 		;;

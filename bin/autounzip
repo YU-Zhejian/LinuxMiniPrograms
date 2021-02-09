@@ -29,7 +29,7 @@ for opt in "${OPT[@]}"; do
 		THREAD=${MAXTHREAD}
 		;;
 	"-d" | "--decompress")
-		true 
+		true
 		;;
 	*)
 		warnh "Option '${opt}' invalid. Ignored"
@@ -57,6 +57,9 @@ for fulln in "${STDS[@]}"; do
 	fi
 	# ============ Start Decompressing ============
 	case ${ext} in
+	tbz)
+		__do_job "bz2"
+		;;
 	tar.*)
 		__extract_tar "${fulln}" "${ext//tar./}"
 		;;
@@ -87,7 +90,7 @@ for fulln in "${STDS[@]}"; do
 		;;
 	*)
 		cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${ext})"
-		fcat "${fulln}" | ${cmd} > "${fn}"
+		fcat "${fulln}" | ${cmd} >"${fn}"
 		;;
 	esac
 	# ============ Finished ============

@@ -9,6 +9,7 @@ STDOUT=false
 # ============ Start ============
 infoh "YuZJLab AutoZip"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
+LVL=""
 for opt in "${OPT[@]}"; do
 	case "${opt}" in
 	"--force")
@@ -34,8 +35,8 @@ for opt in "${OPT[@]}"; do
 	"-c" | "--stdout")
 		STDOUT=true
 		;;
-	-[123456789]*)
-		LVL=${opt:2}
+	-[0123456789]*)
+		LVL=${opt:1}
 		;;
 	*)
 		warnh "Option '${opt}' invalid. Ignored"
@@ -78,16 +79,15 @@ else
 		errh "Filename '${fn}' invalid"
 	fi
 fi
-LVL="${STDS[2]:-}"
+[ -z "${LVL}" ] && LVL="${STDS[2]:-}"
 if ${ISFORCE}; then
 	[ ! -f "${fn}.${ext}" ] || rm -rf "${fn}.${ext}"
 else
 	[ ! -f "${fn}.${ext}" ] || mv -f "${fn}.${ext}" "${fn}.${ext}".bak
 fi
-SPL=''
 # ============ Start Compressing ============
 function __do_job() {
-	cmd="$(bash ${DN}/exec/azcmd.sh -p:${THREAD} ${1} ${LVL})"
+	cmd="$(bash ${DN}/exec/azcmd.sh -p:${THREAD} "${1}" ${LVL})"
 	infoh "${cmd}"
 	if ${STDOUT}; then
 		fcat "${fn}" | ${cmd} > /dev/stdout
@@ -99,6 +99,22 @@ case ${ext} in
 "bgz")
 	ext="gz"
 	__do_job "bgz"
+	;;
+"tbz")
+	__do_job "bz2"
+	;;
+"tar.7z")
+	__cklvl 7z
+	fcat "${fn}" | "${my7za}" a -aoa -si -y "${fn}".${ext} -mmt=${THREAD} ${LVL} -t7z
+	;;
+tar.*)
+	__do_job "${ext//tar./}"
+	;;
+"tar")
+	__do_job "tar"
+	;;
+t*z)
+	__do_job "${ext//t/}"
 	;;
 "7z")
 	[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
@@ -112,31 +128,32 @@ case ${ext} in
 "zip")
 	if [ "${my7za}" != 'ylukh' ]; then
 		__cklvl 7z
-			if ${STDOUT}; then
-		"${my7za}" a -aoa -y /dev/stdout "${fn}" -mmt=${THREAD} ${LVL} -tzip
-	else
-		"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -tzip
-	fi
+		if ${STDOUT}; then
+			"${my7za}" a -aoa -y /dev/stdout "${fn}" -mmt=${THREAD} ${LVL} -tzip
+		else
+			"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -tzip
+		fi
 	elif [ "${myzip}" != 'ylukh' ]; then
 		__cklvl zip
-			if ${STDOUT}; then
-		"${myzip}" --verbose ${SPL} -r /dev/stdout "${fn}" ${LVL}
-	else
-		"${myzip}" --verbose ${SPL} -r "${fn}".${ext} "${fn}" ${LVL}
-	fi
+		if ${STDOUT}; then
+			"${myzip}" --verbose -r /dev/stdout "${fn}" ${LVL}
+		else
+			"${myzip}" --verbose -r "${fn}".${ext} "${fn}" ${LVL}
+		fi
 	else
 		errh "No valid zip/7zip exist"
 	fi
 	;;
 "rar")
 	[ "${myrar}" != 'ylukh' ] || errh "rar NO exist"
-				if ${STDOUT}; then
-		"${myrar}" -mt${THREAD} ${SPL} a /dev/stdout "${fn}"
-	else
-		"${myrar}" -mt${THREAD} ${SPL} a "${fn}".${ext} "${fn}"
-	fi
-	"${myrar}" -mt${THREAD} ${SPL} a "${fn}".${ext} "${fn}"
+	# TODO: No implement
+	#if ${STDOUT}; then
+	#	"${myrar}" -mt${THREAD} a /dev/stdout "${fn}"
+	#else
+	"${myrar}" -mt${THREAD} a "${fn}".${ext} "${fn}"
+	#fi
 	;;
+
 *)
 	__do_job "${ext}"
 	;;
