@@ -110,17 +110,6 @@ function fcat() {
 		errh "${1} do not exist"
 	fi
 }
-# Extract TAR in STDIN.
-function __extract_tar() {
-	cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${2})"
-	infoh "${cmd}"
-	[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-	if [ -f "${1}" ]; then
-		cat "${1}" | ${cmd} | "${mytar}" -xv -f -
-	else
-		errh "${1} do not exist"
-	fi
-}
 # Check level
 function __cklvl() {
 	local lvl_able=""

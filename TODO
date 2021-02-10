@@ -57,9 +57,8 @@ Enigma in C
 Determine python in Windows
 
 Test
-    autounzip
-    azcat
-    azlist
-    enigma
+    autounzip -c
+    azcat -d
+    enigma in C
 
 make install

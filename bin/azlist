@@ -25,10 +25,10 @@ for fulln in "${STDS[@]}"; do
 		warnh "Filename '${fulln}' invalid"
 		continue
 	fi
-	ckext
+	__ckext
 	infoh "Received: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}"
 	# ============ Start Decompressing ============
-	function __do_job() {
+	function __list_tar() {
 		cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${1})"
 		infoh "${cmd}"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
@@ -36,13 +36,13 @@ for fulln in "${STDS[@]}"; do
 	}
 	case ${ext} in
 	tar.*)
-		__do_job "${ext//tar./}"
+		__list_tar "${ext//tar./}"
 		;;
 	"tar")
-		__do_job "tar"
+		__list_tar "tar"
 		;;
 	t*z)
-		__do_job "${ext//t/}"
+		__list_tar "${ext//t/}"
 		;;
 	"7z")
 		[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
@@ -109,10 +109,10 @@ for fulln in "${STDS[@]}"; do
 		;;
 	"lz")
 		[ "${mylzip}" != 'ylukh' ] || errh "NO valid lzip exist"
-		cmd="${mylzip} -clvvf ${LVL} -"
+		cmd="${mylzip} -clvvf -"
 		;;
 	*)
-		errh "${ext} NOT SUPPORTED!"
+		warnh "${ext} NOT SUPPORTED!"
 		;;
 	esac
 	# ============ Finished ============

@@ -38,6 +38,17 @@ for opt in "${OPT[@]}"; do
 done
 # ============ Possess arguments ============
 [ ${#STDS[@]} -gt 0 ] || autozipck
+# Extract TAR in STDIN.
+function __extract_tar() {
+	cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${2})"
+	infoh "${cmd}"
+	[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
+	if [ -f "${1}" ]; then
+		cat "${1}" | ${cmd} | "${mytar}" -xv -f -
+	else
+		errh "${1} do not exist"
+	fi
+}
 for fulln in "${STDS[@]}"; do
 	ISBLANK=false
 	fn="$(echo ${fulln%.*} | sed "s;.part1$;;" | sed "s;.part01$;;")"
@@ -56,6 +67,7 @@ for fulln in "${STDS[@]}"; do
 		if ${ISFORCE}; then rm -rf "${fn}"; else mv -f "${fn}" "${fn}".bak; fi
 	fi
 	# ============ Start Decompressing ============
+
 	case ${ext} in
 	tbz)
 		__extract_tar "${fulln}" "bz2"
