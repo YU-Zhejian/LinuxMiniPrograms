@@ -1,7 +1,9 @@
 export VERBOSE = TRUE
 export MKDIR = mkdir -p
 
-.PHONY : all pp test
+.PHONY : all pp test clean distclean doc #install uninstall
+
+doc: share/doc/pdf share/doc/html share/doc/usage share/man
 
 etc:
 	$(MKDIR) -p etc/
@@ -9,21 +11,21 @@ etc:
 
 var:
 	$(MKDIR) -p var/
-	$(CP) -fr src/var/* var/
+	$(CP) src/var/* var/
 
 C:
 	@-$(MAKE) -C src/C
 
-pdf:
+share/doc/pdf:
 	@-$(MAKE) -C src/doc pdf
 
-html:
+share/doc/html:
 	@-$(MAKE) -C src/doc html
 
-man:
+share/man:
 	@-$(MAKE) -C src/doc man
 
-usage:
+share/doc/usage:
 	@-$(MAKE) -C src/doc usage
 
 pp:
@@ -32,3 +34,15 @@ pp:
 
 test:
 	bash src/test/00_install.sh
+
+clean:
+
+distclean:clean
+	$(RM) etc var share
+
+# TODO: Implement installation
+#install:
+#	$(CP) -buv . ~/opt/LinuxMiniPrograms/ &>> install.log
+#
+#uninstall:
+#	bash -c 'cat install.log |  | while read line;do '

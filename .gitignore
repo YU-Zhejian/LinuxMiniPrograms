@@ -1,10 +1,7 @@
 /etc
 /var
 /*backup.tgz
-/usage
-/man
-/html
-/pdf
+/share
 __pycache__
 *.stackdump
 /gnome-keyring-daemo.core

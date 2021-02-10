@@ -121,9 +121,13 @@ cat /proc/mounts
 ifconfig -a
 iwconfig
 ip addr
-nmap -p 1-65535 -T4 -A -v localhost
+nmap -T4 -F localhost
+# nmap -p 1-65535 -T4 -A -v localhost # Disabled by default.
+# nmap -sS -sU -T4 -A -v -PE -PP -PS80,443 -PA3389 -PU40125 -PY -g 53 --script "default or (discovery and safe)" localhost # Disabled by default.
 netstat -atlp
 netstat -antlp
+# traceroute www.baidu.com # Disabled by default.
+# traceroute www.google.com # Disabled by default.
 
 # ________________________Process Info________________________
 pstree -ap
@@ -286,9 +290,9 @@ rustc --version --verbose
 # ________________________Ruby________________________
 WHERE gem
 gem list
-gem query -ab
-gem search -ab
-gem outdated
+# gem query -ab # Disabled by default.
+# gem search -ab # Disabled by default.
+# gem outdated # Disabled by default.
 gem environment
 WHERE ruby
 ruby --version
@@ -407,11 +411,12 @@ WHERE m4
 m4 --version
 
 # ________________________GNU CoreUtils________________________
+# "dd" for example.
 WHERE dd
 dd --version
 
 # ________________________Logs________________________
-__log_cat
+# __log_cat # Disabled by default.
 
 # ________________________Archiving Utils________________________
 WHERE 7z

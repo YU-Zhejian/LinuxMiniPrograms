@@ -1,4 +1,7 @@
 # ReadMe For YuZJLab LinuxMiniPrograms
+
+This is a file written in Markdown, a light-weight Markup language. If you have no idea how to read them, you may use Pandoc (<https://www.pandoc.org/>) or Markdown editors like Typora (<https://www.typora.io/>) if you have access to a Graphical User Interface (GUI).
+
 ## Copyright
 
 These programs are designed to cut down time a bioinformatician spent on doing sys-admin work.
@@ -74,7 +77,7 @@ For most programs written in Shell, these programs will be needed and GNU versio
 
   The entire `LinuxMiniProgram` needs `git>=2.21`\* to be downloaded or upgraded. It can be installed by your package manager or by compiling its source code. If there's no `git` available, please download a zipped archive from GitHub (See below.). However, you may be unable to get updates in this way. If you would like to use `git-mirror`, `git` would be mandatory.
 
-  \*: If you use Cygwin, you should **ONLY** use `git` installed by `Cygwin installer` instead of `winGit`. Otherwise, you may see *Dealing with CRLF*.
+  \*: If you use Cygwin, you should **ONLY** use `git` installed by `Cygwin installer` instead of `Git for Windows`. Otherwise, you may see *Dealing with CRLF*.
 
 * All documentation are written in AsciiDoc, a modern Markup Language. If you wish to compile them into Groff man, PDF, HTML and YuZJLab Usage, please install the following dependencies:
 
@@ -86,7 +89,6 @@ For most programs written in Shell, these programs will be needed and GNU versio
   \*: If you use Cygwin, you should **ONLY** use `python`/`ruby` installed by `Cygwin installer`. You may not use those provided by `Conda`/`Anaconda` or `WinPython`.
 
 * To enable all archive utilities in `autozip` series, please install the following packages:
-
 
 | Software              | Version            | URL                                          |
 | --------------------- | ------------------ | -------------------------------------------- |
@@ -103,13 +105,12 @@ For most programs written in Shell, these programs will be needed and GNU versio
 | Modern 7Z             | Unknown            | <https://www.tc4shell.com/en/7zip/modern7z/> |
 | pbz2 (pbzip2)         | 1.1.13             | <http://compression.ca/pbz2/>                |
 | pigz                  | 2.4                | <http://www.zlib.net/pigz/>                  |
-| tar (BSD tar)         | 3.3.2              |                                              |
+| tar (BSD tar)         | 3.3.2              | Installed in MacOS and BSD by default.       |
 | tar (GNU Tar)         | 1.26               | <https://www.gnu.org/software/tar/>          |
 | rar, unrar, WinRAR    | 5.80               | <https://www.rarlab.com/>                    |
 | xz (XZ Utils)         | 5.2.4              | <https://tukaani.org/xz/>                    |
 | zip, unzip (Info-Zip) | 3.0/6.0.0          | <http://infozip.sourceforge.net/>            |
 | zstd                  | 1.4.5              | <https://github.com/facebook/zstd>           |
-
 
 ### General Guide
 After downloading, you can now execute `configure` to install all the programs for yourself. You can also run this script to change your settings to the defaults.
@@ -140,40 +141,38 @@ Execute `./configure -h` to get help about the installer.
 
 Please read the documents of each program and `LMP_basis` to check if the program supports your system.
 
-### Dealing with CRLF
-
-For those who use `WinGit`, you may experience problems caused by line endings. They may look like `bash: line 1: $'true\r': command not found`.
-
-That is because Windows uses `CRLF` while *ix use `LF`, and your `git` distribution automatically converts `LF` to `CRLF` when getting the file. To remove this issue, please do as follows:
-
-1. Install `dos2unix` by your package manager or get one from <http://dos2unix.sourceforge.net/>.
-
-2. Execute the following code:
-
-```bash
-dos2unix BeforeAdd.sh
-./BeforeAdd.sh
-```
-
 ## Help for GreenHands
 
 The following scripts will set up a basic environment for development and everyday use.
 
 ```bash
 cd opt/envgen
-chmod +x envgen
-sed -i 's/\r$//g' envgen
-./envgen
+bash envgen
 ```
 
 The following script will generate a bug report.
 
 ```bash
 cd opt/envgen
-chmod +x ckenv
-sed -i 's/\r$//g' ckenv
-./ckenv
+bash ckenv
 ```
+
+### Dealing with CRLF
+
+For those who use `Git for Windows`, you may experience problems caused by line endings. These errors may look like `bash: line 1: $'true\r': command not found`.
+
+That is because Windows uses `CRLF` (That is, "Carriage Return [回车] + Next Line [换行]") while *nix use `LF`, and your Git distribution automatically converts `LF` to `CRLF` when getting the file. To remove this issue, please do as follows:
+
+1. Install `dos2unix` by your package manager or get one from <http://dos2unix.sourceforge.net/>. If you do not know how to do that, replace `dos2unix` with `sed -i 's/\r$//g'` in commands listed below.
+
+2. Execute the following code:
+
+```bash
+dos2unix BeforeAdd.sh
+bash BeforeAdd.sh
+```
+
+This piece of code will automatically change all `CRLF` into `LF`.
 
 ## Help \& Documentation \& Supporting
 
