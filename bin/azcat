@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# AZCAT V6
+# ============ Functions ============
+set -eu
+DN="$(readlink -f "$(dirname "${0}")")"
+"${DN}"/autozip -c "${@}"

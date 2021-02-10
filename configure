@@ -1,0 +1,176 @@
+#!/usr/bin/env bash
+# CONFIGURE v2
+set -eu
+OLDIFS="${IFS}"
+if ! readlink -f . &>/dev/null; then
+	echo -e "\033[31mERROR: NO readlink available.\033[0m"
+	exit 1
+fi
+cd "$(readlink -f "$(dirname "${0}")")"
+. lib/libisopt
+. lib/libstr
+infoh "Configure file for YuZJLab Installer"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
+# ========Def Var========
+VAR_install_config=false
+VAR_clear_history=false
+VAR_install_man=false
+VAR_install_html=false
+VAR_install_pdf=false
+VAR_install_usage=false
+VAR_update_path=true
+MAKE_TARGETS="etc var pp"
+MAKE_ARGS=""
+# ========Read Opt========
+STDS=()
+for opt in "${@}"; do
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-v" | "--version")
+			echo "Version 1"
+			exit 0
+			;;
+		"-h" | "--help")
+			cat src/doc/configure.txt
+			exit 0
+			;;
+		"-a" | "--all")
+			VAR_install_config=true
+			VAR_clear_history=true
+			VAR_install_man=true
+			VAR_install_html=true
+			VAR_install_pdf=true
+			VAR_install_usage=true
+			;;
+		"--install-config")
+			VAR_install_config=true
+			;;
+		"--clear-history")
+			VAR_clear_history=true
+			;;
+		"--install-doc")
+			VAR_install_man=true
+			VAR_install_html=true
+			VAR_install_pdf=true
+			VAR_install_usage=true
+			;;
+		"--install-man")
+			VAR_install_man=true
+			;;
+		"--install-html")
+			VAR_install_html=true
+			;;
+		"--install-pdf")
+			VAR_install_pdf=true
+			;;
+		"--install-usage")
+			VAR_install_usage=true
+			;;
+		"--skip-path")
+			VAR_update_path=false
+			;;
+		*)
+			warnh "Option '${opt}' invalid. Ignored"
+			;;
+		esac
+	else
+		STDS=("${STDS[@]}" "${opt}")
+	fi
+done
+
+# ========Check========
+infoh "Checking FileSystem..."
+${VAR_update_path} && rm -f 'etc/path.sh'
+if [ ! -f 'etc/path.sh' ]; then
+	path_sh="etc/path.sh"
+	mkdir -p etc
+	touch "${path_sh}"
+	#=====os=====
+	if [ -z "${myos:-}" ]; then
+		os_type=$(uname -mrs)
+		echo "Current OS: ${os_type}"
+		os_type_main=$(echo ${os_type} | cut -f 1 -d ' ')
+		os_type_version=$(echo ${os_type} | cut -f 2 -d ' ')
+		echo "myos=\"${os_type_main}\" #${os_type_version}" >>"${path_sh}"
+		unset os_type os_type_main os_type_version
+	fi
+	#=====path=====
+	infoh "Enumerating valid path..."
+	INPATH="${PATH}"
+	. lib/libpath
+	unset invalid_path duplicated_path
+	IFS=':'
+	eachpath=(${valid_path})
+	IFS=''
+	unset binpath
+	echo ${valid_path} | tr ':' '\n'
+	infoh "End locating valid path"
+	unset valid_path
+	for PROGNAME in ps python; do . src/exec/find${PROGNAME}.sh; done
+	for PROGNAME in 7z 7za bgzip brotli bzip2 compress gtar gzip lz4 lzfse lzip lzma lzop pbz2 pbzip pigz rar tar unzip unrar xz zip zstd \
+	asciidoc asciidoctor-pdf asciidoctor \
+	parallel \
+	git clang gcc gmake make; do . src/exec/findornot.sh; done
+	sed -i 's;^mygtar;mytar;' "${path_sh}"
+	sed -i 's;^mygmake;mymake;' "${path_sh}"
+	sed -i 's;^mypbzip2;mypbz2;' "${path_sh}"
+	sed -i 's;^myasciidoctor-pdf;myasciidoctor_pdf;' "${path_sh}"
+	. "${path_sh}"
+	infoh "All configurations are printed as follows:"
+	cat "${path_sh}" | grep -v '^$' | grep -v '^#' | sed 's/^my//' | sed 's/=/\\\\033[33m in \\\\033[0m/ ' | sed 's/ #/\\\\033[33m, \\\\033[32m/' | sort | while read line; do echo -e "${line}\033[0m"; done
+fi
+for STDI in "${STDS[@]}";do
+	echo my"${STDI}" >> "${path_sh}"
+done
+. etc/path.sh
+[ "${mymake}" = "ylukh" ] && errh "GNU Make not found"
+#========Install ETC========
+if ${VAR_install_config} && [ -d "etc" ]; then
+	"${mytar}" czf etc_backup.tgz etc
+	infoh "Backing up settings...\033[32mPASSED"
+fi
+#========Install VAR========
+if ${VAR_clear_history} && [ -d "var" ]; then
+	"${mytar}" czf var_backup.tgz var
+	infoh "Backing up histories...\033[32mPASSED"
+fi
+#========Install DOC========
+if [ "${myasciidoctor}" == "ylukh" ]; then
+	VAR_install_man=false
+	[ "${myasciidoc}" == "ylukh" ] && VAR_install_html=false
+fi
+[ "${myasciidoctor_pdf}" != "ylukh" ] || VAR_install_pdf=false
+[ "${mypython}" != "ylukh" ] || VAR_install_usage=false
+if ${VAR_install_pdf}; then
+	MAKE_TARGETS="${MAKE_TARGETS} pdf"
+	MAKE_ARGS="${MAKE_ARGS}:ADOC_PDF=\"${myasciidoctor_pdf}\""
+fi
+if ${VAR_install_man}; then
+	MAKE_TARGETS="${MAKE_TARGETS} man"
+	MAKE_ARGS="${MAKE_ARGS}:ADOC=\"${myasciidoctor}\""
+fi
+if ${VAR_install_usage}; then
+	MAKE_TARGETS="${MAKE_TARGETS} usage"
+	MAKE_ARGS="${MAKE_ARGS}:ADOC=\"${myasciidoctor}\""
+fi
+if ${VAR_install_html}; then
+	if [ "${myasciidoctor}" != "ylukh" ]; then
+		MAKE_ARGS="${MAKE_ARGS}:ADOC=\"${myasciidoctor}\""
+	else
+		MAKE_ARGS="${MAKE_ARGS}:ADOC=\"${myasciidoc}\":AOPT=\"\""
+	fi
+	MAKE_TARGETS="${MAKE_TARGETS} html"
+fi
+#========C========
+[ "${mygcc}" != "ylukh" ] || [ "${myclang}" != "ylukh" ] && MAKE_TARGETS="${MAKE_TARGETS} C"
+if [ "${mygcc}" != "ylukh" ];then
+	MAKE_ARGS="${MAKE_ARGS}:CC=${mygcc}"
+elif [ "${myclang}" != "ylukh" ];then
+	MAKE_ARGS="${MAKE_ARGS}:CC=${myclang}"
+fi
+#========Makefile Generation========
+MAKE_ARGS="${MAKE_ARGS}:PYTHON=${mypython}:RM=rm -rf:CP=cp -rf"
+echo "${MAKE_ARGS}" | sed 's;:;\nexport ;g' | sort | uniq >Makefile
+echo "all: ${MAKE_TARGETS}" >>Makefile
+cat src/Makefile.def >>Makefile
+infoh "Finished. Please execute 'make' to build the program"

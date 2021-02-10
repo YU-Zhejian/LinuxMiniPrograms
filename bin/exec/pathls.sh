@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 # PLS.sh V3P3
 oldifs="${IFS}"
-function my_grep() {
+function _grep() {
 	regstr="${1}"
 	local tmpff=$(mktemp -t pls.XXXXXX)
-	"${mycat}" "${tmpf}" | "${mygrep}" -v "${regstr}" >"${tmpff}"
-	"${mymv}" "${tmpff}" "${tmpf}"
+	cat "${tmpf}" | grep -v "${regstr}" > "${tmpff}"
+	mv "${tmpff}" "${tmpf}"
 }
-more="${mymore}"
 . "${DN}"/../lib/libisopt
 INPATH="${PATH}"
 . "${DN}"/../lib/libpath
@@ -49,17 +48,8 @@ for opt in "${@}"; do
 			unset invalid_set invalid_path valid_path
 			exit 0
 			;;
-		--more\:*)
-			more=$"{opt:7}"
-			if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
-				more="${mymore}"
-			else
-				infoh "Will use '${more}' as More"
-			fi
-			;;
 		*)
-			errh "Option '${opt}' invalid"
+			warnh "Option '${opt}' invalid. Ignored"
 			;;
 		esac
 	else
@@ -70,20 +60,20 @@ unset invalid_path valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	"${myls}" -1 -F "${dir}" 2>/dev/null | "${mysed}" "s;^;$(echo "${dir}")/;" >>"${tmpf}" || true
+	ls -1 -F "${dir}" 2> /dev/null | sed "s;^;$(echo "${dir}")/;" >> "${tmpf}" || true
 done
-${allow_d} || my_grep '/$'
-${allow_x} || my_grep '\*$'
-${allow_o} || my_grep '[^\*/]$'
+${allow_d} || _grep '/$'
+${allow_x} || _grep '\*$'
+${allow_o} || _grep '[^\*/]$'
 if [ ${#STDS[@]} -eq 0 ]; then
-	"${mycat}" "${tmpf}" | "${more}"
+	cat "${tmpf}"
 else
 	IFS=''
 	grepstr=''
 	for fn in "${STDS[@]}"; do
 		grepstr="${grepstr} -e ${fn}"
 	done
-	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"\|"${more}"
+	eval cat \"${tmpf}\"\|grep "${grepstr}"
 fi
-"${myrm}" "${tmpf}"
+rm "${tmpf}"
 IFS="${oldifs}"

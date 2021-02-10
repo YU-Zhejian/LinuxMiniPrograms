@@ -16,15 +16,15 @@ for url in "${STDS[@]}"; do
 done
 if ! ${FORCE}; then read -p "Will remove records of above repos. Continue? [Y/n] >" ANSWER; else ANSWER="Y"; fi
 if [ "${ANSWER}" = "Y" ]; then
-	"${mycat}" "${tmpf}" | while read line; do
+	cat "${tmpf}" | while read line; do
 		IFS=$'\t'
 		fields=(${line})
 		IFS=''
-		if [ -d "${fields[1]}" ];then
+		if [ -d "${fields[1]}" ]; then
 			warnh "Directory of this repo still exists"
 			continue
 		fi
 		rmrec "${fields[1]}"
 	done
 fi
-"${myrm}" -f "${tmpf}"
+rm -f "${tmpf}"

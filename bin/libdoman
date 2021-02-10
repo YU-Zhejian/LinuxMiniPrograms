@@ -6,4 +6,4 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 infoh "YuZJLab LibDO Manager"
 infoh "Copyright (C) 2020 YU Zhejian"
-if [ "${mypython}" != "ylukh" ] ;then "${mypython}" "${DN}"/exec/libdoman.py "${PWD}" "${@}" ; else . "${DN}"/exec/libdoman.sh; fi
+if [ "${mypython}" != "ylukh" ]; then "${mypython}" "${DN}"/exec/libdoman.py "${@}"; else . "${DN}"/exec/libdoman.sh; fi

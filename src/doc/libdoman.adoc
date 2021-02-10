@@ -1,0 +1,106 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= libdoman(1)
+
+== NAME
+
+libdoman - LibDO log manager.
+
+== SYNOPSIS
+
+`libdoman [log] [[log2] ...] [OPTIONS]`
+
+== DESCRIPTION
+
+Decode LibDO output information from logs.
+
+== OPTIONS
+
+include::include/cmnopt.adoc[]
+
+* `-o:[item]|--output:[item]` Get more information about `[item]`. The numbering of items started from 1.
+
+* `-m|--machine` Use machine mode, output tables in Tab Separated Values (TSV). Capable for pipelines.
+
+== EXAMPLES
+
+These examples are tested under Cygwin.
+
+[source]
+----
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ libdoman ls.log
+YuZJLab LibDO Manager.
+Copyright (C) 2020 YU Zhejian
+Loading /d/Software/LinuxMiniPrograms/ls.log ...0 item proceeded.
+Loading /d/Software/LinuxMiniPrograms/ls.log ...1 item proceeded.
+File /d/Software/LinuxMiniPrograms/ls.log loaded. Making table...
+|=============================[...]============================|
+|NO.|COMMAND                  [...]                 |EXIT|TIME |
+|=============================[...]============================|
+|1  |ls                       [...]                 |0   |0:0:0|
+|=============================[...]============================|
+Finished.
+----
+
+[source]
+----
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ libdoman ls.log -o:1
+YuZJLab LibDO Manager.
+Copyright (C) 2020 YU Zhejian
+JOB_CMD      : ls
+ELAPSED_TIME : 2020-06-06 00:26:18 to 2020-06-06 00:26:18, Total 0:0:0
+EXIT_STATUS  : 0
+________________JOB_________OUTPUT________________
+BeforeAdd.sh
+src
+In_case_of_fire.sh
+LICENSE.md
+LMP_Pylib
+Readme.md
+bin
+doc
+etc
+etc_backup.tgz
+html
+configure
+lib
+ls.log
+ls.sh
+man
+pdf
+var
+________________OUTPUT____FINISHED________________
+Finished.
+----
+
+[source]
+----
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ libdoman ls.log
+YuZJLab LibDO Manager.
+Copyright (C) 2020 YU Zhejian
+Loading /d/Software/LinuxMiniPrograms/ls.log ...0 item proceeded.
+Loading /d/Software/LinuxMiniPrograms/ls.log ...1 item proceeded.
+File /d/Software/LinuxMiniPrograms/ls.log loaded. Making table...
+ls      0       0
+Finished.
+----
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== SEE ALSO
+
+libdo, libdo3, libdoman_upgrade, libdoman_monitor
+
+include::include/copy.adoc[]

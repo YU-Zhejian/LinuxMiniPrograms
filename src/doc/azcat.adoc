@@ -1,0 +1,58 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= autozip(1)
+
+== NAME
+
+autozip - An automatic file compression tool.
+
+== SYNOPSIS
+
+`autozip-cat [source] [ext] [level] [options]`
+
+== DESCRIPTION
+
+This program will compress files and folders with extension [ext] to [level].
+You can make [level] 1 (fastest) to 9 (best).
+Some algorithms (e.g. xzip, zip) may support 0 which means to be store only without compression.
+If [level] is omitted, this program will use default value provided by algorithm.
+If [ext] is also omitted, this program will use gz & tar.gz by default.
+If [source] is omitted, this program will check the algorithms installed on your computer and return a list of available extension name.
+
+== OPTIONS
+
+include::include/cmnopt.adoc[]
+
+* `--force` Remove the target if exists.
+
+* `--remove` Remove [sorce] if success.
+
+* `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when creating the archive. `[thread]` should not be higher than the number of cores installed.
+If `[thread]` is omitted, will use the number of cores installed.
+
+== USEING GNU PARALLEL
+
+It is recommended to use GNU Parallel to accelerate the speed of compression.
+You can change the first line of `etc/autozip.conf` to `PARALLEL` to enable this feature.
+
+WARNING: GNU Parallel consumes lots of memory & CPU resources.
+__NEVER USE IT ON CLUSTERS__!!!
+
+include::include/autozipcmn.adoc[]
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== SEE ALSO
+
+autounzip, azman, autozip-cat
+
+include::include/copy.adoc[]

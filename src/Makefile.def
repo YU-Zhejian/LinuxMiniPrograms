@@ -1,0 +1,34 @@
+export VERBOSE = TRUE
+export MKDIR = mkdir -p
+
+.PHONY : all pp test
+
+etc:
+	$(MKDIR) -p etc/
+	$(CP) src/etc/* etc/
+
+var:
+	$(MKDIR) -p var/
+	$(CP) -fr src/var/* var/
+
+C:
+	@-$(MAKE) -C src/C
+
+pdf:
+	@-$(MAKE) -C src/doc pdf
+
+html:
+	@-$(MAKE) -C src/doc html
+
+man:
+	@-$(MAKE) -C src/doc man
+
+usage:
+	@-$(MAKE) -C src/doc usage
+
+pp:
+	bash src/exec/install_path_permissions.sh
+	@-$(MAKE) -C opt permissions
+
+test:
+	bash src/test/00_install.sh

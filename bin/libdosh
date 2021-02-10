@@ -7,7 +7,8 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 . "${DN}"/../lib/libman
 infoh "YuZJLab libDO Shell"
-infoh "Copyright (C) 2019-2020 YU Zhejian"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
+warnh "This program is no longer monitored and updates may not be provided"
 
 [ ${UID} -eq 0 ] && ps1_ed="#" || ps1_ed="$"
 _PID=0
@@ -18,7 +19,7 @@ log=bash_"$(date '+%Y-%m-%d_%H-%M-%S')".log
 
 trap 'pass_int' SIGINT
 
-function getps1() {
+function __ps1() {
 	[ ${prev_out} -eq 0 ] && _po="0" || _po="\e[31m${prev_out}\e[0m"
 	echo -e "\e[32m$(getuser)@${HOSTNAME}\e[0m:${_po}:\e[33m${PWD}\e[0m\n${ps1_ed} "
 }
@@ -38,25 +39,25 @@ elif [ -f "${HOME}/.profile" ]; then
 	. "${HOME}/.profile"
 fi
 
-while read -p "$(getps1)" line; do
+while read -p "$(__ps1)" line; do
 	line=$(trimstr "${line}")
 	${UNFILL} && buffer="${buffer:0:-1} ${line}" || buffer="${line}"
-	[[ "${line}" =~ .*'\' ]] && UNFILL=true || UNFILL=false
+	[[ "${line}" == *'\' ]] && UNFILL=true || UNFILL=false
 	if ! ${UNFILL}; then
 		echo "$(date '+%Y-%m-%d %H:%M:%S'),${PWD}> ${buffer}" >> "${log}"
 		for str in "${builtins[@]}"; do
-			if [[ "${buffer}" =~ "${str} ".* ]]; then
+			if [[ "${buffer}" == "${str} "* ]]; then
 				tmpf="$(mktemp -t libdosh.XXXXX)"
 				infoh "Builtin"
 				echo "${buffer}"' 2>&1 | tee -a "${log}" && prev_out=0 || prev_out=${?}' > "${tmpf}"
-				"${mycat}" "${tmpf}"
+				cat "${tmpf}"
 				. "${tmpf}"
-				"${myrm}" "${tmpf}"
+				rm "${tmpf}"
 				break
 			fi
 		done
 		for str in "${disabled[@]}"; do
-			if [[ "${buffer}" =~ "${str} ".* ]]; then
+			if [[ "${buffer}" == "${str} "* ]]; then
 				echo -e "\033[31mFeature Disabled\033[0m"
 				break
 			fi

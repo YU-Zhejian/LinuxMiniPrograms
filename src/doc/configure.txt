@@ -1,0 +1,25 @@
+This is the installation script of LinuxMiniPrograms.
+
+SYNOPSIS: bash configure [OPTIONS] [KEY-VALUE PAIRS]
+
+FOR THE IMPATIENT:
+	NEW COMPLETE INSTALLATION: bash configure --all
+
+OPTIONS:
+	-h|--help Display this help.
+	-v|--version Show version information.
+	-a|--all Install all components.
+	--install-config (Re)Install configuration files in 'etc'.
+	--clear-history Clear all previous histories in 'var'.
+	--install-doc Install all documentations, need 'asciidoctor' 'asciidoctor-pdf' (available from Ruby gems) and Python 3.
+	--install-man Install doc in Groff man, need 'asciidoctor'.
+	--install-usage Install yldoc usage, need Python 3.
+	--install-pdf Install doc in pdf, need 'asciidoctor-pdf'.
+	--install-html Install doc in html, need 'asciidoctor' or 'asciidoc'.
+	--skip-path Do not update etc/path.sh
+
+	If no opt is given, the default mode will be used.
+
+KEY-VALUE PAIRS:
+
+	Specifies path for executables. For example, `python=/usr/bin/python3`.

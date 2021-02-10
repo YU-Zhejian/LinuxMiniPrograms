@@ -1,0 +1,45 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= ylukh(1)
+
+== NAME
+
+ylukh - YuZJLab UnKnown Handler
+
+== SYNOPSIS
+
+`ylukh`
+
+== DESCRIPTION
+
+This application will generate output like
+
+[source]
+----
+YuZJLab UnKnown Handler: command not found. Please check /mnt/d/Software/LinuxMiniPrograms/etc/path.sh
+----
+
+and return error 127.
+
+If you see this error, you might execute `configure` again to generate a newer version of `etc/path.sh`, or to check whether they are dependencies unsolved.
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== FILE
+
+`etc/path.sh` The file which locates all binaries.
+
+== SEE ALSO
+
+LMP_basis
+
+include::include/copy.adoc[]

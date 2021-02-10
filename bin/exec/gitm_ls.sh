@@ -1,5 +1,5 @@
 #GITM_LS.sh v1
-if "${mycat}" uuidtable.d/*;then
+if cat uuidtable.d/*; then
 	infoh "Repository ls success"
 	echo -e "$(timestamp)\tLS\tSUCCESS" >> act.log
 else

@@ -1,0 +1,45 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= pst(1)
+
+== NAME
+
+pst - Pipe Speed Tester
+
+== SYNOPSIS
+
+`pst [OPTIONS]`
+
+== DESCRIPTION
+
+1. Redirect its `stdin` to `stdout`.
+
+2. Test the speed of the current pipeline ans print in in `stderr`.
+
+== OPTIONS
+
+include::include/cmnopt.adoc[]
+
+* `-m|--machine` Machine-friendly.
+Use tab as delimiter.
+
+== EXAMPLES
+
+These examples are tested under Cygwin.
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== FILES
+
+. `~/.bash_history` The file containing all bash history.
+
+include::include/copy.adoc[]

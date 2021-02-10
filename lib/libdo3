@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # LIBDO V3
 function DO_ECHO() {
-	! [ "${LIBDO_LOG_MODEL-}" = "S" ] || return
-	! [ -z "${LIBDO_LOG}" ] && echo "${@}" >>"${LIBDO_LOG}" || echo -e "\033[33m${*}\033[0m" >&2
+	! [ "${LIBDO_LOG_MODE:-}" = "S" ] || return
+	! [ -z "${LIBDO_LOG}" ] && echo "${@}" >> "${LIBDO_LOG}" || echo -e "\033[33m${*}\033[0m" >&2
 }
 function DO() {
 	local LIBDO_CMD="${@}"
@@ -15,15 +15,15 @@ function DO() {
 	else
 		case "${LIBDO_LOG_MODE:-}" in
 		"2")
-			(eval ${LIBDO_CMD} 2>>"${LIBDO_LOG}") &
+			(eval ${LIBDO_CMD} 2>> "${LIBDO_LOG}") &
 			LIBDO_PID=${!}
 			;;
 		"3")
-			(eval ${LIBDO_CMD} >>"${LIBDO_LOG}") &
+			(eval ${LIBDO_CMD} >> "${LIBDO_LOG}") &
 			LIBDO_PID=${!}
 			;;
 		"4")
-			(eval ${LIBDO_CMD} &>>"${LIBDO_LOG}") &
+			(eval ${LIBDO_CMD} &>> "${LIBDO_LOG}") &
 			LIBDO_PID=${!}
 			;;
 		*)

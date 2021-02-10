@@ -1,40 +1,74 @@
 #!/usr/bin/env bash
-# AUTOZIP V4
+# AUTOZIP V6
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 ISAUTOZIP=true
+STDOUT=false
 . "${DN}"/exec/libautozip.sh
 # ============ Start ============
 infoh "YuZJLab AutoZip"
-infoh "Copyright (C) 2019-2020 YU Zhejian"
-ppopt "${@}"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
+LVL=""
+for opt in "${OPT[@]}"; do
+	case "${opt}" in
+	"--force")
+		warnh "Will remove the archive if exists"
+		ISFORCE=true
+		;;
+	"--remove")
+		warnh "Will remove the original file if success"
+		REMOVE=true
+		;;
+	-p\:*)
+		THREAD=${opt:3}
+		;;
+	--parallel\:*)
+		THREAD=${opt:10}
+		;;
+	"-p" | "--parallel")
+		THREAD=${MAXTHREAD}
+		;;
+	"-d" | "--decompress")
+		"${DN}"/autounzip "${@}"
+		;;
+	"-c" | "--stdout")
+		STDOUT=true
+		;;
+	-[0123456789]*)
+		LVL=${opt:1}
+		;;
+	*)
+		warnh "Option '${opt}' invalid. Ignored"
+		;;
+	esac
+done
+! ${ISFORCE} && warnh "Will rename the archive if exists"
 fn="${STDS[0]:-}"
+[ "${fn}" = "-" ] && fn="/dev/stdin"
 ! [ -z "${fn}" ] || autozipck
 if [ -z "${STDS[1]:-}" ]; then
 	if [ -f "${fn}" ]; then
 		ext="gz"
-	elif [ -d "${fn}" ];then
-		fn=$(echo ${fn} | ${mysed} "s;/$;;")
-		ext="tar.gz"
-	else
-		errh "Filename '${fn}' invalid"
+	elif [ -d "${fn}" ]; then
+		fn=$(echo ${fn} | sed "s;/$;;")
+		ext="tar"
 	fi
 else
 	ext=${STDS[1]}
-	ckext
+	__ckext
 	if [ -d "${fn}" ]; then
-		fn=$(echo "${fn}"|"${mysed}" 's;/$;;')
+		fn=$(echo "${fn}" | sed 's;/$;;')
 		case "${ext}" in
-		"tar" | "tar.gz" | "tgz" | "tar.GZ" | "tar.xz" | "txz" | "tar.bz2" | "tbz" | "tar.lzma" | "tar.lz" | "tlz" |"rar"|"zip"|"7z") ;;
+		t* | "rar" | "zip" | "7z") ;;
 		*)
 			errh "You're about to compress FOLDER '${fn}' with extension '${ext}', which is designed for compressing SINGLE FILE"
 			;;
 		esac
-	elif [ -f "${fn}" ];then
+	elif [ -f "${fn}" ] || [ "${fn}" = "/dev/stdin" ]; then
 		case "${ext}" in
-		"gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz"|"rar"|"zip"|"7z") ;;
-			*)
+		"gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz" | "rar" | "zip" | "7z" | "lz4" | "lzo" | "zst" | "br" | "z" | "Z" | "lzfse") ;;
+		*)
 			errh "You're about to compress FILE '${fn}' with extension '${ext}', which is designed for compressing FOLDERs"
 			;;
 		esac
@@ -43,223 +77,99 @@ else
 		errh "Filename '${fn}' invalid"
 	fi
 fi
-if [ -n "${SPLIT:-}" ]; then
-	VALIDSPLIT=false
-	case ${ext} in
-	"rar")
-		! [[ "${SPLIT}" =~ ^[0-9]+[bkm]$ ]] || VALIDSPLIT=true
-		;;
-	"zip")
-		! [[ "${SPLIT}" =~ ^[0-9]+[kmgt]$ ]] || VALIDSPLIT=true
-		;;
-	"7z")
-		! [[ "${SPLIT}" =~ ^[0-9]+[bkmg]$ ]] || VALIDSPLIT=true
-		;;
-	*)
-		if [[ "${SPLIT}" =~ ^[0-9]+$ ]] || [[ "${SPLIT}" =~ ^[0-9]+[KMGTPEZY]$ ]] || [[ "${SPLIT}" =~ ^[0-9]+[KMGTPEZY]B$ ]]; then
-			VALIDSPLIT=true
-		fi
-		;;
-	esac
-	if ${VALIDSPLIT}; then
-		mktmp
-		infoh "Will split the archive to ${SPLIT} "
-	else
-		errh "SPLIT value '${SPLIT}' invalid"
-	fi
-fi
-"${mysplit}" --help&>>/dev/null || errh "'${mysplit}' is BSD split, which is not supported"
-unset VALIDSPLIT
-if [ ${THREAD} -gt 0 ] ;then
-	if [ "${myparallel}" = 'ylukh' ] && [[ ! "${ext}" =~ .*"gz".* ]] && [[ ! "${ext}" =~ .*"GZ".* ]];then
-		errh "NO parallel found"
-	elif [[ "${ext}" =~ .*"gz".* ]] || [[ "${ext}" =~ .*"GZ".* ]] ;then
-		if [ "${myparallel}" = 'ylukh' ] && [ "${mypigz}" = 'ylukh' ];then
-			errh "NO parallel or pigz found"
-		fi
-	fi
-fi
-case "${ext}" in
-"xz" | "tar.xz" | "txz" | "zip" | "lzma" | "tlz" | "tar.lzma")
-	lvl_able="[0123456789]"
-	;;
-"rar")
-	lvl_able="[012345]"
-	;;
-"7z")
-	lvl_able="[013579]"
-	;;
-*)
-	lvl_able="[123456789]"
-	;;
-esac
-case "${STDS[2]:-}" in
-${lvl_able})
-	LVL="-"${STDS[2]}
-	[ ${ext} != "7z" ] || LVL="-x=${STDS[2]}"
-	;;
-*)
-	LVL=''
-	warnh "Compression level '${STDS[2]:-}' undefined. You can use ${lvl_able} for ${ext} extension.\nWill use default value provided by corresponding algorism"
-	unset lvl_able
-	;;
-esac
-infoh "Received: '${0}' '${fn:-}' ${ext:-} ${STDS[2]:-} ${OPT:-} "
+[ -z "${LVL}" ] && LVL="${STDS[2]:-}"
 if ${ISFORCE}; then
-	if [ -n "${SPLIT:-}" ]; then
-		if { "${myls}" "${fn}".part[0-9][0-9].rar &>>/dev/null || ls "${fn}".part[0-9].rar &>>/dev/null ; } && [ ${ext} = "rar" ]; then
-			"${myrm}" -rf "${fn}".part[0-9].rar "${fn}".part[0-9][0-9].rar
-		elif "${myls}" "${fn}".z[0-9][0-9]  &>>/dev/null && [ ${ext} = "zip" ]; then
-			"${myrm}" -rf "${fn}".z[0-9][0-9] ${fn}.zip
-		elif "${myls}" "${fn}".${ext}.[0-9][0-9][0-9] &>>/dev/null; then
-			"${myrm}" -rf "${fn}".${ext}.[0-9][0-9][0-9]
-		fi
-	fi
-	[ ! -f "${fn}.${ext}" ] || "${myrm}" -rf "${fn}.${ext}"
+	[ ! -f "${fn}.${ext}" ] || rm -rf "${fn}.${ext}"
 else
-	if [ -n "${SPLIT:-}" ]; then
-		if "${myls}" "${fn}".part[0-9][0-9].rar &>>/dev/null  && [ ${ext} = "rar" ]; then
-			for tfn in "${fn}".part[0-9][0-9].rar; do
-				"${mymv}" -f "${tfn}" "${tfn}".bak
-			done
-		elif "${myls}" "${fn}".part[0-9].rar &>>/dev/null  && [ ${ext} = "rar" ]; then
-			for tfn in "${fn}".part[0-9].rar; do
-				"${mymv}" -f "${tfn}" "${tfn}".bak
-			done
-		elif "${myls}" "${fn}".z[0-9][0-9]  &>>/dev/null && [ ${ext} = 'zip' ]; then
-			for tfn in "${fn}".z[0-9][0-9]; do
-				"${mymv}" -f "${tfn}" "${tfn}".bak
-			done
-			"${mymv}" -f "${fn}".zip "${fn}".zip.bak||true
-		elif [ -f "${fn}".${ext}.001 ]; then
-			for tfn in "${fn}".${ext}.[0-9][0-9][0-9]; do
-				"${mymv}" -f "${tfn}" "${tfn}".bak
-			done
-		fi
-		unset tfn
-	fi
-	[ ! -f "${fn}.${ext}" ] || "${mymv}" -f "${fn}.${ext}" "${fn}.${ext}".bak
+	[ ! -f "${fn}.${ext}" ] || mv -f "${fn}.${ext}" "${fn}.${ext}".bak
 fi
 # ============ Start Compressing ============
-[ ${THREAD} -gt 0 ] &&  PAR="${myparallel} -j ${THREAD} --pipe --recend '' -k" || PAR=''
-SPL=''
+function __do_job() {
+	cmd="$(bash ${DN}/exec/azcmd.sh -p:${THREAD} "${1}" ${LVL})"
+	infoh "${cmd}"
+	if ${STDOUT}; then
+		fcat "${fn}" | ${cmd} >/dev/stdout
+	else
+		fcat "${fn}" | ${cmd} >"${fn}.${ext}"
+	fi
+}
 case ${ext} in
-"tar") # ============ tar ============
-	if [ -n "${SPLIT:-}" ] ;then
-		"${mytar}" -f - -cv "${fn}" |"${mysplit}" -a 3 --numeric-suffixes=001 -b ${SPLIT} - "${fn}".${ext}.
-	else
-		"${mytar}" -cvf "${fn}".${ext} "${fn}"
-	fi
-	;;
-"tar.gz" | "tgz" | "tar.GZ") # ============ tgz ============
-	if [ "${mygzip}" = 'ylukh' ] && [ "${mypigz}" != 'ylukh' ]; then
-		errh "GZip NO exist"
-	fi
-	if [ "${mypigz}" != 'ylukh' ] && [ ${THREAD} -gt 0 ]; then
-		cmd="${mypigz} -p ${THREAD}"
-	else
-		cmd="${PAR} ${mygzip}"
-	fi
-	if [ -n "${SPLIT:-}" ]; then
-		stdtc ${cmd} ${LVL}
-	else
-		"${mytar}" -f - -cv "${fn}" | ${cmd} ${LVL} >"${fn}".${ext}
-	fi
-	;;
-"tar.xz" | "txz") # ============ txz ============
-	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
-	! [ ${THREAD} -gt 0 ] || PAR="--threads=${THREAD}"
-	if [ -n "${SPLIT:-}" ]; then
-		stdtc "${myxz}" ${PAR} ${LVL}
-	else
-		"${mytar}" -f - -cv "${fn}" | "${myxz}" ${PAR} ${LVL} >"${fn}".${ext}
-	fi
-	;;
-"tar.bz2" | "tbz") # ============ tbz ============
-	[ "${mybzip2}" != 'ylukh' ] || errh "BZip2 NO exist"
-	if [ -n "${SPLIT:-}" ]; then
-		stdtc ${PAR} "${mybzip2}" ${LVL}
-	else
-		"${mytar}" -f - -cv "${fn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}"."${ext}"
-	fi
-	;;
-"tar.lzma" | "tar.lz" | "tlz") # ============ tlz ============
-	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
-	[ "${THREAD}" -eq 0 ] || warnh "LZMA do not support parallel. Will be resetted to 1"
-	if [ -n "${SPLIT:-}" ]; then
-		stdtc "${myxz}" --format=lzma ${LVL}
-	else
-		"${mytar}" -f - -cv "${fn}" | "${myxz}" --format=lzma ${LVL} >"${fn}".${ext}
-	fi
-	;;
-"gz" | "GZ") # ============ gz ============
-	if [ "${mygzip}" = 'ylukh' ] && [ "${mypigz}" = 'ylukh' ]; then
-		errh "GZip NO exist"
-	fi
-	if [ "${mypigz}" != 'ylukh' ] &&  [ ${THREAD} -gt 0 ]; then
-		cmd="${mypigz} -p ${THREAD}"
-	else
-		cmd="${PAR} ${mygzip}"
-	fi
-	if [ -n "${SPLIT:-}" ]; then
-		stdfc ${cmd} ${LVL}
-	else
-		"${mycat}" "${fn}" | ${cmd} ${LVL} >"${fn}".${ext}
-	fi
-	;;
-"bgz") # ============ bgz ============
-	[ "${mybgzip}" != 'ylukh' ] || errh "BGZip NO exist"
+"bgz")
 	ext="gz"
-	[ ! -n "${SPLIT:-}" ] || errh "BGZip do not support split"
-	"${mycat}" "${fn}" | ${PAR} "${mybgzip}" ${LVL} >"${fn}".${ext}
+	__do_job "bgz"
 	;;
-"xz") # ============ xz ============
-	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
-	! [ ${THREAD} -gt 0 ] || PAR="--threads=${THREAD}"
-	if [ -n "${SPLIT:-}" ]; then
-		stdfc "${myxz}" ${PAR} ${LVL}
-	else
-		"${mycat}" "${fn}" | "${myxz}" ${PAR} ${LVL} >"${fn}".${ext}
-	fi
+"tbz")
+	__do_job "bz2"
 	;;
-"bz2") # ============ bz2 ============
-	[ "${mybzip2}" != 'ylukh' ] || errh "BZip2 NO exist"
-	if [ -n "${SPLIT:-}" ]; then
-		stdfc ${PAR} "${mybzip2}" ${LVL}
-	else
-		"${mycat}" "${fn}" | ${PAR} "${mybzip2}" ${LVL} >"${fn}".${ext}
-	fi
+"tar.7z")
+	__cklvl 7z
+	fcat "${fn}" | "${my7za}" a -aoa -si -y "${fn}".${ext} -mmt=${THREAD} ${LVL} -t7z
 	;;
-"lz" | "lzma") # ============ lz ============
-	[ "${myxz}" != 'ylukh' ] || errh "XZ Utils NO exist"
-	[ "${THREAD}" -eq 0 ] || warnh "LZMA do not support parallel. Will be resetted to 1"
-	if [ -n "${SPLIT:-}" ]; then
-		stdfc "${myxz}" --format=lzma ${LVL}
-	else
-		"${mycat}" "${fn}" |"${myxz}" --format=lzma ${LVL} >"${fn}".${ext}
-	fi
+tar.*)
+	__do_job "${ext//tar./}"
 	;;
-"7z") # ============ 7z ============
+"tar")
+	__do_job "tar"
+	;;
+t*z)
+	__do_job "${ext//t/}"
+	;;
+"7z")
 	[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
-	! [ -n "${SPLIT:-}" ] || SPL="-v${SPLIT}"
-	! [ ${THREAD} -gt 0 ] || PAR="-mmt${THREAD}"
-	"${my7z}" -y ${PAR} u "${fn}".${ext} "${fn}" ${LVL} ${SPL}
+	__cklvl 7z
+	# TODO: No implement
+	if [ "${fn}" = "/dev/stdin" ] || ${STDOUT}; then
+		errh "Not implemented in 7zip"
+	fi
+	# TODO: No implement
+	#if ${STDOUT}; then
+	#	"${my7za}" a -aoa -so "${fn}" -mmt=${THREAD} ${LVL} -t7z
+	#else
+	"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -t7z
+	#fi
 	;;
-"zip") # ============ zip ============
-	[ "${myzip}" != 'ylukh' ] || errh "zip NO exist"
-	[ -z "${SPLIT:-}" ] || SPL="-s ${SPLIT}"
-	"${myzip}" ${SPL} -r "${fn}".${ext} "${fn}" ${LVL}
+"zip")
+	# TODO: No implement
+	if [ "${fn}" = "/dev/stdin" ]; then
+		errh "Not implemented in zip"
+	fi
+		if [ "${my7za}" != 'ylukh' ]; then
+			__cklvl 7z
+			if ${STDOUT}; then
+				"${my7za}" a -aoa -so "${fn}" -mmt=${THREAD} ${LVL} -tzip
+			else
+				"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -tzip
+			fi
+		elif [ "${myzip}" != 'ylukh' ]; then
+			__cklvl zip
+			if ${STDOUT}; then
+				"${myzip}" --verbose -r /dev/stdout "${fn}" ${LVL}
+			else
+				"${myzip}" --verbose -r "${fn}".${ext} "${fn}" ${LVL}
+			fi
+		else
+			errh "No valid zip/7zip exist"
+		fi
+
 	;;
-"rar") # ============ rar ============
+"rar")
 	[ "${myrar}" != 'ylukh' ] || errh "rar NO exist"
-	! [ ${THREAD} -gt 0 ] || PAR="-mt${THREAD}"
-	! [ -n "${SPLIT:-}" ] || SPL="-v${SPLIT}"
-	"${myrar}" ${PAR} ${SPL} a "${fn}".${ext} "${fn}"
+	# TODO: No implement
+	if [ "${fn}" = "/dev/stdin" ]; then
+		errh "Not implemented in RAR"
+	fi
+	# TODO: No implement
+	#if ${STDOUT}; then
+	#	"${myrar}" -mt${THREAD} a /dev/stdout "${fn}"
+	#else
+	"${myrar}" -mt${THREAD} a "${fn}".${ext} "${fn}"
+	#fi
+	;;
+
+*)
+	__do_job "${ext}"
 	;;
 esac
 # ============ Finished ============
 infoh "Removing temporary resources..."
-[ -z "${SPLIT:-}" ] || "${myrm}" -rf "${tempdir}" "${tempf}"
-! ${REMOVE} || "${myrm}" -rf ${fn}
-infoh "Finished"
-exit 0
+! ${REMOVE} || rm -rf ${fn}

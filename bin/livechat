@@ -1,57 +1,54 @@
 #!/usr/bin/env bash
-# LIVECHAT V1P8
+# LIVECHAT V2
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 . "${DN}"/../lib/libstr
-function sdmess() {
-	echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${MESS_SD}" >>MESSAGES
+
+function __send() {
+	trap "__exit" SIGINT SIGTERM
+	echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${2}" >> "${LVCD}"/SYSTEM
 }
-function F_REC() {
-	while true; do
-	#echo a
+function __reciever() {
+	trap "__exit" SIGINT SIGTERM
+	tail -f "${LVCD}"/SYSTEM | while read line; do
+		IFS=";"
+		local M_A=(${line})
+		echo -e "\033[31m[${M_A[0]}]\033[0m \033[36m[${M_A[1]}]\033[0m ${M_A[2]}"
 		IFS=""
-		sleep 1
-		local arr=$(wc -l MESSAGES | awk '{print $1}')
-		local en=$((${arr} - ${M_R}))
-		if [ ${en} -ne 0 ]; then
-			echo -ne "\007"
-			"${mytail}" -n $((${arr} - ${M_R})) MESSAGES >"URM_${LCUN}"
-			local M_R=${arr}
-			IFS=";"
-			while read line; do
-				local M_A=(${line})
-				echo -e "\033[31m[${M_A[0]}]\033[0m \033[36m[${M_A[1]}]\033[0m ${M_A[2]}"
-			done <"URM_${LCUN}"
-		fi
 	done
 }
+function __exit() {
+	trap "__exit" SIGINT SIGTERM
+	__send "SYSTEM" "${LCUN} had quitted"
+	rm -f "${LVCD}"/"${LCUN}"
+	infoh "Thanks for using this system"
+	IFS="${OLD_IFS}"
+	kill -9 -${$}
+	exit 0
+}
+
 OLD_IFS="${IFS}"
 LVCD="${DN}/../var/livechat.d"
 mkdir -p "${LVCD}"
-if [ ! -e "${LVCD}"/LCONLINE ]; then
-	warnh "livechat.d/LCONLINE not exist"
-	touch "${LVCD}"/LCONLINE
-fi
-cd "${LVCD}"
-unset LVCD
+touch "${LVCD}"/SYSTEM
 infoh "Welcome to YuZJLab LiveChat"
-infoh "Copyright (C) 2019-2020 YU Zhejian"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
 . "${DN}"/../lib/libisopt
 STDS=""
 for opt in "${@}"; do
-	if isopt ${opt}; then
-		case ${opt} in
+	if isopt "${opt}"; then
+		case "${opt}" in
 		"-h" | "--help")
 			yldoc livechat
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1 Patch 8"
+			echo "Version 2"
 			exit 0
 			;;
 		*)
-			errh "Option '${opt}' invalid"
+			warnh "Option '${opt}' invalid. Ignored"
 			;;
 		esac
 	else
@@ -66,32 +63,27 @@ if [ -z "${STDS}" ]; then
 else
 	LCUN="${STDS}"
 fi
-! "${mygrep}" "${LCUN}" LCONLINE || errh "There's a user with the same name"
-unset BOOLONLINE
-echo "${LCUN}" >>LCONLINE
-MESS_SD="${LCUN} is now on line"
-sdmess SYSTEM
+[ -f "${LVCD}"/"${LCUN}" ] && errh "There's a user with the same name"
+touch "${LVCD}"/"${LCUN}"
+__send "SYSTEM" "${LCUN} is now on line"
 infoh "The following users are now online:"
-cat LCONLINE
-infoh "Please use 'logout' instead of Ctrl-C to exit"
+ls -1 "${LVCD}"
+infoh "Please use 'logout'/'exit'/'quit' or Ctrl-C to exit"
 export M_R=0
-(F_REC) &
+(__reciever) &
 pid_rec=${!}
 infoh "PID of reciever: ${pid_rec}"
-while true; do
-	read MESS_SD
-	if [ "${MESS_SD}" != "logout" ]; then
-		sdmess "${LCUN}"
+trap "__exit" SIGINT SIGTERM
+while read -p ">" MESS_SD; do
+	if [[ "${MESS_SD}" =~ ^!+ ]];then
+		bash -c ${MESS_SD:1} 2>&1 | while read line;do
+			__send "${LCUN}" "${line}"
+		done
+	elif [ "${MESS_SD}" != "logout" ] && [ "${MESS_SD}" != "exit" ] && [ "${MESS_SD}" != "quit" ]; then
+		__send "${LCUN}" "${MESS_SD}"
 		printf "\033[1A"
 	else
-		MESS_SD="${LCUN} had quitted"
-		sdmess "SYSTEM"
-		kill -9 ${pid_rec} &>>/dev/null
-		"${mycat}" LCONLINE |"${mygrep}" -v "^${LCUN}$" >tmp
-		"${mymv}" tmp LCONLINE
-		"${myrm}" "URM_${LCUN}"
-		infoh "Thanks for using this system"
-		IFS="${OLD_IFS}"
-		exit 0
+		break
 	fi
 done
+__exit

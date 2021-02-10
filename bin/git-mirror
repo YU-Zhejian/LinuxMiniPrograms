@@ -4,13 +4,14 @@ DN="$(readlink -f "$(dirname "${0}")")"
 set -ue
 trap '' SIGINT
 OLD_IFS="${IFS}"
+touch "${DN}"/../etc/git-mirror.conf
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.sh
 . "${DN}"/../etc/git-mirror.conf
 . "${DN}"/exec/libgitm.sh
-infoh "YuZJLab AutoZipManager"
-infoh "Copyright (C) 2020 YU Zhejian"
+infoh "YuZJLab Git Mirror Manager"
+infoh "Copyright (C) 2020-2021 YU Zhejian"
 # ============ Possess arguments ============
 for opt in "${@}"; do
 	if isopt "${opt}"; then
@@ -26,16 +27,19 @@ for opt in "${@}"; do
 done
 gmcmd=${STDS[0]:-}
 unset STDS[0]
-[ ! -z "${git_mirror_dir:-}" ] || errh "Config file not found"
+if [ -z "${git_mirror_dir:-}" ];then
+	warnh "git_mirror_dir undefined. Will use ${DN}/../var/git-mirror.d"
+	git_mirror_dir=${DN}/../var/git-mirror.d
+fi
 mkdir -p "${git_mirror_dir}" "${git_mirror_dir}/logs/" "${git_mirror_dir}/uuidtable.d/"
 cd "${git_mirror_dir}"
-"${myls}" uuidtable.d/* &>>/dev/null || touch uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')"
+ls uuidtable.d/* &>> /dev/null || touch uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')"
 touch act.log
-if [ -f "${DN}"/exec/gitm_"${gmcmd}".sh ];then
+if [ -f "${DN}"/exec/gitm_"${gmcmd}".sh ]; then
 	. "${DN}"/exec/gitm_"${gmcmd}".sh
-elif [ -f "${DN}"/exec/gitm_"${gmcmd}".py ];then
+elif [ -f "${DN}"/exec/gitm_"${gmcmd}".py ]; then
 	IFS="${OLD_IFS}"
-	if [ "${mypython}" != "ylukh" ];then
+	if [ "${mypython}" != "ylukh" ]; then
 		"${mypython}" "${DN}"/exec/ylsjs_"${sjscmd}".py "${PWD}" "${@}"
 	else
 		errh "Python not found"

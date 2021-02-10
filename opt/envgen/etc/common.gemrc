@@ -1,0 +1,10 @@
+--- 
+:verbose: true
+:benchmark: false
+:backtrace: false
+:bulk_threshold: 1000
+:update_sources: true
+:sources: 
+- https://mirrors.tuna.tsinghua.edu.cn/rubygems/
+- https://mirrors.ustc.edu.cn/rubygems/
+gem: -V

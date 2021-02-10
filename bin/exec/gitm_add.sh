@@ -5,16 +5,16 @@ set -C
 if ! echo -e "add\t${$}" > add.lock 2> /dev/null; then
 	set +C
 	echo -e "$(timestamp)\tADD\tOCCUPIED" >> act.log
-	errh "Repository being added by $("${mycat}" add.lock)"
+	errh "Repository being added by $(cat add.lock)"
 fi
 for url in "${STDS[@]}"; do
-	url=$(echo ${url} | "${mysed}" 's;^file://;;')
-	if ! "${mypython}" "${DN}"/exec/valid_url.py "${url}";then
+	url=$(echo ${url} | sed 's;^file://;;')
+	if ! "${mypython}" "${DN}"/exec/valid_url.py "${url}"; then
 		warnh "Skipping bad URL ${url}"
 		continue
 	fi
 	tmpf="$(mktemp -t gitm.XXXXX)"
-	if grep_uuidtable "${url}" "${tmpf}" &>> /dev/null;then
+	if grep_uuidtable "${url}" "${tmpf}" &>> /dev/null; then
 		warnh "Skipping existing URL ${url}"
 		continue
 	fi
@@ -39,8 +39,8 @@ for url in "${STDS[@]}"; do
 		echo -e "$(timestamp)\tADD\tSUCCESS\t${url}\t${uuid}" >> act.log
 	else
 		warnh "${url} corrupted. Will be skipped"
-		"${myrm}" -rf "${uuid}" "logs/${uuid}/"
+		rm -rf "${uuid}" "logs/${uuid}/"
 		echo -e "$(timestamp)\tADD\tFAILED\t${url}\t${uuid}" >> act.log
 	fi
 done
-"${myrm}" -f "${tmpf}" add.lock
+rm -f "${tmpf}" add.lock

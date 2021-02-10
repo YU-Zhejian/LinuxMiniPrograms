@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
-# YLMKTNL.sh V3P3
+# YLMKTBL.sh V3P3
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
+warnh "This program is no longer monitored and updates may not be provided"
 STDS=''
 for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
 		"-h" | "--help")
-			yldoc ylmktbl
+			yldoc yl_
 			exit 0
 			;;
 		"-v" | "--version")
@@ -15,7 +16,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		*)
-			errh "Option '${opt}' invalid"
+			warnh "Option '${opt}' invalid. Ignored"
 			;;
 		esac
 	else
@@ -24,7 +25,7 @@ for opt in "${@}"; do
 done
 [ -f "${STDS}" ] || errh "Table file ${STDS} invalid"
 
-function mktbl_GetLongestString_max_str() {
+function __GetLongestString_max_str() {
 	for item in "${@}"; do
 		if [ ${#item} -gt ${mlen} ]; then
 			mlen=${#item}
@@ -33,16 +34,16 @@ function mktbl_GetLongestString_max_str() {
 	done
 	return ${mitem}
 }
-function mktbl_GetLongestString() {
-	mktbl_GetLongestString_max_str=''
+function __GetLongestString() {
+	local max_str=''
 	for item in "${@}"; do
-		! [ ${#item} -gt ${#mktbl_GetLongestString_max_str} ] || mktbl_GetLongestString_max_str=${item}
+		! [ ${#item} -gt ${#max_str} ] || max_str=${item}
 	done
-	echo ${mktbl_GetLongestString_max_str}
+	echo ${max_str}
 }
 oldifs=${IFS}
 while read line; do
-	if ! [[ "${line}" =~ ^#.* ]]; then
+	if ! [[ "${line}" == ^#* ]]; then
 		IFS=";"
 		curr_col_items=(${line})
 		IFS=''
@@ -56,7 +57,7 @@ while read line; do
 		row_instruction=(${row_instruction[@]} ${line:1})
 	fi
 	unset line
-done <"${STDS}"
+done < "${STDS}"
 j=0
 total_col_len=0
 for row_tmp_str in "${row[@]}"; do
@@ -64,11 +65,11 @@ for row_tmp_str in "${row[@]}"; do
 	row_tmp=(${row_tmp_str})
 	unset row_tmp_str
 	IFS=''
-	row_tmp_len=$(mktbl_GetLongestString "${row_tmp[@]}")
+	row_tmp_len=$(__GetLongestString "${row_tmp[@]}")
 	row_len=${#row_tmp_len}
 	unset row_tmp_len
 	curr_row=''
-	if [[ ${row_instruction[${j}]} =~ ^W.* ]]; then #Wrap
+	if [[ ${row_instruction[${j}]} == ^W* ]]; then #Wrap
 		echo "Still Testing"
 		exit
 		wrap=${row_instruction[${j}]:1}
@@ -90,7 +91,7 @@ for row_tmp_str in "${row[@]}"; do
 			curr_row="${curr_row}${formatted_item};"
 		done
 		unset formatted_item wrap_s wrap wrap_e nit row_tmp item
-	elif [[ ${row_instruction[${j}]} =~ ^S.* ]]; then #Shrink
+	elif [[ ${row_instruction[${j}]} == ^S* ]]; then #Shrink
 		shrink=${row_instruction[${j}]:1}
 		shrinked=$(($shrink - 3))
 		if [ ${row_len} -gt ${shrink} ]; then row_len=${shrink}; fi

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #IOMUX_ATTACHER V1
-echo "Experimental."
-exit
-cat out  &
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../lib/libstr
+warnh "This program is no longer monitored and updates may not be provided"
+cat out &
 cat /dev/tty >> in

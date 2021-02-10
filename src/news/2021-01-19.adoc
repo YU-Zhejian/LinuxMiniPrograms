@@ -1,0 +1,3 @@
+= News: YuZJLab Simple Job Systems Added
+
+A new program purposed at the mid of 2020 was finally added! This is YuZJLab Simple Job Systems, a very simple multi-job management system. This will help those who cannot install professional job-control systems like IBM Load Sharing Facility, OpenPBS or Torque. For more information, refer to its documentations.

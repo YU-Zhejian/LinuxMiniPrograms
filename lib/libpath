@@ -11,7 +11,7 @@ for dir in "${eachpath[@]}"; do
 	dir_full=$(readlink -f "${dir}" || true)
 	if [ ! -d "${dir}" ]; then
 		invalid_path="${invalid_path}${dir}:"
-	elif [[ ${valid_path} =~ .*":${dir_full}:".* ]]; then
+	elif [[ ${valid_path} == *":${dir_full}:"* ]]; then
 		duplicated_path="${duplicated_path}${dir_full}:"
 	else
 		valid_path="${valid_path}${dir_full}:"

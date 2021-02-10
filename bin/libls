@@ -6,20 +6,18 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.sh
 infoh "YuZJLab LIBRARY ls"
-infoh "Copyright (C) 2019-2020 YU Zhejian"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
 oldifs="${IFS}"
-function my_grep() {
+function _grep() {
 	regstr="${1}"
-	"${mycat}" "${tmpf}" | "${mygrep}" "${regstr}" >> "${tmpff}"
+	cat "${tmpf}" | grep "${regstr}" >> "${tmpff}"
 }
 
-more="${mymore}"
 locallib=$(for dir in /lib* \
-/usr/lib* \
-/usr/local/lib* \
-"${HOME}"/usr/lib* \
-"${HOME}"/usr/local/lib*
-do echo ${dir}; done  |"${mygrep}" -v '*'|"${mygrep}" -E '/lib((64)|(32)){0,1}$'| tr '\n' ':')
+	/usr/lib* \
+	/usr/local/lib* \
+	"${HOME}"/usr/lib* \
+	"${HOME}"/usr/local/lib*; do echo ${dir}; done | grep -v '*' | grep -E '/lib((64)|(32)){0,1}$' | tr '\n' ':')
 INPATH="${locallib}:${LD_LIBRARY_PATH:-}"${LIBRARY_PATH:-}
 . "${DN}"/../lib/libpath
 IFS=":"
@@ -34,7 +32,7 @@ for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
 		"-h" | "--help")
-			yldoc pls
+			yldoc libls
 			exit 0
 			;;
 		"-v" | "--version")
@@ -46,31 +44,19 @@ for opt in "${@}"; do
 			unset valid_path
 			exit 0
 			;;
-		"-a"|"--static-only")
+		"-a" | "--static-only")
 			allow_a=true
 			allow_s=false
 			;;
-		"-s"|"--dynamic-only")
+		"-s" | "--dynamic-only")
 			allow_s=true
 			allow_a=false
 			;;
-		"-w"|"--windows")
+		"-w" | "--windows")
 			WINDOWS=true
 			;;
-		--more\:*)
-			more=$"{opt:7}"
-			if $(
-				"${more}" --help &>/dev/null
-				echo ${?}
-			) -eq 127; then
-				warnh "Invalid More '${more}'! Will use original '${mymore}' instead"
-				more="${mymore}"
-			else
-				infoh "Will use '${more}' as More"
-			fi
-			;;
 		*)
-			errh "Option '${opt}' invalid"
+			warnh "Option '${opt}' invalid. Ignored"
 			;;
 		esac
 	else
@@ -78,31 +64,31 @@ for opt in "${@}"; do
 	fi
 done
 unset valid_path
-tmpf="$(mktemp -t pls.XXXXXX)"
+tmpf="$(mktemp -t libls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	"${myfind}" "${dir}" 2> /dev/null >>"${tmpf}" || true
+	"${myfind}" "${dir}" 2> /dev/null >> "${tmpf}" || true
 done
-tmpff=$(mktemp -t pls.XXXXXX)
-if ${WINDOWS};then
-	! ${allow_s} || my_grep '\.dll$'
-	! ${allow_s} || my_grep '\.DLL$'
-	! ${allow_a} || my_grep '\.lib$'
-	! ${allow_a} || my_grep '\.LIB$'
+tmpff=$(mktemp -t libls.XXXXXX)
+if ${WINDOWS}; then
+	! ${allow_s} || _grep '\.dll$'
+	! ${allow_s} || _grep '\.DLL$'
+	! ${allow_a} || _grep '\.lib$'
+	! ${allow_a} || _grep '\.LIB$'
 else
-	! ${allow_s} || my_grep '\.so\(\..*\)*$'
-	! ${allow_a} || my_grep '\.a\(\..*\)*$'
+	! ${allow_s} || _grep '\.so\(\..*\)*$'
+	! ${allow_a} || _grep '\.a\(\..*\)*$'
 fi
-"${mymv}" "${tmpff}" "${tmpf}"
+mv "${tmpff}" "${tmpf}"
 if [ ${#STDS[@]} -eq 0 ]; then
-	"${mycat}" "${tmpf}"| "${more}"
+	cat "${tmpf}"
 else
 	IFS=''
 	grepstr=''
 	for fn in "${STDS[@]}"; do
 		grepstr="${grepstr} -e ${fn}"
 	done
-	eval "${mycat}" \"${tmpf}\"\|"${mygrep}" "${grepstr}"\|"${more}"
+	eval cat \"${tmpf}\"\|grep "${grepstr}"
 fi
 rm "${tmpf}"
 IFS="${oldifs}"

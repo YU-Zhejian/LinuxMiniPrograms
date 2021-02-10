@@ -6,15 +6,15 @@ function trimstr() {
 	printf '%s\n' "$_"
 }
 
-function errh(){
+function errh() {
 	echo -e "\033[31mERROR: ${*}\033[0m" >&2
 	exit 1
 }
 
-function warnh(){
+function warnh() {
 	echo -e "\033[31mWARNING: ${*}\033[0m" >&2
 }
 
-function infoh(){
+function infoh() {
 	echo -e "\033[33m${*}\033[0m" >&2
 }

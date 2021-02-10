@@ -1,0 +1,85 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= lcman(1)
+
+== NAME
+
+lcman - LiveChat History Manager for livechat version 1 and 2.
+
+== SYNOPSIS
+
+`lcman [OPTIONS]`
+
+== DESCRIPTION
+
+Filter livechat history by `[OPTIONS]`.
+
+== OPTIONS
+
+include::include/cmnopt.adoc[]
+
+* `-f:[STRING]|--from:[STRING]` Search in history with sender `[STRING]`.
+
+* `-m:[STRING]|--message:[STRING]` Search in history with message `[STRING]`.
+
+* `-s|--exclude-system` Exclude message from user `SYSTEM`.
+
+* `-e:[STRING]|--exclude:[STRING]` Search in history without sender `[STRING]`.
+
+== EXAMPLE
+
+These examples are tested under Cygwin.
+
+[source]
+----
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ lcman
+YuZJLab LiveChat Manager
+Copyright (C) 2019-2021 YU Zhejian
+Reading Databases...
+Filtering...
+[2019-12-23,11:27:01] [SYSTEM] test is now on line.
+[2019-12-23,11:27:11] [test] test
+[2019-12-23,11:27:15] [SYSTEM] test had quitted.
+----
+
+[source]
+----
+admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
+$ lcman -s
+YuZJLab LiveChat Manager
+Copyright (C) 2019-2021 YU Zhejian
+Reading Databases...
+Filtering...
+[2019-12-23,11:27:11] [test] test
+----
+
+with `var/livechat.d/SYSTEM` as follows:
+
+[soure]
+----
+2019-12-23,11:27:01;SYSTEM;test is now on line.
+2019-12-23,11:27:11;test;test
+2019-12-23,11:27:15;SYSTEM;test had quitted.
+----
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions except `more` supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== FILES
+
+. `var/livechat.d/SYSTEM` The file containing all messages.
+
+== SEE ALSO
+
+livechat
+
+include::include/copy.adoc[]
