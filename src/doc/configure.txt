@@ -1,6 +1,6 @@
 This is the installation script of LinuxMiniPrograms.
 
-SYNOPSIS: bash configure [opt]
+SYNOPSIS: bash configure [OPTIONS] [KEY-VALUE PAIRS]
 
 FOR THE IMPATIENT:
 	NEW COMPLETE INSTALLATION: bash configure --all
@@ -19,3 +19,7 @@ OPTIONS:
 	--skip-path Do not update etc/path.sh
 
 	If no opt is given, the default mode will be used.
+
+KEY-VALUE PAIRS:
+
+	Specifies path for executables. For example, `python=/usr/bin/python3`.

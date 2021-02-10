@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CONFIGURE v1
+# CONFIGURE v2
 set -eu
 OLDIFS="${IFS}"
 if ! readlink -f . &>/dev/null; then
@@ -22,6 +22,7 @@ VAR_update_path=true
 MAKE_TARGETS="etc var pp"
 MAKE_ARGS=""
 # ========Read Opt========
+STDS=()
 for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
@@ -72,8 +73,11 @@ for opt in "${@}"; do
 			warnh "Option '${opt}' invalid. Ignored"
 			;;
 		esac
+	else
+		STDS=("${STDS[@]}" "${opt}")
 	fi
 done
+
 # ========Check========
 infoh "Checking FileSystem..."
 ${VAR_update_path} && rm -f 'etc/path.sh'
@@ -115,6 +119,9 @@ if [ ! -f 'etc/path.sh' ]; then
 	infoh "All configurations are printed as follows:"
 	cat "${path_sh}" | grep -v '^$' | grep -v '^#' | sed 's/^my//' | sed 's/=/\\\\033[33m in \\\\033[0m/ ' | sed 's/ #/\\\\033[33m, \\\\033[32m/' | sort | while read line; do echo -e "${line}\033[0m"; done
 fi
+for STDI in "${STDS[@]}";do
+	echo my"${STDI}" >> "${path_sh}"
+done
 . etc/path.sh
 [ "${mymake}" = "ylukh" ] && errh "GNU Make not found"
 #========Install ETC========
