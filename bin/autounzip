@@ -50,7 +50,7 @@ for fulln in "${STDS[@]}"; do
 		warnh "Filename '${fulln}' invalid"
 		continue
 	fi
-	ckext
+	__ckext
 	infoh "Received: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}"
 	if [ -e "${fn}" ]; then
 		if ${ISFORCE}; then rm -rf "${fn}"; else mv -f "${fn}" "${fn}".bak; fi
@@ -58,7 +58,17 @@ for fulln in "${STDS[@]}"; do
 	# ============ Start Decompressing ============
 	case ${ext} in
 	tbz)
-		__do_job "bz2"
+		__extract_tar "${fulln}" "bz2"
+		;;
+	"tar.7z")
+		"${my7za}" e -aoa "${fulln}" -so -y -t7z | "${mytar}" -xv -f -
+		;;
+	"tar.zip")
+		if [ "${my7za}" != 'ylukh' ]; then
+			"${my7za}" e -aoa "${fulln}" -so -y -tzip | "${mytar}" -xv -f -
+		elif [ "${myunzip}" != 'ylukh' ]; then
+			"${myunzip}" "${fulln}" --verbose | "${mytar}" -xv -f -
+		fi
 		;;
 	tar.*)
 		__extract_tar "${fulln}" "${ext//tar./}"

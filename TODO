@@ -58,7 +58,6 @@ Determine python in Windows
 
 Test
     autounzip
-    autozip
     azcat
     azlist
     enigma
