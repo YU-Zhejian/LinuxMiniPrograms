@@ -1,0 +1,5 @@
+= News: Test Version Released
+
+. Few programs deprecated. See `LMP_deprecated` for more details.
+. Documentation not finished.
+. Not tested under BSD.
