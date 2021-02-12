@@ -29,6 +29,7 @@ if ! __git_ps1 &>>/dev/null;then
 fi
 mv etc/common.bashrc ${HOME}/.bashrc
 [ -f "${HOME}/.profile" ] || echo ". \${HOME}/.bashrc" >> "${HOME}/.profile"
+
 # ________________________Installing Miniconda________________________
 if ! conda --help &>> /dev/null; then
 	wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -37,6 +38,18 @@ if ! conda --help &>> /dev/null; then
 	cp etc/.condarc "${HOME}"/.condarc
 	cat etc/conda.bashrc >> "${HOME}"/.bashrc
 fi
+
+# ________________________Installing LinuxBrew________________________
+# NOT TESTED
+#if ! brew --help &>> /dev/null; then
+#	git clone https://mirrors.ustc.edu.cn/brew.git "${HOME}"/linuxbrew
+#	cat etc/brew.bashrc >> "${HOME}"/.bashrc
+#	. etc/brew.bashrc
+#	mkdir -p "$(brew --repo homebrew/core)"
+#	git clone https://mirrors.ustc.edu.cn/linuxbrew-core.git "$(brew --repo homebrew/core)"
+#	brew update
+#	brew indtall mc emacs
+#fi
 
 # ________________________EMACS Settings________________________
 mkdir -p "${HOME}"/.emacs-backups
