@@ -147,6 +147,15 @@ pacman -Sl
 pacman -Qv
 cat /etc/pacman.d/mirrorlist.*
 mingw-get list
+scoop list
+scoop status
+flatpak remotes
+flatpak history
+flatpak list
+# snap list # DIsabled. This command may cause trouble.
+brew config
+brew list
+brew doctor
 
 # ________________________Shell Environment________________________
 declare
@@ -375,6 +384,8 @@ WHERE initexmf
 initexmf --version
 initexmf --list-modes
 initexmf  --list-formats
+mpm --list
+# mpm --list-repositories  # Disabled by default.
 WHERE tlmgr
 tlmgr repository list
 tlmgr option showall
