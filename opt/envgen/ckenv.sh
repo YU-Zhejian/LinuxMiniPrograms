@@ -133,7 +133,7 @@ netstat -antlp
 pstree -ap
 top -H -b -n 1 c
 ps -AT H all
-lsof -s
+# lsof -s # Disabled by default.
 
 # ________________________Package Info________________________
 apt list
@@ -247,7 +247,7 @@ perldoc -V
 # ________________________R________________________
 WHERE R
 R --version
-echo -e "sessionInfo\(\)\\\n.libPaths\(\)" \| R --no-save
+Rscript "${DN}"/exec/list_packages.R
 WHERE Rscript
 
 # ________________________Java________________________
@@ -259,6 +259,13 @@ WHERE jshell
 jshell --version
 WHERE jar
 jar --version
+
+WHERE ant
+ant -version
+WHERE gradle
+gradle --version
+WHERE mvn
+mvn --version
 
 # ________________________C________________________
 WHERE cc

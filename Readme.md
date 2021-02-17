@@ -40,6 +40,8 @@ cd opt/envgen
 bash ckenv
 ```
 
+See the documentation there for more details.
+
 ### Dealing with CRLF
 
 For those who use Git for Windows, you may experience problems caused by line endings. These errors may look like `bash: line 1: $'true\r': command not found`.
