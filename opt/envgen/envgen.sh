@@ -31,10 +31,11 @@ mv etc/common.bashrc ${HOME}/.bashrc
 [ -f "${HOME}/.profile" ] || echo ". \${HOME}/.bashrc" >> "${HOME}/.profile"
 
 # ________________________Installing LinuxBrew________________________
-
+# brew uninstall $(brew list | xargs) # Removing all programs
 if ! whereis brew &>> /dev/null; then
 	git clone https://mirrors.ustc.edu.cn/brew.git "${HOME}"/linuxbrew
 	cat etc/brew.bashrc >> "${HOME}"/.bashrc
+	cat etc/brew.bashrc >> "${HOME}"/.Renviron
 	. etc/brew.bashrc
 	HOMEBREW_BOTTLE_DOMAIN=https://mirrors.cloud.tencent.com/homebrew-bottles/ # USTC mirror do not provide bottles-portable-ruby.
 	mkdir -p "$(brew --repo homebrew/core)"
@@ -43,18 +44,21 @@ if ! whereis brew &>> /dev/null; then
 	#git clone https://mirrors.ustc.edu.cn/homebrew-cask.git "$(brew --repo)"/Library/Taps/homebrew/homebrew-cask
 	brew update
 	sed -i "s;^HOMEBREW_LINUX_DEFAULT_PREFIX =.*$;HOMEBREW_LINUX_DEFAULT_PREFIX = \"${HOME}/linuxbrew\";" "${HOME}"/linuxbrew/Library/Homebrew/global.rb
+	brew install --build-from-source openssl # The most important program.
 	# These programs may fail.
-	brew install --force-bottle ruby || true
-	brew install --force-bottle python || true
-	# These programs should be updated.
-	brew install --force-bottle binutils bash pbzip2 gnu-tar coreutils gcc@10 r mercurial
+	for programs in ruby python;do
+		brew install --force-bottle "${programs}" || true
+	done
+	# These programs should be updated. Those installed inside the system may be too old.
+	brew install --force-bottle binutils bash pbzip2 gnu-tar coreutils
+	brew install --force-bottle libtool autogen pkg-config autoconf automake gcc@10 llvm
+	brew install --force-bottle r mercurial
 	# brew install emacs # Cannot be used without GitHub.
-	# brew install --build-from-source git # May cause problems
 fi
 
 # ________________________Installing Brew Utils________________________
 function __brew_install() {
-	whereis ${1} &>> /dev/null || brew install --force-bottle ${2}
+	which ${1} &>> /dev/null || brew install --force-bottle ${2}
 }
 
 __brew_install 7za p7zip
@@ -68,9 +72,10 @@ __brew_install htop htop
 __brew_install pstree pstree
 __brew_install mc mc
 __brew_install vim vim
-__brew_install axel axel
 __brew_install aria2 aria2
 __brew_install javac openjdk
+# Adding CA Certs
+brew install --build-from-source axel git
 
 # ________________________Installing Miniconda________________________
 if ! whereis conda &>> /dev/null; then
@@ -89,8 +94,7 @@ cp etc/common.emacsrc "${HOME}"/.emacsrc
 # ________________________R Settings________________________
 mv "${HOME}"/.Rprofile .Rprofile.bak
 cp etc/common.Rprofile "${HOME}"/.Rprofile
-# echo 'install.packages(c("ggpubr","tidyverse","rmarkdown","knitr","viridis,"stringr","devtools","BiocManager"))' | R --no-save
-# TODO: Install R Packages
+# echo 'install.packages(c("ggpubr","tidyverse","rmarkdown","knitr","viridis","stringr","devtools","BiocManager"))' | R --no-save # May cause problems.
 
 # ________________________Ruby Settings________________________
 mv "${HOME}"/.gemrc .gemrc.bak
