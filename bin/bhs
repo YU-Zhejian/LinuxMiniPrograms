@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# BHS V1P7
+# BHS V1P8
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
@@ -8,6 +8,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 infoh "YuZJLab Bash History Searcher"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 STDS=""
+HISTTIMEFORMAT='%F %T '
 for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
@@ -16,7 +17,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1 Patch 6"
+			echo "Version 1 Patch 8"
 			exit 0
 			;;
 		*)

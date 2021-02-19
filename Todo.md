@@ -60,6 +60,7 @@
 * enigma in C
 * make install
 * Determine python in Windows
+* Python setup
 
 ## Documentation
 
