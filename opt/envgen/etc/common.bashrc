@@ -7,6 +7,7 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/g
 
 # Git helper, can be found at the source code of Git.
 . "${HOME}"/.git-prompt.sh
+export GIT_PS1_SHOWUPSTREAM="verbose"
 
 # Fantastic ${PS1} with additional linebreak.
 function __prevp (){
