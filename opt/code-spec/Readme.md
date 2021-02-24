@@ -16,7 +16,7 @@ Suppose you're working with people\* over a small project with Git.
 
 1. 代码千万行，注释第一行；注释不规范，同事两行泪。
 
-	With thousands of codes the comments are the most important; you will see your colleague weeping with non-standard comments.
+	Roads are countless, comment is foremost; with unregulated comments your collegues may end up in tears.
 	(This line is originated from the movie *Wondering Earth* and appears in every public project of me.)
 	
 	Comments and documentations of all forms are important in all codes you wrote in a group. You have to make your colleagues understand at least how to operate the code you write.

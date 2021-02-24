@@ -42,10 +42,12 @@ export HISTSIZE=50000 # Larger history size.
 
 # Useful aliases. Will only work in commandline but not scripts.
 alias du="du -h" # More readable du.
-alias df="df -h" # More readable df.
+# alias df="df -h" # More readable df.
+alias df="duf --all" # duf to replace df
 alias diff="diff -u" # Make the output of $(diff) similar to git diff.
 alias ls="ls -lhF --color=auto" # More readable ls.
-alias grep="grep --color=auto" # More readable grep.
+# alias grep="grep --color=auto" # More readable grep.
+alias grep="ack" # ack to replace grep.
 alias shutdown="echo What the hell you\'re thinking?\!"
 alias reboot="echo What the hell you\'re thinking?\!"
 alias sudo="echo What the hell you\'re thinking?\!"

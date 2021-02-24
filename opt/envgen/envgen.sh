@@ -74,6 +74,8 @@ __brew_install mc mc
 __brew_install vim vim
 __brew_install aria2 aria2
 __brew_install javac openjdk
+__brew_install duf duf
+# __brew_install ack ack # Command not tested
 # Adding CA Certs
 brew install --build-from-source axel git
 

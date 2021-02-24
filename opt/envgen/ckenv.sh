@@ -131,6 +131,8 @@ lastlog
 lsblk # List all partitions & mount points available.
 df -h # How many disk space is available?
 df -i # Display inode status.
+duf --all # Another df replacement. MNID.
+duf --all --inodes
 ls -lFh /dev # List all files in /dev. Used to find hard disks, and other pieces of software.
 cat /etc/fstab # Automatic-mounting configuration.
 # List mounted devices.
