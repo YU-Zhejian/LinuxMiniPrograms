@@ -24,11 +24,11 @@ fi
 #========Install Permissions========
 function __change_dir_permissions() {
 	ls -1 | while read file_name; do
-		if [ -f ${file_name} ]; then
-			chmod -x ${file_name}
+		if [ -f "${file_name}" ]; then
+			chmod -x "${file_name}"
 		else
-			chmod +x ${file_name}
-			cd ${file_name}
+			chmod +x "${file_name}"
+			cd "${file_name}"
 			__change_dir_permissions
 			cd ..
 		fi
