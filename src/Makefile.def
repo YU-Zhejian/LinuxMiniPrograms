@@ -36,6 +36,7 @@ test:
 	bash src/test/00_install.sh
 
 clean:
+	$(RM) src/test/*.t/
 
 distclean:clean
 	$(RM) etc var share

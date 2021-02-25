@@ -1,5 +1,11 @@
 == NOTES
 
+== USING GNU PARALLEL & OTHERS
+
+It is recommended to use GNU Parallel to accelerate the speed of compression.
+
+WARNING: GNU Parallel consumes lots of memory & CPU resources. __NEVER USE IT ON CLUSTERS__!!!
+
 === USE OF PIGZ
 
 When `pigz` and GNU parallel both exist and you have `PARALLEL` in `autozip.conf`, `pigz` will be used.

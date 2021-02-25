@@ -13,8 +13,7 @@ libls [STRING] [[STRING2]...] [OPTIONS]
 
 == DESCRIPTION
 
-Search `[STRING]` in `${LIBRARY_PATH}` `${LD_LIBRARY_PATH}` and other system lib paths.
-If `[STRING]` is omitted, the program will list all contents in each valid lib paths.
+Search `[STRING]` in `${LIBRARY_PATH}` `${LD_LIBRARY_PATH}` and other system lib paths. If `[STRING]` is omitted, the program will list all contents in each valid lib paths.
 
 == OPTIONS
 

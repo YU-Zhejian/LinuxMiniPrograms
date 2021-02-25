@@ -13,8 +13,7 @@ includels [STRING] [[STRING2]...] [OPTIONS]
 
 == DESCRIPTION
 
-Search `[STRING]` in C include paths.
-If `[STRING]` is omitted, the program will list all contents in each valid C include paths.
+Search `[STRING]` in C include paths. If `[STRING]` is omitted, the program will list all contents in each valid C include paths.
 
 == OPTIONS
 

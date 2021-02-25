@@ -34,7 +34,8 @@ That is, those parameter which matches the regular expression `-[^-\s]|--\S+|-[^
 
 == EXAMPLE
 
-```
+[source]
+----
 OPT=()
 STDS=()
 for opt in "${@}"; do
@@ -58,9 +59,8 @@ for opt in "${@}"; do
 		STDS=(${STDS[@]} "${opt}")
 	fi
 done
-```
+----
 
-After this loop, options and other parameters are separated into string `"${opt}"` and `${STDS}`.
-If there're unrecognized option, the program will exit with exit code 1.
+After this loop, options and other parameters are separated into string `"${opt}"` and `${STDS}`. If there're unrecognized option, the program will exit with exit code 1.
 
 include::include/copy.adoc[]

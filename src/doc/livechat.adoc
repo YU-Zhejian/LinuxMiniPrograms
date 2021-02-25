@@ -39,12 +39,13 @@ Every time there're people joining or leaving, the account named SYSTEM will ann
 
 . Modify the `.profile` file as follows:
 
-```
+[source,bash]
+----
 echo -e "\033[33mChatting server on LAN ***.\033[0m"
 livechat
 logout
 exit
-```
+----
 
 and have `.bashrc`, `.bash_profile` removed.
 
@@ -52,8 +53,9 @@ and have `.bashrc`, `.bash_profile` removed.
 
 == EXAMPLE
 
-```
-(base) 137 2021-01-19_17-54-39 /home/ubuntu/LinuxMiniPrograms  (BSD) 
+[source]
+----
+(base) 137 2021-01-19_17-54-39 /home/ubuntu/LinuxMiniPrograms  (BSD)
 $ livechat yuzj
 Welcome to YuZJLab LiveChat
 Copyright (C) 2019-2021 YU Zhejian
@@ -82,7 +84,7 @@ PID of reciever: 53674
 exit
 Thanks for using this system
 Killed
-```
+----
 
 == OPTIONS
 

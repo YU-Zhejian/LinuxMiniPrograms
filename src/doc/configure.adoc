@@ -40,9 +40,13 @@ include::include/cmnopt.adoc[]
 
 * `--skip-path` Do not update `etc/path.sh`.
 
+* `-x` Enter tracing mode.
+
 == EXAMPLES
 
 These examples are tested under WSL.
+
+WARNING: The example listed below may not consistent with the current version.
 
 [source]
 ----
@@ -232,29 +236,29 @@ export VERBOSE = TRUE
 .PHONY : all pp
 
 etc:
-        $(CP) src/etc/* etc/
+	$(CP) src/etc/* etc/
 
 var:
-        $(CP) -fr src/var/* var/
+	$(CP) -fr src/var/* var/
 
 C:
-        @-$(MAKE) -C src/C
+	@-$(MAKE) -C src/C
 
 pdf:
-        @-$(MAKE) -C src/doc pdf
+	@-$(MAKE) -C src/doc pdf
 
 html:
-        @-$(MAKE) -C src/doc html
+	@-$(MAKE) -C src/doc html
 
 man:
-        @-$(MAKE) -C src/doc man
+	@-$(MAKE) -C src/doc man
 
 usage:
-        @-$(MAKE) -C src/doc usage
+	@-$(MAKE) -C src/doc usage
 
 pp:
-        bash src/exec/install_path_permissions.sh
-        @-$(MAKE) -C opt permissions
+	bash src/exec/install_path_permissions.sh
+	@-$(MAKE) -C opt permissions
 ----
 
 Another example:
@@ -286,29 +290,29 @@ export VERBOSE = TRUE
 .PHONY : all pp
 
 etc:
-        $(CP) src/etc/* etc/
+	$(CP) src/etc/* etc/
 
 var:
-        $(CP) -fr src/var/* var/
+	$(CP) -fr src/var/* var/
 
 C:
-        @-$(MAKE) -C src/C
+	@-$(MAKE) -C src/C
 
 pdf:
-        @-$(MAKE) -C src/doc pdf
+	@-$(MAKE) -C src/doc pdf
 
 html:
-        @-$(MAKE) -C src/doc html
+	@-$(MAKE) -C src/doc html
 
 man:
-        @-$(MAKE) -C src/doc man
+	@-$(MAKE) -C src/doc man
 
 usage:
-        @-$(MAKE) -C src/doc usage
+	@-$(MAKE) -C src/doc usage
 
 pp:
-        bash src/exec/install_path_permissions.sh
-        @-$(MAKE) -C opt permissions
+	bash src/exec/install_path_permissions.sh
+	 @-$(MAKE) -C opt permissions
 ----
 
 They all generate `etc/path.sh` as follows:

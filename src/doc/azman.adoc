@@ -5,18 +5,17 @@
 
 == NAME
 
-azman - AutoZip file Manager.
+azlist - AutoZip file viewer.
 
 == SYNOPSIS
 
-`azman [subcommand]`
+`azlist [SOURCE1] [[SOURCE2]...]`
 
 == DESCRIPTION
 
-Execute `[subcommand]` which will be introduced bellow.
-If there's no `[subcommand]` presented, the program will check the algorithms installed on your computer and return a list of available extension name.
+List all files and folders inside `[SOURCE]` in a verbose format.
 
-WARNING: This program do not support archives with extension `.lzma`, `.lz` and `bzip2`.
+WARNING: This program do not support archives with extension `.lzma`, `.lz` and `.bz2`.
 
 == OPTIONS
 
@@ -24,10 +23,6 @@ WARNING: This program do not support archives with extension `.lzma`, `.lz` and 
 If `[thread]` is omitted, will use the number of cores installed.
 
 include::include/cmnopt.adoc[]
-
-== SUBCOMMANDS
-
-`list [SOURCE1] [[SOURCE2]...]` List all files and folders inside `[SOURCE]` in a verbose format.
 
 include::include/autozipcmn.adoc[]
 
