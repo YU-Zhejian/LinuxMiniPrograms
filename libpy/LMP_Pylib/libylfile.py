@@ -1,11 +1,20 @@
 # LIBYLFILE.py V1
+# TODO: docs
 import os
 
 from LMP_Pylib.libstr import *
 
 
 def ylread(filename: str) -> str:
-	if not os.path.isfile(filename):
+	'''
+	Read a text and return its contents. Use '-' or '/dev/stdin' to read from standard input.
+	:param filename: The path needed.
+	:return: The contents inside a file.
+	WARNING: This function is intended for SMALL files only.
+	'''
+	if filename=="-":
+		filename="/dev/stdin"
+	if filename!="/dev/stdin" and not os.path.isfile(filename):
 		errh("File " + filename + " invalid")
 	fh = open(filename)
 	rets = fh.read().strip()
@@ -14,6 +23,9 @@ def ylread(filename: str) -> str:
 
 
 def ylreadline(filename: str):
+	'''
+	Split the result of ylread by new line characters.
+	'''
 	return ylread(filename).strip().split('\n')
 
 
