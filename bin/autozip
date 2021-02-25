@@ -48,7 +48,7 @@ fn="${STDS[0]:-}"
 [ "${fn}" = "-" ] && fn="/dev/stdin"
 ! [ -z "${fn}" ] || autozipck
 if [ -z "${STDS[1]:-}" ]; then
-	if [ -f "${fn}" ]; then
+	if [ -f "${fn}" ] || [ "${fn}" = "/dev/stdin" ]; then
 		ext="gz"
 	elif [ -d "${fn}" ]; then
 		fn=$(echo ${fn} | sed "s;/$;;")
@@ -88,9 +88,9 @@ function __do_job() {
 	cmd="$(bash ${DN}/exec/azcmd.sh -p:${THREAD} "${1}" ${LVL})"
 	infoh "${cmd}"
 	if ${STDOUT}; then
-		fcat "${fn}" | ${cmd} >/dev/stdout
+		fcat "${fn}" | ${cmd} > /dev/stdout
 	else
-		fcat "${fn}" | ${cmd} >"${fn}.${ext}"
+		fcat "${fn}" | ${cmd} > "${fn}.${ext}"
 	fi
 }
 case ${ext} in
@@ -165,7 +165,6 @@ t*z)
 	"${myrar}" -mt${THREAD} a "${fn}".${ext} "${fn}"
 	#fi
 	;;
-
 *)
 	__do_job "${ext}"
 	;;

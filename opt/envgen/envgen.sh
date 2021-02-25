@@ -27,7 +27,7 @@ if ! __git_ps1 &>>/dev/null;then
 	git clone --depth 1 --verbose https://github.com/git/git
 	mv git/contrib/completion/git-prompt.sh "${HOME}"/.git-prompt.sh
 fi
-mv etc/common.bashrc ${HOME}/.bashrc
+mv etc/common.bashrc "${HOME}"/.bashrc
 [ -f "${HOME}/.profile" ] || echo ". \${HOME}/.bashrc" >> "${HOME}/.profile"
 
 # ________________________Installing LinuxBrew________________________
@@ -78,6 +78,7 @@ __brew_install javac openjdk
 __brew_install duf duf
 __brew_install brotli brotli
 # __brew_install ack ack # Command not tested
+# __brew_install lzfse lzfse # Command not tested
 # __brew_install bc bc # Command not tested
 # Adding CA Certs
 brew install --build-from-source axel git
