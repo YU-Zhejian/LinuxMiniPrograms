@@ -195,9 +195,13 @@ cat /etc/pacman.d/mirrorlist.* # AS
 # MinGW in Windows.
 mingw-get list # TODO
 
-# Scoop in Windows.
-scoop list # I
-scoop statust # I
+# Scoop in Windows. DD.
+# scoop list # I
+# scoop statust # I
+
+# nuget in Windows. DD.
+# nuget local all -List
+# nuget list # A 
 
 # Flatpak in universal GNU/Linux.
 flatpak remotes # AS
@@ -390,6 +394,11 @@ cargo --version --verbose
 cargo --list # Show installed commands, not packages.
 WHERE rustc
 rustc --version --verbose
+
+# ________________________GoLang________________________
+WHERE go
+go version
+go env
 
 # ________________________Ruby________________________
 WHERE gem
