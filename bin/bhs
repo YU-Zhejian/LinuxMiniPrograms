@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# BHS V1P7
+# BHS V1P8
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
@@ -16,7 +16,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1 Patch 6"
+			echo "Version 1 Patch 8"
 			exit 0
 			;;
 		*)

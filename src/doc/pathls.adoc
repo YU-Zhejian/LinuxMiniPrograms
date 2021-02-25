@@ -36,7 +36,8 @@ Available MODE:
 
 These examples are tested under Cygwin.
 
-```
+[source]
+----
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ pathls -l
 YuZJLab PATH ls
@@ -48,9 +49,10 @@ Copyright (C) 2019-2021 YU Zhejian
 /c/Users/admin/AppData/Local/Programs/Microsoft VS Code/bin
 /c/Users/admin/bin
 /usr/sbin
-```
+----
 
-```
+[source]
+----
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ pathls -i
 YuZJLab PATH ls
@@ -62,9 +64,10 @@ Copyright (C) 2019-2021 YU Zhejian
 /c/Program Files/R/R-5.6.3/bin/x64
 /c/Program Files/Typora/
 ~/bin
-```
+----
 
-```
+[source]
+----
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ pathls
 YuZJLab PATH ls
@@ -78,9 +81,10 @@ Reading database...
 /d/Software/LinuxMiniPrograms/bin/libdoman*
 /d/Software/LinuxMiniPrograms/bin/libdoman_upgrade*
 [...]
-```
+----
 
-```
+[source]
+----
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ pathls --allow-d --no-x --no-o
 YuZJLab PATH ls
@@ -94,7 +98,7 @@ Reading database...
 /d/Software/conda/Scripts/
 /d/Software/conda/Tools/
 [...]
-```
+----
 
 == COMPATIBILITY
 

@@ -13,6 +13,7 @@ if [ -z "${mypython:-}" ]; then
 			if [[ "${curr_version}" == 3* ]] && [ $(expr "${curr_version}" \>= "${python_ver}") -eq 1 ]; then
 				Out_C="${line}"
 				python_ver="${curr_version}"
+				break 2 # Use fast mode
 			fi
 			unset curr_version line
 		done < "${tmpf}"

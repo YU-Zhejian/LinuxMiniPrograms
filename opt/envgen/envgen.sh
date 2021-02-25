@@ -27,10 +27,64 @@ if ! __git_ps1 &>>/dev/null;then
 	git clone --depth 1 --verbose https://github.com/git/git
 	mv git/contrib/completion/git-prompt.sh "${HOME}"/.git-prompt.sh
 fi
-mv etc/common.bashrc ${HOME}/.bashrc
+mv etc/common.bashrc "${HOME}"/.bashrc
 [ -f "${HOME}/.profile" ] || echo ". \${HOME}/.bashrc" >> "${HOME}/.profile"
+
+# ________________________Installing LinuxBrew________________________
+# brew uninstall $(brew list | xargs) # Removing all programs
+if ! whereis brew &>> /dev/null; then
+	git clone https://mirrors.ustc.edu.cn/brew.git "${HOME}"/linuxbrew
+	cat etc/brew.bashrc >> "${HOME}"/.bashrc
+	cat etc/brew.bashrc >> "${HOME}"/.Renviron
+	. etc/brew.bashrc
+	HOMEBREW_BOTTLE_DOMAIN=https://mirrors.cloud.tencent.com/homebrew-bottles/ # USTC mirror do not provide bottles-portable-ruby.
+	mkdir -p "$(brew --repo homebrew/core)"
+	# mkdir -p "$(brew --repo)"/Library/Taps/homebrew/homebrew-cask
+	git clone https://mirrors.ustc.edu.cn/linuxbrew-core.git "$(brew --repo homebrew/core)"
+	#git clone https://mirrors.ustc.edu.cn/homebrew-cask.git "$(brew --repo)"/Library/Taps/homebrew/homebrew-cask
+	brew update
+	sed -i "s;^HOMEBREW_LINUX_DEFAULT_PREFIX =.*$;HOMEBREW_LINUX_DEFAULT_PREFIX = \"${HOME}/linuxbrew\";" "${HOME}"/linuxbrew/Library/Homebrew/global.rb
+	brew install --build-from-source openssl # The most important program.
+	# These programs may fail.
+	for programs in ruby python;do
+		brew install --force-bottle "${programs}" || true
+	done
+	# These programs should be updated. Those installed inside the system may be too old.
+	brew install --force-bottle binutils bash pbzip2 gnu-tar coreutils
+	brew install --force-bottle libtool autogen pkg-config autoconf automake gcc@10 llvm
+	brew install --force-bottle r mercurial
+	# brew install emacs # Cannot be used without GitHub.
+fi
+
+# ________________________Installing Brew Utils________________________
+function __brew_install() {
+	which ${1} &>> /dev/null || brew install --force-bottle ${2}
+}
+
+# TODO: lzfse
+__brew_install 7za p7zip
+__brew_install compress ncompress
+__brew_install lz4 lz4
+__brew_install lzip lzip
+__brew_install lzop lzop
+__brew_install pigz pigz
+__brew_install zip zip
+__brew_install htop htop
+__brew_install pstree pstree
+__brew_install mc mc
+__brew_install vim vim
+__brew_install aria2 aria2
+__brew_install javac openjdk
+__brew_install duf duf
+__brew_install brotli brotli
+# __brew_install ack ack # Command not tested
+# __brew_install lzfse lzfse # Command not tested
+# __brew_install bc bc # Command not tested
+# Adding CA Certs
+brew install --build-from-source axel git
+
 # ________________________Installing Miniconda________________________
-if ! conda --help &>> /dev/null; then
+if ! whereis conda &>> /dev/null; then
 	wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
 	bash Miniconda3-latest-Linux-x86_64.sh -b -p ${HOME}/conda
 	mv "${HOME}"/.condarc .condarc.bak
@@ -46,6 +100,7 @@ cp etc/common.emacsrc "${HOME}"/.emacsrc
 # ________________________R Settings________________________
 mv "${HOME}"/.Rprofile .Rprofile.bak
 cp etc/common.Rprofile "${HOME}"/.Rprofile
+# echo 'install.packages(c("ggpubr","tidyverse","rmarkdown","knitr","viridis","stringr","devtools","BiocManager"))' | R --no-save # May cause problems.
 
 # ________________________Ruby Settings________________________
 mv "${HOME}"/.gemrc .gemrc.bak

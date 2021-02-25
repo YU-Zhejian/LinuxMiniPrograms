@@ -1,4 +1,5 @@
 # GITM_ADD.sh v1
+# TODO: Known bugs caused by grep
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
 [ "${mypython}" != "ylukh" ] || errh "Python not found"
 set -C

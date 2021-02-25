@@ -13,8 +13,7 @@ manls [STRING] [[STRING2]...] [OPTIONS]
 
 == DESCRIPTION
 
-Search `[STRING]` in `${MANPATH}`.
-If `[STRING]` is omitted, the program will list all contents in each valid `${MANPATH}`.
+Search `[STRING]` in `${MANPATH}`. If `[STRING]` is omitted, the program will list all contents in each valid `${MANPATH}`.
 
 == OPTIONS
 

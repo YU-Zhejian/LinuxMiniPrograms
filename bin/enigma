@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # ENIGMA v1
 # TODO: Add C Version
+# TODO: docs
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr

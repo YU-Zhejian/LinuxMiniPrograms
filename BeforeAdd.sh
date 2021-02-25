@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
-set -eu
+set -u +e
 DN="$(readlink -f "$(dirname "${0}")")"
 cd "${DN}"
-grep_cmd="find . 2> /dev/null | grep -v '.git'"
-cat "${DN}"/.gitignore | grep -v '^$' | grep -v '^#' > gitignore.tmp
- while read line; do
-	grep_cmd="${grep_cmd} | grep -v '${line}'"
-done < gitignore.tmp
-rm gitignore.tmp
-dos2unix $(eval "${grep_cmd}" | xargs)
+if which dos2unix &>> /dev/null;then
+	/usr/bin/find . -path './.git' -prune -o -type f -print | while read fn; do dos2unix "${fn}"; done
+else
+	/usr/bin/find . -path './.git' -prune -o -type f -print | while read fn;do sed -i 's/\r$//g' "${fn}"; done
+fi

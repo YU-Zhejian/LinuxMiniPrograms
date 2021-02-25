@@ -5,5 +5,6 @@ In this directory, you may find some interesting little programs which may help 
 They are:
 
 * `envgen`: Environment generator and detector.
+* `code-spec` How to write readable codes for greenhands.
 
 More interesting little programs are being purposed!

@@ -17,6 +17,7 @@ OPTIONS:
 	--install-pdf Install doc in pdf, need 'asciidoctor-pdf'.
 	--install-html Install doc in html, need 'asciidoctor' or 'asciidoc'.
 	--skip-path Do not update etc/path.sh
+	-x Enter tracing mode.
 
 	If no opt is given, the default mode will be used.
 

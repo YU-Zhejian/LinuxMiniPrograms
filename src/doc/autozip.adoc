@@ -14,11 +14,10 @@ autozip - An automatic file compression tool.
 == DESCRIPTION
 
 This program will compress files and folders with extension [ext] to [level].
-You can make [level] 1 (fastest) to 9 (best).
-Some algorithms (e.g. LZMA, Deflate) may support 0 which means to be store only without compression.
-If [level] is omitted, this program will use default value provided by the algorithm.
-If [ext] is also omitted, this program will use gz & tar.gz by default.
-If [source] is omitted, this program will check the algorithms installed on your computer and return a list of available extension name.
+
+You can make [level] 1 (fastest) to 9 (best). Some algorithms (e.g. LZMA, Deflate) may support 0 which means to be store only without compression. If [level] is omitted, this program will use default value provided by the algorithm. Some programs like zstd may support value up to 19.
+
+If [ext] is also omitted, this program will use gz (For files) & tar.gz (For folders) by default. If [source] is omitted, this program will check the algorithms installed on your computer and return a list of available extension name. If [source] is set to `-` or `/dev/stdin`, will read from standard input.
 
 == OPTIONS
 
@@ -28,18 +27,12 @@ include::include/cmnopt.adoc[]
 
 * `--remove` Remove [source] if success.
 
+* `-d|--decompress` Will initiate `autounzip` with same arguments.
 
 * `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when creating the archive. `[thread]` should not be higher than the number of cores installed.
 If `[thread]` is omitted, will use the number of cores installed.
 
-
-== USING GNU PARALLEL
-
-It is recommended to use GNU Parallel to accelerate the speed of compression.
-You can change the first line of `etc/autozip.conf` to `PARALLEL` to enable this feature.
-
-WARNING: GNU Parallel consumes lots of memory & CPU resources.
-__NEVER USE IT ON CLUSTERS__!!!
+* `-c|--stdout` Pump what is compressed to standard output. Not supported by some algorithms.
 
 include::include/autozipcmn.adoc[]
 

@@ -13,8 +13,7 @@ libstr - A library containing some string manipulating functions.
 
 == DESCRIPTION
 
-Firstly, use `. /PATH/TO/LIBSTR` to import libisopt.
-(Command `source` is equal to command `.`)
+Firstly, use `. /PATH/TO/LIBSTR` to import `libisopt`. (Command `source` is equal to command `.`)
 
 You can then use functions inside!
 

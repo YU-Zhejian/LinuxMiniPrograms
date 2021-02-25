@@ -16,6 +16,8 @@ SENSITIVE INFORMATION ABOUT YOUR SYSTEM SO USE WITH CARE.
 Please note that this script aims at getting computer information with minimal
 software. There will be no documentations to this software except this one.
 
+If there are questions, contact an expert.
+
 Usage:
 
 	envgen.sh [OUTPUT]
@@ -73,103 +75,182 @@ sed 's;^;__exec ;' > "${tmpsh}"
 # otherwise the software may fail when parsing them.
 # You may comment some of the tests if not needed,
 # or make other modifications on your purpose.
+# MNID=May Not be Installed by Default.
+# DD=Disabled by Default.
 # ________________________Headers________________________
+# I hope you have no difficulties in understanding this command.
+# It just prints the working directory you're in.
+# If you do not understand concepts like woring directory,
+# please search the web.
 echo "${PWD}"
 
 # ________________________Operating System Info________________________
-uname -a
+uname -a # Kernel information.
+# Kernel and login information.
 cat /etc/issue
+cat /etc/issue.net
+cat /etc/motd
+cat /etc/redhat-release
 
 # ________________________Boot Info________________________
-uptime
-runlevel
-__rc_cat
+uptime # How many time since it was booted?
+runlevel # On which level the system is operated? See `man runlevel` for more details.
+# __rc_cat # Get all startup scripts. DD.
+# Get all planed tasks.
 crontab -l
 __cron_cat
-chkconfig --list
-service --status-all
+chkconfig --list # Which service is set to bootable? Used under RedHat-derived Linux systems.
+service --status-all # List all services. Used under Debian-derived systems.
+# TODO: systemctl commands.
+# TODO: SELINUX commands.
 
 # ________________________Hardware Info________________________
-free -h
-cat /proc/cpuinfo
+free -h # How many memory is available?
+cat /proc/cpuinfo # Detailed information about CPU.
+# NVIDIA driver status. MNID.
+# You might need to install "nvidia-smi" package if you install NVIDIA drivers using package management software installed with system.
 nvida-smi
+# PCI devices. Used to diagnose driver failures. MNID.
 lspci -vvk
 lspci
-lsusb -v
-lsdev
-lsscsi
-hwinfo
+lsusb -v # USB devices. Used to diagnose driver failures. MNID.
+lsdev # Display information about installed hardware. MNID.
+lsscsi # List disk drivers connected. MNID.
+hwinfo # General hardware information. MNID.
 
 # ________________________Users and Groups________________________
-cat /etc/passwd
-cat /etc/group
-who --all
+cat /etc/passwd # Show all users.
+cat /etc/group # Show all groups.
+who --all # Show all users.
+# Who have logged in this system?
 w --ip-addr
 last --fulltimes  --fullnames
 lastlog
 
 # ________________________Partition Info________________________
-lsblk
-df -h
-df -i
-ls -lFh /dev
-cat /etc/fstab
+lsblk # List all partitions & mount points available.
+df -h # How many disk space is available?
+df -i # Display inode status.
+duf --all # Another df replacement. MNID.
+duf --all --inodes
+ls -lFh /dev # List all files in /dev. Used to find hard disks, and other pieces of software.
+cat /etc/fstab # Automatic-mounting configuration.
+# List mounted devices.
 mount
 cat /proc/mounts
 
 # ________________________Network________________________
-ifconfig -a
-iwconfig
-ip addr
-nmap -p 1-65535 -T4 -A -v localhost
-netstat -atlp
+# Show internet adapter information.
+ifconfig -a # MNID.
+iwconfig # MNID.
+ip addr # MNID.
+# Show ports opened.
+nmap -T4 -F localhost # MNID.
+# nmap -p 1-65535 -T4 -A -v localhost # Will check all ports. DD.
+# nmap -sS -sU -T4 -A -v -PE -PP -PS80,443 -PA3389 -PU40125 -PY -g 53 --script "default or (discovery and safe)" localhost # Slow and comprehensive check. DD.
+netstat -atlp # MNID.
 netstat -antlp
+# Assess whether it is possible to connect to the internet outside.
+# traceroute www.baidu.com # DD. MNID. You may replace it with common addresses.
+# traceroute www.google.com # DD.
 
 # ________________________Process Info________________________
-pstree -ap
-top -H -b -n 1 c
-ps -AT H all
-lsof -s
+# Show all processes.
+pstree -ap # With hierarchies. MNID.
+top -H -b -n 1 c # With tables. MNID.
+ps -AT H all # By default.
+# lsof -s # With all files it is using. DD. MNID.
+
+# ________________________System Security________________________
+# DD. To show:
+# find / -type f -perm -2 -o -perm -20 2\> /dev/null \| xargs ls -al # File with write permission for all users.
+# find / -type d -perm -2 -o -perm -20 2\> /dev/null \| xargs ls –ld # Folder with write permission for all users.
+# find / -type f -perm -4000 -o -perm -2000 -print 2\> /dev/null \| xargs ls –al # Insecure executables with "s" permission
+# find / -user root -perm -2000 -print # File with suid.
+# find / -user root -perm -4000 -print # File with sgid.
+# find / -nouser -o –nogroup # File with no group or user information.
+# The above commands are from 高俊峰 (Junfeng GAO) (2016-03-25 00:29) https://www.cnblogs.com/MYSQLZOUQI/p/5317916.html, accessed 2001-02-19
 
 # ________________________Package Info________________________
-apt list
-dpkg --list
-cat /etc/apt/sources.list /etc/apt/sources.list.d/*
-yum list
-dnf list
-rpm -qa
-cat /etc/yum.repos.d/*.repo
-pacman -Sl
-pacman -Qv
-cat /etc/pacman.d/mirrorlist.*
-mingw-get list
+# A=All
+# I=Installed
+# AS=All sources & repositories
+# List system package management software in:
+# Debian-derived systems.
+apt list # A
+dpkg --list # I
+cat /etc/apt/sources.list /etc/apt/sources.list.d/* # AS
+
+# RedHat-derived sytems.
+yum list # A for old systems.
+dnf list # A
+rpm -qa # TODO
+cat /etc/yum.repos.d/*.repo # AS
+
+# Arch-derived systems.
+pacman -Sl # A
+pacman -Qv # I
+cat /etc/pacman.d/mirrorlist.* # AS
+
+# MinGW in Windows.
+mingw-get list # TODO
+
+# Scoop in Windows. DD.
+# scoop list # I
+# scoop statust # I
+
+# nuget in Windows. DD.
+# nuget local all -List
+# nuget list # A 
+
+# Flatpak in universal GNU/Linux.
+flatpak remotes # AS
+flatpak history # Show history commands.
+flatpak list # I
+
+# Snap in universal GNU/Linux.
+# snap list # DD. This command may cause trouble.
+
+# LinuxBrew/HomeBrew  in universal GNU/Linux and macOS.
+brew config
+brew list # I
+brew doctor
 
 # ________________________Shell Environment________________________
+# Show what is executed before this script.
 declare
 env
+export
+# Settings for whereis.
 whereis -l
 
 # ________________________Bourne Again Shell________________________
+# WHERE command is a function defined in this code. It uses `whereis` and `which`.
 WHERE bash
 bash --version
+# Check startup scripts of bash.
 cat ${HOME}/.bashrc
 cat ${HOME}/.bash_history
 cat ${HOME}/.bash_logout
 cat ${HOME}/.bash_profile
+# Check differences in interactive amd non-interactive mode.
 echo "exit" \| bash -vi
 echo "exit" \| bash -v
 
 # ________________________Bourne shell________________________
+# See the aove section for more details.
 WHERE sh
 cat ${HOME}/.profile
 
 # ________________________C Shell________________________
+# See the aove section for more details.
 WHERE csh
 cat ${HOME}/.cshrc
 echo "exit" \| csh -Vi
 echo "exit" \| csh -V
 
 # ________________________Z Shell________________________
+# See the aove section for more details.
 WHERE zsh
 cat ${HOME}/.zshrc
 zsh --version
@@ -177,19 +258,27 @@ echo "exit" \| zsh -vi /dev/stdin
 echo "exit" \| zsh -v
 
 # ________________________Friendly Interactive Shell________________________
+# See the aove section for more details.
 WHERE fish
 cat ${HOME}/.zshrc
 fish --version
 
 # ________________________Version Control Systems________________________
+# Git
 WHERE git
 git --version
 git config --show-origin --show-scope -l
+
+# Mercurial
 WHERE hg
 hg --version --verbose
 hg config
+
+# Subversion
 WHERE svn
 svn --version --verbose
+
+# Concurrent Versions System
 WHERE cvs
 cvs --version
 
@@ -197,47 +286,56 @@ cvs --version
 WHERE python
 python --version
 echo '' \| python -v
+
 WHERE python3
 python3 --version
 echo '' \| python3 -v
+
 WHERE python2
 python2 --version
 echo '' \| python2 -v
 
 WHERE pip
 pip --version
-pip freeze
+pip freeze # I
+
 WHERE pip2
 pip2 --version
 pip2 freeze
+
 WHERE pip3
 pip3 --version
 pip3 freeze
 
 WHERE conda
 conda --version
-conda list
+conda list # I
 conda info --all
 cat ${HOME}/.condarc
+
+# TODO: ActiveState Python.
 
 # ________________________Perl________________________
 WHERE perl
 perl -v
 perl -V
-perl "${DN}"/exec/list_packages.pl
-echo -e 'l\\\nq' \| instmodsh
+perl "${DN}"/exec/list_packages.pl # I
+echo -e 'l\\\nq' \| instmodsh # I
+
 WHERE cpan
-echo "m" \| cpan
+echo "m" \| cpan # I
+
 WHERE perldoc
 perldoc -V
 
 # ________________________R________________________
 WHERE R
 R --version
-echo -e "sessionInfo\(\)\\\n.libPaths\(\)" \| R --no-save
+Rscript "${DN}"/exec/list_packages.R # See the comments inside for more details.
 WHERE Rscript
 
 # ________________________Java________________________
+# OpenJDK/Oracle JDK and other interesting JDKs.
 WHERE javac
 javac --version
 WHERE java
@@ -247,10 +345,20 @@ jshell --version
 WHERE jar
 jar --version
 
+# Building systems.
+WHERE ant
+ant -version
+WHERE gradle
+gradle --version
+WHERE mvn
+mvn --version
+
 # ________________________C________________________
+# UNIX C Compiler.
 WHERE cc
 cc --version
 
+# GNU Compiler Collection
 WHERE gcc
 gcc --version
 gcc --verbose
@@ -261,10 +369,12 @@ WHERE cpp
 cpp --version
 echo '' \| cpp --verbose
 
+# Tiny C Compiler.
 WHERE tcc
 tcc --version
 tcc -vv
 
+# LLVM C Compiler.
 WHERE clang
 clang --version
 clang --verbose
@@ -272,6 +382,7 @@ WHERE clang++
 clang++ --version
 clang++ --verbose
 
+# Intel C Compiler.
 WHERE icc
 icc --version
 WHERE ifpc
@@ -280,15 +391,21 @@ ifpc --version
 # ________________________Rust________________________
 WHERE cargo
 cargo --version --verbose
+cargo --list # Show installed commands, not packages.
 WHERE rustc
 rustc --version --verbose
 
+# ________________________GoLang________________________
+WHERE go
+go version
+go env
+
 # ________________________Ruby________________________
 WHERE gem
-gem list
-gem query -ab
-gem search -ab
-gem outdated
+gem list # I
+# gem query -ab # DD. A
+# gem search -ab # DD. A
+# gem outdated # DD. A
 gem environment
 WHERE ruby
 ruby --version
@@ -366,25 +483,32 @@ WHERE bibtex
 WHERE biber
 WHERE texdoc
 WHERE texdoc-tk
+
+# MikTeX
 WHERE miktex-console
 WHERE initexmf
 initexmf --version
 initexmf --list-modes
-initexmf  --list-formats
+initexmf --list-formats
+mpm --list # A
+# mpm --list-repositories  # AS. DD.
+
+# TeXLive amd MacTeX
 WHERE tlmgr
-tlmgr repository list
+tlmgr repository list # AS
 tlmgr option showall
 tlmgr key list
 tlmgr info
 tlmgr conf
+$ TODO: More tlmgr commands
 
-# ________________________BinUtils________________________
+# ________________________BinUtils and other tools in GNU Toolchain________________________
 WHERE pkgconf
 pkgconf --version
-pkgconf --list-all
+pkgconf --list-all # I
 WHERE pkg-config
 pkg-config --version
-pkg-config --list-all
+pkg-config --list-all # I
 
 WHERE ar
 ar --version
@@ -405,13 +529,16 @@ WHERE autopoint
 autopoint --version
 WHERE m4
 m4 --version
+WHERE libtool
+libtool --version
 
 # ________________________GNU CoreUtils________________________
+# "dd" for example.
 WHERE dd
 dd --version
 
 # ________________________Logs________________________
-__log_cat
+# __log_cat # DD.
 
 # ________________________Archiving Utils________________________
 WHERE 7z

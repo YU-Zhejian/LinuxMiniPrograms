@@ -67,7 +67,7 @@ unset valid_path
 tmpf="$(mktemp -t libls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	"${myfind}" "${dir}" 2> /dev/null >> "${tmpf}" || true
+	find "${dir}" 2> /dev/null >> "${tmpf}" || true
 done
 tmpff=$(mktemp -t libls.XXXXXX)
 if ${WINDOWS}; then

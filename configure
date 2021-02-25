@@ -21,6 +21,7 @@ VAR_install_usage=false
 VAR_update_path=true
 MAKE_TARGETS="etc var pp"
 MAKE_ARGS=""
+PREFIX="${HOME}/usr/local"
 # ========Read Opt========
 STDS=()
 for opt in "${@}"; do
@@ -69,6 +70,10 @@ for opt in "${@}"; do
 		"--skip-path")
 			VAR_update_path=false
 			;;
+		# TODO: Implement installation
+		#--prefix\:*)
+		#	PREFIX="${opt:8}"
+		#	;;
 		"-x")
 			set -x
 			;;
@@ -83,11 +88,14 @@ done
 
 # ========Check========
 infoh "Checking FileSystem..."
+#mkdir -p "${PREFIX}" || errh "Installation prefix ${PREFIX} cannot be accessed"
 ${VAR_update_path} && rm -f 'etc/path.sh'
 if [ ! -f 'etc/path.sh' ]; then
 	path_sh="etc/path.sh"
 	mkdir -p etc
 	touch "${path_sh}"
+	echo "#!/usr/bin/env bash" >> "${path_sh}"
+	echo "# Generated at $(date)" >> "${path_sh}"
 	#=====os=====
 	if [ -z "${myos:-}" ]; then
 		os_type=$(uname -mrs)
@@ -145,15 +153,15 @@ fi
 [ "${myasciidoctor_pdf}" != "ylukh" ] || VAR_install_pdf=false
 [ "${mypython}" != "ylukh" ] || VAR_install_usage=false
 if ${VAR_install_pdf}; then
-	MAKE_TARGETS="${MAKE_TARGETS} pdf"
+	MAKE_TARGETS="${MAKE_TARGETS} share/doc/pdf"
 	MAKE_ARGS="${MAKE_ARGS}:ADOC_PDF=\"${myasciidoctor_pdf}\""
 fi
 if ${VAR_install_man}; then
-	MAKE_TARGETS="${MAKE_TARGETS} man"
+	MAKE_TARGETS="${MAKE_TARGETS} share/man"
 	MAKE_ARGS="${MAKE_ARGS}:ADOC=\"${myasciidoctor}\""
 fi
 if ${VAR_install_usage}; then
-	MAKE_TARGETS="${MAKE_TARGETS} usage"
+	MAKE_TARGETS="${MAKE_TARGETS} share/doc/usage"
 	MAKE_ARGS="${MAKE_ARGS}:ADOC=\"${myasciidoctor}\""
 fi
 if ${VAR_install_html}; then
@@ -162,7 +170,7 @@ if ${VAR_install_html}; then
 	else
 		MAKE_ARGS="${MAKE_ARGS}:ADOC=\"${myasciidoc}\":AOPT=\"\""
 	fi
-	MAKE_TARGETS="${MAKE_TARGETS} html"
+	MAKE_TARGETS="${MAKE_TARGETS} share/doc/html"
 fi
 #========C========
 [ "${mygcc}" != "ylukh" ] || [ "${myclang}" != "ylukh" ] && MAKE_TARGETS="${MAKE_TARGETS} C"
@@ -172,7 +180,7 @@ elif [ "${myclang}" != "ylukh" ];then
 	MAKE_ARGS="${MAKE_ARGS}:CC=${myclang}"
 fi
 #========Makefile Generation========
-MAKE_ARGS="${MAKE_ARGS}:PYTHON=${mypython}:RM=rm -rf:CP=cp -rf"
+MAKE_ARGS="${MAKE_ARGS}:PYTHON=${mypython}:RM=rm -rf:CP=cp -rf:PREFIX=${PREFIX}"
 echo "${MAKE_ARGS}" | sed 's;:;\nexport ;g' | sort | uniq >Makefile
 echo "all: ${MAKE_TARGETS}" >>Makefile
 cat src/Makefile.def >>Makefile

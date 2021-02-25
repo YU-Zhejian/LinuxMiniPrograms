@@ -4,6 +4,8 @@ set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 . "${DN}"/../lib/libstr
+# TODO: Still bugs!
+errh "Bugs not fixed."
 
 function __send() {
 	trap "__exit" SIGINT SIGTERM
@@ -24,7 +26,7 @@ function __exit() {
 	rm -f "${LVCD}"/"${LCUN}"
 	infoh "Thanks for using this system"
 	IFS="${OLD_IFS}"
-	kill -9 -${$}
+	kill -9 -${pid_rec}
 	exit 0
 }
 
@@ -73,8 +75,9 @@ export M_R=0
 (__reciever) &
 pid_rec=${!}
 infoh "PID of reciever: ${pid_rec}"
-trap "__exit" SIGINT SIGTERM
+
 while read -p ">" MESS_SD; do
+	trap "__exit" SIGINT SIGTERM
 	if [[ "${MESS_SD}" =~ ^!+ ]];then
 		bash -c ${MESS_SD:1} 2>&1 | while read line;do
 			__send "${LCUN}" "${line}"

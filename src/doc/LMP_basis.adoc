@@ -185,6 +185,8 @@ Developers should pay attention to the `Readme.adoc` under each folder and news 
 
 To convert documentations from Asciidoc to the format you wish, you may use `asciidoc` or `asciidoctor`. Due to some incompatibility problems, using `pandoc` is not recommended.
 
+Documentations of Python libraries are included in those Python files.
+
 == UPGRADE
 
 Here are the instructions on how to upgrade LinuxMiniPrograms.

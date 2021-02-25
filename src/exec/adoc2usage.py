@@ -61,12 +61,12 @@ for line in fdoc_lines:
 		fdoc_out_lines.append('')
 	elif line.startswith(r'*'):
 		reeq = re.match(r'\**\*', line).span()
-		fdoc_out_lines.append(Currindent + '	' * (reeq[1] - reeq[0]) + r'* ' + line.replace('*', '').strip())
+		fdoc_out_lines.append(Currindent + '  ' * (reeq[1] - reeq[0]) + r'* ' + line.replace('*', '').strip())
 		fix_tail()
 		fdoc_out_lines.append('')
 	elif line.startswith(r'.'):
 		reeq = re.match(r'\.*\.', line).span()
-		fdoc_out_lines.append(Currindent + '	' * (reeq[1] - reeq[0]) + r'- ' + line.replace('.', '').strip())
+		fdoc_out_lines.append(Currindent + '  ' * (reeq[1] - reeq[0]) + r'- ' + line.replace('.', '').strip())
 		fix_tail()
 		fdoc_out_lines.append('')
 	else:

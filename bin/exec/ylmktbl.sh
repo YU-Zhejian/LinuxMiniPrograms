@@ -23,7 +23,8 @@ for opt in "${@}"; do
 		STDS="${opt}"
 	fi
 done
-[ -f "${STDS}" ] || errh "Table file ${STDS} invalid"
+[ "${STDS}" = "-" ] || STDS="/dev/stdin"
+[ -f "${STDS}" ] || [ "${STDS}" = "/dev/stdin" ] || errh "Table file ${STDS} invalid"
 
 function __GetLongestString_max_str() {
 	for item in "${@}"; do
