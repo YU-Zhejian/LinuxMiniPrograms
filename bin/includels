@@ -71,7 +71,7 @@ unset valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	"${myfind}" "${dir}" 2> /dev/null >> "${tmpf}" || true
+	find "${dir}" 2> /dev/null >> "${tmpf}" || true
 done
 if [ ${#STDS[@]} -eq 0 ]; then
 	cat "${tmpf}"

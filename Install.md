@@ -74,9 +74,18 @@ For most programs written in Shell, following programs will be needed and GNU ve
 	* procps-ng (ps)>= version 3.3.10 available from <https://sourceforge.net/projects/procps-ng/> or ps (Cygwin) 3.1.4. Those installed in FreeBSD>=12.1 will also work. Please note that you should not try to compile programs requiring GNU LibC (glibc) in Cygwin like procps-ng, top ot htop.
 	* GNU make>=4.3 (named "gmake" under FreeBSD) available from <https://www.gnu.org/software/make/>. Those installed in FreeBSD>=12.1 will ***NOT*** work.
 
-* Some programs such as `libmktbl` have its Python version (Need Python>=3.6), which is faster than those written in Shell script. There are also programs written purely in Python, like `libdo-monitor`. During the configuring process of LinuxMiniPrograms, the installer will search for all Python 3 interpreter inside your `${PATH}` variable and locate the newest Python interpreter as the default Python interpreter of the LinuxMiniPrograms. However, you can modify this by editing `etc/path.sh` to specific your own Python interpreter.
+* Some programs such as `libmktbl` have its Python version (Need Python>=3.5), which is faster than those written in Shell script. There are also programs written purely in Python, like `libdo-monitor`. During the configuring process of LinuxMiniPrograms, the installer will search for all Python 3 interpreter inside your `${PATH}` variable and locate the newest Python interpreter as the default Python interpreter of the LinuxMiniPrograms. However, you can modify this by editing `etc/path.sh` to specific your own Python interpreter.
 
-* Some programs such as `pst` have its C version, which is faster than those written in Python. You may need to install GNU Compiler Collection (gcc)>=10.2.1-1 (Available from <http://gcc.gnu.org/>) to build these programs.
+* Some programs such as `pst` have its C version, which is faster than those written in Python. You may need to install GNU Compiler Collection (gcc)>=10.2.1-1 (Available from <http://gcc.gnu.org/>) or FreeBSD Clang for FreeBSD\* to build these programs.
+
+\*: If you insist to use GCC under FreeBSD, please make sure that your machine is able to use GNU/Linux executables. This can be enabled by:
+
+```bash
+kldload linux
+kldload linux64
+```
+
+with package `linux_base-c7` installed.
 
 * If you would like to use libDO v3 instead of v2, you need following dependencies:
 

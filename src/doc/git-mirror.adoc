@@ -97,7 +97,9 @@ Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 rm success
 
 SYNOPSIS: `git-mirror rmrecord [URL/UUID]`
 
-Remove a repository record. You may use this when `git-mirror rm` fails.
+Remove a repository record. You may use this when `git-mirror rmrepo` fails.
+
+WARNING: This only makes the system forget tis repository. The repository itself may still be kept in computer!
 
 OPTION: `-f` for force removal without confirmation.
 
@@ -233,5 +235,11 @@ Tested with all functions supported.
 ** `var/git-mirror.d/logs/${UUID}` Logs of a specific repo. Produced during `add`, `sync` and `gc`.
 ** `var/git-mirror.d/${UUID}` Repositories.
 ** `var/git-mirror.d/uuidtables.d` Databases containing relationship between UUIDs and repository URLs.
+
+== KNOWN BUGS
+
+URL with one longer than another with same leading digits may fail.
+
+Example: http://git.a.com/a and http://git.a.com/aas
 
 include::include/copy.adoc[]

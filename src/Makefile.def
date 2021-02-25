@@ -1,5 +1,6 @@
 export VERBOSE = TRUE
 export MKDIR = mkdir -p
+export TT = all
 
 .PHONY : all pp test clean distclean doc #install uninstall
 
@@ -33,7 +34,7 @@ pp:
 	@-$(MAKE) -C opt permissions
 
 test:
-	bash src/test/00_install.sh
+	bash src/test/00_index.sh $(TT)
 
 clean:
 	$(RM) src/test/*.t/

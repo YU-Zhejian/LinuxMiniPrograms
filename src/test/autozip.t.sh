@@ -1,16 +1,8 @@
 #!/usr/bin/env bash
-# AUTOZIP.t.sh v1
-#exit 0
 set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../../lib/libdo
-LIBDO_TOP_PID=${$}
-TDN="autozip_$(date +%Y-%m-%d_%H-%M-%S).t"
-mkdir -p "${TDN}"
-cd "${TDN}"
-LIBDO_LOG_MODE=4
-LIBDO_LOG="autozip.log"
-# AUTOZIP WITH FILES
+PROGNAME=autozip
+. "${DN}"/00_libtest.sh
 DO dd if=/dev/zero of=tf bs=512 count=1
 for ext in gz bgz xz bz2 lzma lz4 zst lzo lz br Z lzfse;do
 	DO autozip --force --parallel tf "${ext}" 1

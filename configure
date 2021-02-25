@@ -94,6 +94,8 @@ if [ ! -f 'etc/path.sh' ]; then
 	path_sh="etc/path.sh"
 	mkdir -p etc
 	touch "${path_sh}"
+	echo "#!/usr/bin/env bash" >> "${path_sh}"
+	echo "# Generated at $(date)" >> "${path_sh}"
 	#=====os=====
 	if [ -z "${myos:-}" ]; then
 		os_type=$(uname -mrs)
