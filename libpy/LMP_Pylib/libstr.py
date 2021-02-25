@@ -1,7 +1,17 @@
+# LIBSTR.py v1
+'''
+Python version of lib/libstr, includes common string-output utilities.
+See 'yldoc libstr' for more details.
+'''
 import sys
 
 
 def eprint(*args, **kwargs):
+	'''
+	Enhanced print to standard error.
+	:param args: What needed to be print.
+	:param kwargs: Other arguments supplied to function 'print'.
+	'''
 	print(*args, file=sys.stderr, **kwargs)
 
 

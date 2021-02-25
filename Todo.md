@@ -54,14 +54,6 @@
 * zopfli
 * zutil
 
-## Add
-* autounzip -c
-* azcat -d
-* enigma in C
-* make install
-* Determine python in Windows
-* Python setup
-
 ## Documentation
 
 * autounzip
@@ -99,3 +91,4 @@
 * libman
 * libpath
 * libstr
+* Python libraries
