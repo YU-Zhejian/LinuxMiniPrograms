@@ -69,6 +69,9 @@ for opt in "${@}"; do
 		"--skip-path")
 			VAR_update_path=false
 			;;
+		"-x")
+			set -x
+			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
 			;;
@@ -111,10 +114,10 @@ if [ ! -f 'etc/path.sh' ]; then
 	asciidoc asciidoctor-pdf asciidoctor \
 	parallel \
 	git clang gcc gmake make; do . src/exec/findornot.sh; done
-	sed -i 's;^mygtar;mytar;' "${path_sh}"
-	sed -i 's;^mygmake;mymake;' "${path_sh}"
-	sed -i 's;^mypbzip2;mypbz2;' "${path_sh}"
-	sed -i 's;^myasciidoctor-pdf;myasciidoctor_pdf;' "${path_sh}"
+	sed -i".bak" 's;^mygtar;mytar;' "${path_sh}"
+	sed -i".bak" 's;^mygmake;mymake;' "${path_sh}"
+	sed -i".bak" 's;^mypbzip2;mypbz2;' "${path_sh}"
+	sed -i".bak" 's;^myasciidoctor-pdf;myasciidoctor_pdf;' "${path_sh}"
 	. "${path_sh}"
 	infoh "All configurations are printed as follows:"
 	cat "${path_sh}" | grep -v '^$' | grep -v '^#' | sed 's/^my//' | sed 's/=/\\\\033[33m in \\\\033[0m/ ' | sed 's/ #/\\\\033[33m, \\\\033[32m/' | sort | while read line; do echo -e "${line}\033[0m"; done

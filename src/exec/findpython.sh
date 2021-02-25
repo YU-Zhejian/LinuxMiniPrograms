@@ -6,7 +6,7 @@ if [ -z "${mypython:-}" ]; then
 	python_ver=3
 	for dir in "${eachpath[@]}"; do
 		tmpf=$(mktemp -t configpath.XXXXXX)
-		ls -F -1 "${dir}" | grep '.[*@]$' | sed 's;[*@]$;;' | grep -E '^(python(3|)(\.[[:digit:]]+)*(d|m|u|)(.exe|)$)' | sed "s;^;$(echo ${dir})/;" > "${tmpf}"
+		ls -F -1 "${dir}" | grep '.[*@]$' | sed 's;[*@]$;;' | grep -E  '^(python(3|2){0,1}(\.[[:digit:]]+)*(d|m|u){0,1}(.exe){0,1}$)' | sed "s;^;$(echo ${dir})/;" > "${tmpf}"
 		while read line; do
 			echo "Python found in ${line}"
 			curr_version=$("${line}" --version 2>&1 | cut -f 2 -d " ")

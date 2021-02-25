@@ -59,7 +59,7 @@ For most programs written in Shell, these programs will be needed and GNU versio
   * `GNU sed>=4.4` available from <https://ftp.gnu.org/gnu/sed/>. Those installed in `FreeBSD>=12.1` will also work.
   * `GNU parallel>=20200122` available from <https://ftp.gnu.org/gnu/parallel/>.
   * `ps>=procps-ng version 3.3.10` available from <https://sourceforge.net/projects/procps-ng/> or `ps (Cygwin) 3.1.4`. Those installed in `FreeBSD>=12.1` will also work.
-  * `GNU make>=4.3` (Available from <https://www.gnu.org/software/make/>).
+  * `GNU make>=4.3` (named `gmake` under FreeBSD) (Available from <https://www.gnu.org/software/make/>). Those installed in `FreeBSD>=12.1` will ***NOT*** work.
 
 * Some programs such as `libmktbl` have its Python version (Need `python>=3.6`), which is faster than those written in Shell script. There are also programs written purely in Python, like `libdo-monitor`. When installing the program, the installer will search for all Python 3 interpreter inside the `${PATH}` variable and locate the newest Python interpreter as the default Python interpreter of the LMP. However, you can modify this by editing `etc/path.sh` to specific your own Python interpreter.
 
