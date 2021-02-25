@@ -61,6 +61,7 @@ function __brew_install() {
 	which ${1} &>> /dev/null || brew install --force-bottle ${2}
 }
 
+# TODO: lzfse
 __brew_install 7za p7zip
 __brew_install compress ncompress
 __brew_install lz4 lz4
