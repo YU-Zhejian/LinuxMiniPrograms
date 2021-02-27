@@ -82,6 +82,10 @@ __brew_install lzfse lzfse
 __brew_install bc bc
 # Adding CA Certs
 brew install --build-from-source axel git
+git config --global http.sslVerify false # Have to use this to solve issues.
+
+# Git rid of the problematic perl installation.
+brew uninstall --ignore-dependencies perl
 
 # ________________________Installing Miniconda________________________
 if ! whereis conda &>> /dev/null; then
