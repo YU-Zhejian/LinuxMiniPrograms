@@ -77,9 +77,9 @@ __brew_install aria2 aria2
 __brew_install javac openjdk
 __brew_install duf duf
 __brew_install brotli brotli
-# __brew_install ack ack # Command not tested
-# __brew_install lzfse lzfse # Command not tested
-# __brew_install bc bc # Command not tested
+# __brew_install ack ack # Failed.
+__brew_install lzfse lzfse
+__brew_install bc bc
 # Adding CA Certs
 brew install --build-from-source axel git
 
