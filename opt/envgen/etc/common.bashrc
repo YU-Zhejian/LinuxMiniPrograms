@@ -36,6 +36,10 @@ export LD_RUN_PATH="${HOME}/usr/local/lib:${HOME}/usr/local/lib64/:${LD_RUN_PATH
 export CPLUS_INCLUDE_PATH="${HOME}/usr/local/include:${CPLUS_INCLUDE_PATH:-}"
 export C_INCLUDE_PATH="${HOME}/usr/local/include:${C_INCLUDE_PATH:-}"
 
+# Perl system settings, commented for causing problems
+# export PERL5LIB="/etc/perl:/usr/local/lib/x86_64-linux-gnu/perl/5*:/usr/local/share/perl/5*:/usr/lib/x86_64-linux-gnu/perl5/5*:/usr/share/perl5:/usr/lib/x86_64-linux-gnu/perl/5*:/usr/share/perl/5*:/usr/local/lib/site_perl:/usr/lib/x86_64-linux-gnu/perl-base:${PERL5LIB:-}"
+
+
 # History settings.
 export HISTTIMEFORMAT='%F %T ' # History with time.
 export HISTSIZE=50000 # Larger history size.
@@ -46,8 +50,8 @@ alias du="du -h" # More readable du.
 alias df="duf --all" # duf to replace df
 alias diff="diff -u" # Make the output of $(diff) similar to git diff.
 alias ls="ls -lhF --color=auto" # More readable ls.
-# alias grep="grep --color=auto" # More readable grep.
-alias grep="ack" # ack to replace grep.
+alias grep="grep --color=auto" # More readable grep.
+# alias grep="ack" # ack to replace grep. Failed.
 alias shutdown="echo What the hell you\'re thinking?\!"
 alias reboot="echo What the hell you\'re thinking?\!"
 alias sudo="echo What the hell you\'re thinking?\!"
