@@ -30,6 +30,20 @@ fi
 mv etc/common.bashrc "${HOME}"/.bashrc
 [ -f "${HOME}/.profile" ] || echo ". \${HOME}/.bashrc" >> "${HOME}/.profile"
 
+# ________________________Installing Miniconda________________________
+if ! which conda &>> /dev/null; then
+	wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
+	bash Miniconda3-latest-Linux-x86_64.sh -b -p ${HOME}/conda
+	mv "${HOME}"/.condarc .condarc.bak
+	cp etc/.condarc "${HOME}"/.condarc
+	cat etc/conda.bashrc >> "${HOME}"/.bashrc
+	. etc/conda.bashrc
+	conda update --all -y
+	conda install -y ipython jupyterlab matplotlib notebook numpy pandoc tqdm
+	conda clean --all -y
+	pip install thefuck
+fi
+
 # ________________________Installing LinuxBrew________________________
 # brew uninstall $(brew list | xargs) # Removing all programs
 if ! which brew &>> /dev/null; then
@@ -63,7 +77,6 @@ function __brew_install() {
 	which ${1} &>> /dev/null || brew install --force-bottle ${2}
 }
 
-# TODO: lzfse
 __brew_install 7za p7zip
 __brew_install compress ncompress
 __brew_install lz4 lz4
@@ -88,20 +101,6 @@ git config --global http.sslVerify false # Have to use this to solve issues.
 
 # Git rid of the problematic perl installation.
 brew uninstall --ignore-dependencies perl
-
-# ________________________Installing Miniconda________________________
-if ! which conda &>> /dev/null; then
-	wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
-	bash Miniconda3-latest-Linux-x86_64.sh -b -p ${HOME}/conda
-	mv "${HOME}"/.condarc .condarc.bak
-	cp etc/.condarc "${HOME}"/.condarc
-	cat etc/conda.bashrc >> "${HOME}"/.bashrc
-	. etc/conda.bashrc
-	conda update --all -y
-	conda install -y ipython jupyterlab matplotlib notebook numpy pandoc tqdm
-	conda clean --all -y
-	pip install thefuck
-fi
 
 # ________________________EMACS Settings________________________
 mkdir -p "${HOME}"/.emacs-backups
