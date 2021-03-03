@@ -41,11 +41,10 @@ if ! which brew &>> /dev/null; then
 	mkdir -p "$(brew --repo homebrew/core)"
 	# mkdir -p "$(brew --repo)"/Library/Taps/homebrew/homebrew-cask
 	git clone https://mirrors.ustc.edu.cn/linuxbrew-core.git "$(brew --repo homebrew/core)"
-	#git clone https://mirrors.ustc.edu.cn/homebrew-cask.git "$(brew --repo)"/Library/Taps/homebrew/homebrew-cask
-	brew tap brewsci/bio
-	brew tap brewsci/num
-	brew tap brewsci/base
-	brew update
+	# git clone https://mirrors.ustc.edu.cn/homebrew-cask.git "$(brew --repo)"/Library/Taps/homebrew/homebrew-cask
+	# brew tap brewsci/bio
+	# brew tap brewsci/num
+	# brew tap brewsci/base
 	sed -i "s;^HOMEBREW_LINUX_DEFAULT_PREFIX =.*$;HOMEBREW_LINUX_DEFAULT_PREFIX = \"${HOME}/linuxbrew\";" "${HOME}"/linuxbrew/Library/Homebrew/global.rb
 	brew install --build-from-source openssl # The most important program.
 	# These programs may fail.
