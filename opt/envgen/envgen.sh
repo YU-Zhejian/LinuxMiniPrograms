@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #set -euo pipefail
-set -v
+set -x
 echo "YuZJLab Environment Generator version 1.0.0
 Copyright 2021 (C) YuZJLab
 
@@ -32,7 +32,7 @@ mv etc/common.bashrc "${HOME}"/.bashrc
 
 # ________________________Installing LinuxBrew________________________
 # brew uninstall $(brew list | xargs) # Removing all programs
-if ! whereis brew &>> /dev/null; then
+if ! which brew &>> /dev/null; then
 	git clone https://mirrors.ustc.edu.cn/brew.git "${HOME}"/linuxbrew
 	cat etc/brew.bashrc >> "${HOME}"/.bashrc
 	cat etc/brew.bashrc >> "${HOME}"/.Renviron
@@ -42,6 +42,9 @@ if ! whereis brew &>> /dev/null; then
 	# mkdir -p "$(brew --repo)"/Library/Taps/homebrew/homebrew-cask
 	git clone https://mirrors.ustc.edu.cn/linuxbrew-core.git "$(brew --repo homebrew/core)"
 	#git clone https://mirrors.ustc.edu.cn/homebrew-cask.git "$(brew --repo)"/Library/Taps/homebrew/homebrew-cask
+	brew tap brewsci/bio
+	brew tap brewsci/num
+	brew tap brewsci/base
 	brew update
 	sed -i "s;^HOMEBREW_LINUX_DEFAULT_PREFIX =.*$;HOMEBREW_LINUX_DEFAULT_PREFIX = \"${HOME}/linuxbrew\";" "${HOME}"/linuxbrew/Library/Homebrew/global.rb
 	brew install --build-from-source openssl # The most important program.
@@ -84,12 +87,17 @@ __brew_install brotli brotli
 brew install --build-from-source axel git
 
 # ________________________Installing Miniconda________________________
-if ! whereis conda &>> /dev/null; then
+if ! which conda &>> /dev/null; then
 	wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
 	bash Miniconda3-latest-Linux-x86_64.sh -b -p ${HOME}/conda
 	mv "${HOME}"/.condarc .condarc.bak
 	cp etc/.condarc "${HOME}"/.condarc
 	cat etc/conda.bashrc >> "${HOME}"/.bashrc
+	. etc/conda.bashrc
+	conda update --all -y
+	conda install -y ipython jupyterlab matplotlib notebook numpy pandoc tqdm
+	conda clean --all -y
+	pip install thefuck
 fi
 
 # ________________________EMACS Settings________________________
@@ -105,10 +113,3 @@ cp etc/common.Rprofile "${HOME}"/.Rprofile
 # ________________________Ruby Settings________________________
 mv "${HOME}"/.gemrc .gemrc.bak
 cp etc/common.gemrc "${HOME}"/.gemrc
-
-# ________________________Installing Conda Packages________________________
-. "${HOME}"/.bashrc
-conda update --all -y
-conda install -y ipython jupyterlab matplotlib notebook numpy pandoc tqdm
-conda clean --all -y
-pip install thefuck
