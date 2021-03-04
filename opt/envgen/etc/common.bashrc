@@ -6,7 +6,8 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/g
 # There's no need to source "${HOME}/.profile". It gets executed before this one.
 
 # Git helper, can be found at the source code of Git.
-. "${HOME}"/.git-prompt.sh
+function __git_ps1 (){ true; } # The default ${PS1}
+[ -f "${HOME}"/.git-prompt.sh ] && . "${HOME}"/.git-prompt.sh
 export GIT_PS1_SHOWUPSTREAM="verbose"
 
 # Fantastic ${PS1} with additional linebreak.
