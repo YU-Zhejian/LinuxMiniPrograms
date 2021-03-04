@@ -62,10 +62,11 @@ sed -i 's/\r$//g' etc/*
 # ________________________Installing bashrc with common aliases________________________
 if ${INSTALL_BASH_SETTINGS}; then
 	mv "${HOME}"/.bashrc .bashrc.bak
-	if ! __git_ps1 &>>/dev/null; then
-		git clone --depth 1 --verbose https://github.com/git/git
-		mv git/contrib/completion/git-prompt.sh "${HOME}"/.git-prompt.sh
-	fi
+	# if ! __git_ps1 &>>/dev/null; then
+		# git clone --depth 1 --verbose https://github.com/git/git
+		# mv git/contrib/completion/git-prompt.sh "${HOME}"/.git-prompt.sh
+		mv git/contrib/completion/git-prompt.sh etc/git.bashrc "${HOME}"/.git-prompt.sh
+	# fi
 	mv etc/common.bashrc "${HOME}"/.bashrc
 	[ -f "${HOME}/.profile" ] || echo ". \${HOME}/.bashrc" >>"${HOME}/.profile"
 fi
