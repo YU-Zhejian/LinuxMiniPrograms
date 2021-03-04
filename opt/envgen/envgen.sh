@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #set -euo pipefail
-set -x
+set -v
 echo "YuZJLab Environment Generator version 1.0.0
 Copyright 2021 (C) YuZJLab
 
@@ -71,7 +71,7 @@ if ${INSTALL_BASH_SETTINGS}; then
 fi
 
 # ________________________Installing Miniconda________________________
-if ${INSTALL_CONDA} ! which conda &>>/dev/null; then
+if ${INSTALL_CONDA} && ! which conda &>>/dev/null; then
 	wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
 	bash Miniconda3-latest-Linux-x86_64.sh -b -p ${HOME}/conda
 	mv "${HOME}"/.condarc .condarc.bak
