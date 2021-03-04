@@ -65,7 +65,7 @@ if ${INSTALL_BASH_SETTINGS}; then
 	# if ! __git_ps1 &>>/dev/null; then
 		# git clone --depth 1 --verbose https://github.com/git/git
 		# mv git/contrib/completion/git-prompt.sh "${HOME}"/.git-prompt.sh
-		mv git/contrib/completion/git-prompt.sh etc/git.bashrc "${HOME}"/.git-prompt.sh
+		mv etc/git.bashrc "${HOME}"/.git-prompt.sh
 	# fi
 	mv etc/common.bashrc "${HOME}"/.bashrc
 	[ -f "${HOME}/.profile" ] || echo ". \${HOME}/.bashrc" >>"${HOME}/.profile"
@@ -146,6 +146,7 @@ if ${INSTALL_BREW}; then
 	# Git rid of the problematic perl installation.
 	brew uninstall --ignore-dependencies perl
 fi
+
 # ________________________EMACS Settings________________________
 if ${INSTALL_EMACS_SETTINGS}; then
 	mkdir -p "${HOME}"/.emacs-backups
@@ -159,6 +160,7 @@ if ${INSTALL_R_SETTINGS}; then
 	cp etc/common.Rprofile "${HOME}"/.Rprofile
 	echo 'install.packages(c("ggpubr","tidyverse","rmarkdown","knitr","viridis","stringr","devtools","BiocManager"))' | R --no-save # May cause problems.
 fi
+
 # ________________________Ruby Settings________________________
 if ${INSTALL_RUBY_SETTINGS}; then
 	mv "${HOME}"/.gemrc .gemrc.bak
