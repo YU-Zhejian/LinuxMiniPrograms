@@ -26,6 +26,9 @@ for opt in "${@}"; do
 		--output\:*)
 			cmd=${opt:9}
 			;;
+		"-x")
+			set -x
+			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
 			;;

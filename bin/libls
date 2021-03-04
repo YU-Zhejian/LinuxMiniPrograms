@@ -55,6 +55,9 @@ for opt in "${@}"; do
 		"-w" | "--windows")
 			WINDOWS=true
 			;;
+		"-x")
+			set -x
+			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
 			;;

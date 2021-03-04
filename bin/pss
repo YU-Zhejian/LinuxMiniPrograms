@@ -19,6 +19,9 @@ for opt in "${@}"; do
 			echo "Version 1 patch 9"
 			exit 0
 			;;
+		"-x")
+			set -x
+			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
 			;;

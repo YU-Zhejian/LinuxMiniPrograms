@@ -32,6 +32,9 @@ for opt in "${@}"; do
 			unset valid_path
 			exit 0
 			;;
+		"-x")
+			set -x
+			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
 			;;

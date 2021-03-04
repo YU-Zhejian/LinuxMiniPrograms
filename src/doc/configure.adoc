@@ -40,8 +40,6 @@ include::include/cmnopt.adoc[]
 
 * `--skip-path` Do not update `etc/path.sh`.
 
-* `-x` Enter tracing mode.
-
 == EXAMPLES
 
 These examples are tested under WSL.
