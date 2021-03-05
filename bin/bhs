@@ -32,7 +32,7 @@ for opt in "${@}"; do
 done
 STDS=$(echo "${STDS}" | sed "s/ $//")
 if [ -n "${STDS}" ]; then
-	echo "${STDS}"
+	# echo "${STDS}"
 	eval cat -n ~/.bash_history \| grep --color=auto "${STDS}"
 else
 	cat -n ~/.bash_history

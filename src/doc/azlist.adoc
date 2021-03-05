@@ -1,7 +1,7 @@
 :toc:
 :author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
 
-= azman(1)
+= azlist(1)
 
 == NAME
 
@@ -13,14 +13,13 @@ azlist - AutoZip file viewer.
 
 == DESCRIPTION
 
-List all files and folders inside `[SOURCE]` in a verbose format.
+List all files and folders inside `[SOURCE]` in a verbose format with other information like compression rate.
 
 WARNING: This program do not support archives with extension `.lzma`, `.lz` and `.bz2`.
 
 == OPTIONS
 
-* `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when extracting the archive. `[thread]` should not be higher than the number of cores installed.
-If `[thread]` is omitted, will use the number of cores installed.
+* `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when extracting the archive. `[thread]` should not be higher than the number of cores installed. If `[thread]` is omitted, will use the number of cores installed.
 
 include::include/cmnopt.adoc[]
 
@@ -39,6 +38,6 @@ Tested with all functions supported.
 
 == SEE ALSO
 
-autozip, azman
+autozip, autounzip, azcat
 
 include::include/copy.adoc[]

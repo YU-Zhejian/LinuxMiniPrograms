@@ -39,6 +39,6 @@ Tested with all functions supported.
 
 == SEE ALSO
 
-autounzip, autozip
+azlist, azcat, autozip
 
 include::include/copy.adoc[]

@@ -10,9 +10,9 @@ OPTIONS:
 	-v|--version Show version information.
 	-a|--all Install all components.
 	--install-config (Re)Install configuration files in 'etc'.
-	--clear-history Clear all previous histories in 'var'.
+	--clear-history (Re)Install histories in 'var'.
 	--install-doc Install all documentations, need 'asciidoctor' 'asciidoctor-pdf' (available from Ruby gems) and Python 3.
-	--install-man Install doc in Groff man, need 'asciidoctor'.
+	--install-man Install Groff man, need 'asciidoctor'.
 	--install-usage Install yldoc usage, need Python 3.
 	--install-pdf Install doc in pdf, need 'asciidoctor-pdf'.
 	--install-html Install doc in html, need 'asciidoctor' or 'asciidoc'.

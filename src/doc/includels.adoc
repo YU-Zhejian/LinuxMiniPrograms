@@ -13,7 +13,7 @@ includels [STRING] [[STRING2]...] [OPTIONS]
 
 == DESCRIPTION
 
-Search `[STRING]` in C include paths. If `[STRING]` is omitted, the program will list all contents in each valid C include paths.
+Search `[STRING]` in C/C++ include paths. If `[STRING]` is omitted, the program will list all contents in each valid C include paths.
 
 == OPTIONS
 
@@ -33,9 +33,10 @@ YuZJLab INCLUDEPATH ls
 Copyright (C) 2019-2021 YU Zhejian
 /usr/include
 /usr/local/include
-/usr/local/share/man
 /usr/lib/gcc/x86_64-linux-gnu/10/include
 /usr/lib/gcc/x86_64-linux-gnu/9/include
+/usr/lib/llvm-10/lib/clang/10.0.1/include
+/usr/lib/llvm-11/lib/clang/11.0.1/include
 ----
 
 [source]

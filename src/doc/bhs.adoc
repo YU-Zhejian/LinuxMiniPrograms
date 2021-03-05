@@ -15,6 +15,8 @@ bhs - Bash History Searcher.
 
 Search `[STRING]` in ~/.bash_history with 'grep'. Search for multiple targets are done spontaneously.
 
+This program can be replaced by `history | grep XXXXXX`.
+
 == OPTIONS
 
 include::include/cmnopt.adoc[]
@@ -48,7 +50,6 @@ admin@DESKTOP-FFEV0AF ~
 $ bhs 'git push'
 YuZJLab Bash History Searcher
 Copyright (C) 2019-2021 YU Zhejian
- -e 'git push'
 	30  git push
 	31  git push
    185  git push
@@ -60,7 +61,6 @@ admin@DESKTOP-FFEV0AF ~
 $ bhs git apt
 YuZJLab Bash History Searcher
 Copyright (C) 2019-2021 YU Zhejian
- -e 'git' -e 'apt'
      3  git clone https://github.com/YuZJLab/LinuxMiniPrograms
      4  sudo apt install git
      5  sudo apt install git -y
