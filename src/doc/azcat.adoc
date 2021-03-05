@@ -23,6 +23,6 @@ Tested with all functions supported.
 
 == SEE ALSO
 
-autounzip, azman, autozip-cat
+autounzip, azlist, azcat
 
 include::include/copy.adoc[]

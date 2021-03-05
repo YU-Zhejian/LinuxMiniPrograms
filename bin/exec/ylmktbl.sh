@@ -15,6 +15,9 @@ for opt in "${@}"; do
 			echo "Version 3 patch 2 in Bash"
 			exit 0
 			;;
+		"-x")
+			set -x
+			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
 			;;

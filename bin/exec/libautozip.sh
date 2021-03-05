@@ -22,6 +22,9 @@ for opt in "${@}"; do
 			echo "Version 5"
 			exit 0
 			;;
+		"-x")
+			set -x
+			;;
 		esac
 		OPT=("${OPT[@]}" "${opt}")
 	else

@@ -20,6 +20,9 @@ for opt in "${@}"; do
 			yldoc git-mirror
 			exit 0
 			;;
+		"-x")
+			set -x
+			;;
 		esac
 	else
 		STDS=("${STDS[@]}" "${opt}")

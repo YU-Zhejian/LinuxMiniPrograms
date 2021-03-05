@@ -29,8 +29,7 @@ include::include/cmnopt.adoc[]
 
 * `-d|--decompress` Will initiate `autounzip` with same arguments.
 
-* `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when creating the archive. `[thread]` should not be higher than the number of cores installed.
-If `[thread]` is omitted, will use the number of cores installed.
+* `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when creating the archive. `[thread]` should not be higher than the number of cores installed. If `[thread]` is omitted, will use the number of cores installed.
 
 * `-c|--stdout` Pump what is compressed to standard output. Not supported by some algorithms.
 
@@ -48,6 +47,6 @@ Tested with all functions supported.
 
 == SEE ALSO
 
-autounzip, azman, autozip-cat
+autounzip, azlist, azcat
 
 include::include/copy.adoc[]

@@ -24,6 +24,10 @@ include::include/cmnopt.adoc[]
 * `-m:[STRING]|--message:[STRING]` Search in history with message `[STRING]`.
 
 * `-s|--exclude-system` Exclude message from user `SYSTEM`.
+/usr/lib/llvm-10/lib/clang/10.0.1/include
+/usr/lib/llvm-11/lib/clang/11.0.1/include
+/usr/lib/llvm-10/lib/clang/10.0.1/include
+/usr/lib/llvm-11/lib/clang/11.0.1/include
 
 * `-e:[STRING]|--exclude:[STRING]` Search in history without sender `[STRING]`.
 
@@ -76,7 +80,7 @@ Tested with all functions supported.
 
 == FILES
 
-. `var/livechat.d/SYSTEM` The file containing all messages.
+. `var/livechat.d/SYSTEM` The file containing all messages. It also acts as a fake user "SYSTEM".
 
 == SEE ALSO
 

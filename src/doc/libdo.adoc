@@ -19,7 +19,7 @@ DO cmd
 
 WARNING: We recently released an update of LibDO from V1* to V2. Please update all your previous files by `libdoman_update`
 
-Fistly, define variables like `LIBDO_LOG`.
+Firstly, define variables like `LIBDO_LOG`.
 
 Then, use `. /PATH/TO/LIBDO` to import libdo. (Command `source` is equal to command `.`)
 
@@ -93,8 +93,7 @@ LIBDO EXITED SUCCESSFULLY
 
 These examples are tested under Cygwin.
 
-Please be aware that we __DO NOT__ recommend using LibDO interactively.
-You may use it in a shell script.
+Please be aware that we __DO NOT__ recommend using LibDO interactively. You may use it in a shell script.
 
 [source]
 ----
@@ -135,9 +134,6 @@ Using a script:
 
 [source]
 ----
-admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
-$ code ls.sh
-
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ cat ls.sh
 LIBDO_LOG_MODE=4

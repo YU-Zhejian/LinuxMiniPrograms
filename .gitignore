@@ -2,6 +2,11 @@
 /var
 /*backup.tgz
 /share
+/doc # For compability
+/usage # For compability
+/html # For compability
+/pdf # For compability
+/man # For compability
 __pycache__
 *.stackdump
 /gnome-keyring-daemo.core

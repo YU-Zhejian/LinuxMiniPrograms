@@ -13,8 +13,7 @@ pss [STRING] [[STRING2]...] [OPTIONS]
 
 == DESCRIPTION
 
-Search [STRING] in Process Snapshots.
-If [STRING] is omitted, the program will list all Process Snapshots
+Search [STRING] in Process Snapshots. If [STRING] is omitted, the program will list all Process Snapshots
 
 == OPTIONS
 

@@ -13,8 +13,7 @@ pathls [STRING] [[STRING2]...] [OPTIONS]
 
 == DESCRIPTION
 
-Search [STRING] in `${PATH}`.
-If [STRING] is omitted, the program will list all contents in each vaild `${PATH}`.
+Search [STRING] in `${PATH}`. If [STRING] is omitted, the program will list all contents in each vaild `${PATH}`.
 
 == OPTIONS
 

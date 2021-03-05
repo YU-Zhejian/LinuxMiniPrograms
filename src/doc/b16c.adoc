@@ -27,6 +27,8 @@ These examples are tested under WSL.
 
 `b16c` can be used to transform binary data into texts.
 
+The following script shows that `b16c` will not change the content of the file it reads.
+
 [source]
 ----
 (base) 127 2021-01-20_23-46-24 /home/yuzj
@@ -43,7 +45,9 @@ $ cat /bin/ls | b16c | b16c -d | sha512sum
 b1ecf4268efc8787abe4e56bae77a186d8c6ac3e6a62a1a86226db6c06a59685a06613b3b5e65a11d9e8a79bc929e5eefbdb1d3a0d8c0aead1a9cff8a4a33a3a  -
 ----
 
-`b16c` can also be used with `enigma`.
+`b16c` can also be used with `enigma`. The default `enigma` installation accepts `b16c` output only.
+
+Please note that after being coded by `b16c`, the size of the file will grow about 1 times.
 
 == COMPATIBILITY
 
