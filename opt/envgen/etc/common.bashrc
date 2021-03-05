@@ -1,5 +1,5 @@
 # Export basic PATH variables.
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:${PATH:-}"
 
 # Source global definitions.
 [ -f /etc/bashrc ] && . /etc/bashrc
