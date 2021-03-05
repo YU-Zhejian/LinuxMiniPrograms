@@ -39,7 +39,7 @@ if ! which conda &>> /dev/null; then
 	cat etc/conda.bashrc >> "${HOME}"/.bashrc
 	. etc/conda.bashrc
 	conda update --all -y
-	conda install -y ipython jupyterlab matplotlib notebook numpy pandoc tqdm
+	conda install -y ipython matplotlib notebook numpy pandoc tqdm # jupyterlab
 	conda clean --all -y
 	pip install thefuck
 fi
