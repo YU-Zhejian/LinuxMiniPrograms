@@ -15,7 +15,7 @@ function __prevp (){
 	local r=${?}
 	[ ${r} -eq 0 ] && echo -e "\e[42m\e[30m${r}\e[32m\e[46m \e[0m" || echo -e "\e[41m\e[30m${r}\e[31m\e[46m \e[0m"
 }
-export PS1='$(__prevp)\e[30m\e[46m$(date +%Y-%m-%d_%H-%M-%S)\e[43m\e[36m \e[30m${PWD}\e[42m\e[33m \e[30m$(__git_ps1 " (%s)")\e[32m\e[40m \e[0m\n\$ '
+export PS1='$(__prevp)\e[30m\e[46m$(date +%Y-%m-%d_%H-%M-%S)\e[43m\e[36m \e[30m${PWD}\e[42m\e[33m\e[30m$(__git_ps1 " (%s)")\e[0m\n\$ '
 # It displays like '(base) 0 2021-02-19_20-50-49 /mnt/d/Work/LinuxMiniPrograms  (BSD)' in a Git repository.
 #                      |   |          |                     |                     |_ The Git branch you're on.
 #                      |   |          |                     |_______________________ Your working directory.
@@ -47,8 +47,8 @@ export HISTSIZE=50000 # Larger history size.
 
 # Useful aliases. Will only work in commandline but not scripts.
 alias du="du -h" # More readable du.
-# alias df="df -h" # More readable df.
-alias df="duf --all" # duf to replace df
+alias df="df -h" # More readable df.
+# alias df="duf --all" # duf to replace df
 alias diff="diff -u" # Make the output of $(diff) similar to git diff.
 alias ls="ls -lhF --color=auto" # More readable ls.
 alias grep="grep --color=auto" # More readable grep.
@@ -64,4 +64,4 @@ alias emacs="emacs -nw"
 alias DO=eval # LibDO simulator
 
 # Initializing thefuck.
-eval "$(thefuck -a)"
+# eval "$(thefuck -a)"
