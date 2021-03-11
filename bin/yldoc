@@ -38,7 +38,6 @@ if [ ${#STDS[@]} -eq 0 ]; then
 	yldoc yldoc
 	exit 0
 fi
-# TODO: There are still problems here!
 if [ -f "${DN}"/../etc/yldoc.conf ]; then
 	while read line; do
 		li=(${line})
@@ -50,5 +49,9 @@ if [ -f "${DN}"/../etc/yldoc.conf ]; then
 	done < "${DN}"/../etc/yldoc.conf
 fi
 for fn in "${STDS[@]}"; do
-	if [ -f "${DN}"/../share/doc/usage/"${fn}".usage ]; then cat "${DN}"/../share/doc/usage/"${fn}".usage ; else errh "${DN}/../share/doc/usage/${fn}.usage not found"; fi
+	if [ -f "${DN}"/../share/doc/usage/"${fn}".usage ]; then
+		cat "${DN}"/../share/doc/usage/"${fn}".usage
+	else
+		errh "${DN}/../share/doc/usage/${fn}.usage not found"
+	fi
 done

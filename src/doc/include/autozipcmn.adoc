@@ -4,7 +4,7 @@
 
 It is recommended to use GNU Parallel to accelerate the speed of compression.
 
-WARNING: GNU Parallel consumes lots of memory & CPU resources. __NEVER USE IT ON CLUSTERS__!!!
+WARNING: GNU Parallel consumes lots of memory & CPU resources. __NEVER USE IT ON THE MANAGEMENT NODE OF CLUSTERS__!!!
 
 === USE OF PIGZ
 
@@ -18,25 +18,67 @@ When processing bioinformatics data, please make sure that you should use GZIP t
 
 This is the right way to produce a _BLOCKED GNU ZIP FORMAT_ with `gz` extension. Because it is capable of GNU GZip, we'll not distinguish them when extracting data. `tar.gz` is not supported in bgz format because it sounds weird.
 
-=== USE OF LZMA SDK AND XZ UTILS
+=== USE OF DIFFERENT ALGORITHMS
 
-The core of the XZ Utils compression code is based on LZMA SDK. So when you're about to compress & decompress files with `lz`, `lzma`, `tar.lz`,`tar.lzma`, `tlz` extensions, we'll use XZ Utils.
+Observing the following contents:
 
-=== USE OF 7ZIP
+[source]
+----
+(base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
+$ autozip
+YuZJLab AutoZip
+Copyright (C) 2019-2021 YU Zhejian
+WARNING: Will rename the archive if exists
+Start checking formats...
+Extension (ORDER) --> Program
+tar (1) --> tar
+gz GZ (1) --> pigz
+gz GZ (2) --> gzip
+gz GZ (3) --> 7za
+gz GZ (4) --> 7z
+bgz (1) --> bgzip
+bz2 (1) --> bzip2
+bz2 (2) --> 7za
+bz2 (3) --> 7z
+xz (1) --> xz
+xz (2) --> 7za
+xz (3) --> 7z
+lzma (1) --> xz
+lzma (2) --> lzma
+lz4 (1) --> lz4
+zst (1) --> zstd
+lzo (1) --> lzop
+lz (1) --> lzip
+br (1) --> brotli
+7z (1) --> 7za
+7z (2) --> 7z
+lzfse (1) --> lzfse
+rar (1) --> rar unrar
+rar (2) --> 7za
+rar (3) --> 7z
+zip (1) --> zip unzip
+Combined formats:
+tar.gz tgz tar.bz2 tbz tar.xz txz tar.lzma tar.lz tlz tar.lz4 tar.zst tar.lzo tar.br tar.7z tar.lz tar.lzfse tar.zip
+Check complete
+Checking for 'parallel' in /usr/bin/parallel...OK
+Available core number: 8
+----
 
-WARNING: DO NOT USE the 7-zip format for backup purpose on Unix-Like operating systems because 7-zip does not store the owner/group of the file.
+As you can see, there are 4 available options to create GZip archive:
 
-WARNING: Although 7-zip provided us with a handful of algorithms, we will only take default values.
+[source]
+----
+gz GZ (1) --> pigz
+gz GZ (2) --> gzip
+gz GZ (3) --> 7za
+gz GZ (4) --> 7z
+----
+
+Under this situation, although `gzip`, `7za` and `7z` is available, we will use `pigz` to create or extract GZip files..
 
 === USE OF RAR
 
-WARNING: RAR is a _PROPERTY_ software.
-
-== CONFIGURATION
-
-The configuration file of program `autozip` is `etc/autozip.conf`. There should be one line inside the file. If there're multiple lines, the lines behind will be ignored.
-
-`PARALLEL` or `NOPARALLEL` (default) at line 1 indicates whether or not to use GNU Parallel.
+WARNING: RAR is a _PROPERTY_ software. It is not recommended to create RAR archives under GNU/Linux.
 
 == EXAMPLE
 

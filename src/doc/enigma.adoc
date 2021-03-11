@@ -1,19 +1,21 @@
 :toc:
 :author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
 
-= b16c(1)
+= enigma(1)
 
 == NAME
 
-b16c - YuZJLab Base16 Codex
+enigma - YuZJLab Enigma Codex
 
 == SYNOPSIS
 
-`b16c [OPTIONS]`
+`enigma [OPTIONS]`
 
 == DESCRIPTION
 
-b16c is used to transform binary or text from standard input to standard output, or decode what is encoded by `b16c`. It is firstly integrated into `enigma` and later separated and developed into C and Python version.
+Enigma is used to encrypt files. It reads output stream from `b16c` and encrypt them.
+
+Enigma encrypts files by mapping. Each mapping pattern is called a "cog", and each cog have a starting position.
 
 == OPTIONS
 
@@ -21,13 +23,19 @@ include::include/cmnopt.adoc[]
 
 * `-d` To decode instead of encode.
 
+* `-s:[START_STR]` The starting position. The length of the argument should be the same as the number of option cog.
+
+* `-c:[COG]` The cog number to use.
+
+* `-g|--gengear` Generate a new cog.
+
 == EXAMPLES
 
 These examples are tested under WSL.
 
-`b16c` can be used to transform binary data into texts.
+`enigma` can be used to transform binary data into texts.
 
-The following script shows that `b16c` will not change the content of the file it reads.
+The following script shows that `enigma` will not change the content of the file it reads.
 
 [source]
 ----
@@ -36,18 +44,18 @@ $ cat /bin/ls | sha512sum
 b1ecf4268efc8787abe4e56bae77a186d8c6ac3e6a62a1a86226db6c06a59685a06613b3b5e65a11d9e8a79bc929e5eefbdb1d3a0d8c0aead1a9cff8a4a33a3a  -
 
 (base) 0 2021-01-20_23-50-26 /home/yuzj/LinuxMiniPrograms  (BSD)
-$ cat /bin/ls | b16c
+$ cat /bin/ls | enigma
 HPEFEMEGACABABAAAAAAAAAAAAAAAAAAADAADOAAABAAAAAABAGIAAAAAAAAAAAAEAAAAAAAAAAAAAAABIDEACAAAAAAAAAAAAAAAAAAEAAADIAAANAAEAAABPAABOAAAGAAAAAAAEAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAANIACAAAAAAAAAAAANIACAAAAAAAAAAAAAIAAAAAA
 [...]
 
 (base) 0 2021-01-20_23-50-37 /home/yuzj/LinuxMiniPrograms  (BSD)
-$ cat /bin/ls | b16c | b16c -d | sha512sum
+$ cat /bin/ls | enigma | enigma -d | sha512sum
 b1ecf4268efc8787abe4e56bae77a186d8c6ac3e6a62a1a86226db6c06a59685a06613b3b5e65a11d9e8a79bc929e5eefbdb1d3a0d8c0aead1a9cff8a4a33a3a  -
 ----
 
-`b16c` can also be used with `enigma`. The default `enigma` installation accepts `b16c` output only.
+`enigma` can also be used with `enigma`. The default `enigma` installation accepts `enigma` output only.
 
-Please note that after being coded by `b16c`, the size of the file will grow about 1 times.
+Please note that after being coded by `enigma`, the size of the file will grow about 1 times.
 
 == COMPATIBILITY
 
@@ -61,6 +69,6 @@ Tested with all functions supported.
 
 == SEE ALSO
 
-enigma
+b16c
 
 include::include/copy.adoc[]

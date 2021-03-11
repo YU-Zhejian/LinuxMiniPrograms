@@ -2,6 +2,8 @@
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
+. "${DN}"/../lib/libstr
+warnh "This program is no longer monitored and updates may not be provided!"
 for fn in "${@}"; do
 	if ! [ -f "${fn}" ]; then
 		warnh "Invalid file '${fn}' ignored"

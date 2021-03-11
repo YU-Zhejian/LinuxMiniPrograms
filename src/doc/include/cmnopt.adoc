@@ -1,3 +1,5 @@
 * `-h|--help` Show this help.
 
 * `-v|--version` Print version.
+
+* `-x` Enter tracing mode. Valid for programs written in Shell Script only. Will print debug information.

@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # LIBMKTBL V1
-'''
+"""
 Print table.
-'''
+"""
 from LMP_Pylib.libylfile import *
 
 
 def mktbl(fn: str, split=";", commentstr="#"):
-	'''
+	"""
 	Print table.
 	:param fn: The source file of the table.
 	:param split: The character needed to split the fields.
 	:param commentstr: How comments start.
-	'''
+	"""
 	configline = []
 	normalline = []
 	for line in ylreadline(fn):

@@ -1,7 +1,13 @@
+# Project files
 /etc
 /var
 /*backup.tgz
 /share
+/doc # For compability
+/usage # For compability
+/html # For compability
+/pdf # For compability
+/man # For compability
 __pycache__
 *.stackdump
 /gnome-keyring-daemo.core
@@ -22,3 +28,8 @@ __pycache__
 *.layout
 /Makefile
 CppProperties.json
+
+# Projects purposed
+*.bat
+*.cmd
+*.ps1

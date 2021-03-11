@@ -15,8 +15,7 @@ libisopt - A library to check whether a parameter is a legal YuZJLab option.
 
 == DESCRIPTION
 
-Firstly, use `. /PATH/TO/LIBISOPT` to import libisopt.
-(Command `source` is equal to command `.`)
+Firstly, use `. /PATH/TO/LIBISOPT` to import libisopt. (Command `source` is equal to command `.`)
 
 Then, use loop to check if a parameter is an option.
 
@@ -34,7 +33,7 @@ That is, those parameter which matches the regular expression `-[^-\s]|--\S+|-[^
 
 == EXAMPLE
 
-[source]
+[source,bash]
 ----
 OPT=()
 STDS=()

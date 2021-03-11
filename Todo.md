@@ -56,39 +56,6 @@
 
 ## Documentation
 
-* autounzip
-* autozip
-* azcat
-* azlist
-* b16c
-* bhs
 * enigma
-* exec
-* git-mirror
-* includels
-* iomux
-* iomux_a
-* iomux_r
-* lcman
-* libdoman
-* libdoman_upgrade
-* libdo_monitor
-* libdosh
-* libls
-* livechat
-* manls
-* pathls
-* pss
-* pst
-* yldoc
-* ylmktbl
 * ylsjs
 * ylsjsd
-* ylukh
-* libdo
-* libdo3
-* libisopt
-* libman
-* libpath
-* libstr
-* Python libraries

@@ -93,6 +93,8 @@ Following shows a list of all directories which may be useful. Comments added ar
 
 During installation, the installer will search for dependent executables inside the `${PATH}` variable and locate their GNU version as the default program of the LinuxMiniProgram. All path information will be recorded in `etc/path.sh` and will be used in programs written in Shell Script. The reason why we make an extra `etc/path.sh` instead of using the first executable found in `${PATH}` is that users in BSD systems may not want to use GNU executables by default, or there are multiple versions installed. In this circumstance, one may manually specify which to use.
 
+You may use `pathls -l` to list usable `${PATH}`.
+
 == COMPATIBILITY
 
 Although we tried our best to eliminate the experience difference between platforms, compatibility errors still exist. Following is a list of common compatibility problems found in LinuxMiniPrograms, please alert. More compatibility problems specified in each program can be found at corresponding manuals.

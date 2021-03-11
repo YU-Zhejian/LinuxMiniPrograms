@@ -28,7 +28,6 @@ for opt in "${@}"; do
 			yldoc lcman
 			exit 0
 			;;
-
 		-f\:*)
 			sf=(${sf[@]} ${opt:3})
 			;;
@@ -49,6 +48,9 @@ for opt in "${@}"; do
 			;;
 		"-s" | "--exclude-system")
 			se=(${se[@]} "SYSTEM")
+			;;
+		"-x")
+			set -x
 			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"

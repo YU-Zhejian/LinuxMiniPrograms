@@ -8,3 +8,4 @@ else
 		export PATH="${HOME}/conda/bin:${PATH}"
 	fi
 fi
+export PATH="${HOME}/.local/bin:${PATH}"
