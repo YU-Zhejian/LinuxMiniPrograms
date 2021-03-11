@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# GITMIRROR V1
+DN="$(readlink -f "$(dirname "${0}")")"
+set -ue
+trap '' SIGINT
+OLD_IFS="${IFS}"
+touch "${DN}"/../etc/git-mirror.conf
+. "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libstr
+. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/git-mirror.conf
+. "${DN}"/exec/libgitm.sh
+infoh "YuZJLab Git Mirror Manager"
+infoh "Copyright (C) 2020-2021 YU Zhejian"
+# ============ Possess arguments ============
+for opt in "${@}"; do
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-h" | "--help")
+			yldoc git-mirror
+			exit 0
+			;;
+		"-x")
+			set -x
+			;;
+		esac
+	else
+		STDS=("${STDS[@]}" "${opt}")
+	fi
+done
+gmcmd=${STDS[0]:-}
+unset STDS[0]
+if [ -z "${git_mirror_dir:-}" ];then
+	warnh "git_mirror_dir undefined. Will use ${DN}/../var/git-mirror.d"
+	git_mirror_dir=${DN}/../var/git-mirror.d
+fi
+mkdir -p "${git_mirror_dir}" "${git_mirror_dir}/logs/" "${git_mirror_dir}/uuidtable.d/"
+cd "${git_mirror_dir}"
+ls uuidtable.d/* &>> /dev/null || touch uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')"
+touch act.log
+if [ -f "${DN}"/exec/gitm_"${gmcmd}".sh ]; then
+	. "${DN}"/exec/gitm_"${gmcmd}".sh
+elif [ -f "${DN}"/exec/gitm_"${gmcmd}".py ]; then
+	IFS="${OLD_IFS}"
+	if [ "${mypython}" != "ylukh" ]; then
+		"${mypython}" "${DN}"/exec/ylsjs_"${sjscmd}".py "${PWD}" "${@}"
+	else
+		errh "Python not found"
+	fi
+else
+	IFS="${OLD_IFS}"
+	errh "subcommand '${gmcmd}' invalid"
+fi
+IFS="${OLD_IFS}"

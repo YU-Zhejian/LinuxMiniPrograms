@@ -1,0 +1,48 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= libdo(1)
+
+== NAME
+
+libdo3 - Libdo, version 3.
+
+== SYNOPSIS
+
+[source]
+----
+[VARIABLES]
+. /PATH/TO/LIBDO3
+DO cmd
+----
+
+== DESCRIPTION
+
+This version 3 is very similar to version 2. The only difference is that we will use `libdo_monitor.py` to monitor the processes.
+
+WARNING: The process you'd like to monitor must run for at lease 1 minute. Otherwise, the system may go wrong.
+
+== EXAMPLE
+
+After importing LibDO3, we execute:
+
+[source,bash]
+----
+DO cat /dev/random \| xz -9 -T0 \> /dev/null
+----
+
+== COMPATIBILITY
+
+=== BSD
+
+Not supported.
+
+=== Cygwin
+
+Not supported.
+
+== SEE ALSO
+
+libdo, libdoman, libdoman_monitor
+
+include::include/copy.adoc[]

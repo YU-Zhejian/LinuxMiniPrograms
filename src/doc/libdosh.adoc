@@ -1,0 +1,78 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= libdosh (1)
+
+LibDOSh - LibDO Shell
+
+== SYNOPSIS
+
+== DESCRIPTION
+
+WARNING: This program is no longer monitored and updates may not be provided!
+
+YuZJLab LibDO shell is a replacement for common shells like Bash. It have a informative prompt and will generate an informative log.
+
+== OPTIONS
+
+No option provided.
+
+== EXAMPLES
+
+The following example is how this program is used. Extra hints wil be commented by '#'.
+
+[source]
+----
+# I am now in my original shell, bash.
+(base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/tmp]
+$ libdosh
+# I have entered libDO shell.
+YuZJLab libDO Shell
+Copyright (C) 2019-2021 YU Zhejian
+WARNING: This program is no longer monitored and updates may not be provided
+# Loading bash startup script.
+ _____________________________________________________
+/ 乡人饮酒，杖者出，斯出矣。乡人傩，朝服而立于阼阶。  \
+\ --《论语》                                     /
+ -----------------------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+# An informative prompt.
+yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx:0:/home/yuzj/tmp
+$ ls
+bash_2021-03-05_15-15-06.log
+hw.java
+
+yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx:0:/home/yuzj/tmp
+$ exit
+
+# Exited LibDO shell and return to bash.
+# The following command shows what is recorded inside its log, bash_2021-03-05_15-15-06.log.
+(base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/tmp]
+$ cat bash_2021-03-05_15-15-06.log
+2021-03-05 15:15:08,/home/yuzj/tmp> ls
+bash_2021-03-05_15-15-06.log
+hw.java
+2021-03-05 15:15:08,0
+2021-03-05 15:15:15,/home/yuzj/tmp> exit
+
+----
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== SEE ALSO
+
+LMP_deprecated
+
+include::include/copy.adoc[]

@@ -1,0 +1,211 @@
+== NOTES
+
+== USING GNU PARALLEL & OTHERS
+
+It is recommended to use GNU Parallel to accelerate the speed of compression.
+
+WARNING: GNU Parallel consumes lots of memory & CPU resources. __NEVER USE IT ON THE MANAGEMENT NODE OF CLUSTERS__!!!
+
+=== USE OF PIGZ
+
+When `pigz` and GNU parallel both exist and you have `PARALLEL` in `autozip.conf`, `pigz` will be used.
+
+=== USE OF GZIP
+
+When processing bioinformatics data, please make sure that you should use GZIP to produce a _GZIP COMPRESSED DATA_ instead of BGZIP to produce a _BLOCKED GNU ZIP FORMAT_ before using this tool!
+
+=== USE OF BGZIP
+
+This is the right way to produce a _BLOCKED GNU ZIP FORMAT_ with `gz` extension. Because it is capable of GNU GZip, we'll not distinguish them when extracting data. `tar.gz` is not supported in bgz format because it sounds weird.
+
+=== USE OF DIFFERENT ALGORITHMS
+
+Observing the following contents:
+
+[source]
+----
+(base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
+$ autozip
+YuZJLab AutoZip
+Copyright (C) 2019-2021 YU Zhejian
+WARNING: Will rename the archive if exists
+Start checking formats...
+Extension (ORDER) --> Program
+tar (1) --> tar
+gz GZ (1) --> pigz
+gz GZ (2) --> gzip
+gz GZ (3) --> 7za
+gz GZ (4) --> 7z
+bgz (1) --> bgzip
+bz2 (1) --> bzip2
+bz2 (2) --> 7za
+bz2 (3) --> 7z
+xz (1) --> xz
+xz (2) --> 7za
+xz (3) --> 7z
+lzma (1) --> xz
+lzma (2) --> lzma
+lz4 (1) --> lz4
+zst (1) --> zstd
+lzo (1) --> lzop
+lz (1) --> lzip
+br (1) --> brotli
+7z (1) --> 7za
+7z (2) --> 7z
+lzfse (1) --> lzfse
+rar (1) --> rar unrar
+rar (2) --> 7za
+rar (3) --> 7z
+zip (1) --> zip unzip
+Combined formats:
+tar.gz tgz tar.bz2 tbz tar.xz txz tar.lzma tar.lz tlz tar.lz4 tar.zst tar.lzo tar.br tar.7z tar.lz tar.lzfse tar.zip
+Check complete
+Checking for 'parallel' in /usr/bin/parallel...OK
+Available core number: 8
+----
+
+As you can see, there are 4 available options to create GZip archive:
+
+[source]
+----
+gz GZ (1) --> pigz
+gz GZ (2) --> gzip
+gz GZ (3) --> 7za
+gz GZ (4) --> 7z
+----
+
+Under this situation, although `gzip`, `7za` and `7z` is available, we will use `pigz` to create or extract GZip files..
+
+=== USE OF RAR
+
+WARNING: RAR is a _PROPERTY_ software. It is not recommended to create RAR archives under GNU/Linux.
+
+== EXAMPLE
+
+These examples are tested under UOS v20.1 community.
+
+The following example is the checking step:
+
+[source]
+----
+(base) 0 2021-01-30_19-57-53 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ autounzip
+YuZJLab AutoUnZip
+Copyright (C) 2019-2021 YU Zhejian
+Start checking formats...
+Extension (ORDER) --> Program
+tar (1) --> tar
+gz GZ (1) --> pigz
+gz GZ (2) --> gzip
+gz GZ (3) --> 7za
+gz GZ (4) --> 7z
+bz2 (1) --> bzip2
+bz2 (2) --> 7za
+bz2 (3) --> 7z
+xz (1) --> xz
+xz (2) --> 7za
+xz (3) --> 7z
+lzma (1) --> xz
+lzma (2) --> lzma
+lz4 (1) --> lz4
+zst (1) --> zstd
+lzo (1) --> lzop
+lz (1) --> lzip
+br (1) --> brotli
+7z (1) --> 7za
+7z (2) --> 7z
+rar (1) --> rar unrar
+rar (2) --> 7za
+rar (3) --> 7z
+zip (1) --> zip unzip
+Combined formats:
+tar.gz tgz tar.bz2 tbz tar.xz txz tar.lzma tar.lz tlz tar.lz4 tar.zst tar.lzo tar.br tar.7z tar.lz tar.zip
+Check complete
+Checking for 'parallel' in /usr/bin/parallel...OK
+Available core number: 8
+----
+
+The following example is to archive folder `R` with all default settings and an existing archive:
+
+[source]
+----
+(base) 0 2021-01-30_19-59-51 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ autozip var
+YuZJLab AutoZip
+Copyright (C) 2019-2021 YU Zhejian
+WARNING: Will rename the archive if exists
+YuZJLab AutoZip
+Copyright (C) 2019-2021 YU Zhejian
+/usr/bin/cat
+var/
+var/ylsjs.d/
+var/enigma.d/
+var/enigma.d/6
+var/enigma.d/3
+var/enigma.d/5
+var/enigma.d/2
+var/enigma.d/4
+var/enigma.d/1
+var/livechat.d/
+var/livechat.d/MESSAGES
+var/livechat.d/LCONLINE
+var/livechat.d/tmp
+Removing temporary resources...
+----
+
+The following command is how we investigate the archive made in the previous step:
+
+[source]
+----
+(base) 127 2021-01-30_20-01-01 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ azlist var.tar
+YuZJLab AZList
+Copyright (C) 2019-2021 YU Zhejian
+Received: /home/yuzj/LinuxMiniPrograms/bin/azlist var.tar  ==>Extension=tar
+/usr/bin/cat
+drwxrwxr-x yuzj/yuzj         0 2021-01-19 15:35 var/
+drwxrwxr-x yuzj/yuzj         0 2021-01-30 20:00 var/ylsjs.d/
+drwxrwxr-x yuzj/yuzj         0 2020-10-03 14:14 var/enigma.d/
+-rw-rw-r-- yuzj/yuzj        16 2020-10-03 14:14 var/enigma.d/6
+-rw-rw-r-- yuzj/yuzj        16 2020-10-03 00:59 var/enigma.d/3
+-rw-rw-r-- yuzj/yuzj        16 2020-10-03 01:05 var/enigma.d/5
+-rw-rw-r-- yuzj/yuzj        16 2020-10-03 00:59 var/enigma.d/2
+-rw-rw-r-- yuzj/yuzj        16 2020-10-03 00:59 var/enigma.d/4
+-rw-rw-r-- yuzj/yuzj        16 2020-10-03 00:41 var/enigma.d/1
+drwxrwxr-x yuzj/yuzj         0 2021-01-19 17:40 var/livechat.d/
+-rw-rw-r-- yuzj/yuzj      1180 2021-01-19 16:04 var/livechat.d/MESSAGES
+-rw-rw-r-- yuzj/yuzj         0 2021-01-19 17:40 var/livechat.d/LCONLINE
+-rw-rw-r-- yuzj/yuzj         0 2021-01-19 16:04 var/livechat.d/tmp
+Removing temporary resources...
+Finished
+----
+
+The following command is how we extract this archive.
+This command also removes pre-exist folder `R` and `R.tar.gz` if success.
+
+[source]
+----
+(base) 0 2021-01-30_20-01-39 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ autounzip var.tar  --remove --force
+YuZJLab AutoUnZip
+Copyright (C) 2019-2021 YU Zhejian
+WARNING: Will remove the original file if success
+WARNING: Will remove the archive if exists
+Received: /home/yuzj/LinuxMiniPrograms/bin/autounzip var.tar --remove --force ==>Extension=tar
+/usr/bin/cat
+drwxrwxr-x yuzj/yuzj         0 2021-01-19 15:35 var/
+drwxrwxr-x yuzj/yuzj         0 2021-01-30 20:00 var/ylsjs.d/
+drwxrwxr-x yuzj/yuzj         0 2020-10-03 14:14 var/enigma.d/
+-rw-rw-r-- yuzj/yuzj        16 2020-10-03 14:14 var/enigma.d/6
+-rw-rw-r-- yuzj/yuzj        16 2020-10-03 00:59 var/enigma.d/3
+-rw-rw-r-- yuzj/yuzj        16 2020-10-03 01:05 var/enigma.d/5
+-rw-rw-r-- yuzj/yuzj        16 2020-10-03 00:59 var/enigma.d/2
+-rw-rw-r-- yuzj/yuzj        16 2020-10-03 00:59 var/enigma.d/4
+-rw-rw-r-- yuzj/yuzj        16 2020-10-03 00:41 var/enigma.d/1
+drwxrwxr-x yuzj/yuzj         0 2021-01-19 17:40 var/livechat.d/
+-rw-rw-r-- yuzj/yuzj      1180 2021-01-19 16:04 var/livechat.d/MESSAGES
+-rw-rw-r-- yuzj/yuzj         0 2021-01-19 17:40 var/livechat.d/LCONLINE
+-rw-rw-r-- yuzj/yuzj         0 2021-01-19 16:04 var/livechat.d/tmp
+Removing temporary resources...
+Finished
+----

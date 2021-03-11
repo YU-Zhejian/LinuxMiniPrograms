@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+# AZLIST V6
+set -eu
+PAR=''
+SUFF=''
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/exec/libautozip.sh
+# ============ Start ============
+infoh "YuZJLab AZList"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
+for opt in "${OPT[@]}"; do
+	warnh "Option '${opt}' invalid. Ignored"
+done
+# ============ Possess arguments ============
+[ ${#STDS[@]} -gt 0 ] || autozipck
+for fulln in "${STDS[@]}"; do
+	ISBLANK=false
+	fn="$(echo ${fulln%.*} | sed "s;.part1$;;" | sed "s;.part01$;;")"
+	ext="${fulln##*.}"
+	if [ "${fn##*.}" = "tar" ]; then
+		ext="tar.${ext}"
+		fn="${fn%.*}"
+	fi
+	if [ ! -e "${fulln}" ]; then
+		warnh "Filename '${fulln}' invalid"
+		continue
+	fi
+	__ckext
+	infoh "Received: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}"
+	# ============ Start Decompressing ============
+	function __list_tar() {
+		cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${1})"
+		infoh "${cmd}"
+		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
+			fcat "${fulln}" | ${cmd} | "${mytar}" -tv -f -
+	}
+	case ${ext} in
+	tar.*)
+		__list_tar "${ext//tar./}"
+		;;
+	"tar")
+		__list_tar "tar"
+		;;
+	t*z)
+		__list_tar "${ext//t/}"
+		;;
+	"7z")
+		[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
+		if [ ! -f "${fulln}" ] && [ -f "${fulln}.001" ]; then
+			fulln="${fulln}.001"
+		fi
+		"${my7z}" l "${fulln}"
+		;;
+	"zip")
+		[ "${myunzip}" != 'ylukh' ] || errh "unzip NO exist"
+		if [ -f "${fn}".z01 ]; then
+			[ "${myzip}" != 'ylukh' ] || errh "zip NO exist"
+			mktmp
+			cp "${fn}".z* "${tempdir}"/
+			"${myzip}" -FF "${tempdir}"/"${fn}".zip --out "${tempdir}"/"${fn}".fzip
+			"${myunzip}" -v "${tempdir}"/"${fn}".fzip
+		else
+			"${myunzip}" -v "${fulln}"
+		fi
+		;;
+	"rar")
+		[ "${myunrar}" != 'ylukh' ] || errh "unrar NO exist"
+		"${myunrar}" v "${fulln}"
+		;;
+	"gz" | "GZ" | "bgz")
+		if [ "${mypigz}" != 'ylukh' ]; then
+			cmd="${mypigz} -clvf"
+		elif [ "${mygzip}" != 'ylukh' ]; then
+			cmd="${PAR} ${mygzip} -clvf"
+		fi
+		;;
+	"xz")
+		if [ "${myxz}" != 'ylukh' ]; then
+			cmd="${myxz} -clvvf -"
+		fi
+		;;
+	"lzma")
+		[ ${THREAD} -gt 1 ] && warnh "${1} do not support parallel. Thread will be resetted to 1"
+		if [ "${myxz}" != 'ylukh' ]; then
+			cmd="${myxz} -clvvf --format=lzma -"
+		elif [ "${mylzma}" != 'ylukh' ]; then
+			cmd="${mylzma} -clvf -"
+		fi
+		;;
+	"lz4")
+		[ "${mylz4}" != 'ylukh' ] || errh "NO valid lz4 exist"
+		cmd="${PAR} ${mylz4} -clvvf -"
+		;;
+	"zst")
+		[ "${myzstd}" != 'ylukh' ] || errh "NO valid zstd exist"
+		cmd="${myzstd} -clvvvf -"
+		;;
+	"lzo")
+		[ "${mylzop}" != 'ylukh' ] || errh "NO valid lzop exist"
+		cmd="${PAR} ${mylzop} -clvf -"
+		;;
+	"br")
+		[ "${mybrotli}" != 'ylukh' ] || errh "NO valid brotli exist"
+		cmd="${mybrotli} -clvf -"
+		;;
+	"Z" | "z")
+		[ "${mycompress}" != 'ylukh' ] || errh "NO valid compress exist"
+		cmd="${mycompress} -clvf -"
+		;;
+	"lz")
+		[ "${mylzip}" != 'ylukh' ] || errh "NO valid lzip exist"
+		cmd="${mylzip} -clvvf -"
+		;;
+	*)
+		warnh "${ext} NOT SUPPORTED!"
+		;;
+	esac
+	# ============ Finished ============
+	infoh "Removing temporary resources..."
+done
+# ============ Finished ============
+infoh "Finished"
+exit 0

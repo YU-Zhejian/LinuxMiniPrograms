@@ -1,0 +1,3 @@
+= News: `doc` Renamed to `usage`
+
+To avoid confusing in incoming installation system, the `doc` folder in the root directory of this program is renamed to `usage`. That means an installation system (like `make install`) is being purposed.

@@ -8,23 +8,17 @@ valid_path=':'
 invalid_path=':'
 duplicated_path=':'
 for dir in "${eachpath[@]}"; do
-    dir_full=$(readlink -f "${dir}" || true)
-    if [ ! -d "${dir}" ]; then
-        invalid_path="${invalid_path}${dir}:"
-    elif [[ ${valid_path} =~ .*":${dir_full}:".* ]]; then
-        duplicated_path="${duplicated_path}${dir_full}:"
-    else
-        valid_path="${valid_path}${dir_full}:"
-    fi
-    unset dir_full dir
+	dir_full=$(readlink -f "${dir}" || true)
+	if [ ! -d "${dir}" ]; then
+		invalid_path="${invalid_path}${dir}:"
+	elif [[ ${valid_path} == *":${dir_full}:"* ]]; then
+		duplicated_path="${duplicated_path}${dir_full}:"
+	else
+		valid_path="${valid_path}${dir_full}:"
+	fi
+	unset dir_full dir
 done
-if [ "${duplicated_path}" != ":" ]; then
-    duplicated_path=${duplicated_path:1:-1}
-fi
-if [ "${invalid_path}" != ":" ]; then
-    invalid_path=${invalid_path:1:-1}
-fi
-if [ "${valid_path}" != ":" ]; then
-    valid_path=${valid_path:1:-1}
-fi
+[ "${duplicated_path}" = ":" ] || duplicated_path=${duplicated_path:1:-1}
+[ "${invalid_path}" = ":" ] || invalid_path=${invalid_path:1:-1}
+[ "${valid_path}" = ":" ] || valid_path=${valid_path:1:-1}
 IFS="${oldIFS}"

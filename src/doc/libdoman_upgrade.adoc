@@ -1,0 +1,34 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= bhs(1)
+
+== NAME
+
+libdoman-update - LibDO log updater.
+
+== SYNOPSIS
+
+`libdoman_upgrade [log1] [[log2] ...]`
+
+== DESCRIPTION
+
+Update libdo logs from 1 to 2.
+
+WARNING: This program is no longer monitored and updates may not be provided!
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== SEE ALSO
+
+libdo, libdoman
+
+include::include/copy.adoc[]

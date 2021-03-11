@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+#YLSJSD v1
+set -ue
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../etc/path.sh
+. "${DN}"/../lib/libstr
+. "${DN}"/../lib/libisopt
+mkdir -p "${DN}"/../var/ylsjs.d
+cd "${DN}"/../var/ylsjs.d
+STDS=""
+for opt in "${@}"; do
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-h" | "--help")
+			yldoc ylsjs
+			exit 0
+			;;
+		"-v" | "--version")
+			echo "Version 1"
+			exit 0
+			;;
+		"-x")
+			set -x
+			;;
+		esac
+	else
+		[ "${STDS}" = "" ] && STDS="${opt}"
+	fi
+done
+if [ "${STDS:-}" = "start" ]; then
+	[ ! -f ylsjsd.lock ] && bash "${DN}"/exec/ylsjsd.sh &
+elif [ "${STDS:-}" = "stop" ]; then
+	[ -f ylsjsd.lock ] && kill -15 "$(cat ylsjsd.lock)" || true
+	rm -f ylsjsd.lock
+elif [ "${STDS:-}" = "restart" ]; then
+	ylsjsd stop
+	ylsjsd start
+elif [ "${STDS:-}" = "clear" ]; then
+	ylsjsd stop
+	rm -rf * || true
+	ylsjsd start
+elif [ "${STDS:-}" = "status" ]; then
+	cat ylsjsd.lock 2> /dev/null || errh "ylsjsd not started"
+else
+	errh "Command '"${STDS:-}"' unknown"
+fi

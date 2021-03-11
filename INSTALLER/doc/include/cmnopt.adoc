@@ -1,3 +1,0 @@
-* `-h|--help` Show this help.
-
-* `-v|--version` Print version.

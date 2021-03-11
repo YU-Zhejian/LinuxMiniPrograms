@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+# LIBLS v1
+set -ue
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libstr
+. "${DN}"/../etc/path.sh
+infoh "YuZJLab LIBRARY ls"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
+oldifs="${IFS}"
+function _grep() {
+	regstr="${1}"
+	cat "${tmpf}" | grep "${regstr}" >> "${tmpff}"
+}
+
+locallib=$(for dir in /lib* \
+	/usr/lib* \
+	/usr/local/lib* \
+	"${HOME}"/usr/lib* \
+	"${HOME}"/usr/local/lib*; do echo ${dir}; done | grep -v '*' | grep -E '/lib((64)|(32)){0,1}$' | tr '\n' ':')
+INPATH="${locallib}:${LD_LIBRARY_PATH:-}"${LIBRARY_PATH:-}
+. "${DN}"/../lib/libpath
+IFS=":"
+eachpath=(${valid_path})
+unset duplicated_path invalid_path
+IFS=''
+STDS=()
+allow_s=true
+allow_a=true
+WINDOWS=false
+for opt in "${@}"; do
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-h" | "--help")
+			yldoc libls
+			exit 0
+			;;
+		"-v" | "--version")
+			echo "Version 1"
+			exit 0
+			;;
+		"-l" | "--list")
+			echo ${valid_path} | tr ':' '\n'
+			unset valid_path
+			exit 0
+			;;
+		"-a" | "--static-only")
+			allow_a=true
+			allow_s=false
+			;;
+		"-s" | "--dynamic-only")
+			allow_s=true
+			allow_a=false
+			;;
+		"-w" | "--windows")
+			WINDOWS=true
+			;;
+		"-x")
+			set -x
+			;;
+		*)
+			warnh "Option '${opt}' invalid. Ignored"
+			;;
+		esac
+	else
+		STDS=(${STDS[@]} "${opt}")
+	fi
+done
+unset valid_path
+tmpf="$(mktemp -t libls.XXXXXX)"
+infoh "Reading database..."
+for dir in "${eachpath[@]}"; do
+	find "${dir}" 2> /dev/null >> "${tmpf}" || true
+done
+tmpff=$(mktemp -t libls.XXXXXX)
+if ${WINDOWS}; then
+	! ${allow_s} || _grep '\.dll$'
+	! ${allow_s} || _grep '\.DLL$'
+	! ${allow_a} || _grep '\.lib$'
+	! ${allow_a} || _grep '\.LIB$'
+else
+	! ${allow_s} || _grep '\.so\(\..*\)*$'
+	! ${allow_a} || _grep '\.a\(\..*\)*$'
+fi
+mv "${tmpff}" "${tmpf}"
+if [ ${#STDS[@]} -eq 0 ]; then
+	cat "${tmpf}"
+else
+	IFS=''
+	grepstr=''
+	for fn in "${STDS[@]}"; do
+		grepstr="${grepstr} -e ${fn}"
+	done
+	eval cat \"${tmpf}\"\|grep "${grepstr}"
+fi
+rm "${tmpf}"
+IFS="${oldifs}"

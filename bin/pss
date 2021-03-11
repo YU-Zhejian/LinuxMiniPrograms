@@ -1,58 +1,51 @@
 #!/usr/bin/env bash
-# PSS V1P8
-echo -e "\e[33mYuZJLab Process Snapshot Searcher"
-echo -e "Copyright (C) 2019-2020 YU Zhejian\e[0m"
+# PSS V1P9
 set -ue
-cd "$(readlink -f "$(dirname "${0}")")"
-. ../lib/libisopt
-. ../etc/path.sh
-more="${mymore}"
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libstr
+. "${DN}"/../etc/path.sh
+infoh "YuZJLab Process Snapshot Searcher"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
 STDS=()
 for opt in "${@}"; do
-    if isopt ${opt}; then
-        case ${opt} in
-        "-h" | "--help")
-            yldoc pss
-            exit 0
-            ;;
-        "-v" | "--version")
-            echo "Version 1 patch 8"
-            exit 0
-            ;;
-        --more\:*)
-            more="${opt:7}"
-            if $("${more}" --help &>/dev/null;echo ${?}) -eq 127; then
-                echo -e "\e[31mERROR! Invalid More '${more}'! Will use original '${mymore}' instead.\e[0m"
-                more="${mymore}"
-            else
-                echo -e "\e[33mWill use '${more}' as More.\e[0m"
-            fi
-            ;;
-        *)
-            echo -e "\e[31mERROR: Option '${opt}' invalid.\e[0m"
-            exit 1
-            ;;
-        esac
-    else
-        STDS=("${STDS[@]}" "${opt}")
-    fi
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-h" | "--help")
+			yldoc pss
+			exit 0
+			;;
+		"-v" | "--version")
+			echo "Version 1 patch 9"
+			exit 0
+			;;
+		"-x")
+			set -x
+			;;
+		*)
+			warnh "Option '${opt}' invalid. Ignored"
+			;;
+		esac
+	else
+		STDS=("${STDS[@]}" "${opt}")
+	fi
 done
 psstmp=$(mktemp -t psstmp.XXXXXX)
 pssstmp=$(mktemp -t psstmp.XXXXXX)
-if ! "${myps}" --version &>> /dev/null;then
-    "${myps}" -a -l &>"${psstmp}"
-elif [[ $("${myps}" --version) == *cygwin* ]]; then
-    "${myps}" -W &>"${psstmp}"
+if ! ps --version &>> /dev/null; then
+	ps -alH &> "${psstmp}"
+elif [[ $(ps --version) == *"Cygwin"* ]]; then
+	ps -aeW &> "${psstmp}"
 else
-    "${myps}" -A all &>"${psstmp}"
+	ps -AT H all &> "${psstmp}"
 fi
 if [ ${#STDS[@]} -eq 0 ]; then
-    "${mycat}" "${psstmp}" | "${more}"
+	cat "${psstmp}"
 else
-    ${myhead} -n 1 ${psstmp}
-    for fn in "${STDS[@]}"; do
-        "${mycat}" "${psstmp}" | "${mygrep}" -- "${fn}" >>"${pssstmp}"
-    done
-    "${mycat}" "${pssstmp}" | "${more}"
+	head -n 1 ${psstmp}
+	for fn in "${STDS[@]}"; do
+		cat "${psstmp}" | grep -- "${fn}" >> "${pssstmp}"
+	done
+	cat "${pssstmp}"
 fi
-"${myrm}" "${psstmp}" "${pssstmp}"
+rm "${psstmp}" "${pssstmp}"

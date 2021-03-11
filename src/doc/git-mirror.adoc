@@ -1,0 +1,245 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= git-mirror(1)
+
+== NAME
+
+git-mirror - Getting Git-server backed-up.
+
+== SYNOPSIS
+
+`git-mirror [subcommand]`
+
+== DESCRIPTION
+
+Execute `[subcommand]` which will be introduced bellow.
+
+== OPTIONS
+
+include::include/cmnopt.adoc[]
+
+== SUBCOMMANDS
+
+=== add
+
+SYNOPSIS: `git-mirror add [URL]`
+
+Add git repository with URL. URL can be of any following forms:
+
+[source]
+----
+ssh://[user@]host.xz[:port]/path/to/repo.git/
+git://host.xz[:port]/path/to/repo.git/
+http[s]://host.xz[:port]/path/to/repo.git/
+[user@]host.xz:path/to/repo.git/
+/path/to/repo.git/
+file:///path/to/repo.git/
+----
+
+By adding a URL, an UUID will be generated as uniq identification of this git repository. The repository that your URL pointing to will be mirrored to `${git_mirror_dir}/UUID`.
+
+[source]
+----
+0 2021-02-09_15-25-37 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ git-mirror add https://github.com/YuZJLab/SoftInstall
+YuZJLab Git Mirror Manager
+Copyright (C) 2020-2021 YU Zhejian
+WARNING: git_mirror_dir undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/git-mirror.d
+https://github.com/YuZJLab/SoftInstall -> a42446b2-03b6-4999-a11b-4791d6e1edf6
+Cloning into bare repository 'a42446b2-03b6-4999-a11b-4791d6e1edf6'...
+POST git-upload-pack (215 bytes)
+remote: Enumerating objects: 49, done.
+remote: Counting objects: 100% (49/49), done.
+remote: Compressing objects: 100% (35/35), done.
+remote: Total 49 (delta 28), reused 35 (delta 14), pack-reused 0
+----
+
+=== sync
+
+Get all changes and make local/remote repository identical.
+
+[source]
+----
+0 2021-02-09_15-26-40 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ git-mirror sync
+YuZJLab Git Mirror Manager
+Copyright (C) 2020-2021 YU Zhejian
+WARNING: git_mirror_dir undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/git-mirror.d
+Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 sync started
+Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 sync success
+Repository UUID=a42446b2-03b6-4999-a11b-4791d6e1edf6 sync started
+Repository UUID=a42446b2-03b6-4999-a11b-4791d6e1edf6 sync success
+----
+
+=== rmrepo
+
+SYNOPSIS: `git-mirror rmrepo [URL/UUID]`
+
+Remove a repository.
+
+OPTION: `-f` for force removal without confirmation.
+
+[source]
+----
+0 2021-02-09_15-29-12 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ git-mirror rmrepo da2e4859-1cb2-40c0-a375-f9d557aafe09
+YuZJLab Git Mirror Manager
+Copyright (C) 2020-2021 YU Zhejian
+WARNING: git_mirror_dir undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/git-mirror.d
+https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+Will remove above repos. Continue? [Y/n] >Y
+Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 rm started
+Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 rm success
+----
+
+=== rmrecord
+
+SYNOPSIS: `git-mirror rmrecord [URL/UUID]`
+
+Remove a repository record. You may use this when `git-mirror rmrepo` fails.
+
+WARNING: This only makes the system forget tis repository. The repository itself may still be kept in computer!
+
+OPTION: `-f` for force removal without confirmation.
+
+=== log
+
+Show logs.
+
+[source]
+----
+0 2021-02-09_15-29-42 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ git-mirror log
+YuZJLab Git Mirror Manager
+Copyright (C) 2020-2021 YU Zhejian
+WARNING: git_mirror_dir undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/git-mirror.d
+2021-02-09 15:25:37     ADD             SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:26:40     ADD             SUCCESS https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+2021-02-09 15:27:13     SYNC_CPDIR      SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:27:14     SYNC            SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:27:14     SYNC_CPDIR      SUCCESS https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+2021-02-09 15:27:17     SYNC            SUCCESS https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+2021-02-09 15:27:53     GC_CPDIR        SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:27:53     GC              SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:27:53     GC_CPDIR        SUCCESS https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+2021-02-09 15:27:53     GC              SUCCESS https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+2021-02-09 15:28:21     LSBRANCH        SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:28:21     LSBRANCH        SUCCESS https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+2021-02-09 15:29:00     LOCKLS          NOLOCK
+2021-02-09 15:29:12     LS              SUCCESS
+2021-02-09 15:29:42     RM_MVDIR        SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:29:42     RMRECORD        SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:29:42     RMDIR           SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:29:42     RM              SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+Repository readlog success
+----
+
+=== gc
+
+Garbage collection for all repository.
+
+[source]
+----
+0 2021-02-09_15-27-17 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ git-mirror gc
+YuZJLab Git Mirror Manager
+Copyright (C) 2020-2021 YU Zhejian
+WARNING: git_mirror_dir undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/git-mirror.d
+Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 gc started
+Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 gc success
+Repository UUID=a42446b2-03b6-4999-a11b-4791d6e1edf6 gc started
+Repository UUID=a42446b2-03b6-4999-a11b-4791d6e1edf6 gc success
+----
+
+=== lsbranch
+
+SYNOPSIS: `git-mirror lsbranch [URL/UUID]`
+
+Show branches and their last commit of some specific repository. If `[URL/UUID]` is omitted, will list those of all repository.
+
+[source]
+----
+0 2021-02-09_15-27-53 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ git-mirror lsbranch
+YuZJLab Git Mirror Manager
+Copyright (C) 2020-2021 YU Zhejian
+WARNING: git_mirror_dir undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/git-mirror.d
+https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+https://github.com/YuZJLab/R_CheatSheet
+* master d858268 Contents in week 17 added
+https://github.com/YuZJLab/SoftInstall
+* master 8bf2bae Some software added
+----
+
+=== lock
+
+Complicated. Introduced below.
+
+==== lock ls
+
+List all locks.
+
+==== lock rm
+
+SYNOPSIS: `git-mirror lock rm [URL/UUID]`
+
+Remove lock from `[URL/UUID]`. Stop if the process is still running.
+
+OPTION: `-f` for force removal without confirmation.
+
+==== lock rm_sarg
+
+Remove sync.lock, rm.lock, archive.lock and gc.lock.
+
+==== lock add
+
+SYNOPSIS: `git-mirror lock add [URL/UUID]`
+
+Add lock to `[URL/UUID]`. Can be removed with `git-mirror lock rm`.
+
+OPTION: `-f` for force add without confirmation.
+
+=== ls
+
+List all registered git-mirrors and their UUIDs.
+
+[source]
+----
+0 2021-02-09_15-29-00 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ git-mirror ls
+YuZJLab Git Mirror Manager
+Copyright (C) 2020-2021 YU Zhejian
+WARNING: git_mirror_dir undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/git-mirror.d
+https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+Repository ls success
+----
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== FILES
+
+* `etc/git-mirror.conf` Configuration files. Detailed instructions are available in the file commented.
+* `var/git-mirror.d` The default git-mirror directory.
+** `var/git-mirror.d/act.log` Logs of actions performed.
+** `var/git-mirror.d/logs/${UUID}` Logs of a specific repo. Produced during `add`, `sync` and `gc`.
+** `var/git-mirror.d/${UUID}` Repositories.
+** `var/git-mirror.d/uuidtables.d` Databases containing relationship between UUIDs and repository URLs.
+
+== KNOWN BUGS
+
+URL with one longer than another with same leading digits may fail.
+
+Example: http://git.a.com/a and http://git.a.com/aas
+
+include::include/copy.adoc[]

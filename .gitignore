@@ -1,15 +1,35 @@
-/.idea
+# Project files
 /etc
 /var
 /*backup.tgz
-/doc
-/man
-/html
-/pdf
-/INSTALLER/doc/*.1
-/INSTALLER/doc/*.html
-/INSTALLER/doc/*.pdf
+/share
+/doc # For compability
+/usage # For compability
+/html # For compability
+/pdf # For compability
+/man # For compability
 __pycache__
 *.stackdump
 /gnome-keyring-daemo.core
 .vscode
+/usr
+*log
+*tmp*
+.vs
+/venv
+/.git
+*.pyc
+.project
+.cproject
+*.out
+*.co
+*.cbp
+*.bak
+*.layout
+/Makefile
+CppProperties.json
+
+# Projects purposed
+*.bat
+*.cmd
+*.ps1

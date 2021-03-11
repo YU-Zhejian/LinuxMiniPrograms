@@ -1,0 +1,57 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= iomux(1)
+
+== NAME
+
+iomux - Input/Output MUltipleXer.
+
+== SYNOPSIS
+
+`iomux`
+
+`iomux_a`
+
+`iomux_r`
+
+== DESCRIPTION
+
+[NOT STABLE] Input/Output MUltipleXer, allowing cross-terminal communication.
+
+WARNING: This program is no longer monitored and updates may not be provided!
+
+== OPTIONS
+
+No option provided.
+
+== EXAMPLES
+
+Please note that this program is not 100% sable.
+
+Start 3 terminal. Execute `iomux` in one terminal as the server, `iomux_a` in another terminal for both-way communication and `iomux_r` for read-only communication.
+
+This program will not work when executing in a cross-machiene manner. For example, you may not communicate with what is inside IBM LSF systems.
+
+This program works by creating two fifo files (or, named pipes).
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== FILES
+
+. `in` The fifo file used to pump stdin as a tty.
+. `out` The fifo file used to pump stdout and stderr.
+
+== SEE ALSO
+
+LMP_deprecated
+
+include::include/copy.adoc[]

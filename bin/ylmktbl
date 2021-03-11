@@ -3,8 +3,8 @@
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
-if [ "${mypython}" != "ylukh" ];then
-    "${mypython}" "${DN}"/exec/ylmktbl.py "${PWD}" "${@}"
+if [ "${mypython}" != "ylukh" ]; then
+	exec "${mypython}" "${DN}"/exec/ylmktbl.py "${@}"
 else
-   . "${DN}"/exec/ylmktbl.sh
+	. "${DN}"/exec/ylmktbl.sh
 fi

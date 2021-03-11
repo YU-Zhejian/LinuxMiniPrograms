@@ -1,0 +1,28 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= autozip(1)
+
+== NAME
+
+azcat - An automatic file compression tool.
+
+== SYNOPSIS
+
+`azcat` is the same with `autozip -c`.
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== SEE ALSO
+
+autounzip, azlist, azcat
+
+include::include/copy.adoc[]

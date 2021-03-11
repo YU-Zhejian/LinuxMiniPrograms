@@ -1,0 +1,7 @@
+= News: Documentation and C Building System Updated
+
+In the newest BSD release, the old `build.sh` under `src/doc` and `src/C` is deprecated and replaced by `Makefile`.
+
+The reason why this upgrade is done is because comparing to our old building systems, code coded by GNU Make is easier to read and more maintainable. The parameter support in GNU Make is also highly customizable and can cooperate with the current `etc/path.sh` smoothly. GNU Make is also popular among GNU applications, making it a de facto industry standard. So, concerning all these reasons, the old `build.sh` will retire from the production line and its position will be taken by GNU Make.
+
+However, there are also problems caused by this modification. GNU Make is added as a mandatory dependency for anyone willing to build the documentation. For those GNU/Linux Green hands who have no access to root privilege, installation of GNU Make may not be easy.

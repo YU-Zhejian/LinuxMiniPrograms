@@ -1,0 +1,387 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= configure(1)
+
+== NAME
+
+configure - YuZJLab LinuxMiniPrograms Configuration Script
+
+== SYNOPSIS
+
+`configure [OPTIONS]`
+
+== DESCRIPTION
+
+Configure YuZJLab LinuxMiniPrograms with options. It will generate:
+
+. `Makefile` for building this program.
+. `etc/path.sh` where paths of the executables used are recorded (See LMP_basis for more information).
+
+== OPTIONS
+
+include::include/cmnopt.adoc[]
+
+* `-a|--all` Install all components.
+
+* `--install-config` (Re)Install configuration files in `etc`.
+
+* `--clear-history` (Re)Install histories in `var`.
+
+* `--install-doc` Install all documentations, need 'asciidoctor' 'asciidoctor-pdf' (available from Ruby gems) and Python 3.
+
+* `--install-man` Install Groff man to `share/man`, need `asciidoctor`.
+
+* `--install-usage` Install yldoc usage to `share/doc/usage`, need python 3.
+
+* `--install-pdf` Install doc in pdf to `share/doc/pdf`, need `asciidoctor-pdf`.
+
+* `--install-html` Install doc in html to `share/doc/html`, need `asciidoctor` or `asciidoc`.
+
+* `--skip-path` Do not update `etc/path.sh`.
+
+== EXAMPLES
+
+These examples are tested under WSL.
+
+WARNING: The example listed below may not consistent with the current version.
+
+[source]
+----
+(base) 0 2021-01-22_01-55-05 /mnt/d/Software/LinuxMiniPrograms  (BSD)
+$ ./configure
+Configure file for YuZJLab Installer
+Copyright (C) 2019-2021 YU Zhejian
+Checking FileSystem...
+Current OS: Linux 5.4.72-microsoft-standard-WSL2 x86_64
+Enumerating valid path...
+/home/yuzj/bin
+/home/yuzj/LinuxMiniPrograms/bin
+/home/yuzj/miniconda3/bin
+/home/yuzj/miniconda3/condabin
+/usr/local/bin
+/usr/sbin
+/usr/bin
+/usr/games
+/mnt/c/Program Files/Microsoft MPI/Bin
+/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.2/bin
+/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.2/libnvvp
+/mnt/c/WINDOWS/system32
+/mnt/c/WINDOWS
+/mnt/c/WINDOWS/System32/Wbem
+/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0
+/mnt/c/WINDOWS/System32/OpenSSH
+/mnt/c/Program Files/dotnet
+/mnt/c/Program Files/Oracle/VirtualBox
+/mnt/c/Program Files/Calibre2
+/mnt/c/Program Files/PowerShell/7
+/mnt/c/Program Files/IBM/SPSS/Statistics/25/JRE/bin
+/mnt/c/Program Files/NVIDIA Corporation/Nsight Compute 2020.3.0
+/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common
+/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR
+/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn
+/mnt/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn
+/mnt/c/Strawberry/c/bin
+/mnt/c/Strawberry/perl/site/bin
+/mnt/c/Strawberry/perl/bin
+/mnt/c/Users/admin/.cargo/bin
+/mnt/d/software/Scoop/apps/openjdk16/16-32-ea/bin
+/mnt/d/software/Scoop/persist/nodejs/bin
+/mnt/d/software/Scoop/apps/nodejs/15.6.0
+/mnt/d/software/Scoop/apps/yarn/1.22.5/Yarn/bin
+/mnt/d/software/Scoop/apps/python/3.9.1/Scripts
+/mnt/d/software/Scoop/apps/python/3.9.1
+/mnt/d/software/Scoop/apps/postgresql/13.1/bin
+/mnt/d/software/Scoop/apps/ghostscript/9.53.3/lib
+/mnt/d/software/Scoop/apps/ant/1.10.9/bin
+/mnt/d/software/Scoop/shims
+/mnt/d/Software/miktex/texmfs/install/miktex/bin/x64
+/mnt/c/Users/admin/bin
+/mnt/d/software/Scoop/apps/python/3.9.1/Lib/site-packages/qt5_applications/Qt/bin
+/mnt/d/Software/msys64/usr/bin
+/mnt/d/Software/msys64/usr/local/bin
+/mnt/c/Users/admin/AppData/Local/Microsoft/WindowsApps
+End locating valid path
+ls found in /usr/bin/ls, GNU version in GNU/Linux systems
+grep found in /usr/bin/grep, GNU version in GNU/Linux systems
+sed found in /usr/bin/sed, GNU version in GNU/Linux systems
+rm found in /usr/bin/rm, GNU version in GNU/Linux systems
+Python found in /home/yuzj/miniconda3/bin/python
+Python found in /home/yuzj/miniconda3/bin/python3
+Python found in /home/yuzj/miniconda3/bin/python3.9
+Python found in /usr/bin/python
+Python found in /usr/bin/python3
+Python found in /usr/bin/python3.9
+Python found in /mnt/d/software/Scoop/apps/python/3.9.1/python.exe
+Python found in /mnt/d/software/Scoop/shims/python.exe
+Python found in /mnt/d/Software/msys64/usr/bin/python.exe
+Python found in /mnt/c/Users/admin/AppData/Local/Microsoft/WindowsApps/python.exe
+Python found in /usr/bin/python3.9, version 3.9.1+
+ps found in /usr/bin/ps, GNU version in GNU/Linux systems
+parallel found in /usr/bin/parallel, GNU version
+cat found in /usr/bin/cat, GNU version in GNU/Linux systems
+chmod found in /usr/bin/chmod, GNU version in GNU/Linux systems
+chown found in /usr/bin/chown, GNU version in GNU/Linux systems
+cp found in /usr/bin/cp, GNU version in GNU/Linux systems
+cut found in /usr/bin/cut, GNU version in GNU/Linux systems
+find found in /usr/bin/find, GNU version in GNU/Linux systems
+WARNING: Will use BSD gtar
+gzip found in /usr/bin/gzip, GNU version in GNU/Linux systems
+head found in /usr/bin/head, GNU version in GNU/Linux systems
+mkdir found in /usr/bin/mkdir, GNU version in GNU/Linux systems
+more found in /usr/bin/more, BSD version
+more found in /mnt/d/Software/msys64/usr/bin/more.exe, BSD version
+WARNING: Will use BSD more
+mv found in /usr/bin/mv, GNU version in GNU/Linux systems
+sort found in /usr/bin/sort, GNU version in GNU/Linux systems
+tail found in /usr/bin/tail, GNU version in GNU/Linux systems
+tar found in /usr/bin/tar, GNU version in GNU/Linux systems
+7z found in /usr/bin/7z
+7za found in /usr/bin/7za
+bgzip found in /usr/bin/bgzip
+brotli found in /usr/bin/brotli
+bzip2 found in /usr/bin/bzip2
+compress found in /usr/bin/compress
+lz4 found in /home/yuzj/miniconda3/bin/lz4
+lzfse found in /usr/local/bin/lzfse
+lzip found in /usr/bin/lzip
+lzma found in /home/yuzj/miniconda3/bin/lzma
+lzop found in /usr/bin/lzop
+WARNING: pbz2 still not found. Please configure it manually in /mnt/d/Software/LinuxMiniPrograms/etc/path.sh
+WARNING: pbzip still not found. Please configure it manually in /mnt/d/Software/LinuxMiniPrograms/etc/path.sh
+pigz found in /usr/bin/pigz
+rar found in /usr/bin/rar
+unzip found in /usr/bin/unzip
+unrar found in /usr/bin/unrar
+xz found in /home/yuzj/miniconda3/bin/xz
+zip found in /usr/bin/zip
+zstd found in /home/yuzj/miniconda3/bin/zstd
+asciidoc found in /usr/local/bin/asciidoc
+asciidoctor-pdf found in /usr/local/bin/asciidoctor-pdf
+asciidoctor found in /usr/local/bin/asciidoctor
+git found in /usr/bin/git
+clang found in /home/yuzj/miniconda3/bin/clang
+gcc found in /usr/bin/gcc
+gmake found in /usr/bin/gmake
+make found in /usr/bin/make
+All configurations are printed as follows:
+7z in "/usr/bin/7z", UNIVERSE
+7za in "/usr/bin/7za", UNIVERSE
+asciidoc in "/usr/local/bin/asciidoc", UNIVERSE
+asciidoctor in "/usr/local/bin/asciidoctor", UNIVERSE
+asciidoctor_pdf in "/usr/local/bin/asciidoctor-pdf", UNIVERSE
+bgzip in "/usr/bin/bgzip", UNIVERSE
+brotli in "/usr/bin/brotli", UNIVERSE
+bzip2 in "/usr/bin/bzip2", UNIVERSE
+cat in "/usr/bin/cat", GNU version in GNU/Linux systems
+chmod in "/usr/bin/chmod", GNU version in GNU/Linux systems
+chown in "/usr/bin/chown", GNU version in GNU/Linux systems
+clang in "/home/yuzj/miniconda3/bin/clang", UNIVERSE
+compress in "/usr/bin/compress", UNIVERSE
+cp in "/usr/bin/cp", GNU version in GNU/Linux systems
+cut in "/usr/bin/cut", GNU version in GNU/Linux systems
+find in "/usr/bin/find", GNU version in GNU/Linux systems
+gcc in "/usr/bin/gcc", UNIVERSE
+git in "/usr/bin/git", UNIVERSE
+grep in "/usr/bin/grep", GNU version in GNU/Linux systems
+gzip in "/usr/bin/gzip", GNU version in GNU/Linux systems
+head in "/usr/bin/head", GNU version in GNU/Linux systems
+ls in "/usr/bin/ls", GNU version in GNU/Linux systems
+lz4 in "/home/yuzj/miniconda3/bin/lz4", UNIVERSE
+lzfse in "/usr/local/bin/lzfse", UNIVERSE
+lzip in "/usr/bin/lzip", UNIVERSE
+lzma in "/home/yuzj/miniconda3/bin/lzma", UNIVERSE
+lzop in "/usr/bin/lzop", UNIVERSE
+make in "/usr/bin/gmake", UNIVERSE
+make in "/usr/bin/make", UNIVERSE
+mkdir in "/usr/bin/mkdir", GNU version in GNU/Linux systems
+more in "/mnt/d/Software/msys64/usr/bin/more.exe", BSD version
+mv in "/usr/bin/mv", GNU version in GNU/Linux systems
+os in "Linux", 5.4.72-microsoft-standard-WSL2
+parallel in "/usr/bin/parallel", GNU version
+pbz2 in "ylukh", UNKNOWN
+pbzip in "ylukh", UNKNOWN
+pigz in "/usr/bin/pigz", UNIVERSE
+ps in "/usr/bin/ps", GNU version in GNU/Linux systems
+python in "/usr/bin/python3.9", version 3.9.1+
+rar in "/usr/bin/rar", UNIVERSE
+rm in "/usr/bin/rm", GNU version in GNU/Linux systems
+sed in "/usr/bin/sed", GNU version in GNU/Linux systems
+sort in "/usr/bin/sort", GNU version in GNU/Linux systems
+tail in "/usr/bin/tail", GNU version in GNU/Linux systems
+tar in "/usr/bin/find", GNU version in GNU/Linux systems
+tar in "/usr/bin/tar", GNU version in GNU/Linux systems
+unrar in "/usr/bin/unrar", UNIVERSE
+unzip in "/usr/bin/unzip", UNIVERSE
+xz in "/home/yuzj/miniconda3/bin/xz", UNIVERSE
+zip in "/usr/bin/zip", UNIVERSE
+zstd in "/home/yuzj/miniconda3/bin/zstd", UNIVERSE
+Finished. Please execute 'make' to build the program
+----
+
+The `Makefile` it generated is as follows:
+
+[source,Makefile]
+----
+
+export CC=/usr/bin/gcc
+export CP=/usr/bin/cp -rf
+export PYTHON=/usr/bin/python3.9
+export RM=/usr/bin/rm -rf
+all: etc var pp C
+export VERBOSE = TRUE
+
+.PHONY : all pp
+
+etc:
+	$(CP) src/etc/* etc/
+
+var:
+	$(CP) -fr src/var/* var/
+
+C:
+	@-$(MAKE) -C src/C
+
+pdf:
+	@-$(MAKE) -C src/doc pdf
+
+html:
+	@-$(MAKE) -C src/doc html
+
+man:
+	@-$(MAKE) -C src/doc man
+
+usage:
+	@-$(MAKE) -C src/doc usage
+
+pp:
+	bash src/exec/install_path_permissions.sh
+	@-$(MAKE) -C opt permissions
+----
+
+Another example:
+
+[source]
+----
+(base) 0 2021-01-22_01-57-45 /mnt/d/Software/LinuxMiniPrograms  (BSD)
+$ ./configure --skip-path --install-doc
+Configure file for YuZJLab Installer
+Copyright (C) 2019-2021 YU Zhejian
+Checking FileSystem...
+Finished. Please execute 'make' to build the program
+----
+
+With following `Makefile`:
+
+[source,Makefile]
+----
+
+export ADOC="/usr/local/bin/asciidoctor"
+export ADOC_PDF="/usr/local/bin/asciidoctor-pdf"
+export CC=/usr/bin/gcc
+export CP=/usr/bin/cp -rf
+export PYTHON=/usr/bin/python3.9
+export RM=/usr/bin/rm -rf
+all: etc var pp pdf man usage html C
+export VERBOSE = TRUE
+
+.PHONY : all pp
+
+etc:
+	$(CP) src/etc/* etc/
+
+var:
+	$(CP) -fr src/var/* var/
+
+C:
+	@-$(MAKE) -C src/C
+
+pdf:
+	@-$(MAKE) -C src/doc pdf
+
+html:
+	@-$(MAKE) -C src/doc html
+
+man:
+	@-$(MAKE) -C src/doc man
+
+usage:
+	@-$(MAKE) -C src/doc usage
+
+pp:
+	bash src/exec/install_path_permissions.sh
+	 @-$(MAKE) -C opt permissions
+----
+
+They all generate `etc/path.sh` as follows:
+
+[source,bash]
+----
+myos="Linux" #5.4.72-microsoft-standard-WSL2
+myls="/usr/bin/ls" #GNU version in GNU/Linux systems
+mygrep="/usr/bin/grep" #GNU version in GNU/Linux systems
+mysed="/usr/bin/sed" #GNU version in GNU/Linux systems
+myrm="/usr/bin/rm" #GNU version in GNU/Linux systems
+mypython="/usr/bin/python3.9" #version 3.9.1+
+myps="/usr/bin/ps" #GNU version in GNU/Linux systems
+myparallel="/usr/bin/parallel" #GNU version
+mycat="/usr/bin/cat" #GNU version in GNU/Linux systems
+mychmod="/usr/bin/chmod" #GNU version in GNU/Linux systems
+mychown="/usr/bin/chown" #GNU version in GNU/Linux systems
+mycp="/usr/bin/cp" #GNU version in GNU/Linux systems
+cut="/usr/bin/cut" #GNU version in GNU/Linux systems
+myfind="/usr/bin/find" #GNU version in GNU/Linux systems
+mytar="/usr/bin/find" #GNU version in GNU/Linux systems
+mygzip="/usr/bin/gzip" #GNU version in GNU/Linux systems
+myhead="/usr/bin/head" #GNU version in GNU/Linux systems
+mymkdir="/usr/bin/mkdir" #GNU version in GNU/Linux systems
+mymore="/mnt/d/Software/msys64/usr/bin/more.exe" #BSD version
+mymv="/usr/bin/mv" #GNU version in GNU/Linux systems
+mysort="/usr/bin/sort" #GNU version in GNU/Linux systems
+mytail="/usr/bin/tail" #GNU version in GNU/Linux systems
+mytar="/usr/bin/tar" #GNU version in GNU/Linux systems
+my7z="/usr/bin/7z" #UNIVERSE
+my7za="/usr/bin/7za" #UNIVERSE
+mybgzip="/usr/bin/bgzip" #UNIVERSE
+mybrotli="/usr/bin/brotli" #UNIVERSE
+mybzip2="/usr/bin/bzip2" #UNIVERSE
+mycompress="/usr/bin/compress" #UNIVERSE
+mylz4="/home/yuzj/miniconda3/bin/lz4" #UNIVERSE
+mylzfse="/usr/local/bin/lzfse" #UNIVERSE
+mylzip="/usr/bin/lzip" #UNIVERSE
+mylzma="/home/yuzj/miniconda3/bin/lzma" #UNIVERSE
+mylzop="/usr/bin/lzop" #UNIVERSE
+mypbz2="ylukh" #UNKNOWN
+mypbzip="ylukh" #UNKNOWN
+mypigz="/usr/bin/pigz" #UNIVERSE
+myrar="/usr/bin/rar" #UNIVERSE
+myunzip="/usr/bin/unzip" #UNIVERSE
+myunrar="/usr/bin/unrar" #UNIVERSE
+myxz="/home/yuzj/miniconda3/bin/xz" #UNIVERSE
+myzip="/usr/bin/zip" #UNIVERSE
+myzstd="/home/yuzj/miniconda3/bin/zstd" #UNIVERSE
+myasciidoc="/usr/local/bin/asciidoc" #UNIVERSE
+myasciidoctor_pdf="/usr/local/bin/asciidoctor-pdf" #UNIVERSE
+myasciidoctor="/usr/local/bin/asciidoctor" #UNIVERSE
+mygit="/usr/bin/git" #UNIVERSE
+myclang="/home/yuzj/miniconda3/bin/clang" #UNIVERSE
+mygcc="/usr/bin/gcc" #UNIVERSE
+mymake="/usr/bin/gmake" #UNIVERSE
+mymake="/usr/bin/make" #UNIVERSE
+----
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== SEE ALSO
+
+LMP_basis, ylukh
+
+include::include/copy.adoc[]

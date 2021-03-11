@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# MLS V1P1
+set -ue
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../lib/libisopt
+. "${DN}"/../etc/path.sh
+. "${DN}"/../lib/libstr
+infoh "YuZJLab MANPATH ls"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
+oldifs="${IFS}"
+
+INPATH="$(manpath 2> /dev/null || true):/usr/share/man:/usr/local/man:/usr/local/share/man:$(cat /usr/local/etc/man.d/*.conf 2> /dev/null | grep -v \# | grep MANPATH | cut -f 2 -d ' ' | tr '\n' ':' || true)${MANPATH:-}"
+. "${DN}"/../lib/libpath
+IFS=":"
+eachpath=(${valid_path})
+unset duplicated_path
+IFS=''
+STDS=()
+for opt in "${@}"; do
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-h" | "--help")
+			yldoc manls
+			exit 0
+			;;
+		"-v" | "--version")
+			echo "Version 1 Patch 1 in Bash"
+			exit 0
+			;;
+		"-l" | "--list")
+			echo ${valid_path} | tr ':' '\n'
+			unset valid_path
+			exit 0
+			;;
+		"-x")
+			set -x
+			;;
+		*)
+			warnh "Option '${opt}' invalid. Ignored"
+			;;
+		esac
+	else
+		STDS=(${STDS[@]} "${opt}")
+	fi
+done
+unset invalid_path valid_path
+tmpf="$(mktemp -t pls.XXXXXX)"
+infoh "Reading database..."
+for dir in "${eachpath[@]}"; do
+	ls -1 -F "${dir}" | sed "s;^;$(echo "${dir}")/;" | grep man[^/]*/$ | while read line; do
+		ls -1 -F "${line}" | sed "s;.gz;;" | sed "s;^;$(echo "${line}");" >> "${tmpf}"
+	done
+done
+if [ ${#STDS[@]} -eq 0 ]; then
+	cat "${tmpf}"
+else
+	IFS=''
+	grepstr=''
+	for fn in "${STDS[@]}"; do
+		grepstr="${grepstr} -e ${fn}"
+	done
+	eval cat \"${tmpf}\"\|grep "${grepstr}"
+fi
+rm "${tmpf}"
+IFS="${oldifs}"

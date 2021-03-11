@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# ENIGMA v1
+# TODO: Add C Version
+# TODO: docs
+set -ue
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../lib/libstr
+. "${DN}"/../etc/path.sh
+mkdir -p "${DN}"/../var/enigma.d
+for fn in "${DN}"/exec/enigma.co "${DN}"/exec/enigma.co.exe;do
+	[ -e "${fn}" ] && exec "${fn}" "${@}"
+done
+if [ "${mypython}" != "ylukh" ]; then
+	exec "${mypython}" "${DN}"/exec/enigma.py "${@}"
+else
+	errh "No python found!"
+fi

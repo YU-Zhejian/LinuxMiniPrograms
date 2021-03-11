@@ -1,0 +1,50 @@
+export VERBOSE = TRUE
+export MKDIR = mkdir -p
+export TT = all
+
+.PHONY : all pp test clean distclean doc #install uninstall
+
+doc: share/doc/pdf share/doc/html share/doc/usage share/man
+
+etc:
+	$(MKDIR) -p etc/
+	$(CP) src/etc/* etc/
+
+var:
+	$(MKDIR) -p var/
+	$(CP) src/var/* var/
+
+C:
+	@-$(MAKE) -C src/C
+
+share/doc/pdf:
+	@-$(MAKE) -C src/doc pdf
+
+share/doc/html:
+	@-$(MAKE) -C src/doc html
+
+share/man:
+	@-$(MAKE) -C src/doc man
+
+share/doc/usage:
+	@-$(MAKE) -C src/doc usage
+
+pp:
+	bash src/exec/install_path_permissions.sh
+	@-$(MAKE) -C opt permissions
+
+test:
+	bash src/test/00_index.sh $(TT)
+
+clean:
+	$(RM) src/test/*.t/
+
+distclean:clean
+	$(RM) etc var share
+
+# TODO: Implement installation
+#install:
+#	$(CP) -buv . ~/opt/LinuxMiniPrograms/ &>> install.log
+#
+#uninstall:
+#	bash -c 'cat install.log |  | while read line;do '
