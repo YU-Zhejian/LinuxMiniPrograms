@@ -40,7 +40,7 @@ elif [ "${STDS:-}" = "clear" ]; then
 	rm -rf * || true
 	ylsjsd start
 elif [ "${STDS:-}" = "status" ]; then
-	cat ylsjsd.lock
+	cat ylsjsd.lock 2> /dev/null || errh "ylsjsd not started"
 else
 	errh "Command '"${STDS:-}"' unknown"
 fi
