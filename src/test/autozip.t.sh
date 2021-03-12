@@ -29,7 +29,7 @@ for i in {1..20};do
 done
 DO autozip td --force --parallel -1
 DO azcat --parallel td \> tf.azc.ne
-for ext in tar tbz;do
+for ext in tar tgz;do
 	DO autozip td --force --parallel -1 "${ext}"
 	DO azlist td."${ext}"
 	DO autounzip --force --remove --parallel td."${ext}"
