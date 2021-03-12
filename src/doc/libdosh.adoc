@@ -3,6 +3,8 @@
 
 = libdosh (1)
 
+== NAME
+
 LibDOSh - LibDO Shell
 
 == SYNOPSIS

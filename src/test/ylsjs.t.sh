@@ -7,9 +7,8 @@ PROGNAME=ylsjs
 . "${DN}"/../../lib/libman
 CORENUM=$((2*$(getcorenumber)))
 for (( i = 0; i < CORENUM ; i ++ ));do
-	echo "sleep 10" | ylsjs init
+	echo "sleep 10" | ylsjs init &>> /dev/null
 done
-ylsjs ps
-ylsjs ps -V -t -p -s
-ylsjsd stop
-# TODO
+DO ylsjs ps
+DO ylsjs ps -V -t -p -s
+DO ylsjsd stop
