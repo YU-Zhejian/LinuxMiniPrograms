@@ -129,7 +129,9 @@ Git bash is considered a modified version of Cygwin. So only limited support is 
 
 === MSYS2
 
-Tested with severe incompatibilities. Sadly, we will not provide support for such system. If you're interested, please use Cygwin instead.
+MSYS2 is considered a modified version of Cygwin. So only limited support is provided.
+
+There will be same problems as Git Bash.
 
 === MacOS
 
