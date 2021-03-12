@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # B16C.py V2P2
+# TODO: Still bugs in MSYS2
 import struct
 
 from LMP_Pylib.libisopt import *

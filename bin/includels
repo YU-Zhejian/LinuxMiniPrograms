@@ -9,7 +9,10 @@ infoh "YuZJLab INCLUDEPATH ls"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 oldifs="${IFS}"
 
-gccinclude=$(for dir in /lib*/gcc*/*/*/include \
+gccinclude=$(for dir in \
+	/clang*/include \
+	/mingw*/include \
+	/lib*/gcc*/*/*/include \
 	/usr/lib*/gcc*/*/*/include \
 	/usr/local/lib*/gcc*/*/*/include \
 	"${HOME}"/usr/lib*/gcc*/*/*/include \

@@ -59,6 +59,10 @@ Tested with all functions supported.
 
 Tested with all functions supported.
 
+== KNOWN BUGS
+
+Error in MSYS2.
+
 == SEE ALSO
 
 enigma
