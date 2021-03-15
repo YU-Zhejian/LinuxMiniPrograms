@@ -8,7 +8,9 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../../lib/libman
 declare -i MAX_JOB
 MAX_JOB=$(getcorenumber)
-YLSJSD="${DN}"/../../var/ylsjs.d
+if [ -z "${YLSJSD:-}" ];then
+	YLSJSD="${DN}"/../../var/ylsjs.d
+fi
 echo ${$} >> ylsjsd.lock
 infoh "ylsjsd started at $(date)"
 

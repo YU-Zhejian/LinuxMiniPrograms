@@ -6,8 +6,14 @@ WD="$(pwd)"
 . "${DN}"/../etc/path.sh
 . "${DN}"/../lib/libstr
 . "${DN}"/../lib/libisopt
-mkdir -p "${DN}"/../var/ylsjs.d
-cd "${DN}"/../var/ylsjs.d
+touch "${DN}"/../etc/ylsjsd.conf
+. "${DN}"/../etc/ylsjsd.conf
+if [ -z "${YLSJSD:-}" ];then
+	warnh "YLSJSD undefined. Will use ${DN}/../var/ylsjs.d"
+	YLSJSD="${DN}"/../var/ylsjs.d
+fi
+mkdir -p "${YLSJSD}"
+cd "${YLSJSD}"
 ylsjsd start
 # ============ Possess arguments ============
 STDS=""

@@ -5,6 +5,8 @@ VERBOSE=false
 TOP=false
 PST=false
 CAT=false
+PID_ONLY=false
+ID_ONLY=false
 for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
@@ -19,6 +21,12 @@ for opt in "${@}"; do
 			;;
 		"-s" | "--show-sh")
 			CAT=true
+			;;
+		"--pid-only")
+			PID_ONLY=true
+			;;
+		"--id-only")
+			ID_ONLY=true
 			;;
 		esac
 	else
@@ -80,16 +88,27 @@ function __psc() {
 	ylmktbl "${table}"
 	rm "${table}"
 }
+function __pspid() {
+	echo "${@}" | tr ' ' '\n' | sort -n | while read ps_name;do
+		[ -f "${ps_name}.i" ] && cat ${ps_name}.i | tail -n 1  | tr '\n' ' ' || true
+	done
+}
 
 if [ ${#STDS[@]} -eq 0 ]; then
 	if ${VERBOSE}; then
 		__psv $(ls -1 | grep '^[0-9]*\.[qif]$' | sed 's;.[qif]$;;' | xargs)
+	elif ${PID_ONLY};then
+		__pspid $(ls -1 | grep '^[0-9]*\.i$' | sed 's;.i$;;' | xargs)
+	elif ${ID_ONLY};then
+		printf "$(ls -1 | grep '^[0-9]*\.i$' | sed 's;.i$;;' | xargs)"
 	else
 		__psc $(ls -1 | grep '^[0-9]*\.[qif]$' | sed 's;.[qif]$;;' | xargs)
 	fi
 else
 	if ${VERBOSE}; then
 		__psv "${STDS[@]}"
+	elif ${PID_ONLY};then
+		__pspid "${STDS[@]}"
 	else
 		__psc "${STDS[@]}"
 	fi

@@ -5,8 +5,15 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.sh
 . "${DN}"/../lib/libstr
 . "${DN}"/../lib/libisopt
-mkdir -p "${DN}"/../var/ylsjs.d
-cd "${DN}"/../var/ylsjs.d
+. "${DN}"/../lib/libman
+touch "${DN}"/../etc/ylsjsd.conf
+. "${DN}"/../etc/ylsjsd.conf
+if [ -z "${YLSJSD:-}" ];then
+	warnh "YLSJSD undefined. Will use ${DN}/../var/ylsjs.d"
+	YLSJSD="${DN}"/../var/ylsjs.d
+fi
+mkdir -p "${YLSJSD}"
+cd "${YLSJSD}"
 STDS=""
 for opt in "${@}"; do
 	if isopt "${opt}"; then
@@ -27,18 +34,28 @@ for opt in "${@}"; do
 		[ "${STDS}" = "" ] && STDS="${opt}"
 	fi
 done
+YLSJSD_PID=""
+YLSJSD_PID="$(cat ylsjsd.lock)" || true
 if [ "${STDS:-}" = "start" ]; then
-	[ ! -f ylsjsd.lock ] && bash "${DN}"/exec/ylsjsd.sh &
+	if [ -z "${YLSJSD_PID}" ];then
+		bash "${DN}"/exec/ylsjsd.sh &
+	else
+		warnh "ylsjsd already started at $(cat ylsjsd.lock )"
+	fi
 elif [ "${STDS:-}" = "stop" ]; then
-	[ -f ylsjsd.lock ] && kill -15 "$(cat ylsjsd.lock)" || true
+	if [ -z "${YLSJSD_PID}" ];then
+		warnh "ylsjsd not started"
+	else
+		kill -15 "$(cat ylsjsd.lock)" || true
+	fi
 	rm -f ylsjsd.lock
 elif [ "${STDS:-}" = "restart" ]; then
 	ylsjsd stop
 	ylsjsd start
 elif [ "${STDS:-}" = "clear" ]; then
 	ylsjsd stop
+	if [ -n "${YLSJSD_PID}" ]; then killtree "${YLSJSD_PID}" 9;fi
 	rm -rf * || true
-	ylsjsd start
 elif [ "${STDS:-}" = "status" ]; then
 	cat ylsjsd.lock 2> /dev/null || errh "ylsjsd not started"
 else
