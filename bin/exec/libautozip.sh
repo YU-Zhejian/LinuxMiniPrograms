@@ -2,7 +2,7 @@
 # LIBAUTOZIP V6
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libman
 REMOVE=false
 declare -i MAXTHREAD

@@ -4,7 +4,7 @@ set -ue
 
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
 function __exit() {
 	kill -9 ${$}

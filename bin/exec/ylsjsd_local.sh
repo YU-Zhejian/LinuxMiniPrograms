@@ -3,7 +3,7 @@
 set -ue
 declare -i YLSJSD_MAX_JOB
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../../etc/path.sh
+. "${DN}"/../../etc/path.conf
 . "${DN}"/../../lib/libstr
 . "${DN}"/../../lib/libisopt
 . "${DN}"/../../lib/libman

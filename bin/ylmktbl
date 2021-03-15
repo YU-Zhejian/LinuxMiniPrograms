@@ -2,7 +2,7 @@
 # YLMKTNL V4P1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 if [ "${mypython}" != "ylukh" ]; then
 	exec "${mypython}" "${DN}"/exec/ylmktbl.py "${@}"
 else

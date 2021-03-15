@@ -7,7 +7,7 @@ OLD_IFS="${IFS}"
 touch "${DN}"/../etc/git-mirror.conf
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../etc/git-mirror.conf
 . "${DN}"/exec/libgitm.sh
 infoh "YuZJLab Git Mirror Manager"

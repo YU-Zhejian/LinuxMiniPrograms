@@ -14,3 +14,4 @@ done
 DO libdoman libdo2.log
 DO libdoman -m libdo2.log
 DO libdoman -o:1 libdo2.log
+rm -rf "${TDN}"

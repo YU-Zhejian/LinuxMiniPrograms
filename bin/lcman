@@ -2,7 +2,7 @@
 # LCMAN V3P6
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 infoh "YuZJLab LiveChat Manager"

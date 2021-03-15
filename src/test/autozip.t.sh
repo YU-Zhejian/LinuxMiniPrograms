@@ -51,4 +51,4 @@ for ext in 7z zip rar;do
 	DO autounzip --force --remove --parallel td."${ext}"
 done
 cd ..
-rm -rf "${TDN}"
+

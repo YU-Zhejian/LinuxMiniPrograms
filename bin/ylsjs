@@ -3,7 +3,7 @@
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 WD="$(pwd)"
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
 . "${DN}"/../lib/libisopt
 touch "${DN}"/../etc/ylsjsd.conf

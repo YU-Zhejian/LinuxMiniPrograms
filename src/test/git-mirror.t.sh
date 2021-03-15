@@ -12,3 +12,4 @@ DO git-mirror lsbranch
 DO git-mirror gc
 DO git-mirror rmrepo -f https://github.com/YuZJLab/SoftInstall https://github.com/YuZJLab/R_CheatSheet
 DO git-mirror log
+rm -rf "${TDN}"

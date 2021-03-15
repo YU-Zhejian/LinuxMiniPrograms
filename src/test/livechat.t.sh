@@ -10,3 +10,4 @@ DO lcman -m:"quitted"
 DO lcman -s
 DO lcman -e:"SYSTEM"
 DO lcman -f:"SYSTEM"
+rm -rf "${TDN}"

@@ -89,9 +89,9 @@ done
 # ========Check========
 infoh "Checking FileSystem..."
 #mkdir -p "${PREFIX}" || errh "Installation prefix ${PREFIX} cannot be accessed"
-${VAR_update_path} && rm -f 'etc/path.sh'
-if [ ! -f 'etc/path.sh' ]; then
-	path_sh="etc/path.sh"
+${VAR_update_path} && rm -f 'etc/path.conf'
+if [ ! -f 'etc/path.conf' ]; then
+	path_sh="etc/path.conf"
 	mkdir -p etc
 	touch "${path_sh}"
 	echo "#!/usr/bin/env bash" >> "${path_sh}"
@@ -133,7 +133,7 @@ fi
 for STDI in "${STDS[@]}";do
 	echo my"${STDI}" >> "${path_sh}"
 done
-. etc/path.sh
+. etc/path.conf
 [ "${mymake}" = "ylukh" ] && errh "GNU Make not found"
 #========Install ETC========
 if ${VAR_install_config} && [ -d "etc" ]; then

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 #YLUKH V2
-echo "YuZJLab UnKnown Handler: command not found. Please check $(readlink -f "$(dirname "${0}")/../etc/path.sh")"
+echo "YuZJLab UnKnown Handler: command not found. Please check $(readlink -f "$(dirname "${0}")/../etc/path.conf")"
 exit 127

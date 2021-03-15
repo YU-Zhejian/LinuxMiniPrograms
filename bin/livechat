@@ -2,7 +2,7 @@
 # LIVECHAT V2
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
 # TODO: Still bugs!
 errh "Bugs not fixed."

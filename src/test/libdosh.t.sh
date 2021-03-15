@@ -3,4 +3,4 @@ set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 PROGNAME=libdosh
 . "${DN}"/00_libtest.sh
-exit 0
+rm -rf "${TDN}"

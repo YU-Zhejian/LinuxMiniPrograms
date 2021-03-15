@@ -5,7 +5,7 @@
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 mkdir -p "${DN}"/../var/enigma.d
 for fn in "${DN}"/exec/enigma.co "${DN}"/exec/enigma.co.exe;do
 	[ -e "${fn}" ] && exec "${fn}" "${@}"

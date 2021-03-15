@@ -7,3 +7,4 @@ mkdir -p "${TDN}"
 cd "${TDN}"
 LIBDO_LOG_MODE=4
 LIBDO_LOG="${PROGNAME}.log"
+rm -rf "${TDN}"

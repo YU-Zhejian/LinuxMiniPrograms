@@ -2,7 +2,7 @@
 # BHS V1P8
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 infoh "YuZJLab Bash History Searcher"

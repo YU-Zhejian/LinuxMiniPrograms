@@ -13,7 +13,7 @@ for args in "${@}";do
 		exit
 	elif [ -f "${DN}"/"${args}".t.sh ];then
 		printf "Executing ${DN}/${args}.t.sh..."
-		bash "${DN}"/"${args}".t.sh && echo "PASS" || echo "FAIL"
+		if bash "${DN}"/"${args}".t.sh && echo "PASS" || echo "FAIL"
 	else
 		warnh "Target ${args} invalid. Skip"
 	fi

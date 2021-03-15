@@ -5,7 +5,7 @@ OLDIFS="${IFS}"
 DN="$(readlink -f "$(dirname "${0}")")/../../"
 cd "${DN}"
 . lib/libstr
-. etc/path.sh
+. etc/path.conf
 #========Install PATH========
 if ! which yldoc &> /dev/null; then
 	echo "export PATH=\"${DN}/bin/:\${PATH:-}\"" >> "${HOME}"/.bashrc

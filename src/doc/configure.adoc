@@ -16,7 +16,7 @@ configure - YuZJLab LinuxMiniPrograms Configuration Script
 Configure YuZJLab LinuxMiniPrograms with options. It will generate:
 
 . `Makefile` for building this program.
-. `etc/path.sh` where paths of the executables used are recorded (See LMP_basis for more information).
+. `etc/path.conf` where paths of the executables used are recorded (See LMP_basis for more information).
 
 == OPTIONS
 
@@ -38,7 +38,7 @@ include::include/cmnopt.adoc[]
 
 * `--install-html` Install doc in html to `share/doc/html`, need `asciidoctor` or `asciidoc`.
 
-* `--skip-path` Do not update `etc/path.sh`.
+* `--skip-path` Do not update `etc/path.conf`.
 
 == EXAMPLES
 
@@ -147,8 +147,8 @@ lzfse found in /usr/local/bin/lzfse
 lzip found in /usr/bin/lzip
 lzma found in /home/yuzj/miniconda3/bin/lzma
 lzop found in /usr/bin/lzop
-WARNING: pbz2 still not found. Please configure it manually in /mnt/d/Software/LinuxMiniPrograms/etc/path.sh
-WARNING: pbzip still not found. Please configure it manually in /mnt/d/Software/LinuxMiniPrograms/etc/path.sh
+WARNING: pbz2 still not found. Please configure it manually in /mnt/d/Software/LinuxMiniPrograms/etc/path.conf
+WARNING: pbzip still not found. Please configure it manually in /mnt/d/Software/LinuxMiniPrograms/etc/path.conf
 pigz found in /usr/bin/pigz
 rar found in /usr/bin/rar
 unzip found in /usr/bin/unzip
@@ -313,7 +313,7 @@ pp:
 	 @-$(MAKE) -C opt permissions
 ----
 
-They all generate `etc/path.sh` as follows:
+They all generate `etc/path.conf` as follows:
 
 [source,bash]
 ----
