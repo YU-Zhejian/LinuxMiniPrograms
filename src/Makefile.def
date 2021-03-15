@@ -1,14 +1,17 @@
 export VERBOSE = TRUE
 export MKDIR = mkdir -p
 export TT = all
+ETC_SOURCES := $(notdir $(wildcard src/etc/*))
+ETC_OBJECTS := $(foreach fn, $(ETC_SOURCES), $(addprefix etc/, $(fn)))
 
-.PHONY : all pp test clean distclean doc #install uninstall
+.PHONY : all pp test clean distclean doc etc share/doc/pdf share/doc/html share/doc/usage share/man #install uninstall
 
 doc: share/doc/pdf share/doc/html share/doc/usage share/man
 
-etc:
-	$(MKDIR) -p etc/
-	$(CP) src/etc/* etc/
+etc : $(ETC_OBJECTS)
+
+etc/%: src/etc/%
+	$(CP) $< $@
 
 var:
 	$(MKDIR) -p var/

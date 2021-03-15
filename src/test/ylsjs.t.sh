@@ -6,7 +6,7 @@ PROGNAME=ylsjs
 . "${DN}"/../../etc/path.sh
 . "${DN}"/../../lib/libman
 CORENUM=$((2*$(getcorenumber)))
-export YLSJSD="${PWD}/ylsjs.d"
+export YLSJSD_HOME="${PWD}/ylsjs.d"
 for (( i = 0; i < CORENUM ; i ++ ));do
 	echo "sleep 10" | ylsjs init &>> /dev/null
 done

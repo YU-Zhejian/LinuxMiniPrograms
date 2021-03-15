@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
-#YLSJSD.sh v1
+#YLSJSD_LOCAL.sh v1
 set -ue
+declare -i YLSJSD_MAX_JOB
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../../etc/path.sh
 . "${DN}"/../../lib/libstr
 . "${DN}"/../../lib/libisopt
 . "${DN}"/../../lib/libman
-declare -i MAX_JOB
-MAX_JOB=$(getcorenumber)
-if [ -z "${YLSJSD:-}" ];then
-	YLSJSD="${DN}"/../../var/ylsjs.d
+
+
+if [ -z "${YLSJSD_MAX_JOB:-}" ];then
+	YLSJSD_MAX_JOB=$(getcorenumber)
+fi
+if [ -z "${YLSJSD_HOME:-}" ];then
+	YLSJSD_HOME="${DN}"/../../var/ylsjs.d
 fi
 echo ${$} >> ylsjsd.lock
 infoh "ylsjsd started at $(date)"
@@ -32,14 +36,14 @@ while true; do
 		fi
 	done
 	# Check the queue
-	while [ $(ls -1 | grep '\.i' | wc -l | awk '{ printf $1 }') -lt ${MAX_JOB} ]; do
+	while [ $(ls -1 | grep '\.i' | wc -l | awk '{ printf $1 }') -lt ${YLSJSD_MAX_JOB} ]; do
 		lastq=$(ls -1 | grep '\.q$' | sort -n | head -n 1 | sed 's;.q$;;')
 		if [ "${lastq}" = "" ]; then break; fi
 		date +%s > ${lastq}.start
 		declare >"${lastq}".env
 		cd "$(cat "${lastq}.wd")"
-		bash "${YLSJSD}"/${lastq}.sh 1> "${YLSJSD}"/${lastq}.stdout 2>"${YLSJSD}"/${lastq}.stderr &
-		cd "${YLSJSD}"
+		bash "${YLSJSD_HOME}"/${lastq}.sh 1> "${YLSJSD_HOME}"/${lastq}.stdout 2>"${YLSJSD_HOME}"/${lastq}.stderr &
+		cd "${YLSJSD_HOME}"
 		echo "${!}" >>"${lastq}".q
 		mv "${lastq}.q" "${lastq}.i"
 	done

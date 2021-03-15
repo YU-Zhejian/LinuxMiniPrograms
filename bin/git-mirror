@@ -30,12 +30,12 @@ for opt in "${@}"; do
 done
 gmcmd=${STDS[0]:-}
 unset STDS[0]
-if [ -z "${git_mirror_dir:-}" ];then
-	warnh "git_mirror_dir undefined. Will use ${DN}/../var/git-mirror.d"
-	git_mirror_dir=${DN}/../var/git-mirror.d
+if [ -z "${GITM_HOME:-}" ];then
+	warnh "GITM_HOME undefined. Will use ${DN}/../var/git-mirror.d"
+	GITM_HOME=${DN}/../var/git-mirror.d
 fi
-mkdir -p "${git_mirror_dir}" "${git_mirror_dir}/logs/" "${git_mirror_dir}/uuidtable.d/"
-cd "${git_mirror_dir}"
+mkdir -p "${GITM_HOME}" "${GITM_HOME}/logs/" "${GITM_HOME}/uuidtable.d/"
+cd "${GITM_HOME}"
 ls uuidtable.d/* &>> /dev/null || touch uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')"
 touch act.log
 if [ -f "${DN}"/exec/gitm_"${gmcmd}".sh ]; then

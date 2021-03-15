@@ -4,7 +4,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 PROGNAME=git-mirror
 . "${DN}"/00_libtest.sh
 which git &>> /dev/null || exit 0
-export git_mirror_dir=tmp
+export GITM_HOME=tmp
 DO git-mirror add https://github.com/YuZJLab/SoftInstall https://github.com/YuZJLab/R_CheatSheet
 DO git-mirror sync
 DO git-mirror ls

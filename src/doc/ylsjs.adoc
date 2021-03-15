@@ -93,7 +93,7 @@ $ ylsjs kill 1
 WARNING: Failed to kill 1 with PID=16491. Retry with -n:9 option
 0 2021-03-11_14-10-27 /mnt/d/Work/LinuxMiniPrograms  (BSD)
 $ ylsjs kill 1 -n:9
-/mnt/d/Work/LinuxMiniPrograms/bin/exec/ylsjsd.sh: line 44: 16491 Killed                  bash "${YLSJSD}"/${lastq}.sh > "${YLSJSD}"/${lastq}.stdout 2> "${YLSJSD}"/${lastq}.stderr  (wd: /mnt/d/Work/LinuxMiniPrograms)
+/mnt/d/Work/LinuxMiniPrograms/bin/exec/ylsjsd.sh: line 44: 16491 Killed                  bash "${YLSJSD_HOME}"/${lastq}.sh > "${YLSJSD_HOME}"/${lastq}.stdout 2> "${YLSJSD_HOME}"/${lastq}.stderr  (wd: /mnt/d/Work/LinuxMiniPrograms)
 1 killed
 0 2021-03-11_14-10-34 /mnt/d/Work/LinuxMiniPrograms  (BSD)
 $ ylsjs ps
