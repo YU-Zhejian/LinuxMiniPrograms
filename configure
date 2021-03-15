@@ -7,6 +7,7 @@ if ! readlink -f . &>/dev/null; then
 	exit 1
 fi
 cd "$(readlink -f "$(dirname "${0}")")"
+./BeforeAdd.sh
 . lib/libisopt
 . lib/libstr
 infoh "Configure file for YuZJLab Installer"
@@ -90,6 +91,7 @@ done
 infoh "Checking FileSystem..."
 #mkdir -p "${PREFIX}" || errh "Installation prefix ${PREFIX} cannot be accessed"
 ${VAR_update_path} && rm -f 'etc/path.conf'
+if [ ! -f 'etc/path.conf' ] && [ -f 'etc/path.sh' ];then mv 'etc/path.sh' 'etc/path.conf';fi
 if [ ! -f 'etc/path.conf' ]; then
 	path_sh="etc/path.conf"
 	mkdir -p etc

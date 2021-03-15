@@ -1,0 +1,16 @@
+Two news today.
+
+== News: `etc/path.sh` renamed to `etc/path.conf`
+
+To keep consistent, we have renamed `etc/path.sh` to `etc/path.conf`.
+
+You may apply this patch by executing
+
+[source,bash]
+----
+if [ ! -f 'etc/path.conf' ] && [ -f 'etc/path.sh' ];then mv 'etc/path.sh' 'etc/path.conf';fi
+----
+
+at the root directory of your LinuxMiniPrograms installation.
+
+== News: YuJLab Simple Job Systems on distributed computers purposed.

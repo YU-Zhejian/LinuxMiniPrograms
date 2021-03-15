@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # LIBSTR V1
+# TODO: docs
 function trimstr() {
 	: "${1#"${1%%[![:space:]]*}"}"
 	: "${_%"${_##*[![:space:]]}"}"

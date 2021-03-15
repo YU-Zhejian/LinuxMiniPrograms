@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # LIBMAN V1
+# TODO: docs
 function getuser() {
 	if [ -n "${USER:-}" ]; then
 		printf "${USER}"
