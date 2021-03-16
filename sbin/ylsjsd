@@ -35,7 +35,7 @@ for opt in "${@}"; do
 	fi
 done
 YLSJSD_HOME_PID=""
-YLSJSD_HOME_PID="$(cat ylsjsd.lock)" || true
+YLSJSD_HOME_PID="$(cat ylsjsd.lock 2> /dev/null)" || true
 if [ "${STDS:-}" = "start" ]; then
 	if [ -z "${YLSJSD_HOME_PID}" ];then
 		bash "${DN}"/exec/ylsjsd_local.sh &
@@ -46,7 +46,7 @@ elif [ "${STDS:-}" = "stop" ]; then
 	if [ -z "${YLSJSD_HOME_PID}" ];then
 		warnh "ylsjsd not started"
 	else
-		kill -15 "$(cat ylsjsd.lock)" || true
+		kill -15 "$(cat ylsjsd.lock 2> /dev/null)" || true
 	fi
 	rm -f ylsjsd.lock
 elif [ "${STDS:-}" = "restart" ]; then

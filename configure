@@ -7,11 +7,11 @@ if ! readlink -f . &>/dev/null; then
 	exit 1
 fi
 cd "$(readlink -f "$(dirname "${0}")")"
-./BeforeAdd.sh
 . lib/libisopt
 . lib/libstr
 infoh "Configure file for YuZJLab Installer"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
+./BeforeAdd.sh
 # ========Def Var========
 VAR_install_config=false
 VAR_clear_history=false

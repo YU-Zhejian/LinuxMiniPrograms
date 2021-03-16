@@ -9,7 +9,7 @@ infoh "YuZJLab LiveChat Manager"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 LVCD="${DN}/../var/livechat.d"
 mkdir -p "${LVCD}"
-touch "${LVCD}"/SYSTEM "${LVCD}"/LCONLINE
+touch "${LVCD}"/SYSTEM
 OLD_IFS="${IFS}"
 IFS=";"
 tmpfff="$(mktemp -t lcman.XXXXXX)"
