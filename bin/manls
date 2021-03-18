@@ -5,11 +5,17 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
+. "${DN}"/exec/pathutils.sh
 infoh "YuZJLab MANPATH ls"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 oldifs="${IFS}"
 
-INPATH="$(manpath 2> /dev/null || true):/usr/share/man:/usr/local/man:/usr/local/share/man:$(cat /usr/local/etc/man.d/*.conf 2> /dev/null | grep -v \# | grep MANPATH | cut -f 2 -d ' ' | tr '\n' ':' || true)${MANPATH:-}"
+locallib=$(for dir in \
+	$(__addpref 'man') \
+	$(__addpref 'share/man')
+	do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+
+INPATH="$(manpath 2> /dev/null || true):${locallib}:$(cat /usr/local/etc/man.d/*.conf 2> /dev/null | grep -v \# | grep MANPATH | cut -f 2 -d ' ' | tr '\n' ':' || true):${MANPATH:-}"
 . "${DN}"/../lib/libpath
 IFS=":"
 eachpath=(${valid_path})

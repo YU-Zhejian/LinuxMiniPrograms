@@ -5,6 +5,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.conf
+. "${DN}"/exec/pathutils.sh
 infoh "YuZJLab LIBRARY ls"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 oldifs="${IFS}"
@@ -13,14 +14,15 @@ function _grep() {
 	cat "${tmpf}" | grep "${regstr}" >> "${tmpff}"
 }
 
-locallib=$(for dir in /lib* \
-	/clang*/lib \
-	/mingw*/lib \
-	/usr/lib* \
-	/usr/local/lib* \
-	"${HOME}"/usr/lib* \
-	"${HOME}"/usr/local/lib*; do echo ${dir}; done | grep -v '*' | grep -E '/lib((64)|(32)){0,1}$' | tr '\n' ':')
-INPATH="${locallib}:${LD_LIBRARY_PATH:-}"${LIBRARY_PATH:-}
+locallib=$(for dir in \
+	$(__addpref 'lib*') \
+	$(__addpref 'lib*/gcc*/*/*/x*') \
+	$(__addpref 'lib*/gcc*/*/x*') \
+	$(__addpref 'lib*/gcc*/x*') \
+	$(__addpref 'lib*/clang*/*/lib*') \
+	$(__addpref 'lib*/clang*/lib*')
+	do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+INPATH="/mingw*/lib*:/clang*/lib*:${locallib}:${LD_LIBRARY_PATH:-}${LIBRARY_PATH:-}"
 . "${DN}"/../lib/libpath
 IFS=":"
 eachpath=(${valid_path})
