@@ -22,15 +22,10 @@ If [ext] is also omitted, this program will use gz (For files) & tar.gz (For fol
 == OPTIONS
 
 include::include/cmnopt.adoc[]
-
 * `--force` Remove the target if exists.
-
 * `--remove` Remove [source] if success.
-
 * `-d|--decompress` Will initiate `autounzip` with same arguments.
-
 * `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when creating the archive. `[thread]` should not be higher than the number of cores installed. If `[thread]` is omitted, will use the number of cores installed.
-
 * `-c|--stdout` Pump what is compressed to standard output. Not supported by some algorithms.
 
 include::include/autozipcmn.adoc[]

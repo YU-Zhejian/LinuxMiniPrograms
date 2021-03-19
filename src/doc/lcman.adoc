@@ -18,17 +18,9 @@ Filter livechat history by `[OPTIONS]`.
 == OPTIONS
 
 include::include/cmnopt.adoc[]
-
 * `-f:[STRING]|--from:[STRING]` Search in history with sender `[STRING]`.
-
 * `-m:[STRING]|--message:[STRING]` Search in history with message `[STRING]`.
-
 * `-s|--exclude-system` Exclude message from user `SYSTEM`.
-/usr/lib/llvm-10/lib/clang/10.0.1/include
-/usr/lib/llvm-11/lib/clang/11.0.1/include
-/usr/lib/llvm-10/lib/clang/10.0.1/include
-/usr/lib/llvm-11/lib/clang/11.0.1/include
-
 * `-e:[STRING]|--exclude:[STRING]` Search in history without sender `[STRING]`.
 
 == EXAMPLE

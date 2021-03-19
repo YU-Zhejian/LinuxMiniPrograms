@@ -20,7 +20,6 @@ pst - Pipe Speed Tester
 == OPTIONS
 
 include::include/cmnopt.adoc[]
-
 * `-m|--machine` Machine-friendly. Use tab as delimiter.
 
 == EXAMPLES

@@ -32,7 +32,6 @@ Every time there're people joining or leaving, the account named SYSTEM will ann
 === On a Specific User
 
 * Situation: You need to set up a chatting server inside a LAN.
-
 * Installation:
 
 . Add a specific user on your server. e.g. user `chat`.
