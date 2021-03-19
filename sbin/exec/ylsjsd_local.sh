@@ -28,7 +28,7 @@ trap "__exit" SIGINT SIGTERM
 while true; do
 	sleep 1
 	# Rmove done jobs
-	ls -1 | grep '\.i' |  sed 's;.i$;;' | while read ps_name; do
+	ls -1 2> /dev/null | grep '\.i' |  sed 's;.i$;;' | while read ps_name; do
 		PID=$(cat ${ps_name}.i | tail -n 1)
 		if ! ps -p ${PID} &>>/dev/null;then
 			mv "${ps_name}.i" "${ps_name}.f"
@@ -36,8 +36,8 @@ while true; do
 		fi
 	done
 	# Check the queue
-	while [ $(ls -1 | grep '\.i' | wc -l | awk '{ printf $1 }') -lt ${YLSJSD_MAX_JOB} ]; do
-		lastq=$(ls -1 | grep '\.q$' | sort -n | head -n 1 | sed 's;.q$;;')
+	while [ $(ls -1  2> /dev/null | grep '\.i' | wc -l | awk '{ printf $1 }') -lt ${YLSJSD_MAX_JOB} ]; do
+		lastq=$(ls - 1  2> /dev/null | grep '\.q$' | sort -n | head -n 1 | sed 's;.q$;;')
 		if [ "${lastq}" = "" ]; then break; fi
 		date +%s > ${lastq}.start
 		declare >"${lastq}".env

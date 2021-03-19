@@ -7,6 +7,8 @@ PST=false
 CAT=false
 PID_ONLY=false
 ID_ONLY=false
+STDOUT=false
+STDERR=false
 for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
@@ -21,6 +23,12 @@ for opt in "${@}"; do
 			;;
 		"-s" | "--show-sh")
 			CAT=true
+			;;
+		"--stdout")
+			STDOUT=true
+			;;
+		"--stderr")
+			STDERR=true
 			;;
 		"--pid-only")
 			PID_ONLY=true
@@ -42,10 +50,6 @@ function __psv() {
 		if [ -f "${ps_name}.i" ]; then
 			PID=$(cat "${ps_name}.i" | tail -n 1)
 			echo -e "# ---------------No=${ps_name},\tNAME=$(cat ${ps_name}.i | head -n 1),\tPID=${PID},\tSTATUS=EXEC---------------"
-			if ${CAT};then
-				echo "    # ---------------Submitted ${ps_name}.sh---------------"
-				cat -n ${ps_name}.sh
-			fi
 			#if ${PS};then
 			#	echo "    # ---------------ps ${ps_name}---------------"
 			#	ps -p ${PID} || true
@@ -61,17 +65,21 @@ function __psv() {
 		elif [ -f "${ps_name}.f" ]; then
 			PID=$(cat "${ps_name}.f" | tail -n 1)
 			echo -e "# ---------------No=${ps_name},\tNAME=$(cat ${ps_name}.f | head -n 1),\tPID=${PID},\tSTATUS=DONE---------------"
-			if ${CAT};then
-				echo "    # ---------------Submitted ${ps_name}.sh---------------"
-				cat -n ${ps_name}.sh
-			fi
 		elif [ -f "${ps_name}.q" ]; then
 			PID=$(cat "${ps_name}.q" | tail -n 1)
 			echo -e "# ---------------No=${ps_name},\tNAME=$(cat ${ps_name}.q | head -n 1),\tPID=UK,\tSTATUS=PEND---------------"
-			if ${CAT};then
-				echo "    # ---------------Submitted ${ps_name}.sh---------------"
-				cat -n ${ps_name}.sh
-			fi
+		fi
+		if ${CAT};then
+			echo "    # ---------------Submitted ${ps_name}.sh---------------"
+			cat -n ${ps_name}.sh
+		fi
+		if ${STDOUT};then
+			echo "    # ---------------STDOUT---------------"
+			cat "${ps_name}.stdout" 2> /dev/null || true
+		fi
+		if ${STDERR};then
+			echo "    # ---------------STDERR---------------"
+			cat "${ps_name}.stderr" 2> /dev/null || true
 		fi
 	done
 }
