@@ -37,7 +37,7 @@ while true; do
 	done
 	# Check the queue
 	while [ $(ls -1  2> /dev/null | grep '\.i' | wc -l | awk '{ printf $1 }') -lt ${YLSJSD_MAX_JOB} ]; do
-		lastq=$(ls - 1  2> /dev/null | grep '\.q$' | sort -n | head -n 1 | sed 's;.q$;;')
+		lastq=$(ls -1  2> /dev/null | grep '\.q$' | sort -n | head -n 1 | sed 's;.q$;;')
 		if [ "${lastq}" = "" ]; then break; fi
 		date +%s > ${lastq}.start
 		declare >"${lastq}".env
