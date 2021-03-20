@@ -3,11 +3,6 @@
 /var
 /*backup.tgz
 /share
-/doc # For compability
-/usage # For compability
-/html # For compability
-/pdf # For compability
-/man # For compability
 __pycache__
 *.stackdump
 /gnome-keyring-daemo.core
@@ -33,3 +28,11 @@ CppProperties.json
 *.bat
 *.cmd
 *.ps1
+
+# For compability
+/doc
+/usage
+/html
+/pdf
+/man
+
