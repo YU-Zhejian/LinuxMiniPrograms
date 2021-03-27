@@ -18,7 +18,6 @@ Search `[STRING]` in `${MANPATH}`. If `[STRING]` is omitted, the program will li
 == OPTIONS
 
 include::include/cmnopt.adoc[]
-
 * `-l|--list` List all valid manpath variable.
 
 == EXAMPLES

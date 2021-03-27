@@ -19,16 +19,11 @@ Search [STRING] in `${PATH}`. If [STRING] is omitted, the program will list all 
 
 include::include/cmnopt.adoc[]
 
-* `--no-[MODE]` Filter the filenames by a specific rule.
-Available MODE:
-
+* `--no-[MODE]` Filter the filenames by a specific rule. Available MODE:
 ** x Executable files.
 ** o Non-executable files.
-
 * `--allow-d` List the directories.
-
 * `-l|--list` List all valid path variable.
-
 * `-i|--invalid` List all invalid path variable.
 
 == EXAMPLES

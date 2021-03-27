@@ -20,13 +20,9 @@ Enigma encrypts files by mapping. Each mapping pattern is called a "cog", and ea
 == OPTIONS
 
 include::include/cmnopt.adoc[]
-
 * `-d` To decode instead of encode.
-
 * `-s:[START_STR]` The starting position. The length of the argument should be the same as the number of option cog.
-
 * `-c:[COG]` The cog number to use.
-
 * `-g|--gengear` Generate a new cog.
 
 == EXAMPLES

@@ -18,17 +18,13 @@ Search [STRING] in 'usage' folder.
 YuZJLab Usage is a very simple documentation format which supports all terminals and operating systems. It is directly compiled from dource code in `asciidoc` format located in `src/doc` by a Bash script and a Python script.
 
 * Lines are breaked by 90 characters except those in a code block, where there would be no additional line breaks.
-
 * Lines started by `|` with none or several leading spaces are code blocks.
-
 * Lines started by `*` (just like this line) with none or several leading spaces are an item of a particular list.
-
 * The headings shows a hierachy structure by adding indents. The first level have no indentations and the second level have four spaces as indention, and so on. The indentation of body part under that heading have four more spaces than the indentation of the corresponding heading.
 
 == OPTIONS
 
 include::include/cmnopt.adoc[]
-
 * `-l|--list` List all available ".usage" files.
 
 == COMPATIBILITY

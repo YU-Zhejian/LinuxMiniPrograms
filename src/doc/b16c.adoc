@@ -18,7 +18,6 @@ b16c is used to transform binary or text from standard input to standard output,
 == OPTIONS
 
 include::include/cmnopt.adoc[]
-
 * `-d` To decode instead of encode.
 
 == EXAMPLES

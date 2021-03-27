@@ -9,6 +9,7 @@ PID_ONLY=false
 ID_ONLY=false
 STDOUT=false
 STDERR=false
+SHOWENV=false
 for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
@@ -29,6 +30,9 @@ for opt in "${@}"; do
 			;;
 		"--stderr")
 			STDERR=true
+			;;
+		"--env")
+			SHOWENV=true
 			;;
 		"--pid-only")
 			PID_ONLY=true
@@ -69,6 +73,7 @@ function __psv() {
 			PID=$(cat "${ps_name}.q" | tail -n 1)
 			echo -e "# ---------------No=${ps_name},\tNAME=$(cat ${ps_name}.q | head -n 1),\tPID=UK,\tSTATUS=PEND---------------"
 		fi
+		echo "    # ---------------Working directory=$(cat ${ps_name}.wd)---------------"
 		if ${CAT};then
 			echo "    # ---------------Submitted ${ps_name}.sh---------------"
 			cat -n ${ps_name}.sh
@@ -80,6 +85,10 @@ function __psv() {
 		if ${STDERR};then
 			echo "    # ---------------STDERR---------------"
 			cat "${ps_name}.stderr" 2> /dev/null || true
+		fi
+		if ${SHOWENV};then
+			echo "    # ---------------Environment---------------"
+			cat "${ps_name}.env" 2> /dev/null || true
 		fi
 	done
 }

@@ -18,9 +18,7 @@ Decode LibDO output information from logs. Please note that this program do not 
 == OPTIONS
 
 include::include/cmnopt.adoc[]
-
 * `-o:[item]|--output:[item]` Get more information about `[item]`. The numbering of items started from 1.
-
 * `-m|--machine` Use machine mode, output tables in Tab Separated Values (TSV). Capable for pipelines.
 
 == EXAMPLES
