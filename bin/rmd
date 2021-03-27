@@ -1,11 +1,40 @@
-#!/usr/bin/env Rscript
-args <- commandArgs(trailingOnly = TRUE)
-library(rmarkdown)
-library(knitr)
-eng_text<-function (options){
-	engine_output(options,code = options$code,out = "")
-}
-
-knit_engines$set(text=eng_text)
-render(args[1],output_format="all")
-
+#!/usr/bin/env bash
+# RMD V1P8
+# TODO: documentation
+set -ue
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../etc/path.conf
+. "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libstr
+infoh "YuZJLab RMarkDown Compiler"
+infoh "Copyright (C) 2019-2021 YU Zhejian"
+STDS=()
+for opt in "${@}"; do
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-h" | "--help")
+			yldoc rmd
+			exit 0
+			;;
+		"-v" | "--version")
+			echo "Version 1"
+			exit 0
+			;;
+		"-x")
+			set -x
+			;;
+		*)
+			warnh "Option '${opt}' invalid. Ignored"
+			;;
+		esac
+	else
+		STDS=("${STDS[@]}" "${opt}")
+	fi
+done
+for fn in "${STDS[@]}";do
+	if [ -f "${fn}" ]; then
+		Rscript "${DN}/rmd.R" "${fn}"
+	else
+		warnh "Filename ${fn} invalid"
+	fi
+done
