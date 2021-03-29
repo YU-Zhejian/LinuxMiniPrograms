@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # RMD V1P8
-# TODO: documentation
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
