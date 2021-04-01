@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eu
+set -eux
 DN="$(readlink -f "$(dirname "${0}")")"
 PROGNAME=libdo
 . "${DN}"/00_libtest.sh

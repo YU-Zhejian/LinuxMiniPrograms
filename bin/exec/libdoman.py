@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-# LIBDOMAN.py V2EP3
-import os
-import sys
+# LIBDOMAN.py V3
+from datetime import datetime
 
 from LMP_Pylib.libisopt import *
 from LMP_Pylib.libmktbl import *
@@ -10,14 +9,15 @@ from LMP_Pylib.libstr import *
 sstr = []
 cmd = 0
 ISMACHINE = False
-path = os.path.abspath(os.path.dirname(sys.argv[0])+"/../")+'/'
+# Parse arguments
+path = os.path.abspath(os.path.dirname(sys.argv[0]) + "/../") + '/'
 for sysarg in sys.argv[1:]:
 	if isopt(sysarg):
 		if sysarg == '-h' or sysarg == '--help':
 			os.system('yldoc libdoman')
 			exit(0)
 		elif sysarg == '-v' or sysarg == '--version':
-			print('Version 2 Emergency Patch 3 in Python, compatiable with libdo Version 2 & 3')
+			print('Version 3 in Python, compatiable with libdo Version 2 & 3')
 			exit(0)
 		elif sysarg == '-m' or sysarg == '--machine':
 			cmd = 0
@@ -31,7 +31,58 @@ for sysarg in sys.argv[1:]:
 	else:
 		sstr.append(sysarg)
 
+
+def timediff(diff_s: int) -> str:
+	hour = "0"
+	min = "0"
+	sec = str(diff_s)
+	if diff_s / 60 > 0:
+		min = str(diff_s // 60)
+		sec = str(diff_s % 60)
+	if int(min) / 60 > 0:
+		hour = str(int(min) // 60)
+		min = str(int(min) % 60)
+	return ':'.join([hour, min, sec])
+
+
+class record:
+	"""
+	LibDO Record formatter
+	"""
+
+	def __init__(self, cmd: str):
+		"""
+		Start a new LibDO Record
+		Exit: Exit status
+		Time: Time used to finish this step.
+		Time_s: Time started
+		Time_e: Time ended
+		:param cmd: Commandline, mandatory field
+		"""
+		self.cmd = cmd
+		self.Exit = "-1"
+		self.Time = "ERR"
+		self.Time_s = "0"
+		self.Time_e = "0"
+
+	def pp(self):
+		"""
+		To generate Time. Note the difference in machines and humans.
+		:return: Nothing
+		"""
+		if self.Time == "ERR":
+			if self.Time_e != "0" and self.Time_s != "0":
+				time_calc = (datetime.strptime(self.Time_e, '%Y-%m-%d %H:%M:%S') - datetime.strptime(self.Time_s,
+																									 '%Y-%m-%d %H:%M:%S')).seconds
+				if ISMACHINE:
+					self.Time = str(time_calc)
+				else:
+					self.Time = timediff(time_calc)
+
+
+# List all processes
 if cmd == 0:
+	# Fix relative path
 	for fn in sstr:
 		fn_ = path + fn
 		if not os.path.isfile(fn_):
@@ -39,77 +90,72 @@ if cmd == 0:
 				fn_ = fn
 			else:
 				errh("Filename " + fn_ + " invalid. Use libdoman -h for help")
-		fn=fn_
-		if not ISMACHINE:
-			infoh("Loading" + fn + "...0 item proceeded")
-		Proj = -1
-		tmpf = mktemp("libdo_man.XXXXXX")
-		os.system('cat "' + fn + '" | grep LIBDO >' + tmpf)
-		grep_lns = ylreadline(tmpf)
-		os.remove(tmpf)
+		fn = fn_
 		i = 0
-		ln = len(grep_lns)
-		Proj_cmd = []
-		Proj_time_s = []
-		Proj_time_e = []
-		Proj_time = []
-		Proj_exit = []
-		while ln > i:
-			line = grep_lns[i]
-			i += 1
+		grep_lns = open(fn, "r")
+		Proj = []
+		# Read file
+		while True:
+			line = grep_lns.readline()
+			if line == '':
+				break
+			line = line.strip()
 			if line.startswith('LIBDO IS GOING TO EXECUTE'):
-				Proj += 1
-				infoh("Loading" + fn + "..." + str(Proj + 1) + " item proceeded")
-				Proj_cmd.append(line[26:])
-				line = grep_lns[i]
-				if line.startswith('LIBDO STARTED AT'):
-					Proj_time_s.append(line.replace('.', '')[17:])
-					i += 2
-					try:
-						line = grep_lns[i]
-					except:
-						Proj_time_e.append('0')
-						Proj_exit.append('-1')
-						Proj_time.append('ERR')
-						continue
-				if ln == i:
-					Proj_time_e.append('0')
-					Proj_exit.append('-1')
-					Proj_time.append('ERR')
-					continue
-				if line.startswith('LIBDO STOPPED AT'):
-					Proj_time_e.append(line.replace('.', '')[17:])
-					i += 1
-					line = grep_lns[i]
-					if ISMACHINE:
-						time_calc = yldo(
-							'bash "' + path + '"exec/datediff.sh ' + ' "' + Proj_time_s[
-								Proj] + '" "' + Proj_time_e[Proj] + '" machine')
-					else:
-						time_calc = yldo(
-							'bash "' + path + '"exec/datediff.sh ' + ' "' + Proj_time_s[
-								Proj] + '" "' + Proj_time_e[Proj] + '"')
-					Proj_time.append(time_calc)
-				elif line.startswith('LIBDO IS GOING TO EXECUTE'):
-					Proj_time_e.append('0')
-					Proj_exit.append('-1')
-					Proj_time.append('ERR')
-					continue
-				if line == 'LIBDO EXITED SUCCESSFULLY':
-					i += 1
-					Proj_exit.append('0')
-				elif line.startswith('LIBDO FAILED, GOT'):
-					Proj_exit.append(line.replace('.', '')[21:])
-		infoh("File" + fn + "loaded. Making table...")
+				i += 1
+				infoh("Loading " + fn + "..." + str(i) + " item proceeded")
+				Proj.append(record(line[26:]))
+				# Similar structure to accelerate.
+				# It is clear that there will not be two 'LIBDO STARTED AT' in one record
+				while True:
+					last_pos = grep_lns.tell()
+					line = grep_lns.readline()
+					if line == '':
+						break
+					line = line.strip()
+					if line.startswith('LIBDO IS GOING TO EXECUTE'):
+						grep_lns.seek(last_pos)
+						break
+					elif line.startswith('LIBDO STARTED AT'):
+						Proj[-1].Time_s = line.replace('.', '')[17:]
+						while True:
+							last_pos = grep_lns.tell()
+							line = grep_lns.readline()
+							if line == '':
+								break
+							line = line.strip()
+							if line.startswith('LIBDO IS GOING TO EXECUTE'):
+								grep_lns.seek(last_pos)
+								break
+							elif line.startswith('LIBDO STOPPED AT'):
+								Proj[-1].Time_e = line.replace('.', '')[17:]
+								while True:
+									last_pos = grep_lns.tell()
+									line = grep_lns.readline()
+									if line == '':
+										break
+									line = line.strip()
+									if line.startswith('LIBDO IS GOING TO EXECUTE'):
+										grep_lns.seek(last_pos)
+										break
+									elif line == 'LIBDO EXITED SUCCESSFULLY':
+										Proj[-1].Exit = "0"
+									elif line.startswith('LIBDO FAILED, GOT'):
+										Proj[-1].Exit = line.replace('.', '')[21:]
+
+		infoh("File " + fn + " loaded. Making table...")
 		if ISMACHINE:
-			for i in range(Proj + 1):
-				print(Proj_cmd[i] + '\t' + Proj_exit[i] + '\t' + Proj_time[i])
+			for rec in Proj:
+				rec.pp()
+				print('\t'.join([rec.cmd, rec.Exit, rec.Time]))
 		else:
 			tmpf = mktemp("libdo_man.XXXXXX")
 			tmpf_hand = open(tmpf, 'w')
 			tmpf_hand.write('#1\n#S90\n#1\n#1\nNO.;COMMAND;EXIT;TIME\n')
-			for i in range(Proj + 1):
-				tmpf_hand.write(str(i + 1) + ';' + Proj_cmd[i] + ';' + Proj_exit[i] + ';' + Proj_time[i] + '\n')
+			i = 0
+			for rec in Proj:
+				i += 1
+				rec.pp()
+				tmpf_hand.write(';'.join([str(i), rec.cmd, rec.Exit, rec.Time]) + '\n')
 			tmpf_hand.close()
 			mktbl(tmpf)
 			os.remove(tmpf)
@@ -154,8 +200,8 @@ else:
 		if line.startswith('LIBDO STOPPED AT'):
 			Time_e = line[17:]
 			line = grep_lns[i]
-			Time = yldo(
-				'bash "' + path + '"exec/datediff.sh ' + ' "' + Time_s + '" "' + Time_e + '"')
+			Time = timediff((datetime.strptime(Time_s, '%Y-%m-%d %H:%M:%S') - datetime.strptime(Time_e,
+																								'%Y-%m-%d %H:%M:%S')).seconds)
 			i += 1
 			line = grep_lns[i]
 		else:
@@ -166,6 +212,8 @@ else:
 			Exit = "0"
 		elif line.startswith('LIBDO FAILED, GOT'):
 			Exit = line[21:]
+		else:
+			Exit = "-1"
 	print("\033[33mJOB_CMD	  \033[36m:", CMD, "\033[0m")
 	print("\033[33mELAPSED_TIME \033[36m:", Time_s, "TO", Time_e, ", Total", Time, "\033[0m")
 	print("\033[33mEXIT_STATUS  \033[36m:", Exit, "\033[0m")

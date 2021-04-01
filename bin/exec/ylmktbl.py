@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # YLMKTBL.py V3
+"""
+A wrapper for libylmktbl.
+"""
 from LMP_Pylib.libisopt import *
 from LMP_Pylib.libmktbl import *
 from LMP_Pylib.libstr import *
