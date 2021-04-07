@@ -39,4 +39,4 @@ CppProperties.json
 /GNUmakefile
 
 # Fake files under BSD
-/bin/readline
+/bin/readlink

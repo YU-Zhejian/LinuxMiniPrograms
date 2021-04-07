@@ -6,14 +6,6 @@ WD="$(pwd)"
 . "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
 . "${DN}"/../lib/libisopt
-touch "${DN}"/../etc/ylsjsd.conf
-. "${DN}"/../etc/ylsjsd.conf
-if [ -z "${YLSJSD_HOME:-}" ];then
-	warnh "YLSJSD_HOME undefined. Will use ${DN}/../var/ylsjs.d"
-	YLSJSD_HOME="${DN}"/../var/ylsjs.d
-fi
-mkdir -p "${YLSJSD_HOME}"
-cd "${YLSJSD_HOME}"
 ylsjsd start
 # ============ Possess arguments ============
 STDS=""
