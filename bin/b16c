@@ -4,6 +4,7 @@ set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.conf
+warnh "This program is no longer monitored and updates may not be provided"
 for fn in "${DN}"/exec/b16c.co "${DN}"/exec/b16c.co.exe; do
 	if [ -e "${fn}" ]; then
 		exec "${fn}" "${@}"

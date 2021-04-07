@@ -178,8 +178,6 @@ if ${VAR_install_html}; then
 	MAKE_TARGETS="${MAKE_TARGETS} share/doc/html"
 fi
 #========C========
-# TODO: BSD users, use clang
-
 [ "${mygcc}" != "ylukh" ] || [ "${myclang}" != "ylukh" ] && MAKE_TARGETS="${MAKE_TARGETS} C"
 if cat "${path_sh}" | grep -i BSD > /dev/null;then
 	MAKE_ARGS="${MAKE_ARGS}:CC=${myclang}" # Use Clang for FreeBSD.
