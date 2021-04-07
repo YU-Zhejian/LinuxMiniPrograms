@@ -129,13 +129,13 @@ MSYS2 is considered a modified version of Cygwin. So only limited support is pro
 
 There will be same problems as Git Bash.
 
-=== MacOS
+=== macOS/Darwin
 
-Tested with severe incompatibilities. Sadly, we will not provide support for such system now. The reason of such tragedy is we do not have enough money to buy a Mac, and those provided by Virtual Machines aren't powerful enough. If you're interested in having LinuxMiniProgram under macOS, you may assist us with a usable machine with macOS installation.
+Tested and supported. See <<FreeBSD>> for further details.
 
 === Other Interesting UNIX-Like Operating Systems
 
-Not tested with unknown level of support. We would also like to provide support to other interesting UNIX-Like operating systems like MINIX or AIX, but we same as the reason for not supporting macOS, we lack usable hardware that may match those operating systems.
+Not tested with unknown level of support. We would also like to provide support to other interesting UNIX-Like operating systems like MINIX or AIX, we lack usable hardware that may match those operating systems.
 
 However, as you may see the support information in FreeBSD, differences still exist when talking about UNIX-Like operating systems, especially those early ones. So use with care.
 

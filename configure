@@ -205,7 +205,7 @@ MAKE_ARGS="${MAKE_ARGS}:PYTHON=${mypython}:RM=rm -rf:CP=cp -rf:PREFIX=${PREFIX}"
 echo "${MAKE_ARGS}" | sed 's;:;\'$'\nexport ;g' | sort | uniq > GNUmakefile
 echo "all: ${MAKE_TARGETS}" >> GNUmakefile
 cat src/Makefile.def >> GNUmakefile
-infoh "Finished. Please execute 'make' to build the program"
+infoh "Finished. Please execute 'make' or 'gmake' (For BSD or macOS) to build the program"
 IFS="${OLDIFS}"
 [ -z "${SHELL:-}" ] && SHELL=bash
 exec "${SHELL}"

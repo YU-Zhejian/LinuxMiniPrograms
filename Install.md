@@ -28,10 +28,6 @@
 
 **PLEASE READ THE *DEPENDENCIES* SECTION WITH EXTRA CARE.**
 
-**FOR MACOS USERS: CURRENTLY WE DO NOT SUPPORT MACOS. PLEASE WAIT FOR LONGER TIME\*.**
-
-\*: I would appreciate a lot if you're kind enough to buy me one ;-)
-
 ### Dependencies
 
 All the program relies on Bourne Again SHell (bash) >= 4.4.12(3). You may observe this by typing `bash --version` in a terminal. For macOS users, please update the default Bash installation by HomeBrew. For users using CentOS, Debian stable or other "stable" distributions with previous Bash, please upgrade it by compiling the source code (<https://ftp.gnu.org/gnu/bash/>). Bash is not installed in FreeBSD by default\*.
@@ -63,8 +59,6 @@ For most programs written in Shell, following programs will be needed and GNU ve
 	* `uniq`
 
 	It is mandatory for BSD or macOS. It can be installed by compiling the source code (BSD) or HomeBrew (macOS).
-
-	For macOS users, if you use HomeBrew, please add the `bin` directory which contains binaries without leading "`g`" to the head of your `${PATH}` environment variable. There will be instructions during the installation process.
 
 * Other essential GNU utils may include:
 
@@ -162,7 +156,7 @@ chmod +x configure
 ./configure --all
 ```
 
-Execute `./configure -h` to get help about the installer.
+Execute `./configure -h` to get help with the installer.
 
 #### Make
 
