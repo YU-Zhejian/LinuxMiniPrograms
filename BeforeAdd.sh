@@ -7,5 +7,5 @@ if which dos2unix &>> /dev/null;then
 else
 	true
 	# TODO: bugs here.
-	# /usr/bin/find . -path './.git' -prune -o -type f -print | while read fn;do sed -i 's/\r$//g' "${fn}"; done
+	# /usr/bin/find . -path './.git' -prune -o -type f -print | while read fn;do sed -i 's/\'$'\r$//g' "${fn}"; done
 fi

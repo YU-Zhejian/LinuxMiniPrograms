@@ -1,0 +1,5 @@
+= ReadMe for `test`
+
+This folder contains the testing scripts.
+
+The tests are organized in a modular order.
