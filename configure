@@ -3,8 +3,15 @@
 set -eu
 OLDIFS="${IFS}"
 if ! readlink -f . &>/dev/null; then
-	echo -e "\033[31mERROR: NO readlink available.\033[0m"
-	exit 1
+	if ! greadlink -f . &>/dev/null;then
+		echo -e "\033[31mERROR: NO readlink available
+For MacOS users, please install 'coreutils' by HomeBrew
+For BSD users, please install 'coreutils' by your package management systems\033[0m"
+		exit 1
+	else
+		ln -s "$(which greadlink)" "${DN}"/bin/readline
+		export PATH="${DN}/bin:${PATH}"
+	fi
 fi
 cd "$(readlink -f "$(dirname "${0}")")"
 . lib/libisopt
