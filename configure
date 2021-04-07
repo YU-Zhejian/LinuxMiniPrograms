@@ -202,8 +202,6 @@ elif [ "${myclang}" != "ylukh" ];then
 fi
 #========Makefile Generation========
 MAKE_ARGS="${MAKE_ARGS}:PYTHON=${mypython}:RM=rm -rf:CP=cp -rf:PREFIX=${PREFIX}"
-# TODO: BSD sed
-# TODO: BSD make
 echo "${MAKE_ARGS}" | sed 's;:;\'$'\nexport ;g' | sort | uniq > GNUmakefile
 echo "all: ${MAKE_TARGETS}" >> GNUmakefile
 cat src/Makefile.def >> GNUmakefile

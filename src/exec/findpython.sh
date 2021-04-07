@@ -8,10 +8,7 @@ if [ -z "${mypython:-}" ]; then
 		ls -F -1 "${dir}" | grep '.[*@]$' | sed 's;[*@]$;;' | grep -E '^(python(3|2){0,1}(\.[[:digit:]]+)*(d|m|u){0,1}(.exe){0,1}$)' | sed "s;^;$(echo ${dir})/;" >"${tmpf}"
 		while read line; do
 			if echo "exit()" | "${line}" -v 2>&1 | grep -E '([C-Z]:\\)' > /dev/null; then
-				# TODO: test
-				# /usr/bin/python /cygdrive/d/Software/CygWin64/bin/python /cygdrive/c/Users/admin/AppData/Local/Microsoft/WindowsApps/python.exe
-				# Is Windows Python
-				echo "Windows Python found in ${line}"
+				infoh "Windows Python found in ${line}"
 				continue
 			fi
 			echo "Python found in ${line}"
