@@ -120,12 +120,15 @@ if [ ! -f 'etc/path.conf' ]; then
 	infoh "End locating valid path"
 	unset valid_path
 	for PROGNAME in ps python; do . src/exec/find${PROGNAME}.sh; done
-	for PROGNAME in 7z 7za bgzip brotli bzip2 compress gtar gzip lz4 lzfse lzip lzma lzop pbz2 pbzip pigz rar tar unzip unrar xz zip zstd \
+	for PROGNAME in 7z 7za bgzip brotli bzip2 compress gzip lz4 lzfse lzip lzma lzop pbz2 pbzip pigz rar tar unzip unrar xz zip zstd \
 	asciidoc asciidoctor-pdf asciidoctor \
 	parallel \
-	git clang gcc gmake make; do . src/exec/findornot.sh; done
+	git clang gcc gmake make \
+	gtar gsed ggrep gmake; do . src/exec/findornot.sh; done
 	sed -i".bak" 's;^mygtar;mytar;' "${path_sh}"
 	sed -i".bak" 's;^mygmake;mymake;' "${path_sh}"
+	sed -i".bak" 's;^mygsed;mysed;' "${path_sh}"
+	sed -i".bak" 's;^myggrep;mygrep;' "${path_sh}"
 	sed -i".bak" 's;^mypbzip2;mypbz2;' "${path_sh}"
 	sed -i".bak" 's;^myasciidoctor-pdf;myasciidoctor_pdf;' "${path_sh}"
 	. "${path_sh}"
@@ -183,7 +186,8 @@ elif [ "${myclang}" != "ylukh" ];then
 fi
 #========Makefile Generation========
 MAKE_ARGS="${MAKE_ARGS}:PYTHON=${mypython}:RM=rm -rf:CP=cp -rf:PREFIX=${PREFIX}"
-echo "${MAKE_ARGS}" | sed 's;:;\nexport ;g' | sort | uniq >Makefile
+# TODO: BSD sed
+echo "${MAKE_ARGS}" | sed 's;:;\nexport ;g' | sort | uniq > Makefile
 echo "all: ${MAKE_TARGETS}" >>Makefile
 cat src/Makefile.def >>Makefile
 infoh "Finished. Please execute 'make' to build the program"
