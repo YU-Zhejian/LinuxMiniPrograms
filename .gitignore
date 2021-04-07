@@ -36,3 +36,7 @@ CppProperties.json
 /pdf
 /man
 
+/GNUmakefile
+
+# Fake files under BSD
+/bin/readline

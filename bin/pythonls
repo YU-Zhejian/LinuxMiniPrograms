@@ -18,8 +18,14 @@ eachpath=(${valid_path})
 IFS=''
 tmpf=$(mktemp -t configpath.XXXXXX)
 	for dir in "${eachpath[@]}"; do
-		# TODO: CygWin exe support
-		ls -F -1 "${dir}" 2> /dev/null | grep '.[*@]$' | sed 's;[*@]$;;' | grep -E  '^(python(3|2){0,1}(\.[[:digit:]]+)*(d|m|u){0,1}$)' | sed "s;^;$(echo ${dir})/;" | while read line; do
+		# TODO: test CygWin exe support
+		ls -F -1 "${dir}" 2> /dev/null | grep '.[*@]$' | sed 's;[*@]$;;' | grep -E  '^(python(3|2){0,1}(\.[[:digit:]]+)*(d|m|u){0,1}(.exe){0,1}$)' | sed "s;^;$(echo ${dir})/;" | while read line; do
+			if echo "exit()" | "${line}" -v 2>&1 | grep -E '([C-Z]:\\)' > /dev/null; then
+				# /usr/bin/python /cygdrive/d/Software/CygWin64/bin/python /cygdrive/c/Users/admin/AppData/Local/Microsoft/WindowsApps/python.exe
+				# Is Windows Python
+				echo "Windows Python found in ${line}"
+				continue
+			fi
 			infoh "Finding python at ${line}"
 			if echo -e "import sys\nprint(':'.join(sys.path))" | "${line}" &> /dev/null;then
 				echo -e "import sys\nprint(':'.join(sys.path))" | "${line}" >> "${tmpf}" 2> /dev/null || true
