@@ -33,7 +33,7 @@ done
 psstmp=$(mktemp -t psstmp.XXXXXX)
 pssstmp=$(mktemp -t psstmp.XXXXXX)
 if ! ps --version &>> /dev/null; then
-	ps -alH &> "${psstmp}"
+	ps -al &> "${psstmp}"
 elif [[ $(ps --version) == *"Cygwin"* ]]; then
 	ps -aeW &> "${psstmp}"
 else

@@ -9,8 +9,8 @@ For MacOS users, please install 'coreutils' by HomeBrew
 For BSD users, please install 'coreutils' by your package management systems\033[0m"
 		exit 1
 	else
-		ln -s "$(which greadlink)" "${DN}"/bin/readline
-		export PATH="${DN}/bin:${PATH}"
+		ln -s "$(which greadlink)" "$(greadlink -f "$(dirname "${0}")")"/bin/readlink || true
+		export PATH="$(greadlink -f "$(dirname "${0}")")/bin:${PATH}"
 	fi
 fi
 cd "$(readlink -f "$(dirname "${0}")")"
@@ -207,3 +207,5 @@ echo "all: ${MAKE_TARGETS}" >> GNUmakefile
 cat src/Makefile.def >> GNUmakefile
 infoh "Finished. Please execute 'make' to build the program"
 IFS="${OLDIFS}"
+[ -z "${SHELL:-}" ] && SHELL=bash
+exec "${SHELL}"
