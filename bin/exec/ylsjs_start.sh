@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-#YLSJS_START v1
+VERSION=1
 ylsjsd start

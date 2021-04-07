@@ -1,4 +1,4 @@
-#GITM_RM.sh v1
+VERSION=1
 tmpf="$(mktemp -t gitm.XXXXX)"
 FORCE=false
 for opt in "${@}"; do

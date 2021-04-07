@@ -1,4 +1,4 @@
-# LIBSTR.py v1
+# VERSION=1
 """
 Python version of lib/libstr, includes common string-output utilities.
 See 'yldoc libstr' for more details.

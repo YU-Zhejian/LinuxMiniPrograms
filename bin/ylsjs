@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#YLSJS v1
+VERSION=1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 WD="$(pwd)"
@@ -17,7 +17,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-x")

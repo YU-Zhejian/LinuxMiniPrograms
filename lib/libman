@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LIBMAN V1
+# VERSION=1
 # TODO: docs
 function getuser() {
 	if [ -n "${USER:-}" ]; then

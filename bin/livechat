@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LIVECHAT V2
+VERSION=2
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 touch "${DN}"/../etc/livechat.conf
@@ -53,7 +53,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 2"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-x")

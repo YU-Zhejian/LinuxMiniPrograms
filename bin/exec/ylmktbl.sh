@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# YLMKTBL.sh V3P3
+VERSION=3.3
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 warnh "This program is no longer monitored and updates may not be provided"
@@ -12,7 +12,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 3 patch 2 in Bash"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-x")

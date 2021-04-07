@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#YLSJS_PS v1
+VERSION=1
 STDS=()
 VERBOSE=false
 TOP=false

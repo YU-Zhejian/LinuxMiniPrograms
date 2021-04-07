@@ -1,4 +1,4 @@
-#GITM_LOG.sh v1
+VERSION=1
 if cat act.log; then
 	infoh "Repository readlog success"
 	echo -e "$(timestamp)\tLOG\tSUCCESS" >> act.log

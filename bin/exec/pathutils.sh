@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PATHUTILS v1
+VERSION=1
 
 function __addpref(){
 	echo "/${1}"

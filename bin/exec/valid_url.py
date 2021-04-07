@@ -1,4 +1,4 @@
-# VALID_URL.py v1
+# VERSION=1
 import os
 import re
 import sys

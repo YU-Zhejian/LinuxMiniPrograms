@@ -1,4 +1,4 @@
-#GITM_GETURL.sh v1
+VERSION=1
 . "${DN}"/../lib/libman
 
 tmpf="$(mktemp -t gitm.XXXXX)"

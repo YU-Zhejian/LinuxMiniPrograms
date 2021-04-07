@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# AZCMD V6
+VERSION=6
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")/../")"

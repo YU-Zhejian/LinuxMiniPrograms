@@ -1,4 +1,4 @@
-#GITM_SYNC.sh v1
+VERSION=1
 tmpf="$(mktemp -t gitm.XXXXX)"
 function __sync() {
 	infoh "Repository UUID=${fields[1]} sync started"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#YLSJSD_LOCAL.sh v1
+VERSION=1
 set -ue
 declare -i YLSJSD_MAX_JOB
 DN="$(readlink -f "$(dirname "${0}")")"

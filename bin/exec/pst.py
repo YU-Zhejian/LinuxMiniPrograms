@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# PST.py V1
+VERSION=1
 import os
 import threading
 import time
@@ -14,7 +14,7 @@ for sysarg in sys.argv[1:]:
 			os.system('yldoc pst')
 			exit(0)
 		elif sysarg == '-v' or sysarg == '--version':
-			print('Version 1 in Python')
+			print(str(VERSION) + ' in Python')
 			exit(0)
 		elif sysarg == '-m' or sysarg == '--machine':
 			ISMACHINE = True

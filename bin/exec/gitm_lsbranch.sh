@@ -1,4 +1,4 @@
-#GITM_LSBRANCH.sh v1
+VERSION=1
 tmpf="$(mktemp -t gitm.XXXXX)"
 
 if [ ${#STDS[@]} -gt 0 ]; then

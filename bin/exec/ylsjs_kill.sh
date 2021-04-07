@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#YLSJS_KILL v1
+VERSION=1
 STDS=()
 n=15
 for opt in "${@}"; do

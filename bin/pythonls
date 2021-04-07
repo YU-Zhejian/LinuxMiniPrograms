@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PYTHONLS v1
+VERSION=1
 # TODO: docs
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -49,7 +49,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-p" | "--package")

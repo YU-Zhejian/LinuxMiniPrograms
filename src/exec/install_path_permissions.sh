@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CONFIGURE v1
+VERSION=1
 set -eu
 OLDIFS="${IFS}"
 DN="$(readlink -f "$(dirname "${0}")")/../../"

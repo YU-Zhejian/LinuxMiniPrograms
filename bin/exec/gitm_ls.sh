@@ -1,4 +1,4 @@
-#GITM_LS.sh v1
+VERSION=1
 if cat uuidtable.d/*; then
 	infoh "Repository ls success"
 	echo -e "$(timestamp)\tLS\tSUCCESS" >> act.log

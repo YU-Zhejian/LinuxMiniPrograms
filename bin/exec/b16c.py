@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# B16C.py V2P2
+VERSION=2.2
 # TODO: Still bugs in MSYS2
 import struct
 
@@ -14,7 +14,7 @@ for sysarg in sys.argv[1:]:
 			os.system('yldoc b16c')
 			exit(0)
 		elif sysarg == '-v' or sysarg == '--version':
-			print('Version 12 Patch 2 in Python')
+			print(str(VERSION) + ' in Python')
 			exit(0)
 		elif sysarg == '-d' or sysarg == '--decode':
 			decode = True

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LIBAUTOZIP V6
+# VERSION=6
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.conf
@@ -19,7 +19,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 5"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-x")

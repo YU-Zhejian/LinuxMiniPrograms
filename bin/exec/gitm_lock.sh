@@ -1,4 +1,4 @@
-#GITM_LOCK.sh v1
+VERSION=1
 
 FORCE=false
 for opt in "${@}"; do

@@ -1,4 +1,4 @@
-#GITM_GC.sh v1
+VERSION=1
 tmpf="$(mktemp -t gitm.XXXXX)"
 function __gc() {
 	infoh "Repository UUID=${fields[1]} gc started"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#LIBDOMAN.sh V7P1
+# VERSION=7.1
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 warnh "This program is no longer monitored and updates may not be provided"

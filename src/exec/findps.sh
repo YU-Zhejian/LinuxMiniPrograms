@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PS.sh V1P1
+VERSION=1.1
 . "${path_sh}"
 if [ -z "${myps:-}" ]; then
 	GNU_found=false

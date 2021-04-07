@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LCMAN V3P6
+VERSION=3.6
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf

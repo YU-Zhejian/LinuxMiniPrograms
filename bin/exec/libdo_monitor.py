@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# LIBDO_MONITOR.py V1
+# VERSION=1
 import datetime
 import psutil
 import signal

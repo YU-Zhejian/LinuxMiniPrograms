@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# LIBMKTBL V1
+# VERSION=1
 """
 Print table.
 """

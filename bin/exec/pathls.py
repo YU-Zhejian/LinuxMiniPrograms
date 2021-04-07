@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# PLS.py V1EP7
+VERSION=1.7
 from LMP_Pylib.libisopt import *
 from LMP_Pylib.libpath import *
 from LMP_Pylib.libstr import *
@@ -42,7 +42,7 @@ for sysarg in sys.argv[1:]:
 			os.system('yldoc pathls')
 			exit(0)
 		elif sysarg == '-v' or sysarg == '--version':
-			print('Version 1 Emergency Patch 7 in Python')
+			print(str(VERSION) + ' in Python')
 			exit(0)
 		elif sysarg == '--no-x':
 			allow_x = False

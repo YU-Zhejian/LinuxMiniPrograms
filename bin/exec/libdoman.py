@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# LIBDOMAN.py V3
+# VERSION=3
 from datetime import datetime
 
 from LMP_Pylib.libisopt import *
@@ -17,7 +17,7 @@ for sysarg in sys.argv[1:]:
 			os.system('yldoc libdoman')
 			exit(0)
 		elif sysarg == '-v' or sysarg == '--version':
-			print('Version 3 in Python, compatiable with libdo Version 2 & 3')
+			print('Version ' + str(VERSION) + ' in Python, compatiable with libdo Version 2 & 3')
 			exit(0)
 		elif sysarg == '-m' or sysarg == '--machine':
 			cmd = 0

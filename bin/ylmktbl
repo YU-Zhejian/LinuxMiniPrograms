@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# YLMKTNL V4P1
+VERSION=4.1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf

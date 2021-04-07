@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PSS V1P9
+VERSION=1.9
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
@@ -16,7 +16,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1 patch 9"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-x")

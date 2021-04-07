@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#IOMUX_RECIEVER V1
+VERSION=1
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 warnh "This program is no longer monitored and updates may not be provided"

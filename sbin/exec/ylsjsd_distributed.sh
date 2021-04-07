@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# DYLSJSD v1
+VERSION=1
 # _____________________
 #< Black lives matter. >
 # ---------------------

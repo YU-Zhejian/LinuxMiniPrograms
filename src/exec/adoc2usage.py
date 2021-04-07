@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# AD2U.py V2P2
+VERSION=2.2
 import re
 import sys
 

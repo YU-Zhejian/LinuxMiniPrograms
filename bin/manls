@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# MLS V1P1
+VERSION=1.1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
@@ -30,7 +30,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1 Patch 1 in Bash"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-l" | "--list")

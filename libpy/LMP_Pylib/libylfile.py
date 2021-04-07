@@ -1,4 +1,4 @@
-# LIBYLFILE.py V1
+# VERSION=1
 """
 Include utils to deal with files.
 """

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PLS V3P2
+VERSION=3.2
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr

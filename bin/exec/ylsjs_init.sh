@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#YLSJS_INIT v1
+VERSION=1
 STDS=()
 NAME="UK"
 for opt in "${@}"; do

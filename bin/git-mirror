@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# GITMIRROR V1
+VERSION=1
 DN="$(readlink -f "$(dirname "${0}")")"
 set -ue
 trap '' SIGINT

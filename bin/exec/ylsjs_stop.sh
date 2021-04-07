@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-#YLSJS_STOP v1
+VERSION=1
 ylsjsd stop

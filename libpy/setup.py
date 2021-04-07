@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# SETUP.py v1
+VERSION=1
 # TODO: Implement installation.
 
 from setuptools import setup

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PLS.sh V3P3
+VERSION=3.3
 oldifs="${IFS}"
 function _grep() {
 	regstr="${1}"
@@ -26,7 +26,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 3 Patch 3"
+			echo ${VERSION}
 			exit 0
 			;;
 		"--no-x")

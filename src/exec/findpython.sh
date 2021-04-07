@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PYTHON.sh V1P1
+VERSION=1.1
 . "${path_sh}"
 if [ -z "${mypython:-}" ]; then
 	python_ver=3

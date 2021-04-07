@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# AUTOUNZIP V6
+VERSION=6
 # TODO: autounzip -c
 set -eu
 ISAOTOZIP=false

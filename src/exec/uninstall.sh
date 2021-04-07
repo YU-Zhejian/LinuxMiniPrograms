@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-#UNINSTALLER v1
+VERSION=1
 # TODO

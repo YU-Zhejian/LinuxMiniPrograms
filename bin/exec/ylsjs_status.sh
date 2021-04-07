@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-#YLSJS_STATUS v1
+VERSION=1
 ylsjsd status

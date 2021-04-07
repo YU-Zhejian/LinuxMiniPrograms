@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LIBPATH V2EP1
+# VERSION=2.1
 oldIFS=${IFS}
 IFS=':'
 eachpath=(${INPATH})

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CONFIGURE v2
+VERSION=2
 set -eu
 OLDIFS="${IFS}"
 if ! readlink -f . &>/dev/null; then
@@ -36,7 +36,7 @@ for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
 		"-v" | "--version")
-			echo "Version 1"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-h" | "--help")

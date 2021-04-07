@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# LIBDO V3
+# VERSION=3
 function DO_ECHO() {
 	! [ "${LIBDO_LOG_MODE:-}" = "S" ] || return
 	! [ -z "${LIBDO_LOG:-}" ] && echo "${@}" >> "${LIBDO_LOG}" || echo -e "\033[33m${*}\033[0m" >&2
