@@ -123,15 +123,22 @@ if [ ! -f 'etc/path.conf' ]; then
 	for PROGNAME in 7z 7za bgzip brotli bzip2 compress gzip lz4 lzfse lzip lzma lzop pbz2 pbzip pbzip2 pigz rar tar unzip unrar xz zip zstd \
 	asciidoc asciidoctor-pdf asciidoctor \
 	parallel \
-	git clang gcc make; do . src/exec/findornot.sh; done
-	gremove tar
-	sed -i".bak" 's;^mygmake;mymake;' "${path_sh}"
-	sed -i".bak" 's;^mygsed;mysed;' "${path_sh}"
-	sed -i".bak" 's;^myggrep;mygrep;' "${path_sh}"
-	sed -i".bak" 's;^mypbzip;mypbz2;' "${path_sh}"
-	sed -i".bak" 's;^mypbzip2;mypbz2;' "${path_sh}"
+	git clang gcc make \
+	sed grep split \
+	gtar gsed ggrep gmake gsplit; do . src/exec/findornot.sh; done
+	# To change myasciidoctor-pdf because bash do not support variable names with '-' inside
 	sed -i".bak" 's;^myasciidoctor-pdf;myasciidoctor_pdf;' "${path_sh}"
 	. "${path_sh}"
+	[ "${mypbz2}" == 'ylukh' ] && [ "${mypbzip}" != 'ylukh' ] && sed -i".bak" 's;^mypbzip;mypbz2;' "${path_sh}"
+	. "${path_sh}"
+	[ "${mypbz2}" == 'ylukh' ] && [ "${mypbzip2}" != 'ylukh' ] && sed -i".bak" 's;^mypbzip2;mypbz2;' "${path_sh}"
+	. "${path_sh}"
+	# Remove g for GNU CoreUtils installed under BSD systems
+	[ "${mygtar}" != 'ylukh' ] && sed -i".bak" 's;^mygtar;mytar;' "${path_sh}"
+	[ "${mygsed}" != 'ylukh' ] && sed -i".bak" 's;^mygsed;mysed;' "${path_sh}"
+	[ "${myggrep}" != 'ylukh' ] && sed -i".bak" 's;^myggrep;mygrep;' "${path_sh}"
+	[ "${mygmake}" != 'ylukh' ] && sed -i".bak" 's;^mygmake;mymake;' "${path_sh}"
+	[ "${mygsplit}" != 'ylukh' ] && sed -i".bak" 's;^mygsplit;mysplit;' "${path_sh}"
 	infoh "All configurations are printed as follows:"
 	cat "${path_sh}" | grep -v '^$' | grep -v '^#' | sed 's/^my//' | sed 's/=/\\\\033[33m in \\\\033[0m/ ' | sed 's/ #/\\\\033[33m, \\\\033[32m/' | sort | while read line; do echo -e "${line}\033[0m"; done
 fi
@@ -178,8 +185,6 @@ if ${VAR_install_html}; then
 	MAKE_TARGETS="${MAKE_TARGETS} share/doc/html"
 fi
 #========C========
-# TODO: BSD users, use clang
-
 [ "${mygcc}" != "ylukh" ] || [ "${myclang}" != "ylukh" ] && MAKE_TARGETS="${MAKE_TARGETS} C"
 if cat "${path_sh}" | grep -i BSD > /dev/null;then
 	MAKE_ARGS="${MAKE_ARGS}:CC=${myclang}" # Use Clang for FreeBSD.

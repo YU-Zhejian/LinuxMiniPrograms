@@ -2,7 +2,7 @@
 # LIBDO V3
 function DO_ECHO() {
 	! [ "${LIBDO_LOG_MODE:-}" = "S" ] || return
-	! [ -z "${LIBDO_LOG}" ] && echo "${@}" >> "${LIBDO_LOG}" || echo -e "\033[33m${*}\033[0m" >&2
+	! [ -z "${LIBDO_LOG:-}" ] && echo "${@}" >> "${LIBDO_LOG}" || echo -e "\033[33m${*}\033[0m" >&2
 }
 function DO() {
 	local LIBDO_CMD="${@}"
