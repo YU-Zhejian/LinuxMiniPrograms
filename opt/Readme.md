@@ -4,7 +4,8 @@ In this directory, you may find some interesting little programs which may help 
 
 They are:
 
-* `envgen`: Environment generator and detector.
-* `code-spec` How to write readable codes for greenhands.
+* `envgen` Environment generator and detector.
+* `code-spec` How to write readable codes (Python and Bash script) for green hands.
+* `LMP_dev` Develop LinuxMiniPrograms with ease.
 
 More interesting little programs are being purposed!
