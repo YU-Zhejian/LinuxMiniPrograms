@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # VERSION=1.0
-# TODO: docs
 function getuser() {
 	if [ -n "${USER:-}" ]; then
 		printf "${USER}"

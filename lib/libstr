@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# VERSION=1.0
-# TODO: docs
+# VERSION=1.1
 function trimstr() {
 	: "${1#"${1%%[![:space:]]*}"}"
 	: "${_%"${_##*[![:space:]]}"}"
@@ -17,5 +16,5 @@ function warnh() {
 }
 
 function infoh() {
-	echo -e "\033[33m${*}\033[0m" >&2
+	echo -e "\033[33mINFO: ${*}\033[0m" >&2
 }
