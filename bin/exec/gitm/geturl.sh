@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 VERSION=1.0
 . "${DN}"/../lib/libman
 for opt in "${UKOPT[@]}"; do

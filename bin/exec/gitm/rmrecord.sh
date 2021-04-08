@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 VERSION=1.0
 for opt in "${UKOPT[@]}"; do
 	case "${opt}" in
