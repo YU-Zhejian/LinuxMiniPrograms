@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=2.2
+VERSION=2.3
 set -eu
 OLDIFS="${IFS}"
 if ! readlink -f . &>/dev/null; then
@@ -97,10 +97,10 @@ done
 # ========Check========
 infoh "Checking FileSystem..."
 #mkdir -p "${PREFIX}" || errh "Installation prefix ${PREFIX} cannot be accessed"
-${VAR_update_path} && rm -f 'etc/path.conf'
-if [ ! -f 'etc/path.conf' ] && [ -f 'etc/path.sh' ];then mv 'etc/path.sh' 'etc/path.conf';fi
-if [ ! -f 'etc/path.conf' ]; then
-	path_sh="etc/path.conf"
+path_sh="etc/path.conf"
+${VAR_update_path} && rm -f "${path_sh}"
+if [ ! -f "${path_sh}" ] && [ -f 'etc/path.sh' ];then mv 'etc/path.sh' "${path_sh}";fi
+if [ ! -f "${path_sh}" ]; then
 	mkdir -p etc
 	touch "${path_sh}"
 	echo "#!/usr/bin/env bash" >> "${path_sh}"
