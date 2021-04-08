@@ -1,10 +1,10 @@
 # ReadMe For YuZJLab LinuxMiniPrograms
 
-This file is written in Markdown, a light-weight Markup language. If you have no idea how to read them, you may use Pandoc (<https://www.pandoc.org/>) or Markdown editors like Typora (<https://www.typora.io/>) if you have access to a Graphical User Interface (GUI).
+This file is written in Markdown, a lightweight Markup language. If you have no idea how to read them, you may use Pandoc (<https://www.pandoc.org/>) or Markdown editors like Typora (<https://www.typora.io/>) if you have access to a Graphical User Interface (GUI). This documentation can be converted to PDF, HTML or other various formats by Pandoc available from <https://www.pandoc.org/>. 
 
 ## Copyright
 
-These programs are designed to cut down time a bioinformatician spent on doing sys-admin work.
+These programs are designed to cut down the time a bioinformatician spent on doing sys-admin work.
 
 Copyright (C) 2019-2021 YU Zhejian
 
@@ -59,9 +59,11 @@ bash opt/LMP_dev/bin/BeforeAdd.sh
 
 This piece of code will automatically change all `CRLF` into `LF`.
 
+For those who use the second piece of command, please remove those files with `.bak` suffix manually.
+
 ## Help \& Documentation \& Supporting
 
-After installation, you can execute `yldoc -l` to get a complete list of all available documentations and view them by using `yldoc [name]`. You can also find PDF, HTML and other documentation formats in corresponding folder.
+After installation, you can execute `yldoc -l` to get a complete list of all available documentations and view them by using `yldoc [name]` to access documentations for `[NAME]`. You can also find PDF, HTML, and other documentation formats in the corresponding folder if you enable `--install-doc` flag when executing `configure`.
 
-It is recommended to read the `LMP_basis` to know the basic configurations to Linux MiniPrograms.
+It is recommended to read the `LMP_basis` to know the basic configurations to Linux MiniPrograms. News for the developers are listed in `src/news` in Asciidoc. See `Readme.adoc` in `src/` for further details.
  
