@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
+# VERSION=1.1
 function timestamp() {
 	date '+%Y-%m-%d %H:%M:%S'
 }
 function grep_uuidtable() {
 	for fn in uuidtable.d/*; do
 		(grep "^${1}\t" "${fn}" >> "${2}" || true) &
+		(grep "\t${1}$" "${fn}" >> "${2}" || true) &
 	done
 	wait
 	[ $(wc -l "${2}" | awk '{print $1}') -ne 0 ] || return 1

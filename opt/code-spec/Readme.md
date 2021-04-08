@@ -1,5 +1,7 @@
 # `code-spec`: How to write readable codes for green hands in a Small Group Projects
 
+WARNING: Unfinished project!
+
 This is a how-to documentation for those green hands who have not been taught how to code.
 
 If you've already installed Pandoc (Available from <https://www.pandoc.org/>), you may execute `build.cmd` (Microsoft Windows) or `build.sh` (GNU/Linux) to compile (render) it into HTML. You may also use GNU Make to build multiple targets (`all`, `docx`, `pdf`, `html`) if you know how to use them.

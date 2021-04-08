@@ -9,3 +9,5 @@ They are:
 * `LMP_dev` Develop LinuxMiniPrograms with ease.
 
 More interesting little programs are being purposed!
+
+Files located under `exec/` are used for installation purpose. Do not execute them.

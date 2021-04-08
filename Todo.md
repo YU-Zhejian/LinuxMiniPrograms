@@ -58,8 +58,15 @@
 
 * General-purpose enigma crypto.
 * Modular documentations.
+* GNU Autotools installation.
 
 ## Documentation
 
-* `src/test/`
+* `opt/envgen`
+* `opt/code-spec`
+* `src/doc`
 
+## Split into Modules
+
+* `git-mirror`
+* `ylsjs`

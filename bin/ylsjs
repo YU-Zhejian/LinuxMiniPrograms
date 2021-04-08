@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.0
+VERSION=1.1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 WD="$(pwd)"
@@ -32,8 +32,8 @@ done
 if [ -z "${STDS:-}" ]; then
 	yldoc ylsjs
 	exit 0
-elif [ -f "${DN}"/exec/ylsjs_"${STDS}".sh ]; then
-	. "${DN}"/exec/ylsjs_"${STDS}".sh
+elif [ -f "${DN}"/exec/ylsjs/"${STDS}".sh ]; then
+	. "${DN}"/exec/ylsjs/"${STDS}".sh
 else
 	errh "subcommand '${STDS}' invalid"
 fi

@@ -1,4 +1,20 @@
 VERSION=1.0
+for opt in "${UKOPT[@]}"; do
+	case "${opt}" in
+	"-h" | "--help")
+		yldoc git-mirror
+		exit 0
+		;;
+	"-v" | "--version")
+		echo "${VERSION}"
+		exit 0
+		;;
+	*)
+		warnh "Option '${opt}' invalid. Ignored"
+		;;
+	esac
+done
+
 tmpf="$(mktemp -t gitm.XXXXX)"
 function __gc() {
 	infoh "Repository UUID=${fields[1]} gc started"

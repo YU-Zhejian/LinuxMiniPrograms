@@ -1,4 +1,21 @@
 VERSION=1.0
+for opt in "${UKOPT[@]}"; do
+	case "${opt}" in
+	"-h" | "--help")
+		yldoc git-mirror
+		exit 0
+		;;
+	"-v" | "--version")
+		echo "${VERSION}"
+		exit 0
+		;;
+	*)
+		warnh "Option '${opt}' invalid. Ignored"
+		;;
+	esac
+done
+
+
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
 [ "${mypython}" != "ylukh" ] || errh "Python not found"
 set -C

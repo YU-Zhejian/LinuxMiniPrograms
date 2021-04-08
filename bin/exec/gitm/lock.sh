@@ -1,15 +1,25 @@
 VERSION=1.0
 
 FORCE=false
-for opt in "${@}"; do
-	if isopt "${opt}"; then
-		case "${opt}" in
-		"-f" | "--force")
-			FORCE=true
-			;;
-		esac
-	fi
+for opt in "${UKOPT[@]}"; do
+	case "${opt}" in
+	"-h" | "--help")
+		yldoc git-mirror
+		exit 0
+		;;
+	"-v" | "--version")
+		echo "${VERSION}"
+		exit 0
+		;;
+	"-f" | "--force")
+		FORCE=true
+		;;
+	*)
+		warnh "Option '${opt}' invalid. Ignored"
+		;;
+	esac
 done
+
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
 case "${STDS[1]}" in
 "ls")
