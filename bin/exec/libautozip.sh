@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VERSION=6
+# VERSION=6.0
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.conf

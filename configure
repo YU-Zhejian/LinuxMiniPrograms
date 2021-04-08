@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=2
+VERSION=2.0
 set -eu
 OLDIFS="${IFS}"
 if ! readlink -f . &>/dev/null; then

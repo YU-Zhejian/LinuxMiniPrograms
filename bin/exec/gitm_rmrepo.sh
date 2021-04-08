@@ -1,4 +1,4 @@
-VERSION=1
+VERSION=1.0
 tmpf="$(mktemp -t gitm.XXXXX)"
 function __rm() {
 	rm -fr "${fields[1]}".rm logs/"${fields[1]}"

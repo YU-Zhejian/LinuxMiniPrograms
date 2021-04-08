@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=2
+VERSION=2.0
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 touch "${DN}"/../etc/livechat.conf

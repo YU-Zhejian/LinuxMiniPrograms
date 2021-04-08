@@ -1,4 +1,4 @@
-VERSION=1
+VERSION=1.0
 . "${DN}"/../lib/libman
 
 tmpf="$(mktemp -t gitm.XXXXX)"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=3
+VERSION=3.0
 if [ -n "${3:-}" ] && [ "${3:-}" != "machine" ];then
 	Start_Sec=${1}
 	End_Sec=${2}

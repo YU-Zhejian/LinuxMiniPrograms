@@ -1,4 +1,4 @@
-VERSION=1
+VERSION=1.0
 tmpf="$(mktemp -t gitm.XXXXX)"
 FORCE=false
 for opt in "${@}"; do

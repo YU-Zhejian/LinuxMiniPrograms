@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1
+VERSION=1.0
 STDS=()
 n=15
 for opt in "${@}"; do

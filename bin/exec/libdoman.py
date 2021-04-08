@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# VERSION=3
+# VERSION=3.0
 from datetime import datetime
 
 from LMP_Pylib.libisopt import *

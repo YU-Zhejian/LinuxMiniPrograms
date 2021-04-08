@@ -1,4 +1,4 @@
-# VERSION=1
+# VERSION=1.0
 import os
 import re
 import sys

@@ -1,4 +1,4 @@
-VERSION=1
+VERSION=1.0
 tmpf="$(mktemp -t gitm.XXXXX)"
 
 if [ ${#STDS[@]} -gt 0 ]; then

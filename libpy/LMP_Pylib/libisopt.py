@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# VERSION=3
+# VERSION=3.0
 """
 Python version of lib/libisopt, includes utilities to judge whether an argument is an option.
 See 'yldoc libisopt' for more details.

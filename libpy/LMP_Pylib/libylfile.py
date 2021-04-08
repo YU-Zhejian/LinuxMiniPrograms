@@ -1,4 +1,4 @@
-# VERSION=1
+# VERSION=1.0
 """
 Include utils to deal with files.
 """

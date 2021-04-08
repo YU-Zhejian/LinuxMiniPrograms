@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# VERSION=1
+# VERSION=1.0
 import datetime
 import psutil
 import signal

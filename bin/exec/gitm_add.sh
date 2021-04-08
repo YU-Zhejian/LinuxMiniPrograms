@@ -1,4 +1,4 @@
-VERSION=1
+VERSION=1.0
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
 [ "${mypython}" != "ylukh" ] || errh "Python not found"
 set -C

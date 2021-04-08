@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# VERSION=2
+# VERSION=2.0
 '''
 Python version of lib/libpath, includes common utilities to manipulate environment variables separated by ':'.
 See 'yldoc libpath' for more details.

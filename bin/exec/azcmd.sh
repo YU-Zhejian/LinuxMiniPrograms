@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=6
+VERSION=6.0
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")/../")"

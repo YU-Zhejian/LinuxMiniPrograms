@@ -1,4 +1,4 @@
-VERSION=1
+VERSION=1.0
 if cat uuidtable.d/*; then
 	infoh "Repository ls success"
 	echo -e "$(timestamp)\tLS\tSUCCESS" >> act.log
