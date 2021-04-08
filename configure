@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-VERSION=2.1
+VERSION=2.2
 set -eu
 OLDIFS="${IFS}"
 if ! readlink -f . &>/dev/null; then
 	if ! greadlink -f . &>/dev/null;then
-		echo -e "\033[31mERROR: NO readlink available
+		echo -e "\033[31mERROR: NO readlink & greadlink available
 For MacOS users, please install 'coreutils' by HomeBrew
 For BSD users, please install 'coreutils' by your package management systems\033[0m"
 		exit 1

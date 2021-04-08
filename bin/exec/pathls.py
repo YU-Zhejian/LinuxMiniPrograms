@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-VERSION=1.7
+VERSION=1.8
 from LMP_Pylib.libisopt import *
 from LMP_Pylib.libpath import *
 from LMP_Pylib.libstr import *
 
-mylibpath = libpath("PATH")
+
 import sys, os, re
 
 
@@ -51,10 +51,12 @@ for sysarg in sys.argv[1:]:
 		elif sysarg == '--no-o':
 			allow_o = False
 		elif sysarg == '-l' or sysarg == '--list':
+			mylibpath = libpath("PATH")
 			for mypath in mylibpath.valid_path:
 				print(mypath)
 			exit(0)
 		elif sysarg == '-i' or sysarg == '--invalid':
+			mylibpath = libpath("PATH")
 			for mypath in mylibpath.invalid_path:
 				print(mypath)
 			exit(0)
@@ -63,7 +65,7 @@ for sysarg in sys.argv[1:]:
 			exit(1)
 	else:
 		sstr.append(sysarg)
-
+mylibpath = libpath("PATH")
 if sstr == []:
 	for mypath in mylibpath.valid_path:
 		ret_l = do_search(mypath)

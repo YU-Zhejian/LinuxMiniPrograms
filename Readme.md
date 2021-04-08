@@ -48,7 +48,7 @@ For those who use Git for Windows, you may experience problems caused by line en
 
 That is because Windows uses `CRLF` (That is, "Carriage Return [回车] + Next Line [换行]") while *nix use `LF`, and your Git distribution automatically converts `LF` to `CRLF` when getting the file. To remove this issue, please do as follows:
 
-1. Install `dos2unix` by your package manager or get one from <http://dos2unix.sourceforge.net/>. If you do not know how to do that, replace `dos2unix` with `sed -i 's/\r$//g'` in commands listed below.
+1. Install `dos2unix` by your package manager or get one from <http://dos2unix.sourceforge.net/>. If you do not know how to do that, replace `dos2unix` with `sed -i'.bak' 's/\'$'\r$//g'` in commands listed below.
 
 2. Execute the following code:
 

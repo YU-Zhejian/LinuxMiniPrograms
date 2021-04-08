@@ -130,7 +130,7 @@ with package `linux_base-c7` installed.
 #### Download
 
 ```bash
-git config --global core.autocrlf input
+git config --global core.autocrlf input # for Windows only
 git clone https://github.com/YuZJLab/LinuxMiniPrograms
 cd LinuxMiniPrograms
 ```

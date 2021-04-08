@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# VERSION=2.1
+# VERSION=2.2
 '''
 Python version of lib/libpath, includes common utilities to manipulate environment variables separated by ':'.
 See 'yldoc libpath' for more details.
@@ -17,12 +17,16 @@ class libpath:
 		self.invalid_path = []
 		self.duplicated_path = []
 		for dir in mypaths:
-			path_hand = os.popen('readlink -f \"' + dir + '"')
-			full_dir = path_hand.read().strip()
-			path_hand.close()
+			full_dir = os.path.abspath(dir)
 			if not os.path.isdir(dir):
 				self.invalid_path.append(dir)
 			elif full_dir in self.valid_path:
 				self.duplicated_path.append(full_dir)
 			else:
 				self.valid_path.append(full_dir)
+		self.invalid_path=list(set(self.invalid_path))
+		self.valid_path=list(set(self.valid_path))
+		self.duplicated_path=list(set(self.duplicated_path))
+		self.invalid_path.sort()
+		self.valid_path.sort()
+		self.duplicated_path.sort()
