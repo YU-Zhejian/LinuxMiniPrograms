@@ -46,6 +46,9 @@ clean:
 distclean:clean
 	$(RM) etc var share
 
+test_list:
+	ls src/test/ | grep '\.t\.sh' | sed 's;\.t\.sh;;'
+
 # TODO: Implement installation
 #install:
 #	$(CP) -buv . ~/opt/LinuxMiniPrograms/ &>> install.log

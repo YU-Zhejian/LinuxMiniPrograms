@@ -1,4 +1,8 @@
-This is the installation script of LinuxMiniPrograms.
+This is the configuration script of LinuxMiniPrograms. It evaluates the operating system and search for binaries used.
+
+If tis script is successfully executed, you may execute 'make' or 'gmake' (For BSD or macOS) to build this program.
+
+FOr more details please read 'Readme.md' and `Install.md`.
 
 SYNOPSIS: bash configure [OPTIONS] [KEY-VALUE PAIRS]
 
@@ -11,7 +15,8 @@ OPTIONS:
 	-a|--all Install all components.
 	--install-config (Re)Install configuration files in 'etc'.
 	--clear-history (Re)Install histories in 'var'.
-	--install-doc Install all documentations, need 'asciidoctor' 'asciidoctor-pdf' (available from Ruby gems) and Python 3.
+	--install-doc Install all documentations, need 'asciidoctor' 'asciidoctor-pdf' (available from Ruby gems)
+		or 'asciidoc' (available from Python pip) and Python 3.
 	--install-man Install Groff man, need 'asciidoctor'.
 	--install-usage Install yldoc usage, need Python 3.
 	--install-pdf Install doc in pdf, need 'asciidoctor-pdf'.
@@ -24,3 +29,6 @@ OPTIONS:
 KEY-VALUE PAIRS:
 
 	Specifies path for executables. For example, `python=/usr/bin/python3`.
+
+DEVELOPMENT:
+    For developers, please refer to the Asciidoc version of this documentation.

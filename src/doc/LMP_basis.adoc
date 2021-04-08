@@ -101,6 +101,35 @@ Although we tried our best to eliminate the experience difference between platfo
 
 WARNING: If ypu spot any problems, please firstly search for the manual of each program and `Readme.md`.
 
+=== Testing LinuxMiniPrograms for Your Operating System
+
+You may execute `make test` (`gmake` under FreeBSD or macOS) to test all programs inside LinuxMiniPrograms in your operating system. To test a specific program, use `make test TT=[PROGRAM]`. Use `make test_list` to list all available tests.
+
+A general testing procedure may like follows (Under Cygwin):
+
+[source]
+----
+0 2021-04-08_12-51-33 /cygdrive/d/Work/LinuxMiniPrograms (BSD u=)
+$ make test
+bash src/test/00_index.sh all
+INFO: Performing tests with args=all...
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/01_libdo.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/autozip.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/b16c.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/bhs.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/git-mirror.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/iomux.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/libdosh.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/livechat.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/pathls.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/pss.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/pst.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/yldoc.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/ylsjs.t.sh...PASS
+----
+
+WARNING: Please stop all running LinuxMiniProgram when executing tests!
+
 === GNU/Linux Distributions, including Windows Subsystem of Linux (WSL)
 
 There should be no compatibility problems in this platform because this is what this suite of program designed for. Tested and fully supported. If there are problems, they suppose to be bugs. Please report them.
@@ -175,7 +204,11 @@ As we're developing programs mostly under Microsoft Windows, we **DO NOT** pay a
 
 There are two main branches on GitHub: `master` and `testing`. `master` branch is a stable releasing branch and `testing` branch is cutting-edge developing branch. Other branches (e.g. `BSD`) should be considered as unstable.
 
-=== Documentations for Developers
+==== The Installer
+
+The installation process can be split into 2 phases: configuration and installation. The configuration is done by executing `configure` script, and installation is done by `make`. See the Asciidoc version of documentation of `configure` for more details.
+
+=== Other Documentations for Developers
 
 Developers should pay attention to the `Readme.adoc` under each folder and news in `src/news`. All documentations for developers are written in Asciidoc instead of Markdown due to its excellent extensibility. No complex syntax are used in the documentations and should be considered easy to understand by most readers with the experience of writing Markdown.
 

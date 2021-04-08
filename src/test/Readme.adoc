@@ -1,5 +1,24 @@
 = ReadMe for `test`
 
-This folder contains the testing scripts.
+This folder contains the testing scripts. These scripts can be executed in a stand-alone order, or to be accessed by using `make test` in the root directory of LinuxMiniPrograms. See `LMP_basis` for more details.
 
-The tests are organized in a modular order.
+The tests are organized in a modular order. For each test, a directoru named `[PROGNAME]` is created and all tests are executed there.
+
+To avoid interfering normal programs, for programs like `git-mirror` or `ylsjs`, its `var` directory is pointed to `[PROGNAME]`.
+
+== Writing New tests
+
+To write a new test, the template is provided as follows:
+
+[source,bash]
+----
+#!/usr/bin/env bash
+set -eu
+DN="$(readlink -f "$(dirname "${0}")")"
+PROGNAME=[PROGNAME]
+. "${DN}"/00_libtest.sh
+[...]
+rm -rf "${TDN}" # This variable is specified in "${DN}"/00_libtest.sh. It is where the tests are executed. It is removed if the test is successful.
+----
+
+You may specify the program(s) you need to test in `[PROGNAME]` and write what you need to test in `[...]`.
