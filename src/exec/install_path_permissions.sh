@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.1
+VERSION=1.2
 set -eu
 OLDIFS="${IFS}"
 DN="$(readlink -f "$(dirname "${0}")/../../")"
@@ -7,7 +7,7 @@ cd "${DN}"
 . lib/libstr
 . etc/path.conf
 #========Install PATH========
-if ! which yldoc &> /dev/nulll; then
+if ! which yldoc &> /dev/null; then
 	echo "export PATH=\"${DN}/bin/:\${PATH:-}\"" >> "${HOME}"/.bashrc
 	infoh "Will configure PATH (bin)...\033[32mPASSED"
 fi
