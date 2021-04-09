@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VERSION=1.0
+# VERSION=1.1
 function getuser() {
 	if [ -n "${USER:-}" ]; then
 		printf "${USER}"
@@ -23,5 +23,5 @@ function killtree() {
     for CPID in $(ps -o pid --no-headers --ppid ${1}); do
         killtree ${CPID} ${2}
     done
-    kill -${2} ${1}
+    kill -${2} ${1} || return
 }

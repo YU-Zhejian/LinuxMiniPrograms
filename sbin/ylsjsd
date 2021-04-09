@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.0
+VERSION=1.1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
@@ -48,7 +48,7 @@ elif [ "${STDS:-}" = "stop" ]; then
 	else
 		kill -15 "$(cat ylsjsd.lock 2> /dev/null)" || true
 	fi
-	rm -f ylsjsd.lock
+	rm -f ylsjsd.lock 2> /dev/null
 elif [ "${STDS:-}" = "restart" ]; then
 	ylsjsd stop
 	ylsjsd start

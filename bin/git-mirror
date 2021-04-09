@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.3
+VERSION=1.4
 DN="$(readlink -f "$(dirname "${0}")")"
 set -ue
 trap '' SIGINT
@@ -58,7 +58,7 @@ elif [ -f "${DN}"/exec/gitm/"${gmcmd}".sh ]; then
 elif [ -f "${DN}"/exec/gitm/"${gmcmd}".py ]; then
 	IFS="${OLD_IFS}"
 	if [ "${mypython}" != "ylukh" ]; then
-		"${mypython}" "${DN}"/exec/gitm/"${sjscmd}".py "${PWD}" "${@}"
+		"${mypython}" "${DN}"/exec/gitm/"${sjscmd}".py" "${@}"
 	else
 		errh "Python not found"
 	fi

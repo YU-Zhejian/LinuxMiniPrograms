@@ -1,21 +1,24 @@
 #!/usr/bin/env bash
-VERSION=1.0
-STDS=()
+VERSION=1.1
 n=15
-for opt in "${@}"; do
-	if isopt "${opt}"; then
-		case "${opt}" in
-		-n\:*)
-			n=${opt:3}
-			;;
-		esac
-	else
-		STDS=("${STDS[@]}" "${opt}")
-	fi
+for opt in "${UKOPT[@]}"; do
+	case "${opt}" in
+	"-h" | "--help")
+		yldoc ylsjs
+		exit 0
+		;;
+	"-v" | "--version")
+		echo "${VERSION}"
+		exit 0
+		;;
+	-n\:*)
+		n=${opt:3}
+		;;
+	*)
+		warnh "Option '${opt}' invalid. Ignored"
+		;;
+	esac
 done
-. "${DN}"/../lib/libman
-
-unset STDS[0]
 
 function __kill() {
 	if [ -f "${1}".q ]; then

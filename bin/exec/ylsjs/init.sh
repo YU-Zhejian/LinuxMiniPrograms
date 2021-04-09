@@ -1,22 +1,28 @@
 #!/usr/bin/env bash
-VERSION=1.0
-STDS=()
+VERSION=1.1
 NAME="UK"
-for opt in "${@}"; do
-	if isopt "${opt}";then
-		case "${opt}" in
-		-n\:*)
-			NAME=${opt:3}
-			;;
-		--name\:*)
-			NAME=${opt:7}
-			;;
-		*)
-			warnh "Option '${opt}' invalid. Ignored"
-			;;
-		esac
-	fi
+for opt in "${UKOPT[@]}"; do
+	case "${opt}" in
+	"-h" | "--help")
+		yldoc ylsjs
+		exit 0
+		;;
+	"-v" | "--version")
+		echo "${VERSION}"
+		exit 0
+		;;
+	-n\:*)
+		NAME=${opt:3}
+		;;
+	--name\:*)
+		NAME=${opt:7}
+		;;
+	*)
+		warnh "Option '${opt}' invalid. Ignored"
+		;;
+	esac
 done
+
 MAX_JOB=$(ls -1 *.sh | wc -l | awk '{print $1}')
 MAX_JOB=$((${MAX_JOB}+1))
 echo "${NAME}" > ${MAX_JOB}.q

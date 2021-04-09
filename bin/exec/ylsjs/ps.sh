@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.0
-STDS=()
+VERSION=1.1
 VERBOSE=false
 TOP=false
 PST=false
@@ -10,9 +9,17 @@ ID_ONLY=false
 STDOUT=false
 STDERR=false
 SHOWENV=false
-for opt in "${@}"; do
+for opt in "${UKOPT[@]}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
+		"-h" | "--help")
+			yldoc ylsjs
+			exit 0
+		;;
+		"-v" | "--version")
+			echo "${VERSION}"
+			exit 0
+		;;
 		"-V" | "--verbose")
 			VERBOSE=true
 			;;
@@ -40,13 +47,12 @@ for opt in "${@}"; do
 		"--id-only")
 			ID_ONLY=true
 			;;
+	*)
+		warnh "Option '${opt}' invalid. Ignored"
+		;;
 		esac
-	else
-		STDS=("${STDS[@]}" "${opt}")
 	fi
 done
-
-unset STDS[0]
 
 function __psv() {
 	local PID
