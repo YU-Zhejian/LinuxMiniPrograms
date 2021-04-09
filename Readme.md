@@ -66,3 +66,59 @@ For those who use the second piece of command, please remove those files with `.
 After installation, you can execute `yldoc -l` to get a complete list of all available documentation and view them by using `yldoc [name]` to access documentations for `[NAME]`. You can also find PDF, HTML, and other documentation formats in the corresponding folder if you enable `--install-doc` flag when executing `configure`.
 
 It is recommended to read the `LMP_basis` to know the basic configurations to Linux MiniPrograms. News for the developers are listed in `src/news` in Asciidoc. See `Readme.adoc` in `src/` for further details.
+
+## 3rd Party Codes
+
+This project use codes from:
+
+* Git - fast, scalable, distributed revision control system
+	
+	Available: <https://github.com/git/git> <https://git-scm.com/>
+	
+	```
+	 Note that the only valid version of the GPL as far as this project
+	 is concerned is _this_ particular version of the license (ie v2, not
+	 v2.2 or v3.x or whatever), unless explicitly otherwise stated.
+	
+	 HOWEVER, in order to allow a migration to GPLv3 if that seems like
+	 a good idea, I also ask that people involved with the project make
+	 their preferences known. In particular, if you trust me to make that
+	 decision, you might note so in your copyright message, ie something
+	 like
+	
+		This file is licensed under the GPL v2, or a later version
+		at the discretion of Linus.
+	
+	  might avoid issues. But we can also just decide to synchronize and
+	  contact all copyright holders on record if/when the occasion arises.
+	
+				Linus Torvalds
+	```
+
+* pure bash bible (A collection of pure bash alternatives to external processes)
+	
+	Available: <https://github.com/dylanaraps/pure-bash-bible>
+	
+	```
+	The MIT License (MIT)
+	
+	Copyright (c) 2018 Dylan Araps
+	
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+	
+	The above copyright notice and this permission notice shall be included in all
+	copies or substantial portions of the Software.
+	
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+	```
