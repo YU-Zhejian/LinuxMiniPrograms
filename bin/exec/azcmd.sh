@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=6.1
+VERSION=6.2
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")/../")"
@@ -206,14 +206,14 @@ else
 		#"7z")
 		#	if [ "${my7za}" != 'ylukh' ]; then
 		#		__cklvl 7z
-		#		cmd="${my7za} a -aoa -y /dev/stdout /dev/stdin -mmt=${THREAD} ${LVL} -t7z"
+		#		cmd_exec="${my7za} a -aoa -y /dev/stdout /dev/stdin -mmt=${THREAD} ${LVL} -t7z"
 		#	fi
 		#	;;
 	"zip")
 		# TODO: No implement
 		#if [ "${my7za}" != 'ylukh' ]; then
 		#	__cklvl 7z
-		#	cmd="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -tzip"
+		#	cmd_exec="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -tzip"
 		if [ "${myzip}" != 'ylukh' ]; then
 			__cklvl zip
 			cmd="${myzip} --verbose ${LVL}"
@@ -223,7 +223,7 @@ else
 	#"rar")
 	#	if [ "${myrar}" != 'ylukh' ]; then
 	#		__cklvl rar
-	#		cmd="${myrar} -mt${THREAD} a /dev/stdout /dev/stdin"
+	#		cmd_exec="${myrar} -mt${THREAD} a /dev/stdout /dev/stdin"
 	#	fi
 	#	;;
 	*)

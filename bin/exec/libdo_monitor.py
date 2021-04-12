@@ -2,10 +2,10 @@
 '''
 Ultility to monitor a specific PID, used in LibDO version 3.
 '''
+# FIXME: this system needs procfs.
 import datetime
 import signal
 import sys
-
 import psutil
 
 from linuxminipy.libylfile import yldo
@@ -14,6 +14,10 @@ VERSION = 1.2
 
 
 def _term_handler():
+    '''
+    SIGTERM handler
+    :return: nothing, will exit
+    '''
     sys.exit(0)
 
 
@@ -44,7 +48,7 @@ while True:
         for subp in ptable:
             print(tsp + str(subp.pid) + ':INFO:' + ','.join(
                 ['EXE=' + subp.exe(),
-                 'CMD=' + ' '.join(subp.cmdline()),
+                 'cmd_exec=' + ' '.join(subp.cmdline()),
                  'STAT=' + subp.status(),
                  'CWD=' + subp.cwd(),
                  'OnCPU=' + str(subp.cpu_num()),
@@ -69,7 +73,8 @@ while True:
             for x in subp.threads():
                 subt = psutil.Process(x.id)
                 print(tsp + str(subp.pid) + ':THREADS:' + ','.join(
-                    ['PID=' + str(subt.pid), 'OnCPU=' + str(subt.cpu_num())]))
+                    ['PID=' + str(subt.pid),
+                     'OnCPU=' + str(subt.cpu_num())]))
                 print(tsp + str(subp.pid) + ':IO:PID=' + str(subt.pid) + ',' +
                       yldo('cat /proc/' + str(subt.pid) +
                            r'''/io |tr '\n' ','|sed 's;: ;=;' '''))

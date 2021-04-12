@@ -7,7 +7,7 @@ See 'yldoc libisopt' for more details.
 """
 import re
 
-my_opt = re.compile(r'-[^-\s]|--\S+|-[^-\s]\:\S+|--\S+:\S+')
+my_opt = re.compile(r'^-[^-\s]|--[^-\s]+|-[^-\s]:[^-\s]+|--[^-\s]+:[^-\s]+$')
 
 
 def isopt(arguments: str) -> bool:

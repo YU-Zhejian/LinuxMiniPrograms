@@ -94,7 +94,7 @@ This project use codes from:
 		at the discretion of Linus.
 	
 	  might avoid issues. But we can also just decide to synchronize and
-	  contact all copyright holders on record if/when the occasion arises.
+	  contact all copyright holders on LibdoRecord if/when the occasion arises.
 	
 				Linus Torvalds
 	```

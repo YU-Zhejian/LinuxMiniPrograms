@@ -1,4 +1,4 @@
-# VERSION=1.0
+# VERSION=1.1
 """
 Python version of lib/libstr, includes common string-output utilities.
 See 'yldoc libstr' for more details.
@@ -16,7 +16,7 @@ def eprint(*args, **kwargs):
 
 
 def infoh(instr: str):
-    eprint("\033[33m", instr, "\033[0m")
+    eprint("\033[33mINFO:", instr, "\033[0m")
 
 
 def warnh(instr: str):
