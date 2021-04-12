@@ -13,16 +13,16 @@ VERSION=3.1
 
 sstr = []
 for sysarg in sys.argv[1:]:
-	if isopt(sysarg):
-		if sysarg in ('-h', '--help'):
-			os.system('yldoc ylmktbl')
-			sys.exit(0)
-		elif sysarg in ('-v', '--version'):
-			print(str(VERSION) + ' in Python')
-			sys.exit(0)
-		else:
-			warnh('Option ' + sysarg + ' invalid')
-			sys.exit(1)
-	else:
-		sstr.append(sysarg)
+    if isopt(sysarg):
+        if sysarg in ('-h', '--help'):
+            os.system('yldoc ylmktbl')
+            sys.exit(0)
+        elif sysarg in ('-v', '--version'):
+            print(str(VERSION) + ' in Python')
+            sys.exit(0)
+        else:
+            warnh('Option ' + sysarg + ' invalid')
+            sys.exit(1)
+    else:
+        sstr.append(sysarg)
 mktbl(sstr[0])

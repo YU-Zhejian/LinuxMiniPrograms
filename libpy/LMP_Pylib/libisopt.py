@@ -11,10 +11,9 @@ my_opt = re.compile(r'-[^-\s]|--\S+|-[^-\s]\:\S+|--\S+:\S+')
 
 
 def isopt(arguments: str) -> bool:
-	"""
-	Is it an option?
-	:param arguments: What needed to be judged.
-	:return: Whether it is an option.
-	"""
-	return bool(my_opt.match(arguments))
-
+    """
+    Is it an option?
+    :param arguments: What needed to be judged.
+    :return: Whether it is an option.
+    """
+    return bool(my_opt.match(arguments))

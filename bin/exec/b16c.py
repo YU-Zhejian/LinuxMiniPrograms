@@ -14,30 +14,30 @@ VERSION=2.3
 
 decode = False
 for sysarg in sys.argv[1:]:
-	if isopt(sysarg):
-		if sysarg in ('-h', '--help'):
-			os.system('yldoc b16c')
-			sys.exit(0)
-		elif sysarg in ('-v', '--version'):
-			print(str(VERSION) + ' in Python')
-			sys.exit(0)
-		elif sysarg in ('-d', '--decode'):
-			decode = True
+    if isopt(sysarg):
+        if sysarg in ('-h', '--help'):
+            os.system('yldoc b16c')
+            sys.exit(0)
+        elif sysarg in ('-v', '--version'):
+            print(str(VERSION) + ' in Python')
+            sys.exit(0)
+        elif sysarg in ('-d', '--decode'):
+            decode = True
 if decode:
-	f = open(sys.stdin.fileno(), mode='rb')
-	o = open(sys.stdout.fileno(), mode='wb')
-	while True:
-		inp1 = f.read(1)
-		inp2 = f.read(1)
-		if not inp1 or not inp2: break
-		o.write(struct.pack('b',(ord(inp1) - 65) * 16 + ord(inp2) - 65 - 128))
+    f = open(sys.stdin.fileno(), mode='rb')
+    o = open(sys.stdout.fileno(), mode='wb')
+    while True:
+        inp1 = f.read(1)
+        inp2 = f.read(1)
+        if not inp1 or not inp2: break
+        o.write(struct.pack('b',(ord(inp1) - 65) * 16 + ord(inp2) - 65 - 128))
 else:
-	f = open(sys.stdin.fileno(), mode='rb')
-	o = open(sys.stdout.fileno(), mode='w')
-	while True:
-		inp = f.read(1)
-		if not inp: break
-		inp = ord(inp)
-		o.write(chr(inp // 16 + 65) + chr(inp % 16 + 65))
+    f = open(sys.stdin.fileno(), mode='rb')
+    o = open(sys.stdout.fileno(), mode='w')
+    while True:
+        inp = f.read(1)
+        if not inp: break
+        inp = ord(inp)
+        o.write(chr(inp // 16 + 65) + chr(inp % 16 + 65))
 o.close()
 f.close()

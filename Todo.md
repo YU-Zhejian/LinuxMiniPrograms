@@ -59,10 +59,13 @@
 * General-purpose enigma crypto.
 * Modular documentations.
 * GNU Autotools installation.
+* Google coding standard
+	* Python
+	* Shell
+	* C/C++
 
 ## Documentation
 
-* `opt/envgen`
 * `opt/code-spec`
 * `src/doc`
 
