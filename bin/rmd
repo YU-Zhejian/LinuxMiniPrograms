@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.8
+VERSION=1.9
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
@@ -30,7 +30,7 @@ for opt in "${@}"; do
 		STDS=("${STDS[@]}" "${opt}")
 	fi
 done
-for fn in "${STDS[@]}";do
+for fn in "${STDS[@]}"; do
 	if [ -f "${fn}" ]; then
 		Rscript "${DN}/rmd.R" "${fn}"
 	else

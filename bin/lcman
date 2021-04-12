@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=3.6
+VERSION=3.7
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
@@ -70,7 +70,7 @@ while read line; do
 	um[${i}]=false
 	unset msg_tmp
 	i=$(($i + 1))
-done < "${LVCD}"/SYSTEM
+done <"${LVCD}"/SYSTEM
 infoh "Filtering..."
 if [ ${#sf[@]} -eq 0 ]; then
 	for ((n = 0; n <= i; n++)); do
@@ -105,10 +105,10 @@ n=0
 while read line; do
 	if ${uf[${n}]} && ${um[${n}]}; then
 		msg_tmp=(${line})
-		echo -e "\033[31m[${msg_tmp[0]}]\033[0m \033[36m[${msg_tmp[1]}]\033[0m ${msg_tmp[2]}" >> "${tmpfff}"
+		echo -e "\033[31m[${msg_tmp[0]}]\033[0m \033[36m[${msg_tmp[1]}]\033[0m ${msg_tmp[2]}" >>"${tmpfff}"
 	fi
 	n=$((n + 1))
-done < "${LVCD}"/SYSTEM
+done <"${LVCD}"/SYSTEM
 cat "${tmpfff}" | sort
 IFS=${OLD_IFS}
 exit 0

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.0
+VERSION=1.1
 for opt in "${UKOPT[@]}"; do
 	case "${opt}" in
 	"-h" | "--help")
@@ -18,7 +18,7 @@ done
 
 if cat act.log; then
 	infoh "Repository readlog success"
-	echo -e "$(timestamp)\tLOG\tSUCCESS" >> act.log
+	echo -e "$(timestamp)\tLOG\tSUCCESS" >>act.log
 else
-	echo -e "$(timestamp)\tLOG\tFAILED" >> act.log
+	echo -e "$(timestamp)\tLOG\tFAILED" >>act.log
 fi

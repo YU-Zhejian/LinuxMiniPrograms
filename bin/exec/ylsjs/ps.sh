@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.1
+VERSION=1.2
 VERBOSE=false
 TOP=false
 PST=false
@@ -15,11 +15,11 @@ for opt in "${UKOPT[@]}"; do
 		"-h" | "--help")
 			yldoc ylsjs
 			exit 0
-		;;
+			;;
 		"-v" | "--version")
 			echo "${VERSION}"
 			exit 0
-		;;
+			;;
 		"-V" | "--verbose")
 			VERBOSE=true
 			;;
@@ -47,16 +47,16 @@ for opt in "${UKOPT[@]}"; do
 		"--id-only")
 			ID_ONLY=true
 			;;
-	*)
-		warnh "Option '${opt}' invalid. Ignored"
-		;;
+		*)
+			warnh "Option '${opt}' invalid. Ignored"
+			;;
 		esac
 	fi
 done
 
 function __psv() {
 	local PID
-	echo "${@}" | tr ' ' '\n' | sort -n | while read ps_name;do
+	echo "${@}" | tr ' ' '\n' | sort -n | while read ps_name; do
 		if [ -f "${ps_name}.i" ]; then
 			PID=$(cat "${ps_name}.i" | tail -n 1)
 			echo -e "# ---------------No=${ps_name},\tNAME=$(cat ${ps_name}.i | head -n 1),\tPID=${PID},\tSTATUS=EXEC---------------"
@@ -64,11 +64,11 @@ function __psv() {
 			#	echo "    # ---------------ps ${ps_name}---------------"
 			#	ps -p ${PID} || true
 			#fi
-			if ${PST};then
+			if ${PST}; then
 				echo "    # ---------------pstree ${ps_name}---------------"
 				${PST} && pstree -ap ${PID} || true
 			fi
-			if ${TOP};then
+			if ${TOP}; then
 				echo "    # ---------------top ${ps_name}---------------"
 				top -H -p ${PID} -bc -n1 || true
 			fi
@@ -80,21 +80,21 @@ function __psv() {
 			echo -e "# ---------------No=${ps_name},\tNAME=$(cat ${ps_name}.q | head -n 1),\tPID=UK,\tSTATUS=PEND---------------"
 		fi
 		echo "    # ---------------Working directory=$(cat ${ps_name}.wd)---------------"
-		if ${CAT};then
+		if ${CAT}; then
 			echo "    # ---------------Submitted ${ps_name}.sh---------------"
 			cat -n ${ps_name}.sh
 		fi
-		if ${STDOUT};then
+		if ${STDOUT}; then
 			echo "    # ---------------STDOUT---------------"
-			cat "${ps_name}.stdout" 2> /dev/null || true
+			cat "${ps_name}.stdout" 2>/dev/null || true
 		fi
-		if ${STDERR};then
+		if ${STDERR}; then
 			echo "    # ---------------STDERR---------------"
-			cat "${ps_name}.stderr" 2> /dev/null || true
+			cat "${ps_name}.stderr" 2>/dev/null || true
 		fi
-		if ${SHOWENV};then
+		if ${SHOWENV}; then
 			echo "    # ---------------Environment---------------"
-			cat "${ps_name}.env" 2> /dev/null || true
+			cat "${ps_name}.env" 2>/dev/null || true
 		fi
 	done
 }
@@ -103,7 +103,7 @@ function __psc() {
 	table=$(mktemp -t ylsjs_ps.XXXXXX)
 	echo -e "#1\n#1\n#1\n#1\n#1" >"${table}"
 	echo "NO.;NAME;PID;EXECTIME;STATUS" >>"${table}"
-	echo "${@}" | tr ' ' '\n' | sort -n | while read ps_name;do
+	echo "${@}" | tr ' ' '\n' | sort -n | while read ps_name; do
 		[ -f "${ps_name}.i" ] && echo "${ps_name};$(cat ${ps_name}.i | head -n 1);$(cat ${ps_name}.i | tail -n 1);$(bash "${DN}"/exec/datediff.sh $(cat ${ps_name}.start) $(date +%s) s);EXEC" >>"${table}" || true
 		[ -f "${ps_name}.q" ] && echo "${ps_name};$(cat ${ps_name}.q);UK;$(bash "${DN}"/exec/datediff.sh $(stat --printf=%Z ${ps_name}.q) $(date +%s) s);PEND" >>"${table}" || true
 		[ -f "${ps_name}.f" ] && echo "${ps_name};$(cat ${ps_name}.f | head -n 1);$(cat ${ps_name}.f | tail -n 1);$(bash "${DN}"/exec/datediff.sh $(cat ${ps_name}.start) $(cat ${ps_name}.end) s);DONE" >>"${table}" || true
@@ -112,17 +112,17 @@ function __psc() {
 	rm "${table}"
 }
 function __pspid() {
-	echo "${@}" | tr ' ' '\n' | sort -n | while read ps_name;do
-		[ -f "${ps_name}.i" ] && cat ${ps_name}.i | tail -n 1  | tr '\n' ' ' || true
+	echo "${@}" | tr ' ' '\n' | sort -n | while read ps_name; do
+		[ -f "${ps_name}.i" ] && cat ${ps_name}.i | tail -n 1 | tr '\n' ' ' || true
 	done
 }
 
 if [ ${#STDS[@]} -eq 0 ]; then
 	if ${VERBOSE}; then
 		__psv $(ls -1 | grep '^[0-9]*\.[qif]$' | sed 's;.[qif]$;;' | xargs)
-	elif ${PID_ONLY};then
+	elif ${PID_ONLY}; then
 		__pspid $(ls -1 | grep '^[0-9]*\.i$' | sed 's;.i$;;' | xargs)
-	elif ${ID_ONLY};then
+	elif ${ID_ONLY}; then
 		printf "$(ls -1 | grep '^[0-9]*\.i$' | sed 's;.i$;;' | xargs)"
 	else
 		__psc $(ls -1 | grep '^[0-9]*\.[qif]$' | sed 's;.[qif]$;;' | xargs)
@@ -130,7 +130,7 @@ if [ ${#STDS[@]} -eq 0 ]; then
 else
 	if ${VERBOSE}; then
 		__psv "${STDS[@]}"
-	elif ${PID_ONLY};then
+	elif ${PID_ONLY}; then
 		__pspid "${STDS[@]}"
 	else
 		__psc "${STDS[@]}"

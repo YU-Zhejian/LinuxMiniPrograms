@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-VERSION=2.3
+VERSION=2.4
 set -eu
 OLDIFS="${IFS}"
 if ! readlink -f . &>/dev/null; then
-	if ! greadlink -f . &>/dev/null;then
+	if ! greadlink -f . &>/dev/null; then
 		echo -e "\033[31mERROR: NO readlink & greadlink available
 For MacOS users, please install 'coreutils' by HomeBrew
 For BSD users, please install 'coreutils' by your package management systems\033[0m"
@@ -78,10 +78,10 @@ for opt in "${@}"; do
 		"--skip-path")
 			VAR_update_path=false
 			;;
-		# TODO: Implement installation
-		#--prefix\:*)
-		#	PREFIX="${opt:8}"
-		#	;;
+			# TODO: Implement installation
+			#--prefix\:*)
+			#	PREFIX="${opt:8}"
+			#	;;
 		"-x")
 			set -x
 			;;
@@ -99,12 +99,12 @@ infoh "Checking FileSystem..."
 #mkdir -p "${PREFIX}" || errh "Installation prefix ${PREFIX} cannot be accessed"
 path_sh="etc/path.conf"
 ${VAR_update_path} && rm -f "${path_sh}"
-if [ ! -f "${path_sh}" ] && [ -f 'etc/path.sh' ];then mv 'etc/path.sh' "${path_sh}";fi
+if [ ! -f "${path_sh}" ] && [ -f 'etc/path.sh' ]; then mv 'etc/path.sh' "${path_sh}"; fi
 if [ ! -f "${path_sh}" ]; then
 	mkdir -p etc
 	touch "${path_sh}"
-	echo "#!/usr/bin/env bash" >> "${path_sh}"
-	echo "# Generated at $(date)" >> "${path_sh}"
+	echo "#!/usr/bin/env bash" >>"${path_sh}"
+	echo "# Generated at $(date)" >>"${path_sh}"
 	#=====os=====
 	if [ -z "${myos:-}" ]; then
 		os_type=$(uname -mrs)
@@ -128,11 +128,11 @@ if [ ! -f "${path_sh}" ]; then
 	unset valid_path
 	for PROGNAME in ps python; do . "src/exec/find${PROGNAME}.sh"; done
 	for PROGNAME in 7z 7za bgzip brotli bzip2 compress gzip lz4 lzfse lzip lzma lzop pbz2 pbzip pbzip2 pigz rar tar unzip unrar xz zip zstd \
-	asciidoc asciidoctor-pdf asciidoctor \
-	parallel \
-	git clang gcc make \
-	sed grep split \
-	gtar gsed ggrep gmake gsplit; do . src/exec/findornot.sh; done
+		asciidoc asciidoctor-pdf asciidoctor \
+		parallel \
+		git clang gcc make \
+		sed grep split \
+		gtar gsed ggrep gmake gsplit; do . src/exec/findornot.sh; done
 	# To change myasciidoctor-pdf because bash do not support variable names with '-' inside
 	sed -i".bak" 's;^myasciidoctor-pdf;myasciidoctor_pdf;' "${path_sh}"
 	. "${path_sh}"
@@ -149,8 +149,8 @@ if [ ! -f "${path_sh}" ]; then
 	infoh "All configurations are printed as follows:"
 	cat "${path_sh}" | grep -v '^$' | grep -v '^#' | sed 's/^my//' | sed 's/=/\\\\033[33m in \\\\033[0m/ ' | sed 's/ #/\\\\033[33m, \\\\033[32m/' | sort | while read line; do echo -e "${line}\033[0m"; done
 fi
-for STDI in "${STDS[@]}";do
-	echo my"${STDI}" >> "${path_sh}"
+for STDI in "${STDS[@]}"; do
+	echo my"${STDI}" >>"${path_sh}"
 done
 . etc/path.conf
 [ "${mymake}" = "ylukh" ] && errh "GNU Make not found"
@@ -193,18 +193,18 @@ if ${VAR_install_html}; then
 fi
 #========C========
 [ "${mygcc}" != "ylukh" ] || [ "${myclang}" != "ylukh" ] && MAKE_TARGETS="${MAKE_TARGETS} C"
-if cat "${path_sh}" | grep -i BSD > /dev/null;then
+if cat "${path_sh}" | grep -i BSD >/dev/null; then
 	MAKE_ARGS="${MAKE_ARGS}:CC=${myclang}" # Use Clang for FreeBSD.
-elif [ "${mygcc}" != "ylukh" ];then
+elif [ "${mygcc}" != "ylukh" ]; then
 	MAKE_ARGS="${MAKE_ARGS}:CC=${mygcc}"
-elif [ "${myclang}" != "ylukh" ];then
+elif [ "${myclang}" != "ylukh" ]; then
 	MAKE_ARGS="${MAKE_ARGS}:CC=${myclang}"
 fi
 #========Makefile Generation========
 MAKE_ARGS="${MAKE_ARGS}:PYTHON=${mypython}:RM=rm -rf:CP=cp -rf:PREFIX=${PREFIX}"
-echo "${MAKE_ARGS}" | sed 's;:;\'$'\nexport ;g' | sort | uniq > GNUmakefile
-echo "all: ${MAKE_TARGETS}" >> GNUmakefile
-cat src/Makefile.in >> GNUmakefile
+echo "${MAKE_ARGS}" | sed 's;:;\'$'\nexport ;g' | sort | uniq >GNUmakefile
+echo "all: ${MAKE_TARGETS}" >>GNUmakefile
+cat src/Makefile.in >>GNUmakefile
 infoh "Finished. Please execute 'make' or 'gmake' (For BSD or macOS) to build the program"
 IFS="${OLDIFS}"
 [ -z "${SHELL:-}" ] && SHELL=bash

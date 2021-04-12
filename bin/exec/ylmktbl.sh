@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=3.3
+VERSION=3.4
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 warnh "This program is no longer monitored and updates may not be provided"
@@ -61,7 +61,7 @@ while read line; do
 		row_instruction=(${row_instruction[@]} ${line:1})
 	fi
 	unset line
-done < "${STDS}"
+done <"${STDS}"
 j=0
 total_col_len=0
 for row_tmp_str in "${row[@]}"; do

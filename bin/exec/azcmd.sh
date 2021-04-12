@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=6.0
+VERSION=6.1
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")/../")"
@@ -202,13 +202,13 @@ else
 		__cklvl bgz
 		cmd="${mybgzip} -fc -@ ${THREAD} ${LVL}"
 		;;
-	# TODO: No implement
-	#"7z")
-	#	if [ "${my7za}" != 'ylukh' ]; then
-	#		__cklvl 7z
-	#		cmd="${my7za} a -aoa -y /dev/stdout /dev/stdin -mmt=${THREAD} ${LVL} -t7z"
-	#	fi
-	#	;;
+		# TODO: No implement
+		#"7z")
+		#	if [ "${my7za}" != 'ylukh' ]; then
+		#		__cklvl 7z
+		#		cmd="${my7za} a -aoa -y /dev/stdout /dev/stdin -mmt=${THREAD} ${LVL} -t7z"
+		#	fi
+		#	;;
 	"zip")
 		# TODO: No implement
 		#if [ "${my7za}" != 'ylukh' ]; then

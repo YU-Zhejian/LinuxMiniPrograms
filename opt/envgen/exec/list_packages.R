@@ -7,8 +7,8 @@ sessionInfo()
 # mirror.df <- getCRANmirrors(all = TRUE) # Disabled by default
 # write.csv(mirror.df,"Available_CRAN_Mirrors.csv")
 installed.df <- installed.packages()
-write.csv(installed.df,"Installed_R_Packages.csv")
-if ("BiocManager" %in% installed.df[,1]){
+write.csv(installed.df, "Installed_R_Packages.csv")
+if ("BiocManager" %in% installed.df[, 1]) {
 	BiocManager::version()
 	BiocManager::repositories()
 	# BiocManager::available() # Disabled by default

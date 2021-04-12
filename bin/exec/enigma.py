@@ -2,24 +2,26 @@
 '''
 Special-purpose enigma, will be replaced
 '''
-import sys
 import os
 import random
+import sys
 
 from LMP_Pylib.libisopt import isopt
-from LMP_Pylib.libylfile import ylread,ylwrite
+from LMP_Pylib.libylfile import ylread, ylwrite
 
-VERSION=2.1
+VERSION = 2.1
+
 
 class Enigma():
     """
     Special-purpose Enigma machine
     """
+
     def encode(self, instr: str):
         for i in range(0, len(self.all_gear)):
             # print(instr+'->',end='')
             instr = self.all_gear[i][(ord(instr) - 65 +
-                           self.all_gear_s[i]) % 16]
+                                      self.all_gear_s[i]) % 16]
         # print(instr)
         self._inc_gear()
         return instr
@@ -66,7 +68,7 @@ class Enigma():
 
 enigmagear = []
 startingstring = ''
-os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])+'/../../var/enigma.d/'))
+os.chdir(os.path.abspath(os.path.dirname(sys.argv[0]) + '/../../var/enigma.d/'))
 decode = False
 for sysarg in sys.argv[1:]:
     if isopt(sysarg):

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.1
+VERSION=1.2
 NAME="UK"
 for opt in "${UKOPT[@]}"; do
 	case "${opt}" in
@@ -24,9 +24,9 @@ for opt in "${UKOPT[@]}"; do
 done
 
 MAX_JOB=$(ls -1 *.sh | wc -l | awk '{print $1}')
-MAX_JOB=$((${MAX_JOB}+1))
-echo "${NAME}" > ${MAX_JOB}.q
-echo "${WD}" > ${MAX_JOB}.wd
-cat /dev/stdin > ${MAX_JOB}.sh
+MAX_JOB=$((${MAX_JOB} + 1))
+echo "${NAME}" >${MAX_JOB}.q
+echo "${WD}" >${MAX_JOB}.wd
+cat /dev/stdin >${MAX_JOB}.sh
 echo ${MAX_JOB}
 infoh "$(cat ${MAX_JOB}.q)"

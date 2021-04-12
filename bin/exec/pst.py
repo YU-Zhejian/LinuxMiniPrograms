@@ -3,15 +3,15 @@
 pst in Python
 '''
 
-from LMP_Pylib.libisopt import isopt
-from LMP_Pylib.libstr import warnh
 import os
+import sys
 import threading
 import time
-import sys
 
-VERSION=1.1
+from LMP_Pylib.libisopt import isopt
+from LMP_Pylib.libstr import warnh
 
+VERSION = 1.1
 
 ISMACHINE = False
 for sysarg in sys.argv[1:]:
@@ -32,6 +32,7 @@ class ReadThread(threading.Thread):
     '''
     Thread for reading
     '''
+
     def __init__(self):
         super().__init__()
         self.i = 0
@@ -52,6 +53,7 @@ class WriteThread(threading.Thread):
     '''
     Thread for writing
     '''
+
     def __init__(self, readthread: ReadThread):
         super().__init__()
         self.readthread = readthread

@@ -63,9 +63,9 @@ sed -i 's/\r$//g' etc/*
 if ${INSTALL_BASH_SETTINGS}; then
 	mv "${HOME}"/.bashrc .bashrc.bak
 	# if ! __git_ps1 &>>/dev/null; then
-		# git clone --depth 1 --verbose https://github.com/git/git
-		# mv git/contrib/completion/git-prompt.sh "${HOME}"/.git-prompt.sh
-		mv etc/git.bashrc "${HOME}"/.git-prompt.sh
+	# git clone --depth 1 --verbose https://github.com/git/git
+	# mv git/contrib/completion/git-prompt.sh "${HOME}"/.git-prompt.sh
+	mv etc/git.bashrc "${HOME}"/.git-prompt.sh
 	# fi
 	mv etc/common.bashrc "${HOME}"/.bashrc
 	[ -f "${HOME}/.profile" ] || echo ". \${HOME}/.bashrc" >>"${HOME}/.profile"

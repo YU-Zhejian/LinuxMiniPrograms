@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.5
+VERSION=1.6
 DN="$(readlink -f "$(dirname "${0}")")"
 set -ue
 trap '' SIGINT
@@ -36,6 +36,7 @@ for opt in "${@}"; do
 			;;
 		*)
 			UKOPT=("${UKOPT[@]}" "${opt}")
+			;;
 		esac
 	else
 		STDS=("${STDS[@]}" "${opt}")
@@ -43,15 +44,15 @@ for opt in "${@}"; do
 done
 gmcmd=${STDS[0]:-}
 unset STDS[0]
-if [ -z "${GITM_HOME:-}" ];then
+if [ -z "${GITM_HOME:-}" ]; then
 	warnh "GITM_HOME undefined. Will use ${DN}/../var/git-mirror.d"
 	GITM_HOME=${DN}/../var/git-mirror.d
 fi
 mkdir -p "${GITM_HOME}" "${GITM_HOME}/logs/" "${GITM_HOME}/uuidtable.d/"
 cd "${GITM_HOME}"
-ls uuidtable.d/* &>> /dev/null || touch uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')"
+ls uuidtable.d/* &>>/dev/null || touch uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')"
 touch act.log
-if [ "${gmcmd}" = "lscmd" ];then
+if [ "${gmcmd}" = "lscmd" ]; then
 	ls -1 "${DN}"/exec/gitm/ | grep -v lib | sed 's;\.sh$;;'
 elif [ -f "${DN}"/exec/gitm/"${gmcmd}".sh ]; then
 	. "${DN}"/exec/gitm/"${gmcmd}".sh
@@ -62,7 +63,7 @@ elif [ -f "${DN}"/exec/gitm/"${gmcmd}".py ]; then
 	else
 		errh "Python not found"
 	fi
-elif [ -z "${gmcmd}" ];then
+elif [ -z "${gmcmd}" ]; then
 	${HAVEHELP} && yldoc git-mirror
 	${HAVEVER} && echo "${VERSION}"
 else

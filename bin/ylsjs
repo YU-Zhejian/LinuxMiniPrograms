@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.2
+VERSION=1.3
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 WD="$(pwd)"
@@ -29,6 +29,7 @@ for opt in "${@}"; do
 			;;
 		*)
 			UKOPT=("${UKOPT[@]}" "${opt}")
+			;;
 		esac
 	else
 		STDS=("${STDS[@]}" "${opt}")
@@ -37,7 +38,7 @@ done
 ylcmd=${STDS[0]:-}
 unset STDS[0]
 
-if [ "${ylcmd}" = "lscmd" ];then
+if [ "${ylcmd}" = "lscmd" ]; then
 	ls -1 "${DN}"/exec/ylsjs/ | grep -v lib | sed 's;\.sh$;;'
 elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".sh ]; then
 	. "${DN}"/exec/ylsjs/"${ylcmd}".sh
@@ -48,7 +49,7 @@ elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".py ]; then
 	else
 		errh "Python not found"
 	fi
-elif [ -z "${ylcmd}" ];then
+elif [ -z "${ylcmd}" ]; then
 	${HAVEHELP} && yldoc ylsjs
 	${HAVEVER} && echo "${VERSION}"
 else

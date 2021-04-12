@@ -2,14 +2,16 @@
 '''
 Ultility to monitor a specific PID, used in LibDO version 3.
 '''
-from LMP_Pylib.libylfile import yldo
-
 import datetime
-import psutil
 import signal
 import sys
 
-VERSION=1.2
+import psutil
+
+from LMP_Pylib.libylfile import yldo
+
+VERSION = 1.2
+
 
 def _term_handler():
     sys.exit(0)
@@ -55,7 +57,7 @@ while True:
                  'text=' + str(subp.memory_info().text),
                  'data=' + str(subp.memory_info().data)]))
             print(tsp + str(subp.pid) + ':IO:' + yldo('cat /proc/' +
-                str(subp.pid) + r'''/io |tr '\n' ','|sed 's;: ;=;g' '''))
+                                                      str(subp.pid) + r'''/io |tr '\n' ','|sed 's;: ;=;g' '''))
             # print(tsp + str(subp.pid) + ':IO:' + ','.join(['nREAD=' + str(subp.io_counters().read_count), 'nWRITE=' + str(subp.io_counters().write_count), 'READ_bytes=' + str(subp.io_counters().read_bytes), 'WRITE_bytes=' + str(subp.io_counters().write_bytes)]))
             # print(tsp + str(subp.pid) + ':IO:' +yldo('pidstat -d -p '+str(subp.pid)+r''' |tail -n 1| awk '{OFS=',';print 'READ='$4,'WRITE='$5,'DELLAY='$7}' '''))
             for x in subp.open_files():
@@ -69,8 +71,8 @@ while True:
                 print(tsp + str(subp.pid) + ':THREADS:' + ','.join(
                     ['PID=' + str(subt.pid), 'OnCPU=' + str(subt.cpu_num())]))
                 print(tsp + str(subp.pid) + ':IO:PID=' + str(subt.pid) + ',' +
-                    yldo('cat /proc/' + str(subt.pid) +
-                    r'''/io |tr '\n' ','|sed 's;: ;=;' '''))
+                      yldo('cat /proc/' + str(subt.pid) +
+                           r'''/io |tr '\n' ','|sed 's;: ;=;' '''))
         # print(tsp + str(subp.pid) + ':IO:' + ','.join(['PID='+ str(subt.pid) ,'nREAD=' + str(subt.io_counters().read_count), 'nWRITE=' + str(subt.io_counters().write_count), 'READ_bytes=' + str(subt.io_counters().read_bytes), 'WRITE_bytes=' + str(subt.io_counters().write_bytes)]))
         # print(tsp + str(subp.pid) + ':IO:PID=' + str(subt.pid) + ','+ yldo('pidstat -d -p ' + str(subt.pid) + r''' |tail -n 1| awk '{OFS=',';print 'READ='$4,'WRITE='$5,'DELLAY='$7}' '''))
     except psutil.Error:

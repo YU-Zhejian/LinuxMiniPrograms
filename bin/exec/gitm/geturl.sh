@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.0
+VERSION=1.1
 . "${DN}"/../lib/libman
 for opt in "${UKOPT[@]}"; do
 	case "${opt}" in
@@ -30,7 +30,7 @@ for opt in "${@}"; do
 done
 [ ${#STDS[@]} -gt 0 ] || errh "Need more than ONE argument"
 for url in "${STDS[@]}"; do
-	grep_uuidtable "${url}" "${tmpf}" &>> /dev/null || warnh "${url} yields no results"
+	grep_uuidtable "${url}" "${tmpf}" &>>/dev/null || warnh "${url} yields no results"
 done
 cat "${tmpf}" | while read line; do
 	IFS=$'\t'
@@ -39,7 +39,7 @@ cat "${tmpf}" | while read line; do
 	[ ! -f "${fields[1]}".lock ] || warnh "Repos UUID=${fields[1]} is being locked: $(cat "${fields[1]}".lock)"
 	printf ${fields[0]}" "
 	${USELOCAL} && echo "$(readlink -f ${fields[1]})" || echo "$(getuser)@${HOSTNAME}:$(readlink -f ${fields[1]})"
-	echo -e "$(timestamp)\tGETURL\tSUCCESS\t${fields[0]}\t${fields[1]}" >> act.log
+	echo -e "$(timestamp)\tGETURL\tSUCCESS\t${fields[0]}\t${fields[1]}" >>act.log
 done
 rm -f "${tmpf}"
 infoh "Repository geturl success"

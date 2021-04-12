@@ -3,13 +3,13 @@
 b16c in Python. Should get same output as in C.
 '''
 
+import os
 import struct
+import sys
 
 from LMP_Pylib.libisopt import isopt
-import sys
-import os
 
-VERSION=2.3
+VERSION = 2.3
 # TODO: Still bugs in MSYS2
 
 decode = False
@@ -30,7 +30,7 @@ if decode:
         inp1 = f.read(1)
         inp2 = f.read(1)
         if not inp1 or not inp2: break
-        o.write(struct.pack('b',(ord(inp1) - 65) * 16 + ord(inp2) - 65 - 128))
+        o.write(struct.pack('b', (ord(inp1) - 65) * 16 + ord(inp2) - 65 - 128))
 else:
     f = open(sys.stdin.fileno(), mode='rb')
     o = open(sys.stdout.fileno(), mode='w')

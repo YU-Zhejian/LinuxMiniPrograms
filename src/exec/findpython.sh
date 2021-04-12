@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.1
+VERSION=1.2
 . "${path_sh}"
 if [ -z "${mypython:-}" ]; then
 	python_ver=3
@@ -7,7 +7,7 @@ if [ -z "${mypython:-}" ]; then
 		tmpf=$(mktemp -t configpath.XXXXXX)
 		ls -F -1 "${dir}" | grep '.[*@]$' | sed 's;[*@]$;;' | grep -E '^(python(3|2){0,1}(\.[[:digit:]]+)*(d|m|u){0,1}(.exe){0,1}$)' | sed "s;^;$(echo ${dir})/;" >"${tmpf}"
 		while read line; do
-			if echo "exit()" | "${line}" -v 2>&1 | grep -E '([C-Z]:\\)' > /dev/null; then
+			if echo "exit()" | "${line}" -v 2>&1 | grep -E '([C-Z]:\\)' >/dev/null; then
 				infoh "Windows Python found in ${line}"
 				continue
 			fi

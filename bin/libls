@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VERSION=1.0
+# VERSION=1.1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
@@ -11,7 +11,7 @@ infoh "Copyright (C) 2019-2021 YU Zhejian"
 oldifs="${IFS}"
 function _grep() {
 	regstr="${1}"
-	cat "${tmpf}" | grep "${regstr}" >> "${tmpff}"
+	cat "${tmpf}" | grep "${regstr}" >>"${tmpff}"
 }
 
 locallib=$(for dir in \
@@ -20,8 +20,7 @@ locallib=$(for dir in \
 	$(__addpref 'lib*/gcc*/*/x*') \
 	$(__addpref 'lib*/gcc*/x*') \
 	$(__addpref 'lib*/clang*/*/lib*') \
-	$(__addpref 'lib*/clang*/lib*')
-	do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+	$(__addpref 'lib*/clang*/lib*'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
 INPATH="/mingw*/lib*:/clang*/lib*:${locallib}:${LD_LIBRARY_PATH:-}${LIBRARY_PATH:-}"
 . "${DN}"/../lib/libpath
 IFS=":"
@@ -74,7 +73,7 @@ unset valid_path
 tmpf="$(mktemp -t libls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	find "${dir}" 2> /dev/null >> "${tmpf}" || true
+	find "${dir}" 2>/dev/null >>"${tmpf}" || true
 done
 tmpff=$(mktemp -t libls.XXXXXX)
 if ${WINDOWS}; then

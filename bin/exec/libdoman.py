@@ -2,11 +2,12 @@
 '''
 LibDO Manager in Python.
 '''
-VERSION=3.1
+VERSION = 3.1
 
 import os
 import sys
 from datetime import datetime
+
 from LMP_Pylib.libisopt import isopt
 from LMP_Pylib.libmktbl import mktbl
 from LMP_Pylib.libstr import infoh, errh, warnh

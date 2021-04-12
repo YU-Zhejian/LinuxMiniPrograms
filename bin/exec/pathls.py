@@ -2,16 +2,16 @@
 '''
 pathls in Python, should be same as in shell
 '''
+import os
+import re
+import sys
+
 from LMP_Pylib.libisopt import isopt
 from LMP_Pylib.libpath import LibPath
 from LMP_Pylib.libstr import warnh
 
+VERSION = 1.9
 
-import sys
-import os
-import re
-
-VERSION=1.9
 
 def mygrep(mylist: list, regxp: str) -> list:
     for idx in range(len(mylist) - 1, -1, -1):

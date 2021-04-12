@@ -3,13 +3,14 @@
 A wrapper for libylmktbl.
 '''
 
+import os
+import sys
+
 from LMP_Pylib.libisopt import isopt
 from LMP_Pylib.libmktbl import mktbl
 from LMP_Pylib.libstr import warnh
-import sys
-import os
 
-VERSION=3.1
+VERSION = 3.1
 
 sstr = []
 for sysarg in sys.argv[1:]:

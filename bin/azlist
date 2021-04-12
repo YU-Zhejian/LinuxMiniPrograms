@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=6.0
+VERSION=6.1
 set -eu
 PAR=''
 SUFF=''
@@ -32,7 +32,7 @@ for fulln in "${STDS[@]}"; do
 		cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${1})"
 		infoh "${cmd}"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-			fcat "${fulln}" | ${cmd} | "${mytar}" -tv -f -
+		fcat "${fulln}" | ${cmd} | "${mytar}" -tv -f -
 	}
 	case ${ext} in
 	tar.*)

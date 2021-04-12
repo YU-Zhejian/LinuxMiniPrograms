@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.9
+VERSION=1.10
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
@@ -32,19 +32,19 @@ for opt in "${@}"; do
 done
 psstmp=$(mktemp -t psstmp.XXXXXX)
 pssstmp=$(mktemp -t psstmp.XXXXXX)
-if ! ps --version &>> /dev/null; then
-	ps -al &> "${psstmp}"
+if ! ps --version &>>/dev/null; then
+	ps -al &>"${psstmp}"
 elif [[ $(ps --version) == *"Cygwin"* ]]; then
-	ps -aeW &> "${psstmp}"
+	ps -aeW &>"${psstmp}"
 else
-	ps -AT H all &> "${psstmp}"
+	ps -AT H all &>"${psstmp}"
 fi
 if [ ${#STDS[@]} -eq 0 ]; then
 	cat "${psstmp}"
 else
 	head -n 1 ${psstmp}
 	for fn in "${STDS[@]}"; do
-		cat "${psstmp}" | grep -- "${fn}" >> "${pssstmp}"
+		cat "${psstmp}" | grep -- "${fn}" >>"${pssstmp}"
 	done
 	cat "${pssstmp}"
 fi

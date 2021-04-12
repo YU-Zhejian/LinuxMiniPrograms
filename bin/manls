@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.1
+VERSION=1.2
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
@@ -12,10 +12,9 @@ oldifs="${IFS}"
 
 locallib=$(for dir in \
 	$(__addpref 'man') \
-	$(__addpref 'share/man')
-	do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+	$(__addpref 'share/man'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
 
-INPATH="$(manpath 2> /dev/null || true):${locallib}:$(cat /usr/local/etc/man.d/*.conf 2> /dev/null | grep -v \# | grep MANPATH | cut -f 2 -d ' ' | tr '\n' ':' || true):${MANPATH:-}"
+INPATH="$(manpath 2>/dev/null || true):${locallib}:$(cat /usr/local/etc/man.d/*.conf 2>/dev/null | grep -v \# | grep MANPATH | cut -f 2 -d ' ' | tr '\n' ':' || true):${MANPATH:-}"
 . "${DN}"/../lib/libpath
 IFS=":"
 eachpath=(${valid_path})
@@ -54,7 +53,7 @@ tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
 	ls -1 -F "${dir}" | sed "s;^;$(echo "${dir}")/;" | grep man[^/]*/$ | while read line; do
-		ls -1 -F "${line}" | sed "s;.gz;;" | sed "s;^;$(echo "${line}");" >> "${tmpf}"
+		ls -1 -F "${line}" | sed "s;.gz;;" | sed "s;^;$(echo "${line}");" >>"${tmpf}"
 	done
 done
 if [ ${#STDS[@]} -eq 0 ]; then
