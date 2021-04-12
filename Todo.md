@@ -61,7 +61,6 @@
 * Modular documentations.
 * GNU Autotools installation.
 * Google coding standard
-	* Python
 	* Shell
 	* C/C++
 

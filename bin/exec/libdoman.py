@@ -2,7 +2,6 @@
 '''
 LibDO Manager in Python.
 '''
-# TODO: fix bug and refactor
 import os
 import sys
 from datetime import datetime
@@ -109,10 +108,8 @@ class LibdoRecord:
         fh.seek(self.pos_s)
         while True:
             last_pos=fh.tell()
-            print(last_pos)
             line=fh.readline()
             if line=='':
-
                 self.pos_e=last_pos
                 return
             line=line.strip()
@@ -120,7 +117,6 @@ class LibdoRecord:
                 self.pos_s=fh.tell()
                 while True:
                     last_pos=fh.tell()
-                    print(last_pos)
                     line=fh.readline()
                     if line=='' or line.startswith('LIBDO STOPPED AT'):
                         self.pos_e=last_pos
