@@ -1,28 +1,37 @@
 #!/usr/bin/env python
-VERSION=1.0
+'''
+pst in Python
+'''
+
+from LMP_Pylib.libisopt import isopt
+from LMP_Pylib.libstr import warnh
 import os
 import threading
 import time
+import sys
 
-from LMP_Pylib.libisopt import *
-from LMP_Pylib.libstr import *
+VERSION=1.1
+
 
 ISMACHINE = False
 for sysarg in sys.argv[1:]:
 	if isopt(sysarg):
-		if sysarg == '-h' or sysarg == '--help':
+		if sysarg in ('-h', '--help'):
 			os.system('yldoc pst')
-			exit(0)
-		elif sysarg == '-v' or sysarg == '--version':
+			sys.exit(0)
+		elif sysarg in ('-v', '--version'):
 			print(str(VERSION) + ' in Python')
-			exit(0)
-		elif sysarg == '-m' or sysarg == '--machine':
+			sys.exit(0)
+		elif sysarg in ('-m', '--machine'):
 			ISMACHINE = True
 		else:
-			warnh("Option " + sysarg + " invalid")
+			warnh('Option ' + sysarg + ' invalid')
 
 
-class readThread(threading.Thread):
+class ReadThread(threading.Thread):
+	'''
+	Thread for reading
+	'''
 	def __init__(self):
 		super().__init__()
 		self.i = 0
@@ -39,49 +48,53 @@ class readThread(threading.Thread):
 		so.close()
 
 
-class writeThread(threading.Thread):
-	def __init__(self, RT: readThread):
+class WriteThread(threading.Thread):
+	'''
+	Thread for writing
+	'''
+	def __init__(self, readthread: ReadThread):
 		super().__init__()
-		self.RT = RT
+		self.readthread = readthread
 
 	def tohuman(self, diff: int) -> str:
-		dc = "b"
+		dc = 'b'
 		if diff > 1024:
 			diff /= 1024
-			dc = "kb"
+			dc = 'kb'
 		if diff > 1024:
 			diff /= 1024
-			dc = "mb"
+			dc = 'mb'
 		if diff > 1024:
 			diff /= 1024
-			dc = "gb"
+			dc = 'gb'
 		return str(diff) + dc
 
 	def run(self):
 		global ISMACHINE
 		se = open(sys.stderr.fileno(), mode='wt')
-		iold = self.RT.i
+		iold = self.readthread.i
 		t = 0
 		if ISMACHINE:
-			while self.RT.is_alive():
+			while self.readthread.is_alive():
 				t = t + 1
 				time.sleep(1)
-				i = self.RT.i
-				se.write(str(i) + "\t" + str(t) + "\t" + str(i - iold) + "\n")
+				i = self.readthread.i
+				se.write(str(i) + '\t' + str(t) + '\t' + str(i - iold) + '\n')
 				iold = i
 		else:
-			while self.RT.is_alive():
+			while self.readthread.is_alive():
 				t = t + 1
 				time.sleep(1)
-				i = self.RT.i
-				se.write("\n\033[1A")
+				i = self.readthread.i
+				se.write('\n\033[1A')
 				diff = i - iold
-				se.write("CC=" + self.tohuman(i) + ", TE=" + str(t) + ", SPEED=" + self.tohuman(diff) + "/s")
+				se.write('CC=' + self.tohuman(i) + ', TE=' + str(t) +
+						 ', SPEED=' + self.tohuman(diff) + '/s')
 				iold = i
 		se.close()
 
 
-RT = readThread()
-RT.start()
-WT = writeThread(RT)
-WT.start()
+rt = ReadThread()
+rt.start()
+wt = WriteThread(rt)
+wt.start()

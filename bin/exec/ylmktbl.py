@@ -1,24 +1,28 @@
 #!/usr/bin/env python
-VERSION=3.0
-"""
+'''
 A wrapper for libylmktbl.
-"""
-from LMP_Pylib.libisopt import *
-from LMP_Pylib.libmktbl import *
-from LMP_Pylib.libstr import *
+'''
+
+from LMP_Pylib.libisopt import isopt
+from LMP_Pylib.libmktbl import mktbl
+from LMP_Pylib.libstr import warnh
+import sys
+import os
+
+VERSION=3.1
 
 sstr = []
 for sysarg in sys.argv[1:]:
 	if isopt(sysarg):
-		if sysarg == '-h' or sysarg == '--help':
+		if sysarg in ('-h', '--help'):
 			os.system('yldoc ylmktbl')
-			exit(0)
-		elif sysarg == '-v' or sysarg == '--version':
+			sys.exit(0)
+		elif sysarg in ('-v', '--version'):
 			print(str(VERSION) + ' in Python')
-			exit(0)
+			sys.exit(0)
 		else:
-			warnh("Option " + sysarg + " invalid")
-			exit(1)
+			warnh('Option ' + sysarg + ' invalid')
+			sys.exit(1)
 	else:
 		sstr.append(sysarg)
 mktbl(sstr[0])

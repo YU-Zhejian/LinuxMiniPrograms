@@ -111,13 +111,13 @@ with package `linux_base-c7` installed.
 | 7za (Windows)         | 1900               | <https://www.7-zip.org/>                     |
 | brotli                | 1.0.9              | <https://github.com/google/brotli>           |
 | bzip2                 | 1.0.8              | <https://sourceforge.net/projects/bzip2/>    |
-| bgzip (HTSLib)        | 1.10.2-23-g6b72368 | <https://github.com/samtools/htslib>         |
+| bgzip (HTSLib/tabix)  | 1.10.2-23-g6b72368 | <https://github.com/samtools/htslib>         |
 | compress (ncompress)  | 4.2.4.6-4          | <https://github.com/vapier/ncompress>        |
 | gzip (GNU GZip)       | 1.8                | <https://www.gnu.org/software/gzip/>         |
 | lz4                   | 1.9.3              | <https://github.com/lz4/lz4>                 |
 | lzip                  | 1.11               | <https://www.nongnu.org/lzip/>               |
 | lzop                  | 1.04               | <https://www.lzop.org/>                      |
-| Modern 7Z             | Unknown            | <https://www.tc4shell.com/en/7zip/modern7z/> |
+| Modern 7Z\*           | Unknown            | <https://www.tc4shell.com/en/7zip/modern7z/> |
 | pbz2 (pbzip2)         | 1.1.13             | <http://compression.ca/pbz2/>                |
 | pigz                  | 2.4                | <http://www.zlib.net/pigz/>                  |
 | tar (BSD tar)         | 3.3.2              | Installed in MacOS and BSD by default.       |
@@ -126,6 +126,8 @@ with package `linux_base-c7` installed.
 | xz (XZ Utils)         | 5.2.4              | <https://tukaani.org/xz/>                    |
 | zip, unzip (Info-Zip) | 3.0/6.0.0          | <http://infozip.sourceforge.net/>            |
 | zstd                  | 1.4.5              | <https://github.com/facebook/zstd>           |
+
+\*: For Windows users only. This application can add support for modern algorithms like ZSTD to 7Zip.
 
 ### General Guide
 

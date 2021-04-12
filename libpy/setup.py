@@ -1,8 +1,11 @@
 #!/usr/bin/env python
-VERSION=1.0
-# TODO: Implement installation.
-
+'''
+The installation script
+'''
 from setuptools import setup
+
+VERSION=1.1
+# TODO: Implement installation.
 
 setup(name='LMP_Pylib',
 	version=1,
@@ -13,7 +16,7 @@ setup(name='LMP_Pylib',
 	maintainer_email='anandology@gmail.com',
 	url='https://github.com/YuZJLab/LinuxMiniPrograms',
 	packages=['LMP_Pylib'],
-	long_description="Think about the ideal way to write a web app. Write the code to make it happen.",
-	license="GPL v3",
-	platforms=["any"],
+	long_description='Python libraries for LinuxMiniPrograms',
+	license='GPL v3',
+	platforms=['any'],
 	)

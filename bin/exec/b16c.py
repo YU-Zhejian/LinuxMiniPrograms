@@ -1,22 +1,27 @@
 #!/usr/bin/env python
-VERSION=2.2
-# TODO: Still bugs in MSYS2
+'''
+b16c in Python. Should get same output as in C.
+'''
+
 import struct
 
-from LMP_Pylib.libisopt import *
-from LMP_Pylib.libylfile import *
-from LMP_Pylib.libstr import *
+from LMP_Pylib.libisopt import isopt
+import sys
+import os
+
+VERSION=2.3
+# TODO: Still bugs in MSYS2
 
 decode = False
 for sysarg in sys.argv[1:]:
 	if isopt(sysarg):
-		if sysarg == '-h' or sysarg == '--help':
+		if sysarg in ('-h', '--help'):
 			os.system('yldoc b16c')
-			exit(0)
-		elif sysarg == '-v' or sysarg == '--version':
+			sys.exit(0)
+		elif sysarg in ('-v', '--version'):
 			print(str(VERSION) + ' in Python')
-			exit(0)
-		elif sysarg == '-d' or sysarg == '--decode':
+			sys.exit(0)
+		elif sysarg in ('-d', '--decode'):
 			decode = True
 if decode:
 	f = open(sys.stdin.fileno(), mode='rb')
@@ -25,7 +30,6 @@ if decode:
 		inp1 = f.read(1)
 		inp2 = f.read(1)
 		if not inp1 or not inp2: break
-		#infoh(",".join([str(inp1),str(inp2),chr((ord(inp1) - 65) * 16 + ord(inp2) - 65)]))
 		o.write(struct.pack('b',(ord(inp1) - 65) * 16 + ord(inp2) - 65 - 128))
 else:
 	f = open(sys.stdin.fileno(), mode='rb')

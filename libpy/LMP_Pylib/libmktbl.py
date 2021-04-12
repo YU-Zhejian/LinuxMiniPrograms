@@ -1,18 +1,18 @@
 #!/usr/bin/env python
-# VERSION=1.0
-"""
+# VERSION=1.1
+'''
 Print table.
-"""
-from LMP_Pylib.libylfile import *
+'''
+from LMP_Pylib.libylfile import ylreadline
 
 
-def mktbl(fn: str, split=";", commentstr="#"):
-	"""
+def mktbl(fn: str, split=';', commentstr='#'):
+	'''
 	Print table.
 	:param fn: The source file of the table.
 	:param split: The character needed to split the fields.
 	:param commentstr: How comments start.
-	"""
+	'''
 	configline = []
 	normalline = []
 	for line in ylreadline(fn):
@@ -23,31 +23,31 @@ def mktbl(fn: str, split=";", commentstr="#"):
 			myapp = line.split(split)
 			normalline.append(myapp)
 	if len(normalline[0]) != len(configline):
-		raise ValueError("Configline number disagree with normal colum number")
+		raise ValueError('Configline number disagree with normal colum number')
 	for n in range(len(normalline[0])):
 		mlen = 0
 		for m in range(len(normalline)):
 			ltj = len(normalline[m][n])
 			if ltj > mlen:
 				mlen = ltj
-		if configline[n].startswith("S"):
+		if configline[n].startswith('S'):
 			mylen = int(configline[n][1:])
 			for i in range(len(normalline)):
 				if len(normalline[i][n]) < mylen:
 					normalline[i][n] = normalline[i][n].ljust(mylen, ' ')
 				else:
-					normalline[i][n] = normalline[i][n][0:mylen - 3] + "..."
+					normalline[i][n] = normalline[i][n][0:mylen - 3] + '...'
 		else:
 			for i in range(len(normalline)):
 				normalline[i][n] = normalline[i][n].ljust(mlen, ' ')
 	alllen = 0
 	for item in normalline[0]:
 		alllen = alllen + len(item) + 1
-	spb = '\033[36m|' + '=' * (alllen - 1) + "|\033[0m"
+	spb = '\033[36m|' + '=' * (alllen - 1) + '|\033[0m'
 	for item in normalline:
 		print(spb)
-		pl = "\033[36m|\033[0m"
+		pl = '\033[36m|\033[0m'
 		for jtem in item:
-			pl = pl + jtem + "\033[36m|\033[0m"
+			pl = pl + jtem + '\033[36m|\033[0m'
 		print(pl)
 	print(spb)

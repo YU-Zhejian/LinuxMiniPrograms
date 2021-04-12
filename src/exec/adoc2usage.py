@@ -1,12 +1,15 @@
 #!/usr/bin/env python
-VERSION=2.2
+'''
+Script that converts asciidoc to usage
+'''
 import re
 import sys
 
+VERSION=2.3
 fix_tgt = 90
 
 
-def fix_tail():
+def fixtail():
 	tmp_line = fdoc_out_lines.pop()
 	if len(tmp_line) <= fix_tgt:
 		fdoc_out_lines.append(tmp_line)
@@ -17,17 +20,18 @@ def fix_tail():
 		line2 = ' ' * tmp_blank_len + tmp_line[fix_tgt + 1 - blank_pos:]
 		fdoc_out_lines.append(line1)
 		fdoc_out_lines.append(line2)
-		fix_tail()
+		fixtail()
 
 
-def GetFullADoc(l: list):
+def getfulladoc(l: list):
 	n = 0
 	while n < len(l):
-		if re.search('^include\:\:(.+)\[\]', l[n]):
-			includefile = open(re.search('^include\:\:(.+)\[\]', l[n]).group(1), 'r')
+		if re.search(r'^include::(.+)\[\]', l[n]):
+			includefile = open(re.search(r'^include::(.+)\[\]', l[n]).group(1),
+							   'r')
 			include_lines = includefile.readlines()
 			includefile.close()
-			include_lines = GetFullADoc(include_lines)
+			include_lines = getfulladoc(include_lines)
 			l.pop(n)
 			for item in include_lines[::-1]:
 				l.insert(n, item)
@@ -35,48 +39,53 @@ def GetFullADoc(l: list):
 	return l
 
 
-fadoc_hand = open(sys.argv[1], "r")
+fadoc_hand = open(sys.argv[1], 'r')
 fdoc_lines = fadoc_hand.readlines()
 fadoc_hand.close()
 fdoc_out_lines = []
-Currindent = ''
-fdoc_lines = GetFullADoc(fdoc_lines)
+currindent = ''
+fdoc_lines = getfulladoc(fdoc_lines)
 for i in range(len(fdoc_lines) - 1, -1, -1):
 	fdoc_lines[i] = fdoc_lines[i].strip()
-	if fdoc_lines[i] == '' or fdoc_lines[i].startswith(r'image::') or re.match(r'^\:.+\:.*$', fdoc_lines[i]):
+	if fdoc_lines[i] == '' or fdoc_lines[i].startswith(r'image::') or \
+			re.match(r'^:.+:.*$', fdoc_lines[i]):
 		fdoc_lines.pop(i)
 for line in fdoc_lines:
-	if line == r"----" and Currindent.__contains__(r'| '):
-		Currindent = Currindent[0:-2]
+	if line == r'----' and currindent.__contains__(r'| '):
+		currindent = currindent[0:-2]
 		fdoc_out_lines.append('')
-	elif Currindent.__contains__(r'| '):
-		fdoc_out_lines.append(Currindent + line)
-	elif line == r"----":
-		Currindent = Currindent + r'| '
+	elif currindent.__contains__(r'| '):
+		fdoc_out_lines.append(currindent + line)
+	elif line == r'----':
+		currindent = currindent + r'| '
 		fdoc_out_lines.append('')
 	elif line.startswith(r'='):
 		reeq = re.match(r'=*=', line).span()
-		Currindent = '	' * (reeq[1] - reeq[0] - 1)
-		fdoc_out_lines.append('	' * (reeq[1] - reeq[0] - 2) + line.replace('=', '').strip())
+		currindent = '	' * (reeq[1] - reeq[0] - 1)
+		fdoc_out_lines.append('	' * (reeq[1] - reeq[0] - 2) +
+							  line.replace('=', '').strip())
 		fdoc_out_lines.append('')
 	elif line.startswith(r'*'):
 		reeq = re.match(r'\**\*', line).span()
-		fdoc_out_lines.append(Currindent + '  ' * (reeq[1] - reeq[0]) + r'* ' + line.replace('*', '').strip())
-		fix_tail()
+		fdoc_out_lines.append(currindent + '  ' * (reeq[1] - reeq[0]) +
+							  r'* ' + line.replace('*', '').strip())
+		fixtail()
 		fdoc_out_lines.append('')
 	elif line.startswith(r'.'):
 		reeq = re.match(r'\.*\.', line).span()
-		fdoc_out_lines.append(Currindent + '  ' * (reeq[1] - reeq[0]) + r'- ' + line.replace('.', '').strip())
-		fix_tail()
+		fdoc_out_lines.append(currindent + '  ' * (reeq[1] - reeq[0]) +
+							  r'- ' + line.replace('.', '').strip())
+		fixtail()
 		fdoc_out_lines.append('')
 	else:
-		fdoc_out_lines.append(Currindent + line)
-		fix_tail()
+		fdoc_out_lines.append(currindent + line)
+		fixtail()
 		fdoc_out_lines.append('')
 dochead = sys.argv[1][:-5:]
 blank_len = (fix_tgt - 13 - len(dochead)) // 2
 fdoc_out_lines.insert(0, '')
-fdoc_out_lines.insert(0, 'YuZJLab' + ' ' * blank_len + dochead + ' ' * blank_len + 'MANUAL')
+fdoc_out_lines.insert(0, 'YuZJLab' + ' ' * blank_len + dochead +
+					  ' ' * blank_len + 'MANUAL')
 fdoc_out_lines.append('YuZJLab' + ' ' * 34 + '2019-2021' + ' ' * 34 + 'MANUAL')
 fdoc_out_handle = open(sys.argv[2], 'w')
 for line in fdoc_out_lines:

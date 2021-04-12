@@ -1,12 +1,17 @@
 #!/usr/bin/env python
-VERSION=1.8
-from LMP_Pylib.libisopt import *
-from LMP_Pylib.libpath import *
-from LMP_Pylib.libstr import *
+'''
+pathls in Python, should be same as in shell
+'''
+from LMP_Pylib.libisopt import isopt
+from LMP_Pylib.libpath import LibPath
+from LMP_Pylib.libstr import warnh
 
 
-import sys, os, re
+import sys
+import os
+import re
 
+VERSION=1.9
 
 def mygrep(mylist: list, regxp: str) -> list:
 	for idx in range(len(mylist) - 1, -1, -1):
@@ -18,11 +23,11 @@ def mygrep(mylist: list, regxp: str) -> list:
 def do_search(P: str) -> list:
 	if not os.path.isdir(P):
 		return []
-	ls_ret = os.popen('ls -1 -F ' + "'" + P + "'", 'r')
+	ls_ret = os.popen('ls -1 -F ' + ''' + P + ''', 'r')
 	ls_all = ls_ret.readlines()
 	ls_ret.close()
 	for n in range(len(ls_all)):
-		ls_all[n] = P + "/" + ls_all[n].strip()
+		ls_all[n] = P + '/' + ls_all[n].strip()
 	if not allow_d:
 		ls_all = mygrep(ls_all, r'/$')
 	if not allow_o:
@@ -38,34 +43,34 @@ allow_o = True
 sstr = []
 for sysarg in sys.argv[1:]:
 	if isopt(sysarg):
-		if sysarg == '-h' or sysarg == '--help':
+		if sysarg in ('-h', '--help'):
 			os.system('yldoc pathls')
-			exit(0)
-		elif sysarg == '-v' or sysarg == '--version':
+			sys.exit(0)
+		elif sysarg in ('-v', '--version'):
 			print(str(VERSION) + ' in Python')
-			exit(0)
+			sys.exit(0)
 		elif sysarg == '--no-x':
 			allow_x = False
 		elif sysarg == '--allow-d':
 			allow_d = True
 		elif sysarg == '--no-o':
 			allow_o = False
-		elif sysarg == '-l' or sysarg == '--list':
-			mylibpath = libpath("PATH")
+		elif sysarg in ('-l', '--list'):
+			mylibpath = LibPath('PATH')
 			for mypath in mylibpath.valid_path:
 				print(mypath)
-			exit(0)
-		elif sysarg == '-i' or sysarg == '--invalid':
-			mylibpath = libpath("PATH")
+			sys.exit(0)
+		elif sysarg in ('-i', '--invalid'):
+			mylibpath = LibPath('PATH')
 			for mypath in mylibpath.invalid_path:
 				print(mypath)
-			exit(0)
+			sys.exit(0)
 		else:
-			warnh("Option " + sysarg + " invalid")
-			exit(1)
+			warnh('Option ' + sysarg + ' invalid')
+			sys.exit(1)
 	else:
 		sstr.append(sysarg)
-mylibpath = libpath("PATH")
+mylibpath = LibPath('PATH')
 if sstr == []:
 	for mypath in mylibpath.valid_path:
 		ret_l = do_search(mypath)

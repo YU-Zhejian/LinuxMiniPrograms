@@ -30,19 +30,23 @@ The following scripts will set up a basic environment for development and everyd
 
 ```bash
 cd opt/envgen
-bash envgen
+bash envgen.sh bash conda emacs r ruby
 ```
+
+Run `exec bash` afterwards.
 
 The following script will generate a bug report.
 
 ```bash
 cd opt/envgen
-bash ckenv
+bash ckenv.sh
 ```
 
 See the documentation there for more details.
 
 ### Dealing with CRLF
+
+Skip this section if you use Git on GNU/Linux, FreeBSD or macOS, unless you met problems described below.
 
 For those who use Git for Windows, you may experience problems caused by line endings. These errors may look like `bash: line 1: $'true\r': command not found`.
 
