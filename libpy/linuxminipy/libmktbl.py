@@ -3,7 +3,7 @@
 '''
 Print table.
 '''
-from LMP_Pylib.libylfile import ylreadline
+from linuxminipy.libylfile import ylreadline
 
 
 def mktbl(fn: str, split: str = ';', commentstr: str = '#'):

@@ -7,7 +7,7 @@ from setuptools import setup
 VERSION = 1.1
 # TODO: Implement installation.
 
-setup(name='LMP_Pylib',
+setup(name='linuxminipy',
       version=1,
       description='web.py: makes web apps',
       author='YuZJ',
@@ -15,7 +15,7 @@ setup(name='LMP_Pylib',
       maintainer='YuZJ',
       maintainer_email='anandology@gmail.com',
       url='https://github.com/YuZJLab/LinuxMiniPrograms',
-      packages=['LMP_Pylib'],
+      packages=['linuxminipy'],
       long_description='Python libraries for LinuxMiniPrograms',
       license='GPL v3',
       platforms=['any'],

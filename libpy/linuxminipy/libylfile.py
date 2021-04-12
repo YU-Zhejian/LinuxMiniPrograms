@@ -4,7 +4,7 @@ Include utils to deal with files.
 '''
 import os
 
-from LMP_Pylib.libstr import errh
+from linuxminipy.libstr import errh
 
 
 def ylread(filename: str) -> str:

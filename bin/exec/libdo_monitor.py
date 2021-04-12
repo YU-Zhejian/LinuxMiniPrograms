@@ -8,7 +8,7 @@ import sys
 
 import psutil
 
-from LMP_Pylib.libylfile import yldo
+from linuxminipy.libylfile import yldo
 
 VERSION = 1.2
 

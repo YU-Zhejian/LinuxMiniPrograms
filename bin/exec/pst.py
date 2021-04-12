@@ -8,8 +8,8 @@ import sys
 import threading
 import time
 
-from LMP_Pylib.libisopt import isopt
-from LMP_Pylib.libstr import warnh
+from linuxminipy.libisopt import isopt
+from linuxminipy.libstr import warnh
 
 VERSION = 1.1
 
@@ -95,8 +95,11 @@ class WriteThread(threading.Thread):
                 iold = i
         se.close()
 
+def main():
+    rt = ReadThread()
+    rt.start()
+    wt = WriteThread(rt)
+    wt.start()
 
-rt = ReadThread()
-rt.start()
-wt = WriteThread(rt)
-wt.start()
+if __name__ == '__main__':
+    main()

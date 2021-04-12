@@ -16,7 +16,7 @@ if ! which ylsjsd &>/dev/null; then
 	infoh "Will configure PATH (sbin)...\033[32mPASSED"
 fi
 #========Install PYTHONPATH========
-if [ "${mypython}" != "ylukh" ] && ! echo "from LMP_Pylib.libylfile import *" | "${mypython}" &>>/dev/null; then
+if [ "${mypython}" != "ylukh" ] && ! echo "from linuxminipy.libylfile import *" | "${mypython}" &>>/dev/null; then
 	echo "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\"" >>"${HOME}"/.bashrc
 	infoh "Will configure PYTHONPATH...\033[32mPASSED"
 fi

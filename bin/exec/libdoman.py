@@ -8,10 +8,10 @@ import os
 import sys
 from datetime import datetime
 
-from LMP_Pylib.libisopt import isopt
-from LMP_Pylib.libmktbl import mktbl
-from LMP_Pylib.libstr import infoh, errh, warnh
-from LMP_Pylib.libylfile import mktemp, ylreadline, pywcl
+from linuxminipy.libisopt import isopt
+from linuxminipy.libmktbl import mktbl
+from linuxminipy.libstr import infoh, errh, warnh
+from linuxminipy.libylfile import mktemp, ylreadline, pywcl
 
 sstr = []
 cmd = 0
