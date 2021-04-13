@@ -1,4 +1,4 @@
-# `code-spec`: How to write readable codes for green hands in a Small Group Projects
+# `code_spec`: How to write readable codes for green hands in a Small Group Projects
 
 WARNING: Unfinished project!
 

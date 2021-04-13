@@ -1,4 +1,4 @@
-= Readme for 'LMP_dev'
+= Readme for 'lmp_dev'
 
 From the `.adoc` suffix you may know this file is for developers only.
 

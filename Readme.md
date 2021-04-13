@@ -57,8 +57,8 @@ That is because Windows uses `CRLF` (That is, "Carriage Return [回车] + Next L
 2. Execute the following code:
 
 ```bash
-dos2unix opt/LMP_dev/bin/BeforeAdd.sh
-bash opt/LMP_dev/bin/BeforeAdd.sh
+dos2unix opt/lmp_dev/bin/BeforeAdd.sh
+bash opt/lmp_dev/bin/BeforeAdd.sh
 ```
 
 This piece of code will automatically change all `CRLF` into `LF`.

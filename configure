@@ -18,7 +18,7 @@ cd "$(readlink -f "$(dirname "${0}")")"
 . lib/libstr
 infoh "Configure file for YuZJLab Installer"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
-# ./opt/LMP_dev/bin/BeforeAdd.sh
+# ./opt/lmp_dev/bin/BeforeAdd.sh
 # ========Def Var========
 VAR_install_config=false
 VAR_clear_history=false

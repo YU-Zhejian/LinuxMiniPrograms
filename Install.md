@@ -99,10 +99,10 @@ with package `linux_base-c7` installed.
 	* pstree(PSmisc)>=23.1 for GNU/Linux users.
 	* psutil>=5.7.2, a Python package which can be installed by `pip3` or Anaconda.
 
-* If you would like to use `git-mirror` or use `LMP_dev` in `opt/`, install Git>=2.21.
+* If you would like to use `git-mirror` or use `lmp_dev` in `opt/`, install Git>=2.21.
 
   The entire LinuxMiniProgram needs Git\* (Available from <https://git-scm.com/>) to be downloaded and upgraded. It can be installed by your package manager or by compiling its source code. If there's
-  no Git available, please download a zipped archive from GitHub (See below.). However, you may be unable to get updates in this way. If you would like to use `git-mirror` or `LMP_dev`, Git would be
+  no Git available, please download a zipped archive from GitHub (See below.). However, you may be unable to get updates in this way. If you would like to use `git-mirror` or `lmp_dev`, Git would be
   mandatory.
 
   \*: If you use Cygwin, you should **ONLY** use Git installed by Cygwin installer instead of those provided by Git for Windows. See *Dealing with CRLF* for further details.

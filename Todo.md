@@ -66,7 +66,7 @@
 
 ## Documentation
 
-* `opt/code-spec`
+* `opt/code_spec`
 * `src/doc`
 
 ## Split into Modules

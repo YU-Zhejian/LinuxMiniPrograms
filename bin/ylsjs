@@ -40,15 +40,17 @@ unset STDS[0]
 
 if [ "${ylcmd}" = "lscmd" ]; then
 	ls -1 "${DN}"/exec/ylsjs/ | grep -v lib | sed 's;\.sh$;;'
-elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".sh ]; then
-	. "${DN}"/exec/ylsjs/"${ylcmd}".sh
+elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".co ] ; then
+	exec "${DN}"/exec/ylsjs/"${ylcmd}".co "${@}"
+elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".co.exe ] ; then
+	exec "${DN}"/exec/ylsjs/"${ylcmd}".co.exe "${@}"
 elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".py ]; then
 	IFS="${OLD_IFS}"
 	if [ "${mypython}" != "ylukh" ]; then
 		"${mypython}" "${DN}"/exec/ylsjs/"${sjscmd}".py "${@}"
-	else
-		errh "Python not found"
 	fi
+elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".sh ]; then
+	. "${DN}"/exec/ylsjs/"${ylcmd}".sh
 elif [ -z "${ylcmd}" ]; then
 	${HAVEHELP} && yldoc ylsjs
 	${HAVEVER} && echo "${VERSION}"
