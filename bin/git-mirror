@@ -54,15 +54,15 @@ ls uuidtable.d/* &>>/dev/null || touch uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')
 touch act.log
 if [ "${gmcmd}" = "lscmd" ]; then
 	ls -1 "${DN}"/exec/gitm/ | grep -v lib | sed 's;\.sh$;;'
-elif [ -f "${DN}"/exec/gitm/"${gmcmd}".sh ]; then
-	. "${DN}"/exec/gitm/"${gmcmd}".sh
+elif [ -f "${DN}"/exec/gitm/"${gmcmd}".co.exe ] ; then
+	exec "${DN}"/exec/gitm/"${gmcmd}".co.exe "${@}"
 elif [ -f "${DN}"/exec/gitm/"${gmcmd}".py ]; then
 	IFS="${OLD_IFS}"
 	if [ "${mypython}" != "ylukh" ]; then
-		"${mypython}" "${DN}"/exec/gitm/"${sjscmd}".py "${@}"
-	else
-		errh "Python not found"
+		exec "${mypython}" "${DN}"/exec/gitm/"${gmcmd}".py "${@}"
 	fi
+elif [ -f "${DN}"/exec/gitm/"${gmcmd}".sh ]; then
+	. "${DN}"/exec/gitm/"${gmcmd}".sh
 elif [ -z "${gmcmd}" ]; then
 	${HAVEHELP} && yldoc git-mirror
 	${HAVEVER} && echo "${VERSION}"
