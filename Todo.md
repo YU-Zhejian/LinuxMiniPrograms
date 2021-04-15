@@ -66,6 +66,7 @@
 * Test in Python
 * gitm in Python
 * libdo in Python
+* pydoc
 
 ## Documentation
 
