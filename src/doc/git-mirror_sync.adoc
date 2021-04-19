@@ -1,0 +1,27 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= git-mirror_sync(1)
+
+== NAME
+
+git-mirror_sync - Synchronising all repositories from its remotes.
+
+== SYNOPSIS
+
+`git-mirror sync`
+
+[source]
+----
+0 2021-02-09_15-26-40 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ git-mirror sync
+YuZJLab Git Mirror Manager
+Copyright (C) 2020-2021 YU Zhejian
+WARNING: GITM_HOME undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/git-mirror.d
+Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 sync started
+Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 sync success
+Repository UUID=a42446b2-03b6-4999-a11b-4791d6e1edf6 sync started
+Repository UUID=a42446b2-03b6-4999-a11b-4791d6e1edf6 sync success
+----
+
+include::include/copy.adoc[]
