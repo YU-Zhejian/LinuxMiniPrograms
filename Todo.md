@@ -58,7 +58,6 @@
 ## New Programs
 
 * General-purpose enigma crypto.
-* Modular documentations.
 * GNU Autotools installation.
 * Google coding standard
 	* Shell
@@ -66,10 +65,4 @@
 
 ## Documentation
 
-* `opt/code_spec`
 * `src/doc`
-
-## Split into Modules
-
-* `git-mirror`
-* `ylsjs`
