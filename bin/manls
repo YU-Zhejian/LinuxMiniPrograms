@@ -1,15 +1,20 @@
 #!/usr/bin/env bash
-# MLS V1P1
+VERSION=1.2
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
+. "${DN}"/exec/pathutils.sh
 infoh "YuZJLab MANPATH ls"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 oldifs="${IFS}"
 
-INPATH="$(manpath 2> /dev/null || true):/usr/share/man:/usr/local/man:/usr/local/share/man:$(cat /usr/local/etc/man.d/*.conf 2> /dev/null | grep -v \# | grep MANPATH | cut -f 2 -d ' ' | tr '\n' ':' || true)${MANPATH:-}"
+locallib=$(for dir in \
+	$(__addpref 'man') \
+	$(__addpref 'share/man'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+
+INPATH="$(manpath 2>/dev/null || true):${locallib}:$(cat /usr/local/etc/man.d/*.conf 2>/dev/null | grep -v \# | grep MANPATH | cut -f 2 -d ' ' | tr '\n' ':' || true):${MANPATH:-}"
 . "${DN}"/../lib/libpath
 IFS=":"
 eachpath=(${valid_path})
@@ -24,7 +29,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1 Patch 1 in Bash"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-l" | "--list")
@@ -48,7 +53,7 @@ tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
 	ls -1 -F "${dir}" | sed "s;^;$(echo "${dir}")/;" | grep man[^/]*/$ | while read line; do
-		ls -1 -F "${line}" | sed "s;.gz;;" | sed "s;^;$(echo "${line}");" >> "${tmpf}"
+		ls -1 -F "${line}" | sed "s;.gz;;" | sed "s;^;$(echo "${line}");" >>"${tmpf}"
 	done
 done
 if [ ${#STDS[@]} -eq 0 ]; then

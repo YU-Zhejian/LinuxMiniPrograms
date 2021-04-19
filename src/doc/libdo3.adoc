@@ -1,7 +1,7 @@
 :toc:
 :author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
 
-= libdo(1)
+= libdo3(1)
 
 == NAME
 

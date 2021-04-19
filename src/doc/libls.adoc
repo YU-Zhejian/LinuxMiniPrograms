@@ -18,13 +18,9 @@ Search `[STRING]` in `${LIBRARY_PATH}` `${LD_LIBRARY_PATH}` and other system lib
 == OPTIONS
 
 include::include/cmnopt.adoc[]
-
 * `-l|--list` List all valid C include paths.
-
 * `-s|--dynamic-only` Dynamically linked libs (Shared objects) (`.so`) only.
-
 * `-a|--static-only` Statically linked libs (`.a`) only.
-
 * `-w|--windows` Allow Microsoft Windows Libraries (`.dll` for dynamically linked libs and `.lib` for statically linked libs )
 
 == EXAMPLES

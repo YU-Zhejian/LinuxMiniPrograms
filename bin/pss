@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# PSS V1P9
+VERSION=1.10
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 infoh "YuZJLab Process Snapshot Searcher"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 STDS=()
@@ -16,7 +16,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1 patch 9"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-x")
@@ -32,19 +32,19 @@ for opt in "${@}"; do
 done
 psstmp=$(mktemp -t psstmp.XXXXXX)
 pssstmp=$(mktemp -t psstmp.XXXXXX)
-if ! ps --version &>> /dev/null; then
-	ps -alH &> "${psstmp}"
+if ! ps --version &>>/dev/null; then
+	ps -al &>"${psstmp}"
 elif [[ $(ps --version) == *"Cygwin"* ]]; then
-	ps -aeW &> "${psstmp}"
+	ps -aeW &>"${psstmp}"
 else
-	ps -AT H all &> "${psstmp}"
+	ps -AT H all &>"${psstmp}"
 fi
 if [ ${#STDS[@]} -eq 0 ]; then
 	cat "${psstmp}"
 else
 	head -n 1 ${psstmp}
 	for fn in "${STDS[@]}"; do
-		cat "${psstmp}" | grep -- "${fn}" >> "${pssstmp}"
+		cat "${psstmp}" | grep -- "${fn}" >>"${pssstmp}"
 	done
 	cat "${pssstmp}"
 fi

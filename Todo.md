@@ -1,6 +1,7 @@
 # What will be Done
 
 ## AutoZip series:
+
 * lrzip
 * arc
 * ar
@@ -54,8 +55,14 @@
 * zopfli
 * zutil
 
+## New Programs
+
+* General-purpose enigma crypto.
+* GNU Autotools installation.
+* Google coding standard
+	* Shell
+	* C/C++
+
 ## Documentation
 
-* enigma
-* ylsjs
-* ylsjsd
+* `src/doc`

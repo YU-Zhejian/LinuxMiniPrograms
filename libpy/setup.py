@@ -1,19 +1,22 @@
 #!/usr/bin/env python
-# SETUP.py v1
-# TODO: Implement installation.
-
+'''
+The installation script
+'''
 from setuptools import setup
 
-setup(name='LMP_Pylib',
-	version=1,
-	description='web.py: makes web apps',
-	author='YuZJ',
-	author_email='me@aaronsw.com',
-	maintainer='YuZJ',
-	maintainer_email='anandology@gmail.com',
-	url='https://github.com/YuZJLab/LinuxMiniPrograms',
-	packages=['LMP_Pylib'],
-	long_description="Think about the ideal way to write a web app. Write the code to make it happen.",
-	license="GPL v3",
-	platforms=["any"],
-	)
+VERSION = 1.1
+# TODO: Implement installation.
+
+setup(name='linuxminipy',
+      version=1,
+      description='web.py: makes web apps',
+      author='YuZJ',
+      author_email='me@aaronsw.com',
+      maintainer='YuZJ',
+      maintainer_email='anandology@gmail.com',
+      url='https://github.com/YuZJLab/LinuxMiniPrograms',
+      packages=['linuxminipy'],
+      long_description='Python libraries for LinuxMiniPrograms',
+      license='GPL v3',
+      platforms=['any'],
+      )

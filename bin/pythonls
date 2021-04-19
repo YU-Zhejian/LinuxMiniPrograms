@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+VERSION=1.1
+# TODO: docs
+set -ue
+DN="$(readlink -f "$(dirname "${0}")")"
+. "${DN}"/../lib/libisopt
+. "${DN}"/../lib/libstr
+. "${DN}"/../etc/path.conf
+. "${DN}"/exec/pathutils.sh
+infoh "YuZJLab PYTHONPATH ls"
+infoh "Copyright (C) 2021 YU Zhejian"
+oldifs="${IFS}"
+INPATH="${PATH}"
+PACKAGE=false
+. "${DN}"/../lib/libpath
+IFS=":"
+eachpath=(${valid_path})
+IFS=''
+tmpf=$(mktemp -t configpath.XXXXXX)
+for dir in "${eachpath[@]}"; do
+	# TODO: test CygWin exe support
+	ls -F -1 "${dir}" 2>/dev/null | grep '.[*@]$' | sed 's;[*@]$;;' | grep -E '^(python(3|2){0,1}(\.[[:digit:]]+)*(d|m|u){0,1}(.exe){0,1}$)' | sed "s;^;$(echo ${dir})/;" | while read line; do
+		if echo "exit()" | "${line}" -v 2>&1 | grep -E '([C-Z]:\\)' >/dev/null; then
+			infoh "Windows Python found in ${line}"
+			continue
+		fi
+		infoh "Finding python at ${line}"
+		if echo -e "import sys\nprint(':'.join(sys.path))" | "${line}" &>/dev/null; then
+			echo -e "import sys\nprint(':'.join(sys.path))" | "${line}" >>"${tmpf}" 2>/dev/null || true
+		else
+			echo -e "import sys\nprint ':'.join(sys.path)" | "${line}" >>"${tmpf}" 2>/dev/null || true
+		fi
+	done
+done
+
+INPATH="${PYTHONPATH}:$(cat "${tmpf}" | tr '\n' ':')"
+rm "${tmpf}"
+. "${DN}"/../lib/libpath
+IFS=":"
+eachpath=(${valid_path})
+unset duplicated_path invalid_path
+IFS=''
+STDS=()
+for opt in "${@}"; do
+	if isopt "${opt}"; then
+		case "${opt}" in
+		"-h" | "--help")
+			yldoc includels
+			exit 0
+			;;
+		"-v" | "--version")
+			echo ${VERSION}
+			exit 0
+			;;
+		"-p" | "--package")
+			PACKAGE=true
+			;;
+		"-l" | "--list")
+			echo ${valid_path} | tr ':' '\n'
+			unset valid_path
+			exit 0
+			;;
+		"-x")
+			set -x
+			;;
+		*)
+			warnh "Option '${opt}' invalid. Ignored"
+			;;
+		esac
+	else
+		STDS=("${STDS[@]}" "$(echo "${opt}" | tr '.' '/')")
+	fi
+done
+unset valid_path
+tmpf="$(mktemp -t pls.XXXXXX)"
+infoh "Reading database..."
+if ${PACKAGE}; then
+	for dir in "${eachpath[@]}"; do
+		ls -1 "${dir}" 2>/dev/null >>"${tmpf}" || true
+	done
+	if [ ${#STDS[@]} -eq 0 ]; then
+		cat "${tmpf}"
+	else
+		IFS=''
+		grepstr=''
+		for fn in "${STDS[@]}"; do
+			grepstr="${grepstr} -e ${fn}"
+		done
+		eval cat \"${tmpf}\"\|grep "${grepstr}"
+	fi
+else
+	for dir in "${eachpath[@]}"; do
+		find "${dir}" 2>/dev/null >>"${tmpf}" || true
+	done
+	if [ ${#STDS[@]} -eq 0 ]; then
+		cat "${tmpf}"
+	else
+		IFS=''
+		grepstr=''
+		for fn in "${STDS[@]}"; do
+			grepstr="${grepstr} -e ${fn}"
+		done
+		eval cat \"${tmpf}\"\|grep "${grepstr}"
+	fi
+fi
+rm "${tmpf}"
+IFS="${oldifs}"

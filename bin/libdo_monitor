@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# LIBDO_MONITOR V1
+# VERSION=1.0
 set -ue
 
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
 function __exit() {
 	kill -9 ${$}
@@ -18,7 +18,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-x")

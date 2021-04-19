@@ -1,41 +1,60 @@
 #!/usr/bin/env bash
-#YLSJS v1
+VERSION=1.3
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 WD="$(pwd)"
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
 . "${DN}"/../lib/libisopt
-mkdir -p "${DN}"/../var/ylsjs.d
-cd "${DN}"/../var/ylsjs.d
 ylsjsd start
 # ============ Possess arguments ============
-STDS=""
+STDS=()
+UKOPT=()
+HAVEHELP=false
+HAVEVER=false
+# ============ Possess arguments ============
 for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
-		"-h" | "--help")
-			yldoc ylsjs
-			exit 0
-			;;
-		"-v" | "--version")
-			echo "Version 1"
-			exit 0
-			;;
 		"-x")
 			set -x
 			;;
+		"-h" | "--help")
+			HAVEHELP=true
+			UKOPT=("${UKOPT[@]}" "${opt}")
+			;;
+		"-v" | "--version")
+			HAVEVER=true
+			UKOPT=("${UKOPT[@]}" "${opt}")
+			;;
+		*)
+			UKOPT=("${UKOPT[@]}" "${opt}")
+			;;
 		esac
 	else
-		[ "${STDS}" = "" ] && STDS="${opt}"
+		STDS=("${STDS[@]}" "${opt}")
 	fi
 done
+ylcmd=${STDS[0]:-}
+unset STDS[0]
 
-if [ -z "${STDS:-}" ]; then
-	yldoc ylsjs
-	exit 0
-elif [ -f "${DN}"/exec/ylsjs_"${STDS}".sh ]; then
-	. "${DN}"/exec/ylsjs_"${STDS}".sh
+if [ "${ylcmd}" = "lscmd" ]; then
+	ls -1 "${DN}"/exec/ylsjs/ | grep -v lib | sed 's;\.sh$;;'
+elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".co ] ; then
+	exec "${DN}"/exec/ylsjs/"${ylcmd}".co "${@}"
+elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".co.exe ] ; then
+	exec "${DN}"/exec/ylsjs/"${ylcmd}".co.exe "${@}"
+elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".py ]; then
+	IFS="${OLD_IFS}"
+	if [ "${mypython}" != "ylukh" ]; then
+		"${mypython}" "${DN}"/exec/ylsjs/"${sjscmd}".py "${@}"
+	fi
+elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".sh ]; then
+	. "${DN}"/exec/ylsjs/"${ylcmd}".sh
+elif [ -z "${ylcmd}" ]; then
+	${HAVEHELP} && yldoc ylsjs
+	${HAVEVER} && echo "${VERSION}"
 else
-	errh "subcommand '${STDS}' invalid"
+	IFS="${OLD_IFS}"
+	errh "subcommand '${ylcmd}' invalid. Use '${0} lscmd' to get a list of available commands"
 fi

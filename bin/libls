@@ -1,26 +1,27 @@
 #!/usr/bin/env bash
-# LIBLS v1
+# VERSION=1.1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
+. "${DN}"/exec/pathutils.sh
 infoh "YuZJLab LIBRARY ls"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 oldifs="${IFS}"
 function _grep() {
 	regstr="${1}"
-	cat "${tmpf}" | grep "${regstr}" >> "${tmpff}"
+	cat "${tmpf}" | grep "${regstr}" >>"${tmpff}"
 }
 
-locallib=$(for dir in /lib* \
-	/clang*/lib \
-	/mingw*/lib \
-	/usr/lib* \
-	/usr/local/lib* \
-	"${HOME}"/usr/lib* \
-	"${HOME}"/usr/local/lib*; do echo ${dir}; done | grep -v '*' | grep -E '/lib((64)|(32)){0,1}$' | tr '\n' ':')
-INPATH="${locallib}:${LD_LIBRARY_PATH:-}"${LIBRARY_PATH:-}
+locallib=$(for dir in \
+	$(__addpref 'lib*') \
+	$(__addpref 'lib*/gcc*/*/*/x*') \
+	$(__addpref 'lib*/gcc*/*/x*') \
+	$(__addpref 'lib*/gcc*/x*') \
+	$(__addpref 'lib*/clang*/*/lib*') \
+	$(__addpref 'lib*/clang*/lib*'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+INPATH="/mingw*/lib*:/clang*/lib*:${locallib}:${LD_LIBRARY_PATH:-}${LIBRARY_PATH:-}"
 . "${DN}"/../lib/libpath
 IFS=":"
 eachpath=(${valid_path})
@@ -38,7 +39,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-l" | "--list")
@@ -72,7 +73,7 @@ unset valid_path
 tmpf="$(mktemp -t libls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	find "${dir}" 2> /dev/null >> "${tmpf}" || true
+	find "${dir}" 2>/dev/null >>"${tmpf}" || true
 done
 tmpff=$(mktemp -t libls.XXXXXX)
 if ${WINDOWS}; then

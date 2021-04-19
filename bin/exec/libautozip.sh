@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# LIBAUTOZIP V6
+# VERSION=6.1
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libman
 REMOVE=false
 declare -i MAXTHREAD
@@ -19,7 +19,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 5"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-x")
@@ -147,7 +147,7 @@ function __cklvl() {
 		lvl_able="[123456789]"
 		;;
 	esac
-	if [ -z "${LVL}" ] ||  echo "${LVL}" | grep -E '${lvl_able}' &> /dev/null ; then
+	if [ -z "${LVL}" ] || echo "${LVL}" | grep -E '${lvl_able}' &>/dev/null; then
 		warnh "Compression level '${LVL}' undefined. You can use ${lvl_able} for ${1} algorithm.\nWill use default value provided by corresponding algorithm"
 		LVL=''
 	else

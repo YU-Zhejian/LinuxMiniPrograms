@@ -1,19 +1,27 @@
 #!/usr/bin/env bash
-# LIVECHAT V2
+VERSION=2.1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.sh
+touch "${DN}"/../etc/livechat.conf
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
-# TODO: Still bugs!
-errh "Bugs not fixed."
-
+. "${DN}"/../lib/libman
+. "${DN}"/../etc/livechat.conf
+if [ -z "${LIVECHAT_HOME:-}" ]; then
+	warnh "LIVECHAT_HOME undefined. Will use ${DN}/../var/livechat.d"
+	LIVECHAT_HOME="${DN}/../var/livechat.d"
+fi
+if [ -z "${LIVECHAT_MAX_JOB:-}" ]; then
+	warnh "LIVECHAT_MAX_JOB undefined. Will use 100"
+	LIVECHAT_MAX_JOB=100
+fi
 function __send() {
 	trap "__exit" SIGINT SIGTERM
-	echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${2}" >> "${LVCD}"/SYSTEM
+	echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${2}" >>"${LIVECHAT_HOME}"/SYSTEM
 }
 function __reciever() {
 	trap "__exit" SIGINT SIGTERM
-	tail -f "${LVCD}"/SYSTEM | while read line; do
+	tail -f "${LIVECHAT_HOME}"/SYSTEM | while read line; do
 		IFS=";"
 		local M_A=(${line})
 		echo -e "\033[31m[${M_A[0]}]\033[0m \033[36m[${M_A[1]}]\033[0m ${M_A[2]}"
@@ -23,17 +31,16 @@ function __reciever() {
 function __exit() {
 	trap "__exit" SIGINT SIGTERM
 	__send "SYSTEM" "${LCUN} had quitted"
-	rm -f "${LVCD}"/"${LCUN}"
+	rm -f "${LIVECHAT_HOME}"/"${LCUN}"
 	infoh "Thanks for using this system"
 	IFS="${OLD_IFS}"
-	kill -9 -${pid_rec}
+	killtree ${pid_rec} 9
 	exit 0
 }
 
 OLD_IFS="${IFS}"
-LVCD="${DN}/../var/livechat.d"
-mkdir -p "${LVCD}"
-touch "${LVCD}"/SYSTEM
+mkdir -p "${LIVECHAT_HOME}"
+touch "${LIVECHAT_HOME}"/SYSTEM
 infoh "Welcome to YuZJLab LiveChat"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 . "${DN}"/../lib/libisopt
@@ -46,7 +53,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 2"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-x")
@@ -68,11 +75,12 @@ if [ -z "${STDS}" ]; then
 else
 	LCUN="${STDS}"
 fi
-[ -f "${LVCD}"/"${LCUN}" ] && errh "There's a user with the same name"
-touch "${LVCD}"/"${LCUN}"
+[ -f "${LIVECHAT_HOME}/${LCUN}" ] && errh "There's a user with the same name"
+[ $(find "${LIVECHAT_HOME}" | wc -l | awk '{print $1}') -gt ${LIVECHAT_MAX_JOB} ] && errh "Too many people online, please wait for a while"
+touch "${LIVECHAT_HOME}/${LCUN}"
 __send "SYSTEM" "${LCUN} is now on line"
 infoh "The following users are now online:"
-ls -1 "${LVCD}"
+ls -1 "${LIVECHAT_HOME}"
 infoh "Please use 'logout'/'exit'/'quit' or Ctrl-C to exit"
 export M_R=0
 (__reciever) &
@@ -81,8 +89,8 @@ infoh "PID of reciever: ${pid_rec}"
 
 while read -p ">" MESS_SD; do
 	trap "__exit" SIGINT SIGTERM
-	if [[ "${MESS_SD}" =~ ^!+ ]];then
-		bash -c ${MESS_SD:1} 2>&1 | while read line;do
+	if [[ "${MESS_SD}" =~ ^!+ ]]; then
+		bash -c ${MESS_SD:1} 2>&1 | while read line; do
 			__send "${LCUN}" "${line}"
 		done
 	elif [ "${MESS_SD}" != "logout" ] && [ "${MESS_SD}" != "exit" ] && [ "${MESS_SD}" != "quit" ]; then

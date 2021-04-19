@@ -1,0 +1,11 @@
+= Readme for 'lmp_dev'
+
+From the `.adoc` suffix you may know this file is for developers only.
+
+In this folder, you will see helper scripts for developers. They are located under `bin` directory and are:
+
+* `BeforeAdd.sh` The script will turn all CRLF to LF. It should be executed before staging (adding) any new files.
+* `BumpVersion.sh` The script will search for all modified scripts and bump its version (Add 0.1 to the version number). It should be executed before staging (adding).
+* `RmBAK.sh` To remove backup files.
+
+If you're having problems understanding previous lines, you may refer to the documentation of Git by reading its manual or read the book _Pro Git_ available from <https://git-scm.com/book/en/v2>.

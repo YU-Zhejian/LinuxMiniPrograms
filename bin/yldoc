@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-# YLDOC V1P7
+VERSION=1.8
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
 infoh "YuZJLab Documentation System"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
-
 
 STDS=()
 for opt in "${@}"; do
@@ -18,7 +17,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1 Patch 7"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-l" | "--list")
@@ -46,7 +45,7 @@ if [ -f "${DN}"/../etc/yldoc.conf ]; then
 				STDS[${i}]=${li[1]}
 			fi
 		done
-	done < "${DN}"/../etc/yldoc.conf
+	done <"${DN}"/../etc/yldoc.conf
 fi
 for fn in "${STDS[@]}"; do
 	if [ -f "${DN}"/../share/doc/usage/"${fn}".usage ]; then

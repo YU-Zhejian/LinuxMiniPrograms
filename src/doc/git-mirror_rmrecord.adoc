@@ -1,0 +1,20 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= git-mirror_rmrecord(1)
+
+== NAME
+
+git-mirror_rmrecord - Remove a repository record.
+
+== SYNOPSIS
+
+`git-mirror rmrecord [URL/UUID]`
+
+You may use this when `git-mirror rmrepo` fails.
+
+WARNING: This only makes the system forget this repository. The repository itself may still be kept in computer!
+
+OPTION: `-f` for force removal without confirmation.
+
+include::include/copy.adoc[]

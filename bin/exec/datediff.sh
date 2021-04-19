@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# DATEDIFF V3
-if [ -n "${3:-}" ] && [ "${3:-}" != "machine" ];then
+VERSION=3.1
+if [ -n "${3:-}" ] && [ "${3:-}" != "machine" ]; then
 	Start_Sec=${1}
 	End_Sec=${2}
 elif [[ "$(date --version 2>&1 || true)" == *"GNU"* ]]; then

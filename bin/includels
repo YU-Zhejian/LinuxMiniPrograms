@@ -1,45 +1,25 @@
 #!/usr/bin/env bash
-# INCLUDELS v1
+VERSION=1.1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
+. "${DN}"/exec/pathutils.sh
 infoh "YuZJLab INCLUDEPATH ls"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 oldifs="${IFS}"
 
 gccinclude=$(for dir in \
-	/clang*/include \
-	/mingw*/include \
-	/lib*/gcc*/*/*/include \
-	/usr/lib*/gcc*/*/*/include \
-	/usr/local/lib*/gcc*/*/*/include \
-	"${HOME}"/usr/lib*/gcc*/*/*/include \
-	"${HOME}"/usr/local/lib*/gcc*/*/*/include \
-	/lib*/gcc*/*/include \
-	/usr/lib*/gcc*/*/include \
-	/usr/local/lib*/gcc*/*/include \
-	"${HOME}"/usr/lib*/gcc*/*/include \
-	"${HOME}"/usr/local/lib*/gcc*/*/include \
-	/lib*/gcc*/include \
-	/usr/lib*/gcc*/include \
-	/usr/local/lib*/gcc*/include \
-	"${HOME}"/usr/lib*/gcc*/include \
-	"${HOME}"/usr/local/lib*/gcc*/include; do echo ${dir}; done | grep -v '*' | tr '\n' ':')
+	$(__addpref 'lib*/gcc*/*/*/include') \
+	$(__addpref 'lib*/gcc*/*/include') \
+	$(__addpref 'lib*/gcc*/include'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
 
-clanginclude=$(for dir in /lib*/clang*/*/include \
-	/usr/lib*/clang*/*/include \
-	/usr/local/lib*/clang*/*/include \
-	"${HOME}"/usr/lib/clang*/*/include \
-	"${HOME}"/usr/local/lib/clang*/*/include \
-	/lib*/clang*/include \
-	/usr/lib*/clang*/include \
-	/usr/local/lib*/clang*/include \
-	"${HOME}"/usr/lib/clang*/include \
-	"${HOME}"/usr/local/lib/clang*/include; do echo ${dir}; done | grep -v '*' | tr '\n' ':')
+clanginclude=$(for dir in \
+	$(__addpref 'lib*/clang*/*/include') \
+	$(__addpref 'lib*/clang*/include'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
 
-INPATH="/usr/include:/usr/local/include:${HOME}/include:${HOME}/usr/include:${HOME}/usr/local/include:${gccinclude}:${clanginclude}:${C_INCLUDE_PATH:-}"${CPLUS_INCLUDE_PATH:-}
+INPATH="/clang*/include:/mingw*/include:$(__addpref 'include'):${gccinclude}:${clanginclude}:${C_INCLUDE_PATH:-}"${CPLUS_INCLUDE_PATH:-}
 . "${DN}"/../lib/libpath
 IFS=":"
 eachpath=(${valid_path})
@@ -54,7 +34,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-l" | "--list")
@@ -77,7 +57,7 @@ unset valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	find "${dir}" 2> /dev/null >> "${tmpf}" || true
+	find "${dir}" 2>/dev/null >>"${tmpf}" || true
 done
 if [ ${#STDS[@]} -eq 0 ]; then
 	cat "${tmpf}"

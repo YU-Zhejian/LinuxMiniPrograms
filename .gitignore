@@ -3,18 +3,16 @@
 /var
 /*backup.tgz
 /share
-/doc # For compability
-/usage # For compability
-/html # For compability
-/pdf # For compability
-/man # For compability
+/usr
 __pycache__
+*log
+*tmp*
+*.co
+
+# System files
 *.stackdump
 /gnome-keyring-daemo.core
 .vscode
-/usr
-*log
-*tmp*
 .vs
 /venv
 /.git
@@ -22,14 +20,19 @@ __pycache__
 .project
 .cproject
 *.out
-*.co
 *.cbp
 *.bak
 *.layout
-/Makefile
+/GNUmakefile
 CppProperties.json
 
-# Projects purposed
-*.bat
-*.cmd
-*.ps1
+# For compability
+/doc
+/usage
+/html
+/pdf
+/man
+/Makefile
+
+# Fake files under BSD
+/bin/readlink

@@ -15,6 +15,8 @@ function __prevp (){
 	local r=${?}
 	[ ${r} -eq 0 ] && echo -e "\e[42m\e[30m${r}\e[32m\e[46m \e[0m" || echo -e "\e[41m\e[30m${r}\e[31m\e[46m \e[0m"
 }
+
+# TODO: bugs in MSYS2
 export PS1='$(__prevp)\e[30m\e[46m$(date +%Y-%m-%d_%H-%M-%S)\e[43m\e[36m \e[30m${PWD}\e[42m\e[33m\e[30m$(__git_ps1 " (%s)")\e[0m\n\$ '
 # It displays like '(base) 0 2021-02-19_20-50-49 /mnt/d/Work/LinuxMiniPrograms  (BSD)' in a Git repository.
 #                      |   |          |                     |                     |_ The Git branch you're on.
@@ -25,7 +27,7 @@ export PS1='$(__prevp)\e[30m\e[46m$(date +%Y-%m-%d_%H-%M-%S)\e[43m\e[36m \e[30m$
 
 # Conda and LinuxBrew setup scripts omitted.
 # Useful paths if you install software with configure option --prefix="${HOME}/usr/local".
-export PATH="${HOME}/bin:${HOME}/usr/bin:${HOME}/usr/local/bin:${PATH}"
+export PATH="${HOME}/.local/bin:${HOME}/bin:${HOME}/usr/bin:${HOME}/usr/local/bin:${PATH}"
 export CMAKE_PREFIX_PATH="${HOME}/usr/local/CMAKE_PREFIX:${CMAKE_PREFIX_PATH:-}"
 export PKG_CONFIG_PATH="${HOME}/usr/local/lib/pkgconfig/:${HOME}/usr/local/lib64/pkgconfig/:${PKG_CONFIG_PATH:-}"
 export PKG_CONFIG_LIBFIR="${HOME}/usr/local/lib64/pkgconfig/:${HOME}/usr/local/lib/pkgconfig/:${PKG_CONFIG_LIBFIR:-}"
@@ -52,7 +54,8 @@ alias df="df -h" # More readable df.
 alias diff="diff -u" # Make the output of $(diff) similar to git diff.
 alias ls="ls -lhF --color=auto" # More readable ls.
 alias grep="grep --color=auto" # More readable grep.
-# alias grep="ack" # ack to replace grep. Failed.
+# alias grep="ack" # ack to replace grep.
+# Shutdown, reboot and sudo is banned. For those who need to those commands, please comment the following three lines.
 alias shutdown="echo What the hell you\'re thinking?\!"
 alias reboot="echo What the hell you\'re thinking?\!"
 alias sudo="echo What the hell you\'re thinking?\!"

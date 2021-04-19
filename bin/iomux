@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-#IOMUX V1
+VERSION=1.1
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 warnh "This program is no longer monitored and updates may not be provided"
 mkfifo in out || true
-cat in | bash -li &>> out
-rm -f in out 
+cat in | bash -li &>>out
+rm -f in out

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# GITMIRROR V1
+VERSION=1.6
 DN="$(readlink -f "$(dirname "${0}")")"
 set -ue
 trap '' SIGINT
@@ -7,21 +7,35 @@ OLD_IFS="${IFS}"
 touch "${DN}"/../etc/git-mirror.conf
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../etc/git-mirror.conf
-. "${DN}"/exec/libgitm.sh
+. "${DN}"/exec/gitm/libgitm.sh
 infoh "YuZJLab Git Mirror Manager"
 infoh "Copyright (C) 2020-2021 YU Zhejian"
+STDS=()
+UKOPT=()
+HAVEHELP=false
+HAVEVER=false
 # ============ Possess arguments ============
 for opt in "${@}"; do
 	if isopt "${opt}"; then
 		case "${opt}" in
-		"-h" | "--help")
-			yldoc git-mirror
-			exit 0
-			;;
 		"-x")
 			set -x
+			;;
+		"-h" | "--help")
+			HAVEHELP=true
+			UKOPT=("${UKOPT[@]}" "${opt}")
+			;;
+		"-v" | "--version")
+			HAVEVER=true
+			UKOPT=("${UKOPT[@]}" "${opt}")
+			;;
+		--home\:*)
+			GITM_HOME="${opt:7}"
+			;;
+		*)
+			UKOPT=("${UKOPT[@]}" "${opt}")
 			;;
 		esac
 	else
@@ -30,25 +44,30 @@ for opt in "${@}"; do
 done
 gmcmd=${STDS[0]:-}
 unset STDS[0]
-if [ -z "${git_mirror_dir:-}" ];then
-	warnh "git_mirror_dir undefined. Will use ${DN}/../var/git-mirror.d"
-	git_mirror_dir=${DN}/../var/git-mirror.d
+if [ -z "${GITM_HOME:-}" ]; then
+	warnh "GITM_HOME undefined. Will use ${DN}/../var/git-mirror.d"
+	GITM_HOME=${DN}/../var/git-mirror.d
 fi
-mkdir -p "${git_mirror_dir}" "${git_mirror_dir}/logs/" "${git_mirror_dir}/uuidtable.d/"
-cd "${git_mirror_dir}"
-ls uuidtable.d/* &>> /dev/null || touch uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')"
+mkdir -p "${GITM_HOME}" "${GITM_HOME}/logs/" "${GITM_HOME}/uuidtable.d/"
+cd "${GITM_HOME}"
+ls uuidtable.d/* &>>/dev/null || touch uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')"
 touch act.log
-if [ -f "${DN}"/exec/gitm_"${gmcmd}".sh ]; then
-	. "${DN}"/exec/gitm_"${gmcmd}".sh
-elif [ -f "${DN}"/exec/gitm_"${gmcmd}".py ]; then
+if [ "${gmcmd}" = "lscmd" ]; then
+	ls -1 "${DN}"/exec/gitm/ | grep -v lib | sed 's;\.sh$;;'
+elif [ -f "${DN}"/exec/gitm/"${gmcmd}".co.exe ] ; then
+	exec "${DN}"/exec/gitm/"${gmcmd}".co.exe "${@}"
+elif [ -f "${DN}"/exec/gitm/"${gmcmd}".py ]; then
 	IFS="${OLD_IFS}"
 	if [ "${mypython}" != "ylukh" ]; then
-		"${mypython}" "${DN}"/exec/ylsjs_"${sjscmd}".py "${PWD}" "${@}"
-	else
-		errh "Python not found"
+		exec "${mypython}" "${DN}"/exec/gitm/"${gmcmd}".py "${@}"
 	fi
+elif [ -f "${DN}"/exec/gitm/"${gmcmd}".sh ]; then
+	. "${DN}"/exec/gitm/"${gmcmd}".sh
+elif [ -z "${gmcmd}" ]; then
+	${HAVEHELP} && yldoc git-mirror
+	${HAVEVER} && echo "${VERSION}"
 else
 	IFS="${OLD_IFS}"
-	errh "subcommand '${gmcmd}' invalid"
+	errh "subcommand '${gmcmd}' invalid. Use '${0} lscmd' to get a list of available commands"
 fi
 IFS="${OLD_IFS}"

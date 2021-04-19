@@ -1,0 +1,28 @@
+= ReadMe for `test`
+
+This folder contains the testing scripts. These scripts can be executed in a stand-alone order, or to be accessed by using `make test` in the root directory of LinuxMiniPrograms. See `LMP_basis` for more details.
+
+The tests are organized in a modular order. For each test, a directory named `[PROGNAME]` is created and all tests are executed there.
+
+To avoid interfering normal programs, for programs like `git-mirror` or `ylsjs`, its `var` directory is pointed to `[PROGNAME]`.
+
+When `make test` is executed, the GNU Make system will execute `00_index.sh` under this folder. This script will search for all files ended in `t.sh` and execute them.
+
+Due to the reason that all testing scripts uses YuZJLab LibDO, by default LibDO is tested with the highest priority in `01_libdo.t.sh`.
+
+All test files sources `00_libtest.sh`. It sources YuZJLab LibDO and creates a test directory whose path is stored in `${TDN}`.
+
+To write a new test, the template is provided as follows:
+
+[source,bash]
+----
+#!/usr/bin/env bash
+set -eu
+DN="$(readlink -f "$(dirname "${0}")")"
+PROGNAME=[PROGNAME]
+. "${DN}"/00_libtest.sh
+[...]
+rm -rf "${TDN}" # This variable is specified in "${DN}"/00_libtest.sh. It is where the tests are executed. It is removed if the test is successful.
+----
+
+You may specify the program(s) you need to test in `[PROGNAME]` and write what you need to test in `[...]`.

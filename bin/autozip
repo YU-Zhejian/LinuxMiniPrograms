@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# AUTOZIP V6
+VERSION=6.1
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -88,9 +88,9 @@ function __do_job() {
 	cmd="$(bash ${DN}/exec/azcmd.sh -p:${THREAD} "${1}" ${LVL})"
 	infoh "${cmd}"
 	if ${STDOUT}; then
-		fcat "${fn}" | ${cmd} > /dev/stdout
+		fcat "${fn}" | ${cmd} >/dev/stdout
 	else
-		fcat "${fn}" | ${cmd} > "${fn}.${ext}"
+		fcat "${fn}" | ${cmd} >"${fn}.${ext}"
 	fi
 }
 case ${ext} in
@@ -133,23 +133,23 @@ t*z)
 	if [ "${fn}" = "/dev/stdin" ]; then
 		errh "Not implemented in zip"
 	fi
-		if [ "${my7za}" != 'ylukh' ]; then
-			__cklvl 7z
-			if ${STDOUT}; then
-				"${my7za}" a -aoa -so "${fn}" -mmt=${THREAD} ${LVL} -tzip
-			else
-				"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -tzip
-			fi
-		elif [ "${myzip}" != 'ylukh' ]; then
-			__cklvl zip
-			if ${STDOUT}; then
-				"${myzip}" --verbose -r /dev/stdout "${fn}" ${LVL}
-			else
-				"${myzip}" --verbose -r "${fn}".${ext} "${fn}" ${LVL}
-			fi
+	if [ "${my7za}" != 'ylukh' ]; then
+		__cklvl 7z
+		if ${STDOUT}; then
+			"${my7za}" a -aoa -so "${fn}" -mmt=${THREAD} ${LVL} -tzip
 		else
-			errh "No valid zip/7zip exist"
+			"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -tzip
 		fi
+	elif [ "${myzip}" != 'ylukh' ]; then
+		__cklvl zip
+		if ${STDOUT}; then
+			"${myzip}" --verbose -r /dev/stdout "${fn}" ${LVL}
+		else
+			"${myzip}" --verbose -r "${fn}".${ext} "${fn}" ${LVL}
+		fi
+	else
+		errh "No valid zip/7zip exist"
+	fi
 
 	;;
 "rar")

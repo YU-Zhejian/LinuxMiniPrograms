@@ -32,43 +32,48 @@ LINE_NUMBERS=1
 tmpsh=$(mktemp -t envgen_XXXXX.sh)
 DN="$(readlink -f "$(dirname "${0}")")"
 
-function __exec(){
-	if [ "${1:-}" = '#' ];then
+function __exec() {
+	if [ "${1:-}" = '#' ]; then
 		echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
 	else
 		local PF="\033[032mPASS\033[0m"
 		printf "${LINE_NUMBERS}/${ALL_LINE_NUMBERS} ${*}..." >&2
 		echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
-		eval ${*} > >(sed 's;^;OO ;')  2> >(sed 's;^;EE ;') | \
-		sed 's;^OO EE;EE;' | \
-		cat -n || PF="\033[031mFAIL\033[0m"
+		eval ${*} > >(sed 's;^;OO ;') 2> >(sed 's;^;EE ;') |
+			sed 's;^OO EE;EE;' |
+			cat -n || PF="\033[031mFAIL\033[0m"
 		echo -e "${PF}" >&2
 	fi
-	LINE_NUMBERS=$((${LINE_NUMBERS}+1))
+	LINE_NUMBERS=$((${LINE_NUMBERS} + 1))
 }
 function __rc_cat() {
-	for file in /etc/rc*/*;do echo \# ----------${file}----------;cat ${file} || true;done
+	for file in /etc/rc*/*; do
+		echo \# ----------${file}----------
+		cat ${file} || true
+	done
 }
 function __cron_cat() {
 	for files in /var/spool/cron/* \
-/etc/crontab \
-/etc/cron.d/* \
-/etc/cron.daily/* \
-/etc/cron.hourly/* \
-/etc/cron.monthly/* \
-/etc/cron.weekly/* \
-/etc/anacrontab \
-/var/spool/anacron/* ;do echo \# ----------${file}----------;cat ${file} || true;done
+		/etc/crontab \
+		/etc/cron.d/* \
+		/etc/cron.daily/* \
+		/etc/cron.hourly/* \
+		/etc/cron.monthly/* \
+		/etc/cron.weekly/* \
+		/etc/anacrontab \
+		/var/spool/anacron/*; do
+		echo \# ----------${file}----------
+		cat ${file} || true
+	done
 }
 function __log_cat() {
-	find /var/log | grep -v '/$' | while read file;do echo \# ----------${file}----------;cat ${file} || true;done
+	find /var/log | grep -v '/$' | while read file; do
+		echo \# ----------${file}----------
+		cat ${file} || true
+	done
 }
 
-cat << EOF | \
-grep -v '^$' | \
-sed 's;^#;\\#;' | \
-sed 's;^WHERE \(.*\);whereis -b \1\nwhereis -m \1\nwhich \1;' | \
-sed 's;^;__exec ;' > "${tmpsh}"
+cat <<EOF |
 # Program Started.
 # Please make comments like this example.
 # You need to leave a space before your contents,
@@ -94,7 +99,7 @@ cat /etc/redhat-release
 
 # ________________________Boot Info________________________
 uptime # How many time since it was booted?
-runlevel # On which level the system is operated? See `man runlevel` for more details.
+runlevel # On which level the system is operated? See $(man runlevel) for more details.
 # __rc_cat # Get all startup scripts. DD.
 # Get all planed tasks.
 crontab -l
@@ -225,7 +230,7 @@ export
 whereis -l
 
 # ________________________Bourne Again Shell________________________
-# WHERE command is a function defined in this code. It uses `whereis` and `which`.
+# WHERE command is a function defined in this code. It uses $(whereis) and $(which).
 WHERE bash
 bash --version
 # Check startup scripts of bash.
@@ -565,17 +570,21 @@ WHERE xz
 WHERE zip
 WHERE zstd
 EOF
+	grep -v '^$' |
+	sed 's;^#;\\#;' |
+	sed 's;^WHERE \(.*\);whereis -b \1\nwhereis -m \1\nwhich \1;' |
+	sed 's;^;__exec ;' >"${tmpsh}"
+
 ALL_LINE_NUMBERS=$(wc -l "${tmpsh}" | awk '{print $1}')
-. "${tmpsh}" > "${out_file}"
+. "${tmpsh}" >"${out_file}"
 # ________________________TOC________________________
 printf "Generating TOC..." >&2
 
-
-echo "# ________________________TOC________________________" > "${out_file}".tmp
-cat "${out_file}" -n | grep --text -v 'OO ' | grep --text -v 'EE ' >> "${out_file}".tmp && \
-cat "${out_file}".tmp >> "${out_file}" && \
-rm "${out_file}".tmp && \
-echo -e "\033[032mPASS\033[0m" >&2 || echo -e "\033[031mFAIL\033[0m" >&2
+echo "# ________________________TOC________________________" >"${out_file}".tmp
+cat "${out_file}" -n | grep --text -v 'OO ' | grep --text -v 'EE ' >>"${out_file}".tmp &&
+	cat "${out_file}".tmp >>"${out_file}" &&
+	rm "${out_file}".tmp &&
+	echo -e "\033[032mPASS\033[0m" >&2 || echo -e "\033[031mFAIL\033[0m" >&2
 
 rm -f "${tmpsh}"
 echo "Finished." >&2

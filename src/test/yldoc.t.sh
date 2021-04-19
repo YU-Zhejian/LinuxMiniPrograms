@@ -6,3 +6,4 @@ PROGNAME=yldoc
 DO yldoc
 DO yldoc pathls
 DO yldoc pls
+rm -rf "${TDN}"

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# BHS V1P8
+VERSION=1.8
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 infoh "YuZJLab Bash History Searcher"
@@ -16,7 +16,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			echo "Version 1 Patch 8"
+			echo ${VERSION}
 			exit 0
 			;;
 		"-x")

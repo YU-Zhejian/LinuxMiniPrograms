@@ -18,7 +18,6 @@ Search `[STRING]` in C/C++ include paths. If `[STRING]` is omitted, the program 
 == OPTIONS
 
 include::include/cmnopt.adoc[]
-
 * `-l|--list` List all valid C include paths.
 
 == EXAMPLES

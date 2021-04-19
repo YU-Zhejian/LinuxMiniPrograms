@@ -18,11 +18,8 @@ Extract `[SOURCE]`. If `[SOURCE]` is omitted, the program will check the algorit
 == OPTIONS
 
 include::include/cmnopt.adoc[]
-
 * `--force` Remove the target if exists.
-
 * `--remove` Remove [sorce] if success.
-
 * `-p[:[thread]]|--parallel[:[thread]]` Use `[thread]` threads when extracting the archive. `[thread]` should not be higher than the number of CPU cores installed. If `[thread]` is omitted, will use the number of CPU cores installed.
 
 include::include/autozipcmn.adoc[]

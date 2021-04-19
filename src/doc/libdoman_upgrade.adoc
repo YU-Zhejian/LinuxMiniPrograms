@@ -1,11 +1,11 @@
 :toc:
 :author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
 
-= bhs(1)
+= libdoman_upgrade(1)
 
 == NAME
 
-libdoman-update - LibDO log updater.
+libdoman_upgrade - LibDO log updater.
 
 == SYNOPSIS
 

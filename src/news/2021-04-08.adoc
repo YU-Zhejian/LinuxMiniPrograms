@@ -1,0 +1,3 @@
+= News: macOS Support Added
+
+We finally added macOS support. It is tested under macOS Catalina.

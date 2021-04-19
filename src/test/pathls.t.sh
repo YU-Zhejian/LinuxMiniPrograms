@@ -13,4 +13,6 @@ DO includels
 DO includels -l
 DO manls
 DO manls -l
-DO manls -i
+DO libls
+DO libls -l
+rm -rf "${TDN}"

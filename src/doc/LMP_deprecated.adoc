@@ -25,6 +25,11 @@ Here gives a list of deprecated programs in YuZJLab LinuxMiniPrograms.
 .. `bin/libdosh`
 . libdoman_upgrade
 .. `bin/libdoman_upgrade`
+. b16c
+.. `bin/b16c`
+.. `bin/exec/b16c.co`
+.. `bin/exec/b16c.py`
+.. `src/C/b16c/*`
 
 == SEE ALSO
 

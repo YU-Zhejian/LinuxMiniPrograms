@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.sh
+. "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
 warnh "This program is no longer monitored and updates may not be provided!"
 for fn in "${@}"; do
@@ -17,11 +17,11 @@ for fn in "${@}"; do
 			else
 				newtime="$(date -j -f '%a %b %d %T %Z %Y' "${mytime}" +'%Y-%m-%d %H:%M:%S')"
 			fi
-			echo "${line:0:17}${newtime}" >> "${fn}.2"
+			echo "${line:0:17}${newtime}" >>"${fn}.2"
 		elif [[ "${line}" == "LIBDO FAILED, GOT"* ]] || [[ "${line}" == "LIBDO EXITED SUCCESSFULLY"* ]]; then
-			echo "${line}" | sed "s/.$//" >> "${fn}.2"
+			echo "${line}" | sed "s/.$//" >>"${fn}.2"
 		else
-			echo "${line}" >> "${fn}.2"
+			echo "${line}" >>"${fn}.2"
 		fi
 	done
 done

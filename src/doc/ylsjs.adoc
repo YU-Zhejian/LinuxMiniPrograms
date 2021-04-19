@@ -25,7 +25,7 @@ Start a job by pumping its script to /dev/stdin.
 
 Options:
 
-`-n:|--name:[NAME]` Set the job name displayed. Default will be `UK`.
+* `-n:|--name:[NAME]` Set the job name displayed. Default will be `UK`.
 
 === bsub
 
@@ -37,13 +37,15 @@ To print jobs.
 
 Options:
 
-`-V` Verbose format. The following options is only available with `-V` on:
-
-* `-p|--pst` Use pstree to display process information.
-
-* `-t|--top` Use top to display process information.
-
-* `-s:--show-sh` To show the shell script passed in.
+* `--pid-only` Get the top process ids.
+* `--id-only` To show all running id.
+* `-V` Verbose format. The following options is only available with `-V` on:
+** `-p|--pst` Use pstree to display process information.
+** `-t|--top` Use top to display process information.
+** `-s:--show-sh` To show the shell script passed in.
+** `--stdout` To show standard output.
+** `--stderr` To show standard error.
+** `-env` Show environment variables when exected.
 
 === kill
 
@@ -51,7 +53,7 @@ To kill jobs by its number.
 
 Options:
 
-`-n:[SIGNAL_NUMBER]` Send signal [SIGNAL_NUMBER] to the job. For example, use 9 to force kill a progress.
+* `-n:[SIGNAL_NUMBER]` Send signal [SIGNAL_NUMBER] to the job. For example, use 9 to force kill a progress.
 
 == OPTIONS
 
@@ -93,7 +95,7 @@ $ ylsjs kill 1
 WARNING: Failed to kill 1 with PID=16491. Retry with -n:9 option
 0 2021-03-11_14-10-27 /mnt/d/Work/LinuxMiniPrograms  (BSD)
 $ ylsjs kill 1 -n:9
-/mnt/d/Work/LinuxMiniPrograms/bin/exec/ylsjsd.sh: line 44: 16491 Killed                  bash "${YLSJSD}"/${lastq}.sh > "${YLSJSD}"/${lastq}.stdout 2> "${YLSJSD}"/${lastq}.stderr  (wd: /mnt/d/Work/LinuxMiniPrograms)
+/mnt/d/Work/LinuxMiniPrograms/bin/exec/ylsjsd.sh: line 44: 16491 Killed                  bash "${YLSJSD_HOME}"/${lastq}.sh > "${YLSJSD_HOME}"/${lastq}.stdout 2> "${YLSJSD_HOME}"/${lastq}.stderr  (wd: /mnt/d/Work/LinuxMiniPrograms)
 1 killed
 0 2021-03-11_14-10-34 /mnt/d/Work/LinuxMiniPrograms  (BSD)
 $ ylsjs ps
