@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=3.4
+VERSION=3.5
 oldifs="${IFS}"
 function _grep() {
 	regstr="${1}"
@@ -50,6 +50,10 @@ for opt in "${@}"; do
 			;;
 		"-x")
 			set -x
+			;;
+		"-p" | "--parallel")
+			# TODO: support parallel
+			warnh "Currently not supported"
 			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
