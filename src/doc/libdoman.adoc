@@ -56,7 +56,7 @@ BeforeAdd.sh
 src
 In_case_of_fire.sh
 LICENSE.md
-LMP_Pylib
+linuxminipy
 Readme.md
 bin
 doc

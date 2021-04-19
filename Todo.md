@@ -1,6 +1,7 @@
 # What will be Done
 
 ## AutoZip series:
+
 * lrzip
 * arc
 * ar
@@ -58,8 +59,21 @@
 
 * General-purpose enigma crypto.
 * Modular documentations.
+* GNU Autotools installation.
+* Google coding standard
+	* Shell
+	* C/C++
+* Test in Python
+* gitm in Python
+* libdo in Python
+* pydoc
 
 ## Documentation
 
-* `src/test/`
+* `opt/code_spec`
+* `src/doc`
 
+## Split into Modules
+
+* `git-mirror`
+* `ylsjs`

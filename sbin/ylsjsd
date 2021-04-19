@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.0
+VERSION=1.2
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
@@ -8,7 +8,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libman
 touch "${DN}"/../etc/ylsjsd.conf
 . "${DN}"/../etc/ylsjsd.conf
-if [ -z "${YLSJSD_HOME:-}" ];then
+if [ -z "${YLSJSD_HOME:-}" ]; then
 	warnh "YLSJSD_HOME undefined. Will use ${DN}/../var/ylsjs.d"
 	YLSJSD_HOME="${DN}"/../var/ylsjs.d
 fi
@@ -35,29 +35,29 @@ for opt in "${@}"; do
 	fi
 done
 YLSJSD_HOME_PID=""
-YLSJSD_HOME_PID="$(cat ylsjsd.lock 2> /dev/null)" || true
+YLSJSD_HOME_PID="$(cat ylsjsd.lock 2>/dev/null)" || true
 if [ "${STDS:-}" = "start" ]; then
-	if [ -z "${YLSJSD_HOME_PID}" ];then
+	if [ -z "${YLSJSD_HOME_PID}" ]; then
 		bash "${DN}"/exec/ylsjsd_local.sh &
 	else
 		warnh "ylsjsd already started at ${YLSJSD_HOME_PID}"
 	fi
 elif [ "${STDS:-}" = "stop" ]; then
-	if [ -z "${YLSJSD_HOME_PID}" ];then
+	if [ -z "${YLSJSD_HOME_PID}" ]; then
 		warnh "ylsjsd not started"
 	else
-		kill -15 "$(cat ylsjsd.lock 2> /dev/null)" || true
+		kill -15 "$(cat ylsjsd.lock 2>/dev/null)" || true
 	fi
-	rm -f ylsjsd.lock
+	rm -f ylsjsd.lock 2>/dev/null
 elif [ "${STDS:-}" = "restart" ]; then
 	ylsjsd stop
 	ylsjsd start
 elif [ "${STDS:-}" = "clear" ]; then
 	ylsjsd stop
-	if [ -n "${YLSJSD_HOME_PID}" ]; then killtree "${YLSJSD_HOME_PID}" 9;fi
+	if [ -n "${YLSJSD_HOME_PID}" ]; then killtree "${YLSJSD_HOME_PID}" 9; fi
 	rm -rf * || true
 elif [ "${STDS:-}" = "status" ]; then
-	cat ylsjsd.lock 2> /dev/null || errh "ylsjsd not started"
+	cat ylsjsd.lock 2>/dev/null || errh "ylsjsd not started"
 else
 	errh "Command '"${STDS:-}"' unknown"
 fi

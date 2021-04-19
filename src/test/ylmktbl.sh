@@ -3,7 +3,7 @@ set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 PROGNAME=ylmktbl
 . "${DN}"/00_libtest.sh
-cat << EOF | ylmktbl /dev/stdin &>> ylmktbl.log
+cat <<EOF | ylmktbl /dev/stdin &>>ylmktbl.log
 #1
 #S90
 #1

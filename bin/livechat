@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=2.0
+VERSION=2.1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 touch "${DN}"/../etc/livechat.conf
@@ -7,17 +7,17 @@ touch "${DN}"/../etc/livechat.conf
 . "${DN}"/../lib/libstr
 . "${DN}"/../lib/libman
 . "${DN}"/../etc/livechat.conf
-if [ -z "${LIVECHAT_HOME:-}" ];then
+if [ -z "${LIVECHAT_HOME:-}" ]; then
 	warnh "LIVECHAT_HOME undefined. Will use ${DN}/../var/livechat.d"
 	LIVECHAT_HOME="${DN}/../var/livechat.d"
 fi
-if [ -z "${LIVECHAT_MAX_JOB:-}" ];then
+if [ -z "${LIVECHAT_MAX_JOB:-}" ]; then
 	warnh "LIVECHAT_MAX_JOB undefined. Will use 100"
 	LIVECHAT_MAX_JOB=100
 fi
 function __send() {
 	trap "__exit" SIGINT SIGTERM
-	echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${2}" >> "${LIVECHAT_HOME}"/SYSTEM
+	echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${2}" >>"${LIVECHAT_HOME}"/SYSTEM
 }
 function __reciever() {
 	trap "__exit" SIGINT SIGTERM
@@ -89,8 +89,8 @@ infoh "PID of reciever: ${pid_rec}"
 
 while read -p ">" MESS_SD; do
 	trap "__exit" SIGINT SIGTERM
-	if [[ "${MESS_SD}" =~ ^!+ ]];then
-		bash -c ${MESS_SD:1} 2>&1 | while read line;do
+	if [[ "${MESS_SD}" =~ ^!+ ]]; then
+		bash -c ${MESS_SD:1} 2>&1 | while read line; do
 			__send "${LCUN}" "${line}"
 		done
 	elif [ "${MESS_SD}" != "logout" ] && [ "${MESS_SD}" != "exit" ] && [ "${MESS_SD}" != "quit" ]; then

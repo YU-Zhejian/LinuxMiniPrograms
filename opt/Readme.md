@@ -5,7 +5,9 @@ In this directory, you may find some interesting little programs which may help 
 They are:
 
 * `envgen` Environment generator and detector.
-* `code-spec` How to write readable codes (Python and Bash script) for green hands.
-* `LMP_dev` Develop LinuxMiniPrograms with ease.
+* `code_spec` How to write readable codes (Python and Bash script) for green hands.
+* `lmp_dev` Develop LinuxMiniPrograms with ease.
 
 More interesting little programs are being purposed!
+
+Files located under `exec/` are used for installation purpose. Do not execute them.

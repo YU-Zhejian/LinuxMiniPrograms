@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.0
+VERSION=1.1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
@@ -9,7 +9,7 @@ for fn in "${DN}"/exec/pst.co "${DN}"/exec/pst.co.exe; do
 		exec "${fn}" "${@}"
 	fi
 done
-if [ "${mypython}" != "ylukh" ];then
+if [ "${mypython}" != "ylukh" ]; then
 	exec "${mypython}" "${DN}"/exec/pst.py "${@}"
 else
 	errh "No python found!"

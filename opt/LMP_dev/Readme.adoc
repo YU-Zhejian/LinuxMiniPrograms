@@ -1,8 +1,0 @@
-= Readme for 'LMP_dev'
-
-From the `.adoc` suffix you may know this file is for developers only.
-
-In this folder, you will see scripts for developers. They are located under `bin` directory and are:
-
-* `BeforeAdd.sh` The script will turn all CRLF to LF.
-* `BumpVersion.sh` The script will search for all modified scripts and bump its version (Add 0.1 to the version number).

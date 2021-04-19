@@ -5,7 +5,7 @@ export TT = all
 ETC_SOURCES := $(notdir $(wildcard src/etc/*))
 ETC_OBJECTS := $(foreach fn, $(ETC_SOURCES), $(addprefix etc/, $(fn)))
 
-.PHONY : all pp test clean distclean doc etc share/doc/pdf share/doc/html share/doc/usage share/man #install uninstall
+.PHONY : all pp test clean distclean doc etc share/doc/pdf share/doc/html share/doc/usage share/man pytest #install uninstall
 
 doc: share/doc/pdf share/doc/html share/doc/usage share/man
 
@@ -39,6 +39,9 @@ pp:
 
 test:
 	bash src/test/00_index.sh $(TT)
+
+pytest:
+	bash src/pytest/00_index.sh $(TT)
 
 clean:
 	$(RM) src/test/*.t/

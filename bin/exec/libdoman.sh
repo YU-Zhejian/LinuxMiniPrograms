@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VERSION=7.1
+VERSION=7.2
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 warnh "This program is no longer monitored and updates may not be provided"
@@ -14,7 +14,7 @@ for opt in "${@}"; do
 			exit 0
 			;;
 		"-v" | "--version")
-			infoh "Version 7 Patch 1 in Bash, compatiable with libdo Version 2 & 3"
+			infoh "Version ${VERSION}, compatiable with libdo Version 2 & 3"
 			exit 0
 			;;
 		"-m" | "--machine")

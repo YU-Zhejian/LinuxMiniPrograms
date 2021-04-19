@@ -59,7 +59,7 @@ total 75K
 drwxrwxr-x+ 1 admin None    0 Jun  4 19:39 src/
 -rwxrwxr-x+ 1 admin None   84 Jun  3 20:37 In_case_of_fire.sh*
 -rw-rw-r--+ 1 admin None  35K Jun  3 20:37 LICENSE.md
-drwxrwxr-x+ 1 admin None    0 Jun  3 21:14 LMP_Pylib/
+drwxrwxr-x+ 1 admin None    0 Jun  3 21:14 linuxminipy/
 -rw-rw-r--+ 1 admin None 3.3K Jun  3 20:37 Readme.md
 drwxrwxr-x+ 1 admin None    0 Jun  5 22:34 bin/
 drwxrwxr-x+ 1 admin None    0 Jun  3 20:37 doc/
@@ -103,7 +103,7 @@ total 77K
 drwxrwxr-x+ 1 admin None    0 Jun  4 19:39 src/
 -rwxrwxr-x+ 1 admin None   84 Jun  3 20:37 In_case_of_fire.sh*
 -rw-rw-r--+ 1 admin None  35K Jun  3 20:37 LICENSE.md
-drwxrwxr-x+ 1 admin None    0 Jun  3 21:14 LMP_Pylib/
+drwxrwxr-x+ 1 admin None    0 Jun  3 21:14 linuxminipy/
 -rw-rw-r--+ 1 admin None 3.3K Jun  3 20:37 Readme.md
 drwxrwxr-x+ 1 admin None    0 Jun  6 00:25 bin/
 drwxrwxr-x+ 1 admin None    0 Jun  3 20:37 doc/
@@ -145,7 +145,7 @@ BeforeAdd.sh
 src
 In_case_of_fire.sh
 LICENSE.md
-LMP_Pylib
+linuxminipy
 Readme.md
 bin
 doc

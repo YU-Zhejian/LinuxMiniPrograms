@@ -1,230 +1,285 @@
 #!/usr/bin/env python
-# VERSION=3.0
+'''
+LibDO Manager in Python.
+'''
+import os
+import sys
 from datetime import datetime
 
-from LMP_Pylib.libisopt import *
-from LMP_Pylib.libmktbl import *
-from LMP_Pylib.libstr import *
+from linuxminipy.libisopt import isopt
+from linuxminipy.libmktbl import mktbl
+from linuxminipy.libstr import infoh, errh, warnh
+from linuxminipy.libylfile import mktemp
 
+VERSION = 3.2
 sstr = []
-cmd = 0
 ISMACHINE = False
-# Parse arguments
+FMTSTR = '%Y-%m-%d %H:%M:%S'
+fn = ''
 path = os.path.abspath(os.path.dirname(sys.argv[0]) + "/../") + '/'
-for sysarg in sys.argv[1:]:
-	if isopt(sysarg):
-		if sysarg == '-h' or sysarg == '--help':
-			os.system('yldoc libdoman')
-			exit(0)
-		elif sysarg == '-v' or sysarg == '--version':
-			print('Version ' + str(VERSION) + ' in Python, compatiable with libdo Version 2 & 3')
-			exit(0)
-		elif sysarg == '-m' or sysarg == '--machine':
-			cmd = 0
-			ISMACHINE = True
-		elif sysarg.startswith('-o:'):
-			cmd = int(sysarg[3:])
-		elif sysarg.startswith('--output:'):
-			cmd = int(sysarg[9:])
-		else:
-			warnh("Option " + sysarg + " invalid")
-	else:
-		sstr.append(sysarg)
+
+
+def main():
+    cmd = 0
+    global sstr
+    global ISMACHINE
+
+    for sysarg in sys.argv[1:]:
+        if isopt(sysarg):
+            if sysarg in ('-h', '--help'):
+                os.system('yldoc libdoman')
+                sys.exit(0)
+            elif sysarg in ('-v', '--version'):
+                print(str(VERSION) + ' in Python, compatible with libdo 2 & 3')
+                sys.exit(0)
+            elif sysarg in ('-m', '--machine'):
+                cmd = 0
+                ISMACHINE = True
+            elif sysarg.startswith('-o:'):
+                cmd = int(sysarg[3:])
+            elif sysarg.startswith('--output:'):
+                cmd = int(sysarg[9:])
+            else:
+                warnh("Option " + sysarg + " invalid")
+        else:
+            sstr.append(sysarg)
+    if cmd == 0:
+        cmd0()
+    else:
+        cmd1(cmd)
+    infoh("Finished")
 
 
 def timediff(diff_s: int) -> str:
-	hour = "0"
-	min = "0"
-	sec = str(diff_s)
-	if diff_s / 60 > 0:
-		min = str(diff_s // 60)
-		sec = str(diff_s % 60)
-	if int(min) / 60 > 0:
-		hour = str(int(min) // 60)
-		min = str(int(min) % 60)
-	return ':'.join([hour, min, sec])
+    hour = "0"
+    minute = "0"
+    sec = str(diff_s)
+    if diff_s / 60 > 0:
+        minute = str(diff_s // 60)
+        sec = str(diff_s % 60)
+    if int(minute) / 60 > 0:
+        hour = str(int(minute) // 60)
+        minute = str(int(minute) % 60)
+    return ':'.join([hour, minute, sec])
 
 
-class record:
-	"""
-	LibDO Record formatter
-	"""
+class LibdoRecord:
+    """
+    LibDO Record formatter
+    """
 
-	def __init__(self, cmd: str):
-		"""
-		Start a new LibDO Record
-		Exit: Exit status
-		Time: Time used to finish this step.
-		Time_s: Time started
-		Time_e: Time ended
-		:param cmd: Commandline, mandatory field
-		"""
-		self.cmd = cmd
-		self.Exit = "-1"
-		self.Time = "ERR"
-		self.Time_s = "0"
-		self.Time_e = "0"
+    def __init__(self, cmd_exec: str, pos_s: int = 0):
+        """
+        Start a new LibDO Record
+        exit_stat: exit_stat status
+        time: time used to finish this step.
+        time_s: time started
+        time_e: time ended
+        :param cmd_exec: Commandline, mandatory field
+        """
+        self.cmd_exec = cmd_exec
+        self.exit_stat = "-1"
+        self.time = "ERR"
+        self.time_s = "0"
+        self.time_e = "0"
+        self.pos_s = pos_s
+        self.pos_e = 0
 
-	def pp(self):
-		"""
-		To generate Time. Note the difference in machines and humans.
-		:return: Nothing
-		"""
-		if self.Time == "ERR":
-			if self.Time_e != "0" and self.Time_s != "0":
-				time_calc = (datetime.strptime(self.Time_e, '%Y-%m-%d %H:%M:%S') - datetime.strptime(self.Time_s,
-																									 '%Y-%m-%d %H:%M:%S')).seconds
-				if ISMACHINE:
-					self.Time = str(time_calc)
-				else:
-					self.Time = timediff(time_calc)
+    def pp(self):
+        """
+        To generate time. Note the difference in machines and humans.
+        :return: Nothing
+        """
+        if self.time == "ERR":
+            if self.time_e != "0" and self.time_s != "0":
+                time_calc = (datetime.strptime(self.time_e, FMTSTR) -
+                             datetime.strptime(self.time_s, FMTSTR)).seconds
+                if ISMACHINE:
+                    self.time = str(time_calc)
+                else:
+                    self.time = timediff(time_calc)
+
+    def pppos(self):
+        '''
+        Porcess position
+        :return: Nothing
+        '''
+        fh=open(fn,'r')
+        fh.seek(self.pos_s)
+        while True:
+            last_pos=fh.tell()
+            line=fh.readline()
+            if line=='':
+                self.pos_e=last_pos
+                return
+            line=line.strip()
+            if line.startswith('LIBDO PID'):
+                self.pos_s=fh.tell()
+                while True:
+                    last_pos=fh.tell()
+                    line=fh.readline()
+                    if line=='' or line.startswith('LIBDO STOPPED AT'):
+                        self.pos_e=last_pos
+                        return
+
+
+def extract_record(segment: [], pos_s: int) -> LibdoRecord:
+    '''
+    To extract libDO record from a list of strings
+    :param segment: A list of strings
+    :param pos_s: Start position in the file
+    :return: LibdoRecord extracted
+    '''
+    returnv = None
+    n_line = 0
+    while n_line < len(segment) - 1:
+        line = segment[n_line]
+        if line.startswith('LIBDO IS GOING TO EXECUTE'):
+            returnv = LibdoRecord(line[26:],pos_s)
+            # Similar structure to accelerate.
+            while n_line < len(segment) - 1:
+                line = segment[n_line]
+                n_line += 1
+                if line.startswith('LIBDO STARTED AT'):
+                    returnv.time_s = line.replace('.', '')[17:]
+                    while n_line < len(segment) - 1:
+                        line = segment[n_line]
+                        n_line += 1
+                        if line.startswith('LIBDO STOPPED AT'):
+                            returnv.time_e = line.replace('.', '')[17:]
+                            while n_line < len(segment) - 1:
+                                line = segment[n_line]
+                                n_line += 1
+                                if line == 'LIBDO EXITED SUCCESSFULLY':
+                                    returnv.exit_stat = "0"
+                                elif line.startswith('LIBDO FAILED, GOT'):
+                                    returnv.exit_stat = line.replace('.', '')[21:]
+                                break
+    return returnv
+
+
+def extract_segment(n: int = -1) -> []:
+    '''
+    Read the file and extract segments, then throw it to extract_record
+    :param: int: Which segment to extract. -1 for all.
+    :return: A list of libdo records
+    '''
+    global fn
+    grep_lns = open(fn, "r")
+    Proj = []
+    n_record = 0
+    pos_s = 0
+    while True:
+        line = grep_lns.readline()
+        segment = []
+        if line == '':
+            break
+        line = line.strip()
+        if line.startswith('LIBDO IS GOING TO EXECUTE'):
+            pos_s = grep_lns.tell()
+            n_record += 1
+            segment.append(line)
+            infoh("Loading " + fn + "..." + str(n_record) + " item proceeded")
+            while True:
+                last_pos = grep_lns.tell()
+                line = grep_lns.readline()
+                if line == '':
+                    break
+                elif line.startswith('LIBDO IS GOING TO EXECUTE'):
+                    segment.append(line)  # To avoid the left of the last line.
+                    grep_lns.seek(last_pos)
+                    break
+                elif line.startswith('LIBDO'):
+                    segment.append(line.strip('\n'))
+            segment.append(line)
+        if n == -1 or n == n_record:
+            Proj.append(extract_record(segment, pos_s))
+    grep_lns.close()
+    return Proj
+
+
+def extract_procedure(start_pos: int, end_pos: int):
+    '''
+    Extract specific lines and put it to stdout
+    :param fn: Filename
+    :param start_pos: Start line number
+    :param end_pos: End line number
+    :return: Nothing
+    '''
+    global fn
+    fh = open(fn, 'r')
+    fh.seek(start_pos)
+    i = start_pos
+    while i < end_pos:
+        print(fh.read(1),end='')
+        i=fh.tell()
 
 
 # List all processes
-if cmd == 0:
-	# Fix relative path
-	for fn in sstr:
-		fn_ = path + fn
-		if not os.path.isfile(fn_):
-			if os.path.isfile(fn):
-				fn_ = fn
-			else:
-				errh("Filename " + fn_ + " invalid. Use libdoman -h for help")
-		fn = fn_
-		i = 0
-		grep_lns = open(fn, "r")
-		Proj = []
-		# Read file
-		while True:
-			line = grep_lns.readline()
-			if line == '':
-				break
-			line = line.strip()
-			if line.startswith('LIBDO IS GOING TO EXECUTE'):
-				i += 1
-				infoh("Loading " + fn + "..." + str(i) + " item proceeded")
-				Proj.append(record(line[26:]))
-				# Similar structure to accelerate.
-				# It is clear that there will not be two 'LIBDO STARTED AT' in one record
-				while True:
-					last_pos = grep_lns.tell()
-					line = grep_lns.readline()
-					if line == '':
-						break
-					line = line.strip()
-					if line.startswith('LIBDO IS GOING TO EXECUTE'):
-						grep_lns.seek(last_pos)
-						break
-					elif line.startswith('LIBDO STARTED AT'):
-						Proj[-1].Time_s = line.replace('.', '')[17:]
-						while True:
-							last_pos = grep_lns.tell()
-							line = grep_lns.readline()
-							if line == '':
-								break
-							line = line.strip()
-							if line.startswith('LIBDO IS GOING TO EXECUTE'):
-								grep_lns.seek(last_pos)
-								break
-							elif line.startswith('LIBDO STOPPED AT'):
-								Proj[-1].Time_e = line.replace('.', '')[17:]
-								while True:
-									last_pos = grep_lns.tell()
-									line = grep_lns.readline()
-									if line == '':
-										break
-									line = line.strip()
-									if line.startswith('LIBDO IS GOING TO EXECUTE'):
-										grep_lns.seek(last_pos)
-										break
-									elif line == 'LIBDO EXITED SUCCESSFULLY':
-										Proj[-1].Exit = "0"
-									elif line.startswith('LIBDO FAILED, GOT'):
-										Proj[-1].Exit = line.replace('.', '')[21:]
+def cmd0():
+    global fn
+    global sstr
+    # Fix relative path
+    for fn in sstr:
+        fn_ = path + fn
+        if not os.path.isfile(fn_):
+            if os.path.isfile(fn):
+                fn_ = fn
+            else:
+                errh("Filename " + fn_ + " invalid. Use libdoman -h for help")
+        fn = fn_
+        records = extract_segment()
 
-		infoh("File " + fn + " loaded. Making table...")
-		if ISMACHINE:
-			for rec in Proj:
-				rec.pp()
-				print('\t'.join([rec.cmd, rec.Exit, rec.Time]))
-		else:
-			tmpf = mktemp("libdo_man.XXXXXX")
-			tmpf_hand = open(tmpf, 'w')
-			tmpf_hand.write('#1\n#S90\n#1\n#1\nNO.;COMMAND;EXIT;TIME\n')
-			i = 0
-			for rec in Proj:
-				i += 1
-				rec.pp()
-				tmpf_hand.write(';'.join([str(i), rec.cmd, rec.Exit, rec.Time]) + '\n')
-			tmpf_hand.close()
-			mktbl(tmpf)
-			os.remove(tmpf)
-else:
-	fn = path + sstr[0]
-	if not os.path.isfile(fn):
-		if os.path.isfile(sstr[0]):
-			fn = sstr[0]
-		else:
-			errh("Filename " + fn + " invalid. Use libdoman -h for help")
-	ln_s = 0
-	ln_e = 0
-	tmpf = mktemp("libdo_man.XXXXXX")
-	os.system('cat -n "' + fn + '" | grep "LIBDO IS GOING TO EXECUTE" >"' + tmpf + '"')
-	grep_lns = ylreadline(tmpf)
-	os.remove(tmpf)
-	ln = 0
-	for line in grep_lns:
-		ln = ln + 1
-		if ln == cmd:
-			ln_s = int(line.strip().split("\t")[0])
-		elif ln > cmd:
-			ln_e = int(line.strip().split("\t")[0]) - 1
-			break
-	if ln_s == 0:
-		errh(str(cmd) + " invalid")
-	if ln_e == 0:
-		ln_e = pywcl(fn)
-	tmpf = mktemp("libdo_man.XXXXXX")
-	os.system("head -n " + str(ln_s + 1) + ' "' + fn + '" | tail -n 2 > "' + tmpf + '"')
-	os.system("head -n " + str(ln_e) + ' "' + fn + '" | tail -n 2 >> "' + tmpf + '"')
-	grep_lns = ylreadline(tmpf)
-	CMD = grep_lns[0][26:]
-	Time_s = grep_lns[1][17:]
-	if len(grep_lns) < 4:
-		Time_e = 0
-		Exit = "-1"
-		Time = "ERR"
-	else:
-		i = 2
-		line = grep_lns[i]
-		if line.startswith('LIBDO STOPPED AT'):
-			Time_e = line[17:]
-			line = grep_lns[i]
-			Time = timediff((datetime.strptime(Time_s, '%Y-%m-%d %H:%M:%S') - datetime.strptime(Time_e,
-																								'%Y-%m-%d %H:%M:%S')).seconds)
-			i += 1
-			line = grep_lns[i]
-		else:
-			Time_e = 0
-			Exit = "-1"
-			Time = "ERR"
-		if line.startswith('LIBDO EXITED SUCCESSFULLY'):
-			Exit = "0"
-		elif line.startswith('LIBDO FAILED, GOT'):
-			Exit = line[21:]
-		else:
-			Exit = "-1"
-	print("\033[33mJOB_CMD	  \033[36m:", CMD, "\033[0m")
-	print("\033[33mELAPSED_TIME \033[36m:", Time_s, "TO", Time_e, ", Total", Time, "\033[0m")
-	print("\033[33mEXIT_STATUS  \033[36m:", Exit, "\033[0m")
-	print("\033[33m________________JOB_________OUTPUT________________\033[0m")
-	tls = ln_s + 2
-	els = ln_e - 2
-	if ln_e <= tls:
-		print("\033[33mNO OUTPUT\033[0m")
-	elif Exit == "-1":
-		os.system('head -n ' + str(ln_e) + ' "' + fn + '" | tail -n ' + str(tls - ln_e))
-	else:
-		os.system('head -n ' + str(els) + ' "' + fn + '" | tail -n ' + str(tls - els + 1))
-	print("\033[33m_______________OUTPUT____FINISHED________________\033[0m")
-infoh("Finished")
+        infoh("File " + fn + " loaded. Making table...")
+        if ISMACHINE:
+            for rec in records:
+                rec.pp()
+                print('\t'.join([rec.cmd_exec, rec.exit_stat, rec.time]))
+        else:
+            tmpf = mktemp("libdo_man.XXXXXX")
+            tmpf_hand = open(tmpf, 'w')
+            tmpf_hand.write('#1\n#S90\n#1\n#1\n#1\n#1\nNO.;COMMAND;EXIT;START;END;TIME\n')
+            i = 0
+            for rec in records:
+                i += 1
+                rec.pp()
+                tmpf_hand.write(';'.join([str(i),
+                                          rec.cmd_exec,
+                                          rec.exit_stat,
+                                          rec.time_s,
+                                          rec.time_e,
+                                          rec.time]) + '\n')
+            tmpf_hand.close()
+            mktbl(tmpf)
+            os.remove(tmpf)
+
+
+def cmd1(cmd: int):
+    '''
+    Extrac a specific record
+    :param cmd: which record to be extracted
+    :return: Nothing, Will be printed
+    '''
+    global fn
+    global sstr
+    fn = sstr[0]
+    fn_ = path + fn
+    if not os.path.isfile(fn_):
+        if os.path.isfile(fn):
+            fn_ = fn
+        else:
+            errh("Filename " + fn_ + " invalid. Use libdoman -h for help")
+        fn = fn_
+    record = extract_segment(cmd)[0]
+    record.pp()
+    record.pppos()
+    print("\033[33mJOB_CMD      \033[36m:", record.cmd_exec, "\033[0m")
+    print("\033[33mELAPSED_TIME \033[36m:", record.time_s, "TO", record.time_e, ", Total", record.time, "\033[0m")
+    print("\033[33mEXIT_STATUS  \033[36m:", record.exit_stat, "\033[0m")
+    print("\033[33m________________JOB_________OUTPUT________________\033[0m")
+    extract_procedure(record.pos_s,record.pos_e)
+    print("\033[33m_______________OUTPUT____FINISHED________________\033[0m")
+
+
+if __name__ == '__main__':
+    main()

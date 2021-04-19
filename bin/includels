@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.0
+VERSION=1.1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
@@ -13,13 +13,11 @@ oldifs="${IFS}"
 gccinclude=$(for dir in \
 	$(__addpref 'lib*/gcc*/*/*/include') \
 	$(__addpref 'lib*/gcc*/*/include') \
-	$(__addpref 'lib*/gcc*/include')
-	do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+	$(__addpref 'lib*/gcc*/include'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
 
 clanginclude=$(for dir in \
 	$(__addpref 'lib*/clang*/*/include') \
-	$(__addpref 'lib*/clang*/include')
-	do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+	$(__addpref 'lib*/clang*/include'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
 
 INPATH="/clang*/include:/mingw*/include:$(__addpref 'include'):${gccinclude}:${clanginclude}:${C_INCLUDE_PATH:-}"${CPLUS_INCLUDE_PATH:-}
 . "${DN}"/../lib/libpath
@@ -59,7 +57,7 @@ unset valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	find "${dir}" 2> /dev/null >> "${tmpf}" || true
+	find "${dir}" 2>/dev/null >>"${tmpf}" || true
 done
 if [ ${#STDS[@]} -eq 0 ]; then
 	cat "${tmpf}"

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-VERSION=3.3
+VERSION=3.5
 oldifs="${IFS}"
 function _grep() {
 	regstr="${1}"
 	local tmpff=$(mktemp -t pls.XXXXXX)
-	cat "${tmpf}" | grep -v "${regstr}" > "${tmpff}"
+	cat "${tmpf}" | grep -v "${regstr}" >"${tmpff}"
 	mv "${tmpff}" "${tmpf}"
 }
 . "${DN}"/../lib/libisopt
@@ -51,6 +51,10 @@ for opt in "${@}"; do
 		"-x")
 			set -x
 			;;
+		"-p" | "--parallel")
+			# TODO: support parallel
+			warnh "Currently not supported"
+			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
 			;;
@@ -63,7 +67,7 @@ unset invalid_path valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	ls -1 -F "${dir}" 2> /dev/null | sed "s;^;$(echo "${dir}")/;" >> "${tmpf}" || true
+	ls -1 -F "${dir}" 2>/dev/null | sed "s;^;$(echo "${dir}")/;" >>"${tmpf}" || true
 done
 ${allow_d} || _grep '/$'
 ${allow_x} || _grep '\*$'
