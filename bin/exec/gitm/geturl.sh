@@ -4,7 +4,8 @@ VERSION=1.2
 for opt in "${UKOPT[@]}"; do
 	case "${opt}" in
 	"-h" | "--help")
-		yldoc git-mirror_geturl
+	# TODO
+		warnh "TODO"
 		exit 0
 		;;
 	"-v" | "--version")
