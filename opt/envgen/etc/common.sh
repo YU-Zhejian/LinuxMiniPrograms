@@ -39,6 +39,7 @@ alias df="df -h" # More readable df.
 # alias df="duf --all" # duf to replace df
 alias diff="diff -u" # Make the output of $(diff) similar to git diff.
 alias ls="ls -lhF --color=auto" # More readable ls.
+# alias ls="exa -lhF --color=auto" # Use exa to replace ls.
 alias grep="grep --color=auto" # More readable grep.
 # alias grep="ack" # ack to replace grep.
 # Shutdown, reboot and sudo is banned. For those who need to those commands, please comment the following three lines.

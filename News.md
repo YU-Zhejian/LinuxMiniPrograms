@@ -1,3 +1,3 @@
 # News
 
-Here records all news since the first relase.
+Here records all news since the first release.

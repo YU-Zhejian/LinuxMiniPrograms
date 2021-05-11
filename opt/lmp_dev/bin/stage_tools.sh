@@ -23,7 +23,7 @@ function bump_version(){
 			continue
 		fi
 		infoh "Modifying ${line}..."
-		smallVersion=$(grep 'VERSION=' "${line}" | head -n 1 | cut -f 2 -d '.')
+		smallVersion=$(grep -e 'VERSION=' -e 'VERSION =' "${line}" | head -n 1 | cut -f 2 -d '.')
 		smallVersion=$((${smallVersion} + 1))
 		sed -i'.bak' 's;VERSION=\([0-9]*\)\.\([0-9]*\)$;VERSION=\1.'"$(echo ${smallVersion})"';' "${line}"
 	done
