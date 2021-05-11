@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-VERSION=1.3
+# shellcheck disable=SC2034
+VERSION=1.4
 set -eu
 OLDIFS="${IFS}"
 DN="$(readlink -f "$(dirname "${0}")/../../")"
@@ -29,9 +30,10 @@ fi
 function __change_dir_permissions() {
 	ls -1 | while read file_name; do
 		if [ -f "${file_name}" ]; then
+			echo - "${file_name}"
 			chmod -x "${file_name}"
 		else
-			chmod +x "${file_name}"
+			echo + "${file_name}"
 			cd "${file_name}"
 			__change_dir_permissions
 			cd ..

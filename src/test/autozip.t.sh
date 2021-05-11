@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
+# shellcheck disable=SC2034
 PROGNAME=autozip
 . "${DN}"/00_libtest.sh
 DO dd if=/dev/zero of=tf bs=512 count=1

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034
+VERSION=1.1
 set -u +e
-cd "$(readlink -f "$(dirname "${0}")")"/../../../
+cd "$(readlink -f "$(dirname "${0}")")"/../../../ || exit 1
 . lib/libstr
 function rm_crlf(){
 	if which dos2unix &>>/dev/null; then

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VERSION=6.1
+# VERSION=6.2
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.conf
@@ -69,7 +69,7 @@ function autozipck() {
 	ckavail "br" brotli && BR=true || BR=false
 	ckavail "7z" 7za 7z && Z7=true || Z7=false
 	ckavail "lzfse" lzfse && LZFSE=true || LZFSE=false
-	ckavail "rar" "rar unrar" "7za" "7z" && RAR=true || RAR=false
+	ckavail "rar" "rar unrar" && RAR=true || RAR=false
 	ckavail "zip" "zip unzip" && ZIP=true || ZIP=false
 	echo "Combined formats:"
 	${TAR} && ${GZ} && printf "tar.gz tgz "
