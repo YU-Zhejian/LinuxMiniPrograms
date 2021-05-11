@@ -12,7 +12,7 @@ function __prevp (){
 	[ ${r} -eq 0 ] && echo -e "\e[42m\e[30m${r}\e[32m\e[46m \e[0m" || echo -e "\e[41m\e[30m${r}\e[31m\e[46m \e[0m"
 }
 
-
+# Useful paths if you install software with configure option --prefix="${HOME}/usr/local".
 export PATH="${HOME}/.local/bin:${HOME}/bin:${HOME}/usr/bin:${HOME}/usr/local/bin:${PATH}"
 export CMAKE_PREFIX_PATH="${HOME}/usr/local/CMAKE_PREFIX:${CMAKE_PREFIX_PATH:-}"
 export PKG_CONFIG_PATH="${HOME}/usr/local/lib/pkgconfig/:${HOME}/usr/local/lib64/pkgconfig/:${PKG_CONFIG_PATH:-}"
@@ -28,19 +28,22 @@ export C_INCLUDE_PATH="${HOME}/usr/local/include:${C_INCLUDE_PATH:-}"
 # Perl system settings, commented for causing problems
 # export PERL5LIB="/etc/perl:/usr/local/lib/x86_64-linux-gnu/perl/5*:/usr/local/share/perl/5*:/usr/lib/x86_64-linux-gnu/perl5/5*:/usr/share/perl5:/usr/lib/x86_64-linux-gnu/perl/5*:/usr/share/perl/5*:/usr/local/lib/site_perl:/usr/lib/x86_64-linux-gnu/perl-base:${PERL5LIB:-}"
 
-
-# History settings.
-export HISTTIMEFORMAT='%F %T ' # History with time.
-export HISTSIZE=50000 # Larger history size.
-
 # Useful aliases. Will only work in commandline but not scripts.
 alias du="du -h" # More readable du.
 alias df="df -h" # More readable df.
 # alias df="duf --all" # duf to replace df
 alias diff="diff -u" # Make the output of $(diff) similar to git diff.
 alias ls="ls -lhF --color=auto" # More readable ls.
+# Common ls aliases
+alias ll='ls -l'
+alias la='ls -A'
+alias l='ls -CF'
 # alias ls="exa -lhF --color=auto" # Use exa to replace ls.
 alias grep="grep --color=auto" # More readable grep.
+alias fgrep='fgrep --color=auto' # More readable grep.
+alias egrep='egrep --color=auto' # More readable egrep.
+alias diff='diff --color=auto' # More readable diff.
+alias ip='ip --color=auto' # More readable ip.
 # alias grep="ack" # ack to replace grep.
 # Shutdown, reboot and sudo is banned. For those who need to those commands, please comment the following three lines.
 alias shutdown="echo What the hell you\'re thinking?\!"

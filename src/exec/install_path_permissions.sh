@@ -7,23 +7,29 @@ DN="$(readlink -f "$(dirname "${0}")/../../")"
 cd "${DN}"
 . lib/libstr
 . etc/path.conf
+
+function rcWrite(){
+	echo "${1}" | tee -a "${HOME}"/.bashrc | tee -a "${HOME}"/.zshrc
+	# TODO: Support SH, ZSH and CSH
+}
+
 #========Install PATH========
 if ! which yldoc &>/dev/null; then
-	echo "export PATH=\"${DN}/bin/:\${PATH:-}\"" >>"${HOME}"/.bashrc
+	rcWrite "export PATH=\"${DN}/bin/:\${PATH:-}\""
 	infoh "Will configure PATH (bin)...\033[32mPASSED"
 fi
 if ! which ylsjsd &>/dev/null; then
-	echo "export PATH=\"${DN}/sbin/:\${PATH:-}\"" >>"${HOME}"/.bashrc
+	rcWrite "export PATH=\"${DN}/sbin/:\${PATH:-}\""
 	infoh "Will configure PATH (sbin)...\033[32mPASSED"
 fi
 #========Install PYTHONPATH========
 if [ "${mypython}" != "ylukh" ] && ! echo "from linuxminipy.libylfile import *" | "${mypython}" &>>/dev/null; then
-	echo "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\"" >>"${HOME}"/.bashrc
+	rcWrite "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\""
 	infoh "Will configure PYTHONPATH...\033[32mPASSED"
 fi
 #========Install MANPATH========
 if [ -e man/man1 ] && ! man yldoc &>>/dev/null; then
-	echo "export MANPATH=\"${DN}/man/:\${MANPATH:-}\"" >>"${HOME}"/.bashrc
+	rcWrite "export MANPATH=\"${DN}/man/:\${MANPATH:-}\""
 	infoh "Will configure MANPATH...\033[32mPASSED"
 fi
 #========Install Permissions========

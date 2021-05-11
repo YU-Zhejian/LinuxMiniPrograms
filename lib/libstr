@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # VERSION=1.1
 function trimstr() {
-	: "${1#"${1%%[![:space:]]*}"}"
-	: "${_%"${_##*[![:space:]]}"}"
-	printf '%s\n' "$_"
+	: "${1#"${1%%[![:space:]]*}"}" # Trim trailing space
+	: "${_%"${_##*[![:space:]]}"}" # Trim leading space
+	printf '%s\n' "${_}"
 }
 
 function errh() {

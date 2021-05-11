@@ -27,6 +27,9 @@ for pg in "${@}"; do
 	"bash")
 		INSTALL_BASH_SETTINGS=true
 		;;
+	"zsh")
+		INSTALL_ZSH_SETTINGS=true
+		;;
 	"conda")
 		INSTALL_CONDA=true
 		;;
@@ -63,13 +66,16 @@ sed -i 's/\r$//g' etc/*
 # ________________________Installing bashrc with common aliases________________________
 if ${INSTALL_BASH_SETTINGS}; then
 	mv "${HOME}"/.bashrc .bashrc.bak
-	# if ! __git_ps1 &>>/dev/null; then
-	# git clone --depth 1 --verbose https://github.com/git/git
-	# mv git/contrib/completion/git-prompt.sh "${HOME}"/.git-prompt.sh
-	mv etc/git.bashrc "${HOME}"/.git-prompt.sh
-	# fi
+	mv etc/git.sh "${HOME}"/.git-prompt.sh
 	mv etc/common.bashrc "${HOME}"/.bashrc
-	[ -f "${HOME}/.profile" ] || echo ". \${HOME}/.bashrc" >>"${HOME}/.profile"
+	mv etc/common.sh "${HOME}"/.common.sh
+	[ -f "${HOME}/.bash_profile" ] || echo ". \${HOME}/.bashrc" >>"${HOME}/.profile"
+fi
+if ${INSTALL_ZSH_SETTINGS}; then
+	mv "${HOME}"/.zshrc .zshrc.bak
+	mv etc/git.sh "${HOME}"/.git-prompt.sh
+	mv etc/common.zshrc "${HOME}"/.zshrc
+	mv etc/common.sh "${HOME}"/.common.sh
 fi
 
 # ________________________Installing Miniconda________________________

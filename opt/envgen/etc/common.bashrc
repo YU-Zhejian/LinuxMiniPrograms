@@ -1,5 +1,6 @@
 # Source global definitions.
 [ -f /etc/bashrc ] && . /etc/bashrc
+[ -f "${HOME}"/.common.sh ] && . "${HOME}"/.common.sh
 # There's no need to source "${HOME}/.profile". It gets executed before this one.
 
 # Git helper, can be found at the source code of Git.
@@ -10,17 +11,16 @@ export GIT_PS1_SHOWUPSTREAM="verbose"
 # Fantastic ${PS1} with additional linebreak.
 function __prevp (){
 	local r=${?}
-	[ ${r} -eq 0 ] && echo -e "\e[42m\e[30m${r}\e[32m\e[46m \e[0m" || echo -e "\e[41m\e[30m${r}\e[31m\e[46m \e[0m"
+	[ ${r} -eq 0 ] && echo -e "\e[32m${r}\e[0m" || echo -e "\e[31m${r}\e[0m"
 }
 
 # TODO: bugs in MSYS2
-export PS1='$(__prevp)\e[30m\e[46m$(date +%Y-%m-%d_%H-%M-%S)\e[43m\e[36m \e[30m${PWD}\e[42m\e[33m\e[30m$(__git_ps1 " (%s)")\e[0m\n\$ '
-# It displays like '(base) 0 2021-02-19_20-50-49 /mnt/d/Work/LinuxMiniPrograms  (BSD)' in a Git repository.
-#                      |   |          |                     |                     |_ The Git branch you're on.
-#                      |   |          |                     |_______________________ Your working directory.
-#                      |   |          |_____________________________________________ Date & Time when the previous command finishes.
-#                      |   |________________________________________________________ Exit status of the previous command.
-#                      |____________________________________________________________ Conda environment you're on.
+export PS1='\[\e]0;\u@\h: \w\a\]\[\033[;32m\]┌──[$(__prevp)]-${debian_chroot:+($debian_chroot)──}${VIRTUAL_ENV:+(\[\033[0;1m\]$(basename $VIRTUAL_ENV)\[\033[;32m\])}(\[\033[1;34m\]\u@\h\[\033[;32m\])-$(date +%Y-%m-%d_%H-%M-%S)-[\[\033[0;1m\]${PWD}\[\033[;32m\]]$(__git_ps1 " (%s)")\n\[\033[;32m\]└─\[\033[1;34m\]\$\[\033[0m\] '
+# It displays like TODO
 
-# Conda and LinuxBrew setup scripts omitted.
-# Useful paths if you install software with configure option --prefix="${HOME}/usr/local".
+# History settings.
+export HISTTIMEFORMAT='%F %T ' # History with time.
+export HISTFILE="${HOME}/.bash_history"
+# Larger history size.
+export HISTSIZE=50000
+export HISTFILESIZE=50000
