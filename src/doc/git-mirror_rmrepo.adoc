@@ -1,0 +1,29 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= git-mirror_rmrepo(1)
+
+== NAME
+
+git-mirror_rmrepo - Remove a repository and its record.
+
+== SYNOPSIS
+
+`git-mirror rmrepo [URL/UUID]`
+
+OPTION: `-f` for force removal without confirmation.
+
+[source]
+----
+0 2021-02-09_15-29-12 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ git-mirror rmrepo da2e4859-1cb2-40c0-a375-f9d557aafe09
+YuZJLab Git Mirror Manager
+Copyright (C) 2020-2021 YU Zhejian
+WARNING: GITM_HOME undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/git-mirror.d
+https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+Will remove above repos. Continue? [Y/n] >Y
+Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 rm started
+Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 rm success
+----
+
+include::include/copy.adoc[]

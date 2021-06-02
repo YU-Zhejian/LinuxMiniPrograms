@@ -20,6 +20,7 @@ INSTALL_BREW=false
 INSTALL_EMACS_SETTINGS=false
 INSTALL_R_SETTINGS=false
 INSTALL_RUBY_SETTINGS=false
+CONDA_BASE_PKGS=("ipython" "matplotlib" "numpy" "pandoc" "tqdm" "jupyterlab")
 
 for pg in "${@}"; do
 	case "${pg}" in
@@ -79,8 +80,9 @@ if ${INSTALL_CONDA} && ! which conda &>>/dev/null; then
 	cp etc/.condarc "${HOME}"/.condarc
 	cat etc/conda.bashrc >>"${HOME}"/.bashrc
 	. etc/conda.bashrc
+	conda config --set report_errors false # Disable error reporting
 	conda update --all -y
-	conda install -y ipython matplotlib notebook numpy pandoc tqdm # jupyterlab
+	conda install -y "${CONDA_BASE_PKGS[@]}"
 	conda clean --all -y
 	pip install thefuck
 fi
@@ -165,4 +167,15 @@ fi
 if ${INSTALL_RUBY_SETTINGS}; then
 	mv "${HOME}"/.gemrc .gemrc.bak
 	cp etc/common.gemrc "${HOME}"/.gemrc
+fi
+
+# ________________________Machine Learning________________________
+if ${INSTALL_MACHINE_LEARNING}; then
+	# TODO: Not configured in the headers
+	for lib in pytorch-gpu tensorflow-gpu mxnet-gpu;do
+		conda create -n "${lib}" "${lib}" "${CONDA_BASE_PKGS[@]}"
+	done
+	conda activate tensorflow-gpu
+	conda install keras-gpu
+	conda deactivate
 fi

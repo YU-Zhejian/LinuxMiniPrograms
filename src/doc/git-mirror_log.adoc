@@ -1,0 +1,42 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= git-mirror_rmrecord(1)
+
+== NAME
+
+git-mirror_rmrecord - Show logs.
+
+== SYNOPSIS
+
+`git-mirror log`
+
+[source]
+----
+0 2021-02-09_15-29-42 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ git-mirror log
+YuZJLab Git Mirror Manager
+Copyright (C) 2020-2021 YU Zhejian
+WARNING: GITM_HOME undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/git-mirror.d
+2021-02-09 15:25:37     ADD             SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:26:40     ADD             SUCCESS https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+2021-02-09 15:27:13     SYNC_CPDIR      SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:27:14     SYNC            SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:27:14     SYNC_CPDIR      SUCCESS https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+2021-02-09 15:27:17     SYNC            SUCCESS https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+2021-02-09 15:27:53     GC_CPDIR        SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:27:53     GC              SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:27:53     GC_CPDIR        SUCCESS https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+2021-02-09 15:27:53     GC              SUCCESS https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+2021-02-09 15:28:21     LSBRANCH        SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:28:21     LSBRANCH        SUCCESS https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+2021-02-09 15:29:00     LOCKLS          NOLOCK
+2021-02-09 15:29:12     LS              SUCCESS
+2021-02-09 15:29:42     RM_MVDIR        SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:29:42     RMRECORD        SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:29:42     RMDIR           SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+2021-02-09 15:29:42     RM              SUCCESS https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+Repository readlog success
+----
+
+include::include/copy.adoc[]

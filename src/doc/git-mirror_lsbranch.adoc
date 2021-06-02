@@ -1,0 +1,31 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= git-mirror_lsbranch(1)
+
+== NAME
+
+git-mirror_lsbranch - Show branch histories.
+
+== SYNOPSIS
+
+`git-mirror lsbranch [URL/UUID]`
+
+Show master branches, and their last commit of some or all repository. If `[URL/UUID]` is omitted, will list those of all repository.
+
+[source]
+----
+0 2021-02-09_15-27-53 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ git-mirror lsbranch
+YuZJLab Git Mirror Manager
+Copyright (C) 2020-2021 YU Zhejian
+WARNING: GITM_HOME undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/git-mirror.d
+https://github.com/YuZJLab/R_CheatSheet da2e4859-1cb2-40c0-a375-f9d557aafe09
+https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
+https://github.com/YuZJLab/R_CheatSheet
+* master d858268 Contents in week 17 added
+https://github.com/YuZJLab/SoftInstall
+* master 8bf2bae Some software added
+----
+
+include::include/copy.adoc[]

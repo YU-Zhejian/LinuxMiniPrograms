@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-VERSION=1.0
+VERSION=1.1
 for opt in "${UKOPT[@]}"; do
 	case "${opt}" in
 	"-h" | "--help")
-		yldoc git-mirror
+		yldoc git-mirror_rmrecord
 		exit 0
 		;;
 	"-v" | "--version")

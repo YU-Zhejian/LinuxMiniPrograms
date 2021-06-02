@@ -1,0 +1,40 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= git-mirror_lock(1)
+
+== NAME
+
+git-mirror_lock - Adding or removing locks to all or some repositories.
+
+== SYNOPSIS
+
+`git-mirror lock [SUBCOMMANDS]`, with [SUBCOMMANDS] introduced below.
+
+== SUBCOMMAND
+
+=== ls
+
+List all locks.
+
+=== rm
+
+SYNOPSIS: `git-mirror lock rm [URL/UUID]`
+
+Remove lock from `[URL/UUID]`. Stop if the process is still running.
+
+OPTION: `-f` for force removal without confirmation.
+
+=== rm_sarg
+
+Remove sync.lock, rm.lock, archive.lock and gc.lock.
+
+=== add
+
+SYNOPSIS: `git-mirror lock add [URL/UUID]`
+
+Add lock to `[URL/UUID]`. Can be removed with `git-mirror lock rm`.
+
+OPTION: `-f` for force add without confirmation.
+
+include::include/copy.adoc[]
