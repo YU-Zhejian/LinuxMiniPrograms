@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-VERSION=1.1
+VERSION=1.2
 . "${DN}"/../lib/libman
 for opt in "${UKOPT[@]}"; do
 	case "${opt}" in
 	"-h" | "--help")
-		yldoc git-mirror
+	# TODO
+		warnh "TODO"
 		exit 0
 		;;
 	"-v" | "--version")

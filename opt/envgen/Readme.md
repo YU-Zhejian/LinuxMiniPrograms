@@ -175,11 +175,17 @@ You may see more documentations in the script itself or `doc`.
 
 ## `envgen.sh`: Fast Environmental Generation on a New Computer
 
-When migrating to a new computer, you may be interested in setting up a working system on the fly. `envgen.sh` is used to solve this problem. What it will do is listed as follows:
+When migrating to a new computer, you may be interested in setting up a working system on the fly. `envgen.sh` is used to solve this problem.
+
+Usage: `bash envgen.sh [feature] [[feature]...]`
+
+For example, if you wish to install support for Bash, you may execute `bash envgen.sh bash`. If you wish to install support for both Bash and R, you may execute `bash envgen.sh bash r`.
+
+What it will do is listed as follows:
 
 * Make `${HOME}"/envgen_"$(date +%Y-%m-%d_%H-%M-%S)"` as where temporary files and backup files are kept.
 
-* Get a new functional `.bashrc` with following modifications.
+* (bash) Get a new functional `.bashrc` with following modifications.
 	* A new prompt (`${PS1}`) like
 		```
 		0 2021-01-19_20-43-47 /home/yuzj/LinuxMiniPrograms/opt/envgen  (BSD) $
@@ -195,14 +201,14 @@ When migrating to a new computer, you may be interested in setting up a working 
 	
 	* You may see more explanations in `etc/common.bashrc`.
 	
-* LinusBrew is a application manager for users without root permission. It will be installed with common updates and more software (like Git and R) will be installed. It will take about 3GiB of space.
+* (brew) LinusBrew is a application manager for users without root permission. It will be installed with common updates and more software (like Git and R) will be installed. It will take about 3 GiB of space. Mirror will be setted to TUNA.
 
-* Miniconda installation with Jupyter Lab and other useful statistical packages. It will take about another 3GiB of space.
+*(conda) Miniconda installation with Jupyter Lab and other useful statistical packages. It will take about another 3 GiB of space. Mirror will be setted to TUNA.
 
-* Functional GNU Emacs settings like line numbers and backup removal.
+* (emacs) Functional GNU Emacs settings like line numbers and backup removal.
 
-* Statistical R packages.
+* (r) Statistical R packages. Mirror will be setted to TUNA.
 
-* Mirror setting to TUNA for Miniconda, R and Ruby.
+* (ruby) Ruby gems. Mirror will be setted to TUNA.
 
 You may see more documentations in the script itself or `doc`.

@@ -1,0 +1,44 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= git-mirror_add(1)
+
+== NAME
+
+git-mirror_add - Adding repository to current `git-mirror`.
+
+== SYNOPSIS
+
+`git-mirror add [URL] [[URL]...]`
+
+Add git repository with URL. URL can be of any following forms:
+
+[source]
+----
+ssh://[user@]host.xz[:port]/path/to/repo.git/
+git://host.xz[:port]/path/to/repo.git/
+http[s]://host.xz[:port]/path/to/repo.git/
+[user@]host.xz:path/to/repo.git/
+/path/to/repo.git/
+file:///path/to/repo.git/
+----
+
+By adding a URL, an UUID will be generated as uniq identification of this git repository. The repository that your URL pointing to will be mirrored to `${GITM_HOME}/UUID`.
+
+[source]
+----
+0 2021-02-09_15-25-37 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ git-mirror add https://github.com/YuZJLab/SoftInstall
+YuZJLab Git Mirror Manager
+Copyright (C) 2020-2021 YU Zhejian
+WARNING: GITM_HOME undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/git-mirror.d
+https://github.com/YuZJLab/SoftInstall -> a42446b2-03b6-4999-a11b-4791d6e1edf6
+Cloning into bare repository 'a42446b2-03b6-4999-a11b-4791d6e1edf6'...
+POST git-upload-pack (215 bytes)
+remote: Enumerating objects: 49, done.
+remote: Counting objects: 100% (49/49), done.
+remote: Compressing objects: 100% (35/35), done.
+remote: Total 49 (delta 28), reused 35 (delta 14), pack-reused 0
+----
+
+include::include/copy.adoc[]

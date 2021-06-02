@@ -1,0 +1,27 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= git-mirror_gc(1)
+
+== NAME
+
+git-mirror_gc - Garbage collection for all repository.
+
+== SYNOPSIS
+
+`git-mirror gc`
+
+[source]
+----
+0 2021-02-09_15-27-17 /home/yuzj/LinuxMiniPrograms  (BSD)
+$ git-mirror gc
+YuZJLab Git Mirror Manager
+Copyright (C) 2020-2021 YU Zhejian
+WARNING: GITM_HOME undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/git-mirror.d
+Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 gc started
+Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 gc success
+Repository UUID=a42446b2-03b6-4999-a11b-4791d6e1edf6 gc started
+Repository UUID=a42446b2-03b6-4999-a11b-4791d6e1edf6 gc success
+----
+
+include::include/copy.adoc[]

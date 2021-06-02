@@ -111,17 +111,23 @@ service --status-all # List all services. Used under Debian-derived systems.
 
 # ________________________Hardware Info________________________
 free -h # How many memory is available?
+cat /proc/meminfo # Detailed information about memory.
 cat /proc/cpuinfo # Detailed information about CPU.
+lscpu  # Detailed information about CPU.
 # NVIDIA driver status. MNID.
 # You might need to install "nvidia-smi" package if you install NVIDIA drivers using package management software installed with system.
 nvida-smi
 # PCI devices. Used to diagnose driver failures. MNID.
 lspci -vvk
 lspci
+lspci -tv
 lsusb -v # USB devices. Used to diagnose driver failures. MNID.
+lsusb -t
+# cat /var/lib/usbutils/usb.ids # Show USB vendor infomation
 lsdev # Display information about installed hardware. MNID.
 lsscsi # List disk drivers connected. MNID.
 hwinfo # General hardware information. MNID.
+lshw # General hardware information. MNID.
 
 # ________________________Users and Groups________________________
 cat /etc/passwd # Show all users.
@@ -149,6 +155,7 @@ cat /proc/mounts
 ifconfig -a # MNID.
 iwconfig # MNID.
 ip addr # MNID.
+ip link show # MNID.
 # Show ports opened.
 nmap -T4 -F localhost # MNID.
 # nmap -p 1-65535 -T4 -A -v localhost # Will check all ports. DD.
