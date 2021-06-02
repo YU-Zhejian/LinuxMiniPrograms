@@ -86,6 +86,7 @@ if ${INSTALL_CONDA} && ! which conda &>>/dev/null; then
 	cp etc/.condarc "${HOME}"/.condarc
 	cat etc/conda.bashrc >>"${HOME}"/.bashrc
 	. etc/conda.bashrc
+	pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 	conda config --set report_errors false # Disable error reporting
 	conda update --all -y
 	conda install -y "${CONDA_BASE_PKGS[@]}"
