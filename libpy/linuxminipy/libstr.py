@@ -1,16 +1,17 @@
-# VERSION=1.1
+# VERSION=1.2
 """
 Python version of lib/libstr, includes common string-output utilities.
 See 'yldoc libstr' for more details.
 """
-import sys
 import os
 import re
+import sys
 
 sshstr = re.compile(r"ssh://([^@\s]+@){0,1}([^@:\s]+)(:[0-9]+){0,1}(/[^@:]*)")
 httpstr = re.compile(r"http(s){0,1}://([^@:\s]+)(:[0-9]+){0,1}(/[^@:]*)")
 gitstr = re.compile(r"git://([^@:\s]+)(:[0-9]+){0,1}(/[^@:]*)")
 scpstr = re.compile(r"([^@\s]+@){0,1}([^@:\s]+):(/[^@:]*)")
+
 
 def eprint(*args, **kwargs):
     """
@@ -32,6 +33,7 @@ def warnh(instr: str):
 def errh(instr: str):
     eprint("\033[31mERROR:", instr, "\033[0m")
     sys.exit(1)
+
 
 def is_url(inurl: str):
     if sshstr.match(inurl) or gitstr.match(inurl) or \

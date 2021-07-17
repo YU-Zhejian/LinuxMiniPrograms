@@ -104,22 +104,22 @@ class LibdoRecord:
         Porcess position
         :return: Nothing
         '''
-        fh=open(fn,'r')
+        fh = open(fn, 'r')
         fh.seek(self.pos_s)
         while True:
-            last_pos=fh.tell()
-            line=fh.readline()
-            if line=='':
-                self.pos_e=last_pos
+            last_pos = fh.tell()
+            line = fh.readline()
+            if line == '':
+                self.pos_e = last_pos
                 return
-            line=line.strip()
+            line = line.strip()
             if line.startswith('LIBDO PID'):
-                self.pos_s=fh.tell()
+                self.pos_s = fh.tell()
                 while True:
-                    last_pos=fh.tell()
-                    line=fh.readline()
-                    if line=='' or line.startswith('LIBDO STOPPED AT'):
-                        self.pos_e=last_pos
+                    last_pos = fh.tell()
+                    line = fh.readline()
+                    if line == '' or line.startswith('LIBDO STOPPED AT'):
+                        self.pos_e = last_pos
                         return
 
 
@@ -135,7 +135,7 @@ def extract_record(segment: [], pos_s: int) -> LibdoRecord:
     while n_line < len(segment) - 1:
         line = segment[n_line]
         if line.startswith('LIBDO IS GOING TO EXECUTE'):
-            returnv = LibdoRecord(line[26:],pos_s)
+            returnv = LibdoRecord(line[26:], pos_s)
             # Similar structure to accelerate.
             while n_line < len(segment) - 1:
                 line = segment[n_line]
@@ -211,8 +211,8 @@ def extract_procedure(start_pos: int, end_pos: int):
     fh.seek(start_pos)
     i = start_pos
     while i < end_pos:
-        print(fh.read(1),end='')
-        i=fh.tell()
+        print(fh.read(1), end='')
+        i = fh.tell()
 
 
 # List all processes
@@ -277,7 +277,7 @@ def cmd1(cmd: int):
     print("\033[33mELAPSED_TIME \033[36m:", record.time_s, "TO", record.time_e, ", Total", record.time, "\033[0m")
     print("\033[33mEXIT_STATUS  \033[36m:", record.exit_stat, "\033[0m")
     print("\033[33m________________JOB_________OUTPUT________________\033[0m")
-    extract_procedure(record.pos_s,record.pos_e)
+    extract_procedure(record.pos_s, record.pos_e)
     print("\033[33m_______________OUTPUT____FINISHED________________\033[0m")
 
 

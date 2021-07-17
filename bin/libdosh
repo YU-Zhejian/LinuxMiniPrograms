@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.2
+VERSION=1.3
 set +ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
@@ -20,68 +20,68 @@ log=bash_"$(date '+%Y-%m-%d_%H-%M-%S')".log
 trap 'pass_int' SIGINT
 
 __ps1() {
-	[ ${prev_out} -eq 0 ] && _po="0" || _po="\e[31m${prev_out}\e[0m"
-	echo -e "\e[32m$(getuser)@${HOSTNAME}\e[0m:${_po}:\e[33m${PWD}\e[0m\n${ps1_ed} "
+    [ ${prev_out} -eq 0 ] && _po="0" || _po="\e[31m${prev_out}\e[0m"
+    echo -e "\e[32m$(getuser)@${HOSTNAME}\e[0m:${_po}:\e[33m${PWD}\e[0m\n${ps1_ed} "
 }
 
 pass_int() {
-	[ ! ${_PID} -eq 0 ] && kill -13 ${_PID}
+    [ ! ${_PID} -eq 0 ] && kill -13 ${_PID}
 }
 
 builtins=("." "[" "bind" "break" "builtin" "caller" "command" "compgen" "complete" "compopt" "continue" "declare" "dirs" "disown" "echo" "enable" "eval" "exec" "exit" "export" "false" "fc" "hash" "help" "history" "kill" "let" "local" "mapfile" "popd" "printf" "pushd" " pwd" " read" "readonly" "return" "set" "shift" "shopt" "source" "suspend" "test" "times" "true" "type" "typeset" "ulimit" "umask" "unset")
 disabled=(":" "alias" "bg" "fg" "jobs" "logout" "trap" "unalias" "wait" "getopts")
 
 if [ -f "${HOME}/.bashrc" ]; then
-	. "${HOME}/.bashrc"
+    . "${HOME}/.bashrc"
 elif [ -f "${HOME}/.bash_profile" ]; then
-	. "${HOME}/.bash_profile"
+    . "${HOME}/.bash_profile"
 elif [ -f "${HOME}/.profile" ]; then
-	. "${HOME}/.profile"
+    . "${HOME}/.profile"
 fi
 
 while read -p "$(__ps1)" line; do
-	line=$(trimstr "${line}")
-	${UNFILL} && buffer="${buffer:0:-1} ${line}" || buffer="${line}"
-	[[ "${line}" == *'\' ]] && UNFILL=true || UNFILL=false
-	if ! ${UNFILL}; then
-		echo "$(date '+%Y-%m-%d %H:%M:%S'),${PWD}> ${buffer}" >>"${log}"
-		for str in "${builtins[@]}"; do
-			if [[ "${buffer}" == "${str} "* ]]; then
-				tmpf="$(mktemp -t libdosh.XXXXX)"
-				infoh "Builtin"
-				echo "${buffer}"' 2>&1 | tee -a "${log}" && prev_out=0 || prev_out=${?}' >"${tmpf}"
-				cat "${tmpf}"
-				. "${tmpf}"
-				rm "${tmpf}"
-				break
-			fi
-		done
-		for str in "${disabled[@]}"; do
-			if [[ "${buffer}" == "${str} "* ]]; then
-				echo -e "\033[31mFeature Disabled\033[0m"
-				break
-			fi
-		done
-		case "${buffer}" in
-		*"&")
-			echo -e "\033[31mFeature Disabled\033[0m"
-			;;
-		"exit"*)
-			exit
-			;;
-		"cd "*)
-			cd "${buffer:3}"
-			prev_out=${?}
-			;;
-		*)
-			bash -c "${buffer}" 2>&1 | tee -a "${log}" &
-			_PID=${!}
-			wait "${_PID}"
-			prev_out=${?}
-			_PID=0
-			;;
-		esac
-		echo "$(date '+%Y-%m-%d %H:%M:%S'),${prev_out}" >>"${log}"
-	fi
-	echo
+    line=$(trimstr "${line}")
+    ${UNFILL} && buffer="${buffer:0:-1} ${line}" || buffer="${line}"
+    [[ "${line}" == *'\' ]] && UNFILL=true || UNFILL=false
+    if ! ${UNFILL}; then
+        echo "$(date '+%Y-%m-%d %H:%M:%S'),${PWD}> ${buffer}" >>"${log}"
+        for str in "${builtins[@]}"; do
+            if [[ "${buffer}" == "${str} "* ]]; then
+                tmpf="$(mktemp -t libdosh.XXXXX)"
+                infoh "Builtin"
+                echo "${buffer}"' 2>&1 | tee -a "${log}" && prev_out=0 || prev_out=${?}' >"${tmpf}"
+                cat "${tmpf}"
+                . "${tmpf}"
+                rm "${tmpf}"
+                break
+            fi
+        done
+        for str in "${disabled[@]}"; do
+            if [[ "${buffer}" == "${str} "* ]]; then
+                echo -e "\033[31mFeature Disabled\033[0m"
+                break
+            fi
+        done
+        case "${buffer}" in
+        *"&")
+            echo -e "\033[31mFeature Disabled\033[0m"
+            ;;
+        "exit"*)
+            exit
+            ;;
+        "cd "*)
+            cd "${buffer:3}"
+            prev_out=${?}
+            ;;
+        *)
+            bash -c "${buffer}" 2>&1 | tee -a "${log}" &
+            _PID=${!}
+            wait "${_PID}"
+            prev_out=${?}
+            _PID=0
+            ;;
+        esac
+        echo "$(date '+%Y-%m-%d %H:%M:%S'),${prev_out}" >>"${log}"
+    fi
+    echo
 done

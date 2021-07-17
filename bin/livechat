@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=2.2
+VERSION=2.3
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 touch "${DN}"/../etc/livechat.conf
@@ -8,34 +8,34 @@ touch "${DN}"/../etc/livechat.conf
 . "${DN}"/../lib/libman
 . "${DN}"/../etc/livechat.conf
 if [ -z "${LIVECHAT_HOME:-}" ]; then
-	warnh "LIVECHAT_HOME undefined. Will use ${DN}/../var/livechat.d"
-	LIVECHAT_HOME="${DN}/../var/livechat.d"
+    warnh "LIVECHAT_HOME undefined. Will use ${DN}/../var/livechat.d"
+    LIVECHAT_HOME="${DN}/../var/livechat.d"
 fi
 if [ -z "${LIVECHAT_MAX_JOB:-}" ]; then
-	warnh "LIVECHAT_MAX_JOB undefined. Will use 100"
-	LIVECHAT_MAX_JOB=100
+    warnh "LIVECHAT_MAX_JOB undefined. Will use 100"
+    LIVECHAT_MAX_JOB=100
 fi
 __send() {
-	trap "__exit" SIGINT SIGTERM
-	echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${2}" >>"${LIVECHAT_HOME}"/SYSTEM
+    trap "__exit" SIGINT SIGTERM
+    echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${2}" >>"${LIVECHAT_HOME}"/SYSTEM
 }
 __reciever() {
-	trap "__exit" SIGINT SIGTERM
-	tail -f "${LIVECHAT_HOME}"/SYSTEM | while read line; do
-		IFS=";"
-		local M_A=(${line})
-		echo -e "\033[31m[${M_A[0]}]\033[0m \033[36m[${M_A[1]}]\033[0m ${M_A[2]}"
-		IFS=""
-	done
+    trap "__exit" SIGINT SIGTERM
+    tail -f "${LIVECHAT_HOME}"/SYSTEM | while read line; do
+        IFS=";"
+        local M_A=(${line})
+        echo -e "\033[31m[${M_A[0]}]\033[0m \033[36m[${M_A[1]}]\033[0m ${M_A[2]}"
+        IFS=""
+    done
 }
 __exit() {
-	trap "__exit" SIGINT SIGTERM
-	__send "SYSTEM" "${LCUN} had quitted"
-	rm -f "${LIVECHAT_HOME}"/"${LCUN}"
-	infoh "Thanks for using this system"
-	IFS="${OLD_IFS}"
-	killtree ${pid_rec} 9
-	exit 0
+    trap "__exit" SIGINT SIGTERM
+    __send "SYSTEM" "${LCUN} had quitted"
+    rm -f "${LIVECHAT_HOME}"/"${LCUN}"
+    infoh "Thanks for using this system"
+    IFS="${OLD_IFS}"
+    killtree ${pid_rec} 9
+    exit 0
 }
 
 OLD_IFS="${IFS}"
@@ -46,34 +46,34 @@ infoh "Copyright (C) 2019-2021 YU Zhejian"
 . "${DN}"/../lib/libisopt
 STDS=""
 for opt in "${@}"; do
-	if isopt "${opt}"; then
-		case "${opt}" in
-		"-h" | "--help")
-			yldoc livechat
-			exit 0
-			;;
-		"-v" | "--version")
-			echo ${VERSION}
-			exit 0
-			;;
-		"-x")
-			set -x
-			;;
-		*)
-			warnh "Option '${opt}' invalid. Ignored"
-			;;
-		esac
-	else
-		STDS="${opt}"
-	fi
+    if isopt "${opt}"; then
+        case "${opt}" in
+        "-h" | "--help")
+            yldoc livechat
+            exit 0
+            ;;
+        "-v" | "--version")
+            echo ${VERSION}
+            exit 0
+            ;;
+        "-x")
+            set -x
+            ;;
+        *)
+            warnh "Option '${opt}' invalid. Ignored"
+            ;;
+        esac
+    else
+        STDS="${opt}"
+    fi
 done
 
 if [ -z "${STDS}" ]; then
-	infoh "Please key in your name/roomnumber:"
-	infoh "Use Ctrl-C to exit"
-	read LCUN
+    infoh "Please key in your name/roomnumber:"
+    infoh "Use Ctrl-C to exit"
+    read LCUN
 else
-	LCUN="${STDS}"
+    LCUN="${STDS}"
 fi
 [ -f "${LIVECHAT_HOME}/${LCUN}" ] && errh "There's a user with the same name"
 [ $(find "${LIVECHAT_HOME}" | wc -l | awk '{print $1}') -gt ${LIVECHAT_MAX_JOB} ] && errh "Too many people online, please wait for a while"
@@ -88,16 +88,16 @@ pid_rec=${!}
 infoh "PID of reciever: ${pid_rec}"
 
 while read -p ">" MESS_SD; do
-	trap "__exit" SIGINT SIGTERM
-	if [[ "${MESS_SD}" =~ ^!+ ]]; then
-		bash -c ${MESS_SD:1} 2>&1 | while read line; do
-			__send "${LCUN}" "${line}"
-		done
-	elif [ "${MESS_SD}" != "logout" ] && [ "${MESS_SD}" != "exit" ] && [ "${MESS_SD}" != "quit" ]; then
-		__send "${LCUN}" "${MESS_SD}"
-		printf "\033[1A"
-	else
-		break
-	fi
+    trap "__exit" SIGINT SIGTERM
+    if [[ "${MESS_SD}" =~ ^!+ ]]; then
+        bash -c ${MESS_SD:1} 2>&1 | while read line; do
+            __send "${LCUN}" "${line}"
+        done
+    elif [ "${MESS_SD}" != "logout" ] && [ "${MESS_SD}" != "exit" ] && [ "${MESS_SD}" != "quit" ]; then
+        __send "${LCUN}" "${MESS_SD}"
+        printf "\033[1A"
+    else
+        break
+    fi
 done
 __exit

@@ -10,6 +10,8 @@ import sys
 from linuxminipy.libisopt import isopt
 
 VERSION = 2.3
+
+
 # TODO: Still bugs in MSYS2
 
 def main():
@@ -42,6 +44,7 @@ def main():
             o.write(chr(inp // 16 + 65) + chr(inp % 16 + 65))
     o.close()
     f.close()
+
 
 if __name__ == '__main__':
     main()

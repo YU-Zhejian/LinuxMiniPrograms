@@ -6,5 +6,5 @@ cd "$(readlink -f "$(dirname "${0}")")"/../../../
 # TODO: output all versions to Version.md
 
 for item in "${@}"; do
-	${item}
+    ${item}
 done

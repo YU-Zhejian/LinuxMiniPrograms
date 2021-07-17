@@ -5,14 +5,17 @@ gitm_add in Python
 import os
 import sys
 import uuid
+
+import libgitm
 from linuxminipy.libisopt import isopt
 from linuxminipy.libstr import is_url, warnh, infoh, errh
-import libgitm
 
-VERSION=1.0
+VERSION = 1.0
 errh("Too much bugs")
+
+
 def main():
-    STDS=[]
+    STDS = []
     for sysarg in sys.argv[1:]:
         if isopt(sysarg):
             if sysarg in ('-h', '--help'):
@@ -24,8 +27,8 @@ def main():
         else:
             STDS.append(sysarg)
     # TODO: lock
-    my_uuid_table=libgitm.UuidTable()
-    my_gitm_log=libgitm.GitmLog()
+    my_uuid_table = libgitm.UuidTable()
+    my_gitm_log = libgitm.GitmLog()
     for my_url in STDS:
         my_url.replace('file://', '')
         if not is_url(my_url):
@@ -33,22 +36,23 @@ def main():
             continue
         if my_uuid_table.findurl(my_url):
             warnh('Skipping existing URL ' + my_url)
-        my_uuid=uuid.uuid4().__str__()
+        my_uuid = uuid.uuid4().__str__()
         while True:
             if my_uuid_table.finduuid(my_uuid):
-                my_uuid=uuid.uuid4()
+                my_uuid = uuid.uuid4()
             else:
                 break
         infoh(my_url + ' -> ' + my_uuid)
         if os.system('git clone --mirror --no-hardlinks --verbose --progress \'' + my_url + '\' \'' + my_uuid + '\''):
             my_uuid_table.add(my_url, my_uuid)
             pass
-            my_gitm_log.add('t'.join(['ADD','SUCCESS',my_url,my_uuid]))
+            my_gitm_log.add('t'.join(['ADD', 'SUCCESS', my_url, my_uuid]))
         else:
             warnh(my_url + ' corrupted. Will be skipped"')
             os.remove(my_uuid)
-            os.remove("./logs/"+my_uuid)
-            my_gitm_log.add('t'.join(['ADD','FAILED',my_url,my_uuid]))
+            os.remove("./logs/" + my_uuid)
+            my_gitm_log.add('t'.join(['ADD', 'FAILED', my_url, my_uuid]))
+
 
 if __name__ == '__main__':
     main()

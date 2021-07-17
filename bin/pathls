@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=3.2
+VERSION=3.3
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
@@ -7,7 +7,7 @@ infoh "YuZJLab PATH ls"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 . "${DN}"/../etc/path.conf
 if [ "${mypython}" != "ylukh" ]; then
-	exec "${mypython}" "${DN}"/exec/pathls.py "${@}"
+    exec "${mypython}" "${DN}"/exec/pathls.py "${@}"
 else
-	. "${DN}"/exec/pathls.sh
+    . "${DN}"/exec/pathls.sh
 fi

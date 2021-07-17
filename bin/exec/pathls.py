@@ -15,7 +15,9 @@ VERSION = 1.10
 allow_x = True
 allow_d = False
 allow_o = True
-PARALLEL=False
+PARALLEL = False
+
+
 # TODO: Treads in parallel
 
 def mygrep(mylist: list, regxp: str) -> list:
@@ -66,10 +68,11 @@ class ParallelDoSearch(threading.Thread):
     '''
     Multi-threading support
     '''
-    def __init__(self,P:str):
+
+    def __init__(self, P: str):
         super().__init__()
-        self.P=P
-        self.outlist=[]
+        self.P = P
+        self.outlist = []
 
     def run(self) -> None:
         self.outlist = do_search(self.P)
@@ -78,27 +81,28 @@ class ParallelDoSearch(threading.Thread):
         return self.outlist
 
 
-
-def parallel_do_search(Plist:list) -> list:
-    search_threads=[]
-    i=0
+def parallel_do_search(Plist: list) -> list:
+    search_threads = []
+    i = 0
     for P in Plist:
         search_threads.append(ParallelDoSearch(P))
         search_threads[i].start()
-        i+=1
-    outlist=[]
+        i += 1
+    outlist = []
     for n in range(i):
-        infoh("Waiting "+Plist[n])
+        infoh("Waiting " + Plist[n])
         search_threads[n].join()
         outlist.extend(search_threads[n].result())
     return outlist
 
-def non_parallel_do_search(Plist:list) -> list:
-    outlist=[]
+
+def non_parallel_do_search(Plist: list) -> list:
+    outlist = []
     for P in Plist:
-        infoh("Searching "+P)
+        infoh("Searching " + P)
         outlist.extend(do_search(P))
     return outlist
+
 
 def main():
     global allow_o, PARALLEL
@@ -152,6 +156,7 @@ def main():
                     out_l.append(item)
         for item in out_l:
             print(item)
+
 
 if __name__ == '__main__':
     main()

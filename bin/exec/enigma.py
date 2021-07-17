@@ -65,6 +65,7 @@ class Enigma():
         ylwrite(str(len(alh) + 1), rgear)
         print(str(len(alh) + 1), rgear)
 
+
 def main():
     enigmagear = []
     startingstring = ''
@@ -133,6 +134,7 @@ def main():
                                  myenigma.encode(chr(b2 + 65)))
 
     f.close()
+
 
 if __name__ == '__main__':
     main()

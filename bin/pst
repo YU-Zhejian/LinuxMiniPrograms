@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-VERSION=1.1
+VERSION=1.2
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.conf
 for fn in "${DN}"/exec/pst.co "${DN}"/exec/pst.co.exe; do
-	if [ -e "${fn}" ]; then
-		exec "${fn}" "${@}"
-	fi
+    if [ -e "${fn}" ]; then
+        exec "${fn}" "${@}"
+    fi
 done
 if [ "${mypython}" != "ylukh" ]; then
-	exec "${mypython}" "${DN}"/exec/pst.py "${@}"
+    exec "${mypython}" "${DN}"/exec/pst.py "${@}"
 else
-	errh "No python found!"
+    errh "No python found!"
 fi

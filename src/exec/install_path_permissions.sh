@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.5
+VERSION=1.6
 set -eu
 OLDIFS="${IFS}"
 DN="$(readlink -f "$(dirname "${0}")/../../")"
@@ -8,43 +8,43 @@ cd "${DN}"
 . lib/libstr
 . etc/path.conf
 
-function rcWrite(){
-	echo "${1}" | tee -a "${HOME}"/.bashrc | tee -a "${HOME}"/.zshrc
-	# TODO: Support SH, ZSH and CSH
+rcWrite() {
+    echo "${1}" | tee -a "${HOME}"/.bashrc | tee -a "${HOME}"/.zshrc
+    # TODO: Support SH, ZSH and CSH
 }
 
 #========Install PATH========
 if ! which yldoc &>/dev/null; then
-	rcWrite "export PATH=\"${DN}/bin/:\${PATH:-}\""
-	infoh "Will configure PATH (bin)...\033[32mPASSED"
+    rcWrite "export PATH=\"${DN}/bin/:\${PATH:-}\""
+    infoh "Will configure PATH (bin)...\033[32mPASSED"
 fi
 if ! which ylsjsd &>/dev/null; then
-	rcWrite "export PATH=\"${DN}/sbin/:\${PATH:-}\""
-	infoh "Will configure PATH (sbin)...\033[32mPASSED"
+    rcWrite "export PATH=\"${DN}/sbin/:\${PATH:-}\""
+    infoh "Will configure PATH (sbin)...\033[32mPASSED"
 fi
 #========Install PYTHONPATH========
 if [ "${mypython}" != "ylukh" ] && ! echo "from linuxminipy.libylfile import *" | "${mypython}" &>>/dev/null; then
-	rcWrite "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\""
-	infoh "Will configure PYTHONPATH...\033[32mPASSED"
+    rcWrite "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\""
+    infoh "Will configure PYTHONPATH...\033[32mPASSED"
 fi
 #========Install MANPATH========
 if [ -e man/man1 ] && ! man yldoc &>>/dev/null; then
-	rcWrite "export MANPATH=\"${DN}/man/:\${MANPATH:-}\""
-	infoh "Will configure MANPATH...\033[32mPASSED"
+    rcWrite "export MANPATH=\"${DN}/man/:\${MANPATH:-}\""
+    infoh "Will configure MANPATH...\033[32mPASSED"
 fi
 #========Install Permissions========
 __change_dir_permissions() {
-	ls -1 | while read file_name; do
-		if [ -f "${file_name}" ]; then
-			echo - "${file_name}"
-			chmod -x "${file_name}"
-		else
-			echo + "${file_name}"
-			cd "${file_name}"
-			__change_dir_permissions
-			cd ..
-		fi
-	done
+    ls -1 | while read file_name; do
+        if [ -f "${file_name}" ]; then
+            echo - "${file_name}"
+            chmod -x "${file_name}"
+        else
+            echo + "${file_name}"
+            cd "${file_name}"
+            __change_dir_permissions
+            cd ..
+        fi
+    done
 }
 chown -R "$(id -u)" *
 chmod -R +r+w *

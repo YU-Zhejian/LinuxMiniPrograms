@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.1
+VERSION=1.2
 # TODO: Add C Version
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -7,10 +7,10 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
 mkdir -p "${DN}"/../var/enigma.d
 for fn in "${DN}"/exec/enigma.co "${DN}"/exec/enigma.co.exe; do
-	[ -e "${fn}" ] && exec "${fn}" "${@}"
+    [ -e "${fn}" ] && exec "${fn}" "${@}"
 done
 if [ "${mypython}" != "ylukh" ]; then
-	exec "${mypython}" "${DN}"/exec/enigma.py "${@}"
+    exec "${mypython}" "${DN}"/exec/enigma.py "${@}"
 else
-	errh "No python found!"
+    errh "No python found!"
 fi

@@ -33,44 +33,44 @@ tmpsh=$(mktemp -t envgen_XXXXX.sh)
 DN="$(readlink -f "$(dirname "${0}")")"
 
 __exec() {
-	if [ "${1:-}" = '#' ]; then
-		echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
-	else
-		local PF="\033[032mPASS\033[0m"
-		printf "${LINE_NUMBERS}/${ALL_LINE_NUMBERS} ${*}..." >&2
-		echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
-		eval ${*} > >(sed 's;^;OO ;') 2> >(sed 's;^;EE ;') |
-			sed 's;^OO EE;EE;' |
-			cat -n || PF="\033[031mFAIL\033[0m"
-		echo -e "${PF}" >&2
-	fi
-	LINE_NUMBERS=$((${LINE_NUMBERS} + 1))
+    if [ "${1:-}" = '#' ]; then
+        echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
+    else
+        local PF="\033[032mPASS\033[0m"
+        printf "${LINE_NUMBERS}/${ALL_LINE_NUMBERS} ${*}..." >&2
+        echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
+        eval ${*} > >(sed 's;^;OO ;') 2> >(sed 's;^;EE ;') |
+            sed 's;^OO EE;EE;' |
+            cat -n || PF="\033[031mFAIL\033[0m"
+        echo -e "${PF}" >&2
+    fi
+    LINE_NUMBERS=$((${LINE_NUMBERS} + 1))
 }
 __rc_cat() {
-	for file in /etc/rc*/*; do
-		echo \# ----------${file}----------
-		cat ${file} || true
-	done
+    for file in /etc/rc*/*; do
+        echo \# ----------${file}----------
+        cat ${file} || true
+    done
 }
 __cron_cat() {
-	for files in /var/spool/cron/* \
-		/etc/crontab \
-		/etc/cron.d/* \
-		/etc/cron.daily/* \
-		/etc/cron.hourly/* \
-		/etc/cron.monthly/* \
-		/etc/cron.weekly/* \
-		/etc/anacrontab \
-		/var/spool/anacron/*; do
-		echo \# ----------${file}----------
-		cat ${file} || true
-	done
+    for files in /var/spool/cron/* \
+        /etc/crontab \
+        /etc/cron.d/* \
+        /etc/cron.daily/* \
+        /etc/cron.hourly/* \
+        /etc/cron.monthly/* \
+        /etc/cron.weekly/* \
+        /etc/anacrontab \
+        /var/spool/anacron/*; do
+        echo \# ----------${file}----------
+        cat ${file} || true
+    done
 }
 __log_cat() {
-	find /var/log | grep -v '/$' | while read file; do
-		echo \# ----------${file}----------
-		cat ${file} || true
-	done
+    find /var/log | grep -v '/$' | while read file; do
+        echo \# ----------${file}----------
+        cat ${file} || true
+    done
 }
 
 cat <<EOF |
@@ -577,10 +577,10 @@ WHERE xz
 WHERE zip
 WHERE zstd
 EOF
-	grep -v '^$' |
-	sed 's;^#;\\#;' |
-	sed 's;^WHERE \(.*\);whereis -b \1\nwhereis -m \1\nwhich \1;' |
-	sed 's;^;__exec ;' >"${tmpsh}"
+    grep -v '^$' |
+    sed 's;^#;\\#;' |
+    sed 's;^WHERE \(.*\);whereis -b \1\nwhereis -m \1\nwhich \1;' |
+    sed 's;^;__exec ;' >"${tmpsh}"
 
 ALL_LINE_NUMBERS=$(wc -l "${tmpsh}" | awk '{print $1}')
 . "${tmpsh}" >"${out_file}"
@@ -589,9 +589,9 @@ printf "Generating TOC..." >&2
 
 echo "# ________________________TOC________________________" >"${out_file}".tmp
 cat "${out_file}" -n | grep --text -v 'OO ' | grep --text -v 'EE ' >>"${out_file}".tmp &&
-	cat "${out_file}".tmp >>"${out_file}" &&
-	rm "${out_file}".tmp &&
-	echo -e "\033[032mPASS\033[0m" >&2 || echo -e "\033[031mFAIL\033[0m" >&2
+    cat "${out_file}".tmp >>"${out_file}" &&
+    rm "${out_file}".tmp &&
+    echo -e "\033[032mPASS\033[0m" >&2 || echo -e "\033[031mFAIL\033[0m" >&2
 
 rm -f "${tmpsh}"
 echo "Finished." >&2

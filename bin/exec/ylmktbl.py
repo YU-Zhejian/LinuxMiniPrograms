@@ -12,6 +12,7 @@ from linuxminipy.libstr import warnh
 
 VERSION = 3.1
 
+
 def main():
     sstr = []
     for sysarg in sys.argv[1:]:
@@ -28,6 +29,7 @@ def main():
         else:
             sstr.append(sysarg)
     mktbl(sstr[0])
+
 
 if __name__ == '__main__':
     main()

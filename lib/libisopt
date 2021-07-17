@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# VERSION=1.4
+# VERSION=1.5
 isopt() {
-	case "${1:-}" in
-	-? | --* | -?\:*)
-		return 0
-		;;
-	*)
-		return 1
-		;;
-	esac
+    case "${1:-}" in
+    -? | --* | -?\:*)
+        return 0
+        ;;
+    *)
+        return 1
+        ;;
+    esac
 }

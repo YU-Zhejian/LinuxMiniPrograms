@@ -95,11 +95,13 @@ class WriteThread(threading.Thread):
                 iold = i
         se.close()
 
+
 def main():
     rt = ReadThread()
     rt.start()
     wt = WriteThread(rt)
     wt.start()
+
 
 if __name__ == '__main__':
     main()

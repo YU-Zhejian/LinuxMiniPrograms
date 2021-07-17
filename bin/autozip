@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=6.2
+VERSION=6.3
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -11,163 +11,163 @@ infoh "YuZJLab AutoZip"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 LVL=""
 for opt in "${OPT[@]}"; do
-	case "${opt}" in
-	"--force")
-		warnh "Will remove the archive if exists"
-		ISFORCE=true
-		;;
-	"--remove")
-		warnh "Will remove the original file if success"
-		REMOVE=true
-		;;
-	-p\:*)
-		THREAD=${opt:3}
-		;;
-	--parallel\:*)
-		THREAD=${opt:10}
-		;;
-	"-p" | "--parallel")
-		THREAD=${MAXTHREAD}
-		;;
-	"-d" | "--decompress")
-		"${DN}"/autounzip "${@}"
-		;;
-	"-c" | "--stdout")
-		STDOUT=true
-		;;
-	-[0123456789]*)
-		LVL=${opt:1}
-		;;
-	*)
-		warnh "Option '${opt}' invalid. Ignored"
-		;;
-	esac
+    case "${opt}" in
+    "--force")
+        warnh "Will remove the archive if exists"
+        ISFORCE=true
+        ;;
+    "--remove")
+        warnh "Will remove the original file if success"
+        REMOVE=true
+        ;;
+    -p\:*)
+        THREAD=${opt:3}
+        ;;
+    --parallel\:*)
+        THREAD=${opt:10}
+        ;;
+    "-p" | "--parallel")
+        THREAD=${MAXTHREAD}
+        ;;
+    "-d" | "--decompress")
+        "${DN}"/autounzip "${@}"
+        ;;
+    "-c" | "--stdout")
+        STDOUT=true
+        ;;
+    -[0123456789]*)
+        LVL=${opt:1}
+        ;;
+    *)
+        warnh "Option '${opt}' invalid. Ignored"
+        ;;
+    esac
 done
 ! ${ISFORCE} && warnh "Will rename the archive if exists"
 fn="${STDS[0]:-}"
 [ "${fn}" = "-" ] && fn="/dev/stdin"
 ! [ -z "${fn}" ] || autozipck
 if [ -z "${STDS[1]:-}" ]; then
-	if [ -f "${fn}" ] || [ "${fn}" = "/dev/stdin" ]; then
-		ext="gz"
-	elif [ -d "${fn}" ]; then
-		fn=$(echo ${fn} | sed "s;/$;;")
-		ext="tar"
-	fi
+    if [ -f "${fn}" ] || [ "${fn}" = "/dev/stdin" ]; then
+        ext="gz"
+    elif [ -d "${fn}" ]; then
+        fn=$(echo ${fn} | sed "s;/$;;")
+        ext="tar"
+    fi
 else
-	ext=${STDS[1]}
-	__ckext
-	if [ -d "${fn}" ]; then
-		fn=$(echo "${fn}" | sed 's;/$;;')
-		case "${ext}" in
-		t* | "rar" | "zip" | "7z") ;;
-		*)
-			errh "You're about to compress FOLDER '${fn}' with extension '${ext}', which is designed for compressing SINGLE FILE"
-			;;
-		esac
-	elif [ -f "${fn}" ] || [ "${fn}" = "/dev/stdin" ]; then
-		case "${ext}" in
-		"gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz" | "rar" | "zip" | "7z" | "lz4" | "lzo" | "zst" | "br" | "z" | "Z" | "lzfse") ;;
-		*)
-			errh "You're about to compress FILE '${fn}' with extension '${ext}', which is designed for compressing FOLDERs"
-			;;
-		esac
-		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
-	else
-		errh "Filename '${fn}' invalid"
-	fi
+    ext=${STDS[1]}
+    __ckext
+    if [ -d "${fn}" ]; then
+        fn=$(echo "${fn}" | sed 's;/$;;')
+        case "${ext}" in
+        t* | "rar" | "zip" | "7z") ;;
+        *)
+            errh "You're about to compress FOLDER '${fn}' with extension '${ext}', which is designed for compressing SINGLE FILE"
+            ;;
+        esac
+    elif [ -f "${fn}" ] || [ "${fn}" = "/dev/stdin" ]; then
+        case "${ext}" in
+        "gz" | "bgz" | "GZ" | "xz" | "bz2" | "lzma" | "lz" | "rar" | "zip" | "7z" | "lz4" | "lzo" | "zst" | "br" | "z" | "Z" | "lzfse") ;;
+        *)
+            errh "You're about to compress FILE '${fn}' with extension '${ext}', which is designed for compressing FOLDERs"
+            ;;
+        esac
+        [ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
+    else
+        errh "Filename '${fn}' invalid"
+    fi
 fi
 [ -z "${LVL}" ] && LVL="${STDS[2]:-}"
 if ${ISFORCE}; then
-	[ ! -f "${fn}.${ext}" ] || rm -rf "${fn}.${ext}"
+    [ ! -f "${fn}.${ext}" ] || rm -rf "${fn}.${ext}"
 else
-	[ ! -f "${fn}.${ext}" ] || mv -f "${fn}.${ext}" "${fn}.${ext}".bak
+    [ ! -f "${fn}.${ext}" ] || mv -f "${fn}.${ext}" "${fn}.${ext}".bak
 fi
 # ============ Start Compressing ============
 __do_job() {
-	cmd="$(bash ${DN}/exec/azcmd.sh -p:${THREAD} "${1}" ${LVL})"
-	infoh "${cmd}"
-	if ${STDOUT}; then
-		fcat "${fn}" | ${cmd} >/dev/stdout
-	else
-		fcat "${fn}" | ${cmd} >"${fn}.${ext}"
-	fi
+    cmd="$(bash ${DN}/exec/azcmd.sh -p:${THREAD} "${1}" ${LVL})"
+    infoh "${cmd}"
+    if ${STDOUT}; then
+        fcat "${fn}" | ${cmd} >/dev/stdout
+    else
+        fcat "${fn}" | ${cmd} >"${fn}.${ext}"
+    fi
 }
 case ${ext} in
 "bgz")
-	ext="gz"
-	__do_job "bgz"
-	;;
+    ext="gz"
+    __do_job "bgz"
+    ;;
 "tbz")
-	__do_job "bz2"
-	;;
+    __do_job "bz2"
+    ;;
 "tar.7z")
-	__cklvl 7z
-	fcat "${fn}" | "${my7za}" a -aoa -si -y "${fn}".${ext} -mmt=${THREAD} ${LVL} -t7z
-	;;
+    __cklvl 7z
+    fcat "${fn}" | "${my7za}" a -aoa -si -y "${fn}".${ext} -mmt=${THREAD} ${LVL} -t7z
+    ;;
 tar.*)
-	__do_job "${ext//tar./}"
-	;;
+    __do_job "${ext//tar./}"
+    ;;
 "tar")
-	__do_job "tar"
-	;;
+    __do_job "tar"
+    ;;
 t*z)
-	__do_job "${ext//t/}"
-	;;
+    __do_job "${ext//t/}"
+    ;;
 "7z")
-	[ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
-	__cklvl 7z
-	# TODO: No implement
-	if [ "${fn}" = "/dev/stdin" ] || ${STDOUT}; then
-		errh "Not implemented in 7zip"
-	fi
-	# TODO: No implement
-	#if ${STDOUT}; then
-	#	"${my7za}" a -aoa -so "${fn}" -mmt=${THREAD} ${LVL} -t7z
-	#else
-	"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -t7z
-	#fi
-	;;
+    [ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
+    __cklvl 7z
+    # TODO: No implement
+    if [ "${fn}" = "/dev/stdin" ] || ${STDOUT}; then
+        errh "Not implemented in 7zip"
+    fi
+    # TODO: No implement
+    #if ${STDOUT}; then
+    #	"${my7za}" a -aoa -so "${fn}" -mmt=${THREAD} ${LVL} -t7z
+    #else
+    "${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -t7z
+    #fi
+    ;;
 "zip")
-	# TODO: No implement
-	if [ "${fn}" = "/dev/stdin" ]; then
-		errh "Not implemented in zip"
-	fi
-	if [ "${my7za}" != 'ylukh' ]; then
-		__cklvl 7z
-		if ${STDOUT}; then
-			"${my7za}" a -aoa -so "${fn}" -mmt=${THREAD} ${LVL} -tzip
-		else
-			"${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -tzip
-		fi
-	elif [ "${myzip}" != 'ylukh' ]; then
-		__cklvl zip
-		if ${STDOUT}; then
-			"${myzip}" --verbose -r /dev/stdout "${fn}" ${LVL}
-		else
-			"${myzip}" --verbose -r "${fn}".${ext} "${fn}" ${LVL}
-		fi
-	else
-		errh "No valid zip/7zip exist"
-	fi
+    # TODO: No implement
+    if [ "${fn}" = "/dev/stdin" ]; then
+        errh "Not implemented in zip"
+    fi
+    if [ "${my7za}" != 'ylukh' ]; then
+        __cklvl 7z
+        if ${STDOUT}; then
+            "${my7za}" a -aoa -so "${fn}" -mmt=${THREAD} ${LVL} -tzip
+        else
+            "${my7za}" a -aoa -y "${fn}".${ext} "${fn}" -mmt=${THREAD} ${LVL} -tzip
+        fi
+    elif [ "${myzip}" != 'ylukh' ]; then
+        __cklvl zip
+        if ${STDOUT}; then
+            "${myzip}" --verbose -r /dev/stdout "${fn}" ${LVL}
+        else
+            "${myzip}" --verbose -r "${fn}".${ext} "${fn}" ${LVL}
+        fi
+    else
+        errh "No valid zip/7zip exist"
+    fi
 
-	;;
+    ;;
 "rar")
-	[ "${myrar}" != 'ylukh' ] || errh "rar NO exist"
-	# TODO: No implement
-	if [ "${fn}" = "/dev/stdin" ]; then
-		errh "Not implemented in RAR"
-	fi
-	# TODO: No implement
-	#if ${STDOUT}; then
-	#	"${myrar}" -mt${THREAD} a /dev/stdout "${fn}"
-	#else
-	"${myrar}" -mt${THREAD} a "${fn}".${ext} "${fn}"
-	#fi
-	;;
+    [ "${myrar}" != 'ylukh' ] || errh "rar NO exist"
+    # TODO: No implement
+    if [ "${fn}" = "/dev/stdin" ]; then
+        errh "Not implemented in RAR"
+    fi
+    # TODO: No implement
+    #if ${STDOUT}; then
+    #	"${myrar}" -mt${THREAD} a /dev/stdout "${fn}"
+    #else
+    "${myrar}" -mt${THREAD} a "${fn}".${ext} "${fn}"
+    #fi
+    ;;
 *)
-	__do_job "${ext}"
-	;;
+    __do_job "${ext}"
+    ;;
 esac
 # ============ Finished ============
 infoh "Removing temporary resources..."

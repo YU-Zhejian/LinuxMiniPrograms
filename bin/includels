@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.1
+VERSION=1.2
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
@@ -11,13 +11,13 @@ infoh "Copyright (C) 2019-2021 YU Zhejian"
 oldifs="${IFS}"
 
 gccinclude=$(for dir in \
-	$(__addpref 'lib*/gcc*/*/*/include') \
-	$(__addpref 'lib*/gcc*/*/include') \
-	$(__addpref 'lib*/gcc*/include'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+    $(__addpref 'lib*/gcc*/*/*/include') \
+    $(__addpref 'lib*/gcc*/*/include') \
+    $(__addpref 'lib*/gcc*/include'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
 
 clanginclude=$(for dir in \
-	$(__addpref 'lib*/clang*/*/include') \
-	$(__addpref 'lib*/clang*/include'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+    $(__addpref 'lib*/clang*/*/include') \
+    $(__addpref 'lib*/clang*/include'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
 
 INPATH="/clang*/include:/mingw*/include:$(__addpref 'include'):${gccinclude}:${clanginclude}:${C_INCLUDE_PATH:-}"${CPLUS_INCLUDE_PATH:-}
 . "${DN}"/../lib/libpath
@@ -27,47 +27,47 @@ unset duplicated_path invalid_path
 IFS=''
 STDS=()
 for opt in "${@}"; do
-	if isopt "${opt}"; then
-		case "${opt}" in
-		"-h" | "--help")
-			yldoc includels
-			exit 0
-			;;
-		"-v" | "--version")
-			echo ${VERSION}
-			exit 0
-			;;
-		"-l" | "--list")
-			echo ${valid_path} | tr ':' '\n'
-			unset valid_path
-			exit 0
-			;;
-		"-x")
-			set -x
-			;;
-		*)
-			warnh "Option '${opt}' invalid. Ignored"
-			;;
-		esac
-	else
-		STDS=(${STDS[@]} "${opt}")
-	fi
+    if isopt "${opt}"; then
+        case "${opt}" in
+        "-h" | "--help")
+            yldoc includels
+            exit 0
+            ;;
+        "-v" | "--version")
+            echo ${VERSION}
+            exit 0
+            ;;
+        "-l" | "--list")
+            echo ${valid_path} | tr ':' '\n'
+            unset valid_path
+            exit 0
+            ;;
+        "-x")
+            set -x
+            ;;
+        *)
+            warnh "Option '${opt}' invalid. Ignored"
+            ;;
+        esac
+    else
+        STDS=(${STDS[@]} "${opt}")
+    fi
 done
 unset valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-	find "${dir}" 2>/dev/null >>"${tmpf}" || true
+    find "${dir}" 2>/dev/null >>"${tmpf}" || true
 done
 if [ ${#STDS[@]} -eq 0 ]; then
-	cat "${tmpf}"
+    cat "${tmpf}"
 else
-	IFS=''
-	grepstr=''
-	for fn in "${STDS[@]}"; do
-		grepstr="${grepstr} -e ${fn}"
-	done
-	eval cat \"${tmpf}\"\|grep "${grepstr}"
+    IFS=''
+    grepstr=''
+    for fn in "${STDS[@]}"; do
+        grepstr="${grepstr} -e ${fn}"
+    done
+    eval cat \"${tmpf}\"\|grep "${grepstr}"
 fi
 rm "${tmpf}"
 IFS="${oldifs}"
