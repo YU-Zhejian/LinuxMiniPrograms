@@ -243,7 +243,7 @@ __git_ps1_show_upstream ()
 
 }
 
-# Helper function that is meant to be called from __git_ps1.  It
+# Helper that is meant to be called from __git_ps1.  It
 # injects color codes into the appropriate gitstring variables used
 # to build a gitstring.
 __git_ps1_colorize_gitstring ()
@@ -289,7 +289,7 @@ __git_ps1_colorize_gitstring ()
 	r="$c_clear$r"
 }
 
-# Helper function to read the first line of a file into a variable.
+# Helper to read the first line of a file into a variable.
 # __git_eread requires 2 arguments, the file path and the name of the
 # variable, in that order.
 __git_eread ()

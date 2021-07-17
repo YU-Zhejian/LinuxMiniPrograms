@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=6.0
+VERSION=6.1
 # TODO: autounzip -c
 set -eu
 ISAOTOZIP=false
@@ -40,7 +40,7 @@ done
 # ============ Possess arguments ============
 [ ${#STDS[@]} -gt 0 ] || autozipck
 # Extract TAR in STDIN.
-function __extract_tar() {
+__extract_tar() {
 	cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${2})"
 	infoh "${cmd}"
 	[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"

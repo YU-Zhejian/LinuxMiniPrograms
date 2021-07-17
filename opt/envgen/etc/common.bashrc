@@ -4,12 +4,12 @@
 # There's no need to source "${HOME}/.profile". It gets executed before this one.
 
 # Git helper, can be found at the source code of Git.
-function __git_ps1 (){ true; } # The default ${PS1}
+__git_ps1 (){ true; } # The default ${PS1}
 [ -f "${HOME}"/.git-prompt.sh ] && . "${HOME}"/.git-prompt.sh
 export GIT_PS1_SHOWUPSTREAM="verbose"
 
 # Fantastic ${PS1} with additional linebreak.
-function __prevp (){
+__prevp (){
 	local r=${?}
 	[ ${r} -eq 0 ] && echo -e "\e[32m${r}\e[0m" || echo -e "\e[31m${r}\e[0m"
 }

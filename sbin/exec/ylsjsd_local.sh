@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.2
+VERSION=1.3
 set -ue
 declare -i YLSJSD_MAX_JOB
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -17,7 +17,7 @@ fi
 echo ${$} >>ylsjsd.lock
 infoh "ylsjsd started at $(date)"
 
-function __exit() {
+__exit() {
 	infoh "ylsjsd terminated at $(date)"
 	rm -f ylsjsd.lock 2>/dev/null
 	exit

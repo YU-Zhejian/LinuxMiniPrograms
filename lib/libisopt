@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# VERSION=1.3
-function isopt() {
+# VERSION=1.4
+isopt() {
 	case "${1:-}" in
-	-? | --* | -?\:* | --*\:*)
+	-? | --* | -?\:*)
 		return 0
 		;;
 	*)

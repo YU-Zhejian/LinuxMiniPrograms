@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.2
+VERSION=1.3
 VERBOSE=false
 TOP=false
 PST=false
@@ -54,7 +54,7 @@ for opt in "${UKOPT[@]}"; do
 	fi
 done
 
-function __psv() {
+__psv() {
 	local PID
 	echo "${@}" | tr ' ' '\n' | sort -n | while read ps_name; do
 		if [ -f "${ps_name}.i" ]; then
@@ -99,7 +99,7 @@ function __psv() {
 	done
 }
 
-function __psc() {
+__psc() {
 	table=$(mktemp -t ylsjs_ps.XXXXXX)
 	echo -e "#1\n#1\n#1\n#1\n#1" >"${table}"
 	echo "NO.;NAME;PID;EXECTIME;STATUS" >>"${table}"
@@ -111,7 +111,7 @@ function __psc() {
 	ylmktbl "${table}"
 	rm "${table}"
 }
-function __pspid() {
+__pspid() {
 	echo "${@}" | tr ' ' '\n' | sort -n | while read ps_name; do
 		[ -f "${ps_name}.i" ] && cat ${ps_name}.i | tail -n 1 | tr '\n' ' ' || true
 	done

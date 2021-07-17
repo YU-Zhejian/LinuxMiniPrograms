@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.2
+VERSION=1.3
 n=15
 for opt in "${UKOPT[@]}"; do
 	case "${opt}" in
@@ -20,7 +20,7 @@ for opt in "${UKOPT[@]}"; do
 	esac
 done
 
-function __kill() {
+__kill() {
 	if [ -f "${1}".q ]; then
 		mv "${1}".q "${ps_name}".f
 		return

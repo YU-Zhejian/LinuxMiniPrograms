@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=6.1
+VERSION=6.2
 set -eu
 PAR=''
 SUFF=''
@@ -28,7 +28,7 @@ for fulln in "${STDS[@]}"; do
 	__ckext
 	infoh "Received: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}"
 	# ============ Start Decompressing ============
-	function __list_tar() {
+	__list_tar() {
 		cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${1})"
 		infoh "${cmd}"
 		[ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"

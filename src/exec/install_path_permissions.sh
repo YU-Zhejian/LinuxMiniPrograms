@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.4
+VERSION=1.5
 set -eu
 OLDIFS="${IFS}"
 DN="$(readlink -f "$(dirname "${0}")/../../")"
@@ -33,7 +33,7 @@ if [ -e man/man1 ] && ! man yldoc &>>/dev/null; then
 	infoh "Will configure MANPATH...\033[32mPASSED"
 fi
 #========Install Permissions========
-function __change_dir_permissions() {
+__change_dir_permissions() {
 	ls -1 | while read file_name; do
 		if [ -f "${file_name}" ]; then
 			echo - "${file_name}"

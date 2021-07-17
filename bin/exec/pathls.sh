@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-VERSION=3.5
+VERSION=3.6
 oldifs="${IFS}"
-function _grep() {
+_grep() {
 	regstr="${1}"
 	local tmpff=$(mktemp -t pls.XXXXXX)
 	cat "${tmpf}" | grep -v "${regstr}" >"${tmpff}"

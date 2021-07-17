@@ -124,10 +124,10 @@ fi
 
 # ________________________Installing Brew Utils________________________
 if ${INSTALL_BREW}; then
-	function __brew_install() {
+	__brew_install() {
 		which ${1} &>>/dev/null || brew install --force-bottle ${2}
 	}
-	function __brew_src_install() {
+	__brew_src_install() {
 		which ${1} &>>/dev/null || brew install --build-from-source ${2}
 	}
 	__brew_install 7za p7zip

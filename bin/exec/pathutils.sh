@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-VERSION=1.1
+VERSION=1.2
 
-function __addpref() {
+__addpref() {
 	echo "/${1}"
 	echo "/usr/${1}"
 	echo "/usr/local/${1}"

@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
-# VERSION=1.1
-function trimstr() {
+# VERSION=1.2
+trimstr() {
 	: "${1#"${1%%[![:space:]]*}"}" # Trim trailing space
 	: "${_%"${_##*[![:space:]]}"}" # Trim leading space
 	printf '%s\n' "${_}"
 }
 
-function errh() {
+errh() {
 	echo -e "\033[31mERROR: ${*}\033[0m" >&2
 	exit 1
 }
 
-function warnh() {
+warnh() {
 	echo -e "\033[31mWARNING: ${*}\033[0m" >&2
 }
 
-function infoh() {
+infoh() {
 	echo -e "\033[33mINFO: ${*}\033[0m" >&2
 }

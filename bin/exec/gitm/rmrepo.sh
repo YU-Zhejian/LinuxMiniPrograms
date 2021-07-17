@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.2
+VERSION=1.3
 for opt in "${UKOPT[@]}"; do
 	case "${opt}" in
 	"-h" | "--help")
@@ -17,7 +17,7 @@ for opt in "${UKOPT[@]}"; do
 done
 
 tmpf="$(mktemp -t gitm.XXXXX)"
-function __rm() {
+__rm() {
 	rm -fr "${fields[1]}".rm logs/"${fields[1]}"
 	infoh "Repository UUID=${fields[1]} rm success"
 	echo -e "$(timestamp)\tRMDIR\tSUCCESS\t${fields[0]}\t${fields[1]}" >>act.log

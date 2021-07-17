@@ -1,3 +1,4 @@
+# VERSION=1.1
 export PROJDIR := $(CURDIR)
 export SOURCEDIR := $(PROJDIR)/src
 export INCLUDES := $(PROJDIR)/include

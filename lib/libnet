@@ -1,22 +1,23 @@
 #!/usr/bin/env bash
-# VERSION=1.0
-# shellcheck disable=SC2034
+# VERSION=1.2
 IP_ADDR=()
 
 # Need libstr
-function getIpAddr () {
-	IP_ADDR=()
+getIpAddr () {
+	# TODO: tmp
+	tmp="$(mktemp "ipaddr.XXXXX")"
 	if which ip &>>/dev/null;then
-		ip addr | grep inet | grep -v inet6 | while read line; do
-			: trimstr "${line}" | cut -d ' ' -f 2
-			IP_ADDR=("${IP_ADDR[@]}" "${_}")
-		done
+		ip addr | grep inet | grep -v inet6 > "${tmp}"
 	elif which ifconfig &>>/dev/null;then
-		ifconfig | grep inet | grep -v inet6 | while read line; do
-			: trimstr "${line}" | cut -d ' ' -f 2
-			IP_ADDR=("${IP_ADDR[@]}" "${_}")
-		done
+		ifconfig | grep inet | grep -v inet6 > "${tmp}"
+	else
+	  errh "Need command 'ip' or 'ifconfig'."
 	fi
+	while read line; do
+		: trimstr "${line}" | cut -d ' ' -f 2
+		IP_ADDR=("${IP_ADDR[@]}" "${_}")
+	done < "${tmp}"
+	rm "${tmp}"
 }
 
 getIpAddr

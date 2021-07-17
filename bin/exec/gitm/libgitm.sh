@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# VERSION=1.2
-function timestamp() {
+# VERSION=1.3
+timestamp() {
 	date '+%Y-%m-%d %H:%M:%S'
 }
-function grep_uuidtable() {
+grep_uuidtable() {
 	for fn in uuidtable.d/*; do
 		(grep "^${1}\t" "${fn}" >>"${2}" || true) &
 		(grep "\t${1}$" "${fn}" >>"${2}" || true) &
@@ -12,7 +12,7 @@ function grep_uuidtable() {
 	[ $(wc -l "${2}" | awk '{print $1}') -ne 0 ] || return 1
 	cat "${2}"
 }
-function rmrec() {
+rmrec() {
 	local wait_time=4
 	while true; do
 		if [ ${wait_time} -gt 0 ]; then

@@ -32,7 +32,7 @@ LINE_NUMBERS=1
 tmpsh=$(mktemp -t envgen_XXXXX.sh)
 DN="$(readlink -f "$(dirname "${0}")")"
 
-function __exec() {
+__exec() {
 	if [ "${1:-}" = '#' ]; then
 		echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
 	else
@@ -46,13 +46,13 @@ function __exec() {
 	fi
 	LINE_NUMBERS=$((${LINE_NUMBERS} + 1))
 }
-function __rc_cat() {
+__rc_cat() {
 	for file in /etc/rc*/*; do
 		echo \# ----------${file}----------
 		cat ${file} || true
 	done
 }
-function __cron_cat() {
+__cron_cat() {
 	for files in /var/spool/cron/* \
 		/etc/crontab \
 		/etc/cron.d/* \
@@ -66,7 +66,7 @@ function __cron_cat() {
 		cat ${file} || true
 	done
 }
-function __log_cat() {
+__log_cat() {
 	find /var/log | grep -v '/$' | while read file; do
 		echo \# ----------${file}----------
 		cat ${file} || true
@@ -237,7 +237,7 @@ export
 whereis -l
 
 # ________________________Bourne Again Shell________________________
-# WHERE command is a function defined in this code. It uses $(whereis) and $(which).
+# WHERE command is a defined in this code. It uses $(whereis) and $(which).
 WHERE bash
 bash --version
 # Check startup scripts of bash.

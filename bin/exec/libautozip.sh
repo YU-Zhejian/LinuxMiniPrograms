@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VERSION=6.2
+# VERSION=6.3
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.conf
@@ -32,7 +32,7 @@ for opt in "${@}"; do
 	fi
 done
 # Check for all components: backend.
-function ckavail() {
+ckavail() {
 	local CK_PROG=("${@}")
 	local CK_EXT="${1} "
 	local FOUND=false
@@ -53,7 +53,7 @@ function ckavail() {
 	if ! ${FOUND}; then return 1; fi
 }
 # Check for all components: frontend.
-function autozipck() {
+autozipck() {
 	infoh "Start checking formats..."
 	echo "Extension (ORDER) --> Program"
 	ckavail "tar" tar && TAR=true || TAR=false
@@ -90,7 +90,7 @@ function autozipck() {
 	exit 0
 }
 # Check extension name
-function __ckext() {
+__ckext() {
 	for name in "gz" "xz" "bz2" "lzma" "GZ" "lz" "zip" "7z" "lz4" "lzo" "zst" "Z" "z" "lzfse" "br"; do
 		if [ "${ext}" = "${name}" ] || [ "${ext}" = "tar.${name}" ]; then
 			return
@@ -104,7 +104,7 @@ function __ckext() {
 	esac
 }
 # cat file; tar folder
-function fcat() {
+fcat() {
 	if [ -d "${1}" ]; then
 		"${mytar}" -f - -cv "${1}"
 	elif [ -f "${1}" ] || [ "${fn}" = "/dev/stdin" ]; then
@@ -114,7 +114,7 @@ function fcat() {
 	fi
 }
 # Check level
-function __cklvl() {
+__cklvl() {
 	local lvl_able=""
 	local lvl_pref="-"
 	case "${1}" in

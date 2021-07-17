@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.2
+VERSION=1.3
 for opt in "${UKOPT[@]}"; do
 	case "${opt}" in
 	"-h" | "--help")
@@ -17,7 +17,7 @@ for opt in "${UKOPT[@]}"; do
 done
 
 tmpf="$(mktemp -t gitm.XXXXX)"
-function __sync() {
+__sync() {
 	infoh "Repository UUID=${fields[1]} sync started"
 	rm -fr "${fields[1]}".sync
 	cp -r "${fields[1]}" "${fields[1]}".sync

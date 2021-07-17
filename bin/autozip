@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=6.1
+VERSION=6.2
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -84,7 +84,7 @@ else
 	[ ! -f "${fn}.${ext}" ] || mv -f "${fn}.${ext}" "${fn}.${ext}".bak
 fi
 # ============ Start Compressing ============
-function __do_job() {
+__do_job() {
 	cmd="$(bash ${DN}/exec/azcmd.sh -p:${THREAD} "${1}" ${LVL})"
 	infoh "${cmd}"
 	if ${STDOUT}; then

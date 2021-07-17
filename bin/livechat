@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=2.1
+VERSION=2.2
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 touch "${DN}"/../etc/livechat.conf
@@ -15,11 +15,11 @@ if [ -z "${LIVECHAT_MAX_JOB:-}" ]; then
 	warnh "LIVECHAT_MAX_JOB undefined. Will use 100"
 	LIVECHAT_MAX_JOB=100
 fi
-function __send() {
+__send() {
 	trap "__exit" SIGINT SIGTERM
 	echo "$(date +%Y-%m-%d,%H:%M:%S);${1};${2}" >>"${LIVECHAT_HOME}"/SYSTEM
 }
-function __reciever() {
+__reciever() {
 	trap "__exit" SIGINT SIGTERM
 	tail -f "${LIVECHAT_HOME}"/SYSTEM | while read line; do
 		IFS=";"
@@ -28,7 +28,7 @@ function __reciever() {
 		IFS=""
 	done
 }
-function __exit() {
+__exit() {
 	trap "__exit" SIGINT SIGTERM
 	__send "SYSTEM" "${LCUN} had quitted"
 	rm -f "${LIVECHAT_HOME}"/"${LCUN}"
