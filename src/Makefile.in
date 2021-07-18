@@ -1,54 +1,70 @@
 # TODO: BSD Make
-export VERBOSE = TRUE
+# VERSION=1.1
 export MKDIR = mkdir -p
 export TT = all
 ETC_SOURCES := $(notdir $(wildcard src/etc/*))
 ETC_OBJECTS := $(foreach fn, $(ETC_SOURCES), $(addprefix etc/, $(fn)))
 
-.PHONY : all pp test clean distclean doc etc share/doc/pdf share/doc/html share/doc/usage share/man pytest #install uninstall
+.PHONY : all
 
+.PHONY: doc
 doc: share/doc/pdf share/doc/html share/doc/usage share/man
 
+.PHONY: etc
 etc : $(ETC_OBJECTS)
 
 etc/%: src/etc/%
 	$(CP) $< $@
 
+.PHONY: var
 var:
 	$(MKDIR) -p var/
 	$(CP) src/var/* var/
 
+.PHONY: C
 C:
 	@-$(MAKE) -C src/C
 
+.PHONY: share/doc/pdf
 share/doc/pdf:
 	@-$(MAKE) -C src/doc pdf
 
+.PHONY: share/doc/html
 share/doc/html:
 	@-$(MAKE) -C src/doc html
 
+.PHONY: share/man
 share/man:
 	@-$(MAKE) -C src/doc man
 
+.PHONY: share/doc/usage
 share/doc/usage:
 	@-$(MAKE) -C src/doc usage
 
+.PHONY: pp
 pp:
 	bash src/exec/install_path_permissions.sh
 	@-$(MAKE) -C opt permissions
 
+.PHONY: test
 test:
 	bash src/test/00_index.sh $(TT)
 
+.PHONY: pytest
 pytest:
 	bash src/pytest/00_index.sh $(TT)
 
+.PHONY: clean
 clean:
-	$(RM) src/test/*.t/
+	$(RM) src/test/*.t/ etc/path.conf GNUmakefile
+	@-$(MAKE) -C src/C clean
 
+.PHONY: distclean
 distclean:clean
 	$(RM) etc var share
+	@-$(MAKE) -C src/C distclean
 
+.PHONY: test_list
 test_list:
 	ls src/test/ | grep '\.t\.sh' | sed 's;\.t\.sh;;'
 

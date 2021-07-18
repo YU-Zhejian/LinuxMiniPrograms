@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=2.3
+VERSION=2.4
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 touch "${DN}"/../etc/livechat.conf
@@ -24,7 +24,7 @@ __reciever() {
     tail -f "${LIVECHAT_HOME}"/SYSTEM | while read line; do
         IFS=";"
         local M_A=(${line})
-        echo -e "\033[31m[${M_A[0]}]\033[0m \033[36m[${M_A[1]}]\033[0m ${M_A[2]}"
+        echo -e "${RED}[${M_A[0]}]${NOCOLOR} \033[36m[${M_A[1]}]${NOCOLOR} ${M_A[2]}"
         IFS=""
     done
 }

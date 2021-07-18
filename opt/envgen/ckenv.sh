@@ -26,6 +26,26 @@ Usage:
 	to your working directory.
 
 Initiating..."
+
+# Check for color support
+RED=""
+GREEN=""
+YELLOW=""
+NOCOLOR=""
+HAVE_COLOR=0
+COLORS="$(tput colors 2> /dev/null)" || true
+# shellcheck disable=SC2086
+[ ${COLORS} -gt 2 ] && HAVE_COLOR=1
+[[ "${TERM:-}" =~ "256" ]] && HAVE_COLOR=1
+if [ ${HAVE_COLOR} -eq 1 ];then
+    RED="\033[31m"
+    # shellcheck disable=SC2034
+    GREEN="\033[32m"
+    YELLOW="\033[33m"
+    NOCOLOR="\033[0m"
+fi
+
+
 declare -i LINE_NUMBERS
 LINE_NUMBERS=1
 [ -n "${1:-}" ] && out_file="${1}" || out_file=Report_"$(date +%Y-%m-%d_%H-%M-%S)".log
@@ -36,12 +56,12 @@ __exec() {
     if [ "${1:-}" = '#' ]; then
         echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
     else
-        local PF="\033[032mPASS\033[0m"
+        local PF="\033[032mPASS${NOCOLOR}"
         printf "${LINE_NUMBERS}/${ALL_LINE_NUMBERS} ${*}..." >&2
         echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
         eval ${*} > >(sed 's;^;OO ;') 2> >(sed 's;^;EE ;') |
             sed 's;^OO EE;EE;' |
-            cat -n || PF="\033[031mFAIL\033[0m"
+            cat -n || PF="\033[031mFAIL${NOCOLOR}"
         echo -e "${PF}" >&2
     fi
     LINE_NUMBERS=$((${LINE_NUMBERS} + 1))
@@ -591,7 +611,7 @@ echo "# ________________________TOC________________________" >"${out_file}".tmp
 cat "${out_file}" -n | grep --text -v 'OO ' | grep --text -v 'EE ' >>"${out_file}".tmp &&
     cat "${out_file}".tmp >>"${out_file}" &&
     rm "${out_file}".tmp &&
-    echo -e "\033[032mPASS\033[0m" >&2 || echo -e "\033[031mFAIL\033[0m" >&2
+    echo -e "\033[032mPASS${NOCOLOR}" >&2 || echo -e "\033[031mFAIL${NOCOLOR}" >&2
 
 rm -f "${tmpsh}"
 echo "Finished." >&2

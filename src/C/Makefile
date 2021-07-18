@@ -1,12 +1,27 @@
-# VERSION=1.1
-export PROJDIR := $(CURDIR)
-export SOURCEDIR := $(PROJDIR)/src
-export INCLUDES := $(PROJDIR)/include
-export SRC_SUBDIRS := $(wildcard */)
+# VERSION=1.2
+TARGETS := lib bin
+export BASE=$(PWD)
+export VPATH += $(BASE)/bin/ $(BASE)/lib/ $(BASE)/include/
+export CFLAGS += -I$(BASE)/include
 
-.PHONY : all $(SRC_SUBDIRS) clean
+all: $(TARGETS)
 
-all: $(SRC_SUBDIRS)
+lib:
+	@$(MAKE) -C lib/
+.PHONY: lib
 
-$(SRC_SUBDIRS):
-	@-$(MAKE) -C $@
+bin: lib
+	@$(MAKE) -C bin/
+.PHONY: bin
+
+clean:
+	@$(MAKE) -C lib clean
+	@$(MAKE) -C bin clean
+	$(RM) .libs $(PACKAGE_NAME)
+.PHONY: clean
+
+distclean: clean
+	@$(MAKE) -C bin distclean
+	@$(MAKE) -C lib distclean
+	@$(MAKE) -C include distclean
+.PHONY: distclean

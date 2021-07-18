@@ -1,5 +1,1 @@
-bin
-obj
-*.o
-build
-.idea
+cmake-build-debug

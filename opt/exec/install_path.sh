@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.2
+VERSION=1.3
 set -eu
 OLDIFS="${IFS}"
 DN="$(readlink -f "$(dirname "${0}")/../../")"
@@ -9,5 +9,5 @@ cd "${DN}"
 #========Install PATH========
 if ! which BeforeAdd.sh &>/dev/nulll; then
     echo "export PATH=\"${DN}/opt/lmp_dev/bin/:\${PATH:-}\"" >>"${HOME}"/.bashrc
-    infoh "Will configure PATH (lmp_dev)...\033[32mPASSED"
+    infoh "Will configure PATH (lmp_dev)...${GREEN}PASSED"
 fi

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.3
+VERSION=1.4
 set -u +e
 cd "$(readlink -f "$(dirname "${0}")")"/../../../ || exit 1
 . lib/libstr

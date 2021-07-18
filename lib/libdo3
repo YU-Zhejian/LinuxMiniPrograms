@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# VERSION=3.4
+# VERSION=3.5
+# Need libstr
 DO_ECHO() {
     [ "${LIBDO_LOG_MODE:-}" = "S" ] && return || true
-    [ -n "${LIBDO_LOG:-}" ] && echo "${*}" >>"${LIBDO_LOG}" || echo -e "\033[33m${*}\033[0m" >&2
+    [ -n "${LIBDO_LOG:-}" ] && echo "${*}" >>"${LIBDO_LOG}" || echo -e "${YELLOW}${*}${NOCOLOR}" >&2
 }
 # shellcheck disable=SC1081
 DO() {

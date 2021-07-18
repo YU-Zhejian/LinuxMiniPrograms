@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.3
+VERSION=1.4
 set +ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
@@ -58,13 +58,13 @@ while read -p "$(__ps1)" line; do
         done
         for str in "${disabled[@]}"; do
             if [[ "${buffer}" == "${str} "* ]]; then
-                echo -e "\033[31mFeature Disabled\033[0m"
+                echo -e "${RED}Feature Disabled${NOCOLOR}"
                 break
             fi
         done
         case "${buffer}" in
         *"&")
-            echo -e "\033[31mFeature Disabled\033[0m"
+            echo -e "${RED}Feature Disabled${NOCOLOR}"
             ;;
         "exit"*)
             exit

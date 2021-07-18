@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VERSION=6.4
+# VERSION=6.5
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.conf
@@ -85,7 +85,7 @@ autozipck() {
     ${TAR} && ${LZFSE} && printf "tar.lzfse "
     ${TAR} && ${ZIP} && printf "tar.zip "
     infoh "\nCheck complete"
-    [ "${myparallel}" != 'ylukh' ] && echo -e "Checking for 'parallel' in ${myparallel}...\033[32mOK\033[33m" || echo -e "Checking for 'parallel' ...\033[31mNO\033[33m"
+    [ "${myparallel}" != 'ylukh' ] && echo -e "Checking for 'parallel' in ${myparallel}...${GREEN}OK${YELLOW}" || echo -e "Checking for 'parallel' ...${RED}NO${YELLOW}"
     infoh "Available core number: ${MAXTHREAD}"
     exit 0
 }
