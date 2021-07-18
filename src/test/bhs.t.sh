@@ -4,5 +4,5 @@ DN="$(readlink -f "$(dirname "${0}")")"
 # shellcheck disable=SC2034
 PROGNAME=bhs
 . "${DN}"/00_libtest.sh
-DO bhs
+__DO bhs
 rm -rf "${TDN}"

@@ -4,16 +4,16 @@ DN="$(readlink -f "$(dirname "${0}")")"
 # shellcheck disable=SC2034
 PROGNAME=pathls
 . "${DN}"/00_libtest.sh
-DO pathls --version
-DO pathls
-DO pathls --no-x
-DO pathls --no-o
-DO pathls --no-o --no-x --allow-d
-DO pathls -l
-DO includels
-DO includels -l
-DO manls
-DO manls -l
-DO libls
-DO libls -l
+__DO pathls --version
+__DO pathls
+__DO pathls --no-x
+__DO pathls --no-o
+__DO pathls --no-o --no-x --allow-d
+__DO pathls -l
+__DO includels
+__DO includels -l
+__DO manls
+__DO manls -l
+__DO libls
+__DO libls -l
 rm -rf "${TDN}"

@@ -4,7 +4,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 # shellcheck disable=SC2034
 PROGNAME=yldoc
 . "${DN}"/00_libtest.sh
-DO yldoc
-DO yldoc pathls
-DO yldoc pls
+__DO yldoc
+__DO yldoc pathls
+__DO yldoc pls
 rm -rf "${TDN}"

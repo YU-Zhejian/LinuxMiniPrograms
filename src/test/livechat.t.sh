@@ -4,10 +4,10 @@ DN="$(readlink -f "$(dirname "${0}")")"
 # shellcheck disable=SC2034
 PROGNAME=livechat
 . "${DN}"/00_libtest.sh
-DO echo '!ls' \| livechat tester
-DO lcman
-DO lcman -m:"quitted"
-DO lcman -s
-DO lcman -e:"SYSTEM"
-DO lcman -f:"SYSTEM"
+__DO echo '!ls' \| livechat tester
+__DO lcman
+__DO lcman -m:"quitted"
+__DO lcman -s
+__DO lcman -e:"SYSTEM"
+__DO lcman -f:"SYSTEM"
 rm -rf "${TDN}"

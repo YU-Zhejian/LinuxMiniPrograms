@@ -8,11 +8,11 @@ PROGNAME=ylsjs
 . "${DN}"/../../lib/libman
 CORENUM=$((2 * $(getcorenumber)))
 export YLSJSD_HOME="${PWD}/ylsjs.d"
-DO ylsjsd stop
+__DO ylsjsd stop
 for ((i = 0; i < CORENUM; i++)); do
-    echo "sleep 1" | DO ylsjs init
+    echo "sleep 1" | __DO ylsjs init
 done
-DO ylsjs ps
-DO ylsjs ps -V -t -p -s
-DO ylsjsd clear
+__DO ylsjs ps
+__DO ylsjs ps -V -t -p -s
+__DO ylsjsd clear
 rm -rf "${TDN}"

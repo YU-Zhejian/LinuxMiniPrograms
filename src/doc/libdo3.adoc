@@ -13,7 +13,7 @@ libdo3 - Libdo, version 3.
 ----
 [VARIABLES]
 . /PATH/TO/LIBDO3
-DO cmd
+__DO  cmd
 ----
 
 == DESCRIPTION
@@ -28,7 +28,7 @@ After importing LibDO3, we execute:
 
 [source,bash]
 ----
-DO cat /dev/random \| xz -9 -T0 \> /dev/null
+__DO  cat /dev/random \| xz -9 -T0 \> /dev/null
 ----
 
 == COMPATIBILITY

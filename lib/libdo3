@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
-# VERSION=3.5
+# VERSION=3.6
 # Need libstr
-DO_ECHO() {
+__DO_ECHO() {
     [ "${LIBDO_LOG_MODE:-}" = "S" ] && return || true
     [ -n "${LIBDO_LOG:-}" ] && echo "${*}" >>"${LIBDO_LOG}" || echo -e "${YELLOW}${*}${NOCOLOR}" >&2
 }
-# shellcheck disable=SC1081
-DO() {
+__DO () {
     local LIBDO_CMD="${*}"
-    DO_ECHO "LIBDO IS GOING TO EXECUTE ${LIBDO_CMD}"
-    DO_ECHO "LIBDO STARTED AT $(date "+%Y-%m-%d %H:%M:%S")"
+    __DO_ECHO "LIBDO IS GOING TO EXECUTE ${LIBDO_CMD}"
+    __DO_ECHO "LIBDO STARTED AT $(date "+%Y-%m-%d %H:%M:%S")"
     local LIBDO_PID
     if [ -z "${LIBDO_LOG:-}" ]; then
         eval "${LIBDO_CMD}" &
@@ -38,18 +37,28 @@ DO() {
     fi
     [ -z "${LIBDO_LOG:-}" ] || libdo_monitor ${LIBDO_PID} ${$} &>>"${LIBDO_LOG}".${LIBDO_PID}.log &
     monitor_pid=${!}
-    [ -z "${LIBDO_TOP_PID:-}" ] && DO_ECHO "LIBDO PID ${LIBDO_PID}" || DO_ECHO "LIBDO PID ${LIBDO_PID} with top_pid ${LIBDO_TOP_PID}"
+    [ -z "${LIBDO_TOP_PID:-}" ] && __DO_ECHO "LIBDO PID ${LIBDO_PID}" || __DO_ECHO "LIBDO PID ${LIBDO_PID} with top_pid ${LIBDO_TOP_PID}"
     wait ${LIBDO_PID} && LIBDO_PRIV=0 || LIBDO_PRIV=${?}
     kill -SIGINT ${monitor_pid}
-    DO_ECHO "LIBDO STOPPED AT $(date "+%Y-%m-%d %H:%M:%S")"
+    __DO_ECHO "LIBDO STOPPED AT $(date "+%Y-%m-%d %H:%M:%S")"
     if [ ${LIBDO_PRIV} -ne 0 ]; then
-        DO_ECHO "LIBDO FAILED, GOT \$?=${LIBDO_PRIV}"
+        __DO_ECHO "LIBDO FAILED, GOT \$?=${LIBDO_PRIV}"
         if [ -n "${LIBDO_TOP_PID:-}" ]; then
-            DO_ECHO "LIBDO WILL KILL ${LIBDO_TOP_PID}"
+            __DO_ECHO "LIBDO WILL KILL ${LIBDO_TOP_PID}"
             kill -9 "${LIBDO_TOP_PID}"
         fi
     else
-        DO_ECHO "LIBDO EXITED SUCCESSFULLY"
+        __DO_ECHO "LIBDO EXITED SUCCESSFULLY"
     fi
     return ${LIBDO_PRIV}
+}
+
+# Compatibility support
+# shellcheck disable=SC1081
+DO(){
+	__DO "${@}"
+}
+
+DO_ECHO(){
+	__DO_ECHO "${@}"
 }

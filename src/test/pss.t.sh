@@ -4,5 +4,5 @@ DN="$(readlink -f "$(dirname "${0}")")"
 # shellcheck disable=SC2034
 PROGNAME=pss
 . "${DN}"/00_libtest.sh
-DO pss
+__DO pss
 rm -rf "${TDN}"

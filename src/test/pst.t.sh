@@ -4,7 +4,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 # shellcheck disable=SC2034
 PROGNAME=pst
 . "${DN}"/00_libtest.sh
-DO pst -v
-DO dd if=/dev/zero of=/dev/stdout bs=64 count=1048576 \| pst -m
-DO dd if=/dev/zero of=/dev/stdout bs=64 count=1048576 \| pst
+__DO pst -v
+__DO dd if=/dev/zero of=/dev/stdout bs=64 count=1048576 \| pst -m
+__DO dd if=/dev/zero of=/dev/stdout bs=64 count=1048576 \| pst
 rm -rf "${TDN}"

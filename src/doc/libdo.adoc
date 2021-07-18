@@ -12,7 +12,7 @@ libdo - A library to monitor process.
 [source,bash]
 ----
 . /PATH/TO/LIBDO
-DO cmd
+__DO  cmd
 ----
 
 == DESCRIPTION
@@ -23,7 +23,7 @@ Firstly, define variables like `LIBDO_LOG`.
 
 Then, use `. /PATH/TO/LIBDO` to import libdo. (Command `source` is equal to command `.`)
 
-Lastly, use `DO cmd` to execute `cmd`.
+Lastly, use `__DO  cmd` to execute `cmd`.
 
 Please pay attention that program `eval` is used to execute programs. So, if you want to use redirections, pipes or quotes, escape them first.
 
@@ -85,7 +85,7 @@ LIBDO EXITED SUCCESSFULLY
 
 These examples are tested under Cygwin.
 
-Please be aware that we __DO NOT__ recommend using LibDO interactively. You may use it in a shell script.
+Please be aware that we __DO  NOT__ recommend using LibDO interactively. You may use it in a shell script.
 
 [source]
 ----
@@ -93,7 +93,7 @@ admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ . lib/libdo
 
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
-$ DO ls
+$ __DO  ls
 LIBDO IS GOING TO EXECUTE ls
 LIBDO STARTED AT 2020-06-06 00:27:38
 [1] 1491
@@ -131,7 +131,7 @@ $ cat ls.sh
 LIBDO_LOG_MODE=4
 LIBDO_LOG=ls.log
 . lib/libdo
-DO ls
+__DO  ls
 
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ bash ls.sh

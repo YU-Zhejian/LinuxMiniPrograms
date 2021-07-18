@@ -55,6 +55,7 @@ alias git-gc="git gc --aggressive --prune=now"                              # Cl
 alias top="htop"                                                            # htop is a task manager better than top.
 alias emacs="emacs -nw"
 alias DO=eval # LibDO simulator
+alias __DO =eval # LibDO simulator
 
 # Initializing thefuck.
 # eval "$(thefuck -a)"
