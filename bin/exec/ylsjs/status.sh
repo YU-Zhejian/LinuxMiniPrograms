@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-VERSION=1.2
+VERSION=1.3
 for opt in "${UKOPT[@]}"; do
     case "${opt}" in
     "-h" | "--help")
         yldoc ylsjs
-        exit 0
+        builtin exit 0
         ;;
     "-v" | "--version")
-        echo "${VERSION}"
-        exit 0
+        builtin echo "${VERSION}"
+        builtin exit 0
         ;;
     *)
         warnh "Option '${opt}' invalid. Ignored"

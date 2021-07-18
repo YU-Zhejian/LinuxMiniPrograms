@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=6.3
+VERSION=6.4
 # TODO: autounzip -c
-set -eu
+builtin set -eu
 ISAOTOZIP=false
 PAR=''
 SUFF=''
@@ -54,7 +54,7 @@ __extract_tar() {
 }
 for fulln in "${STDS[@]}"; do
     ISBLANK=false
-    fn="$(echo ${fulln%.*} | sed "s;.part1$;;" | sed "s;.part01$;;")"
+    fn="$(builtin echo ${fulln%.*} | sed "s;.part1$;;" | sed "s;.part01$;;")"
     ext="${fulln##*.}"
     if [ "${fn##*.}" = "tar" ]; then
         ext="tar.${ext}"
@@ -62,7 +62,7 @@ for fulln in "${STDS[@]}"; do
     fi
     if [ ! -e "${fulln}" ]; then
         warnh "Filename '${fulln}' invalid"
-        continue
+        builtin continue
     fi
     __ckext
     infoh "Received: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}"
@@ -127,4 +127,4 @@ for fulln in "${STDS[@]}"; do
 done
 # ============ Finished ============
 infoh "Finished"
-exit 0
+builtin exit 0

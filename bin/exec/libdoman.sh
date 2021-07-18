@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=7.4
+VERSION=7.5
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 warnh "This program is no longer monitored and updates may not be provided"
@@ -11,11 +11,11 @@ for opt in "${@}"; do
         case "${opt}" in
         "-h" | "--help")
             yldoc libdoman
-            exit 0
+            builtin exit 0
             ;;
         "-v" | "--version")
             infoh "Version ${VERSION}, compatiable with libdo Version 2 & 3"
-            exit 0
+            builtin exit 0
             ;;
         "-m" | "--machine")
             cmd=0
@@ -28,7 +28,7 @@ for opt in "${@}"; do
             cmd=${opt:9}
             ;;
         "-x")
-            set -x
+            builtin set -x
             ;;
         *)
             warnh "Option '${opt}' invalid. Ignored"
@@ -48,7 +48,7 @@ if [ ${cmd} -eq 0 ]; then
     for fn in "${STDS[@]}"; do
         [ -f "${fn}" ] || errh "Filename '${fn}' invalid"
         infoh "Loading ${fn}...0 item proceeded"
-        while read line; do
+        while builtin read line; do
             all_lines=("${all_lines[@]}" "${line}")
         done < <(cat "${fn}" | grep LIBDO)
         i=0
@@ -70,7 +70,7 @@ if [ ${cmd} -eq 0 ]; then
                     Proj_Time_e[${Proj}]=0
                     Proj_Exit[${Proj}]="-1"
                     Proj_Time[${Proj}]="ERR"
-                    continue
+                    builtin continue
                 fi
                 if [[ "${line}" == "LIBDO STOPPED AT"* ]]; then
                     Proj_Time_e[${Proj}]="${line:17}"
@@ -85,7 +85,7 @@ if [ ${cmd} -eq 0 ]; then
                     Proj_Time_e[${Proj}]=0
                     Proj_Exit[${Proj}]="-1"
                     Proj_Time[${Proj}]="ERR"
-                    continue
+                    builtin continue
                 fi
                 if [[ "${line}" == "LIBDO EXITED SUCCESSFULLY" ]]; then
                     i=$((${i} + 1))
@@ -99,19 +99,19 @@ if [ ${cmd} -eq 0 ]; then
         infoh "File ${fn} loaded. Making table..."
         if ${ISMACHINE}; then
             for ((i = 1; i <= ${Proj}; i++)); do
-                echo -e "${Proj_CMD[${i}]}\t${Proj_Exit[${i}]}\t${Proj_Time[${i}]}"
+                builtin echo -e "${Proj_CMD[${i}]}\t${Proj_Exit[${i}]}\t${Proj_Time[${i}]}"
             done
         else
             table=$(mktemp -t libdo_man.XXXXXX)
-            echo -e "#1\n#S90\n#1\n#1" >"${table}"
-            echo "NO.;COMMAND;EXIT;TIME" >>"${table}"
+            builtin echo -e "#1\n#S90\n#1\n#1" >"${table}"
+            builtin echo "NO.;COMMAND;EXIT;TIME" >>"${table}"
             for ((i = 1; i <= ${Proj}; i++)); do
-                echo "${i};${Proj_CMD[${i}]};${Proj_Exit[${i}]};${Proj_Time[${i}]}" >>"${table}"
+                builtin echo "${i};${Proj_CMD[${i}]};${Proj_Exit[${i}]};${Proj_Time[${i}]}" >>"${table}"
             done
             ylmktbl "${table}"
             rm "${table}"
         fi
-        unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table all_lines
+        builtin unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table all_lines
     done
 else
     fn="${STDS[0]}"
@@ -119,22 +119,22 @@ else
     ln_s=0
     ln_e=0
     ln=0
-    while read line; do
+    while builtin read line; do
         ln=$((${ln} + 1))
         if [ ${ln} -eq ${cmd} ]; then
-            ln_s="$(echo ${line} | cut -f 1 -d " ")"
+            ln_s="$(builtin echo ${line} | cut -f 1 -d " ")"
         elif [ ${ln} -gt ${cmd} ]; then
-            ln_e="$(($(echo ${line} | cut -f 1 -d " ") - 1))"
+            ln_e="$(($(builtin echo ${line} | cut -f 1 -d " ") - 1))"
             break
         fi
     done < <(cat -n "${fn}" | grep "LIBDO IS GOING TO EXECUTE")
-    [ ${ln_s} -ne 0 ] || echo -e "${cmd} invalid"
+    [ ${ln_s} -ne 0 ] || builtin echo -e "${cmd} invalid"
     [ ${ln_e} -ne 0 ] || ln_e=$(wc -l ${fn} | awk '{print $1}')
-    unset line
+    builtin unset line
     tmpprj="$(mktemp -t libdo_man.XXXXXX)"
     head -n $((${ln_s} + 1)) "${fn}" | tail -n 2 >"${tmpprj}"
     head -n ${ln_e} "${fn}" | tail -n 2 >>"${tmpprj}"
-    while read line; do
+    while builtin read line; do
         all_lines=("${all_lines[@]}" "${line}")
     done <"${tmpprj}"
     CMD="${all_lines[0]:26}"
@@ -175,4 +175,4 @@ else
     rm "${tmpprj}"
 fi
 infoh "Finished"
-exit 0
+builtin exit 0

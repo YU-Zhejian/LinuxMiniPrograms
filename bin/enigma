@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.3
+VERSION=1.4
 # TODO: Add C Version
-set -ue
+builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.conf
 mkdir -p "${DN}"/../var/enigma.d
 for fn in "${DN}"/exec/enigma.co "${DN}"/exec/enigma.co.exe; do
-    [ -e "${fn}" ] && exec "${fn}" "${@}"
+    [ -e "${fn}" ] && builtin exec "${fn}" "${@}"
 done
 # shellcheck disable=SC2154
 if [ "${mypython}" != "ylukh" ]; then
-    exec "${mypython}" "${DN}"/exec/enigma.py "${@}"
+    builtin exec "${mypython}" "${DN}"/exec/enigma.py "${@}"
 else
     errh "No python found!"
 fi

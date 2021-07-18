@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-set -u +e
-cd "$(readlink -f "$(dirname "${0}")")"/../../../ || exit 1
+builtin set -u +e
+builtin cd "$(readlink -f "$(dirname "${0}")")"/../../../ || builtin exit 1
 . lib/libstr
 
 # TODO: output all versions to Version.md

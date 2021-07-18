@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# VERSION=6.6
+# VERSION=6.7
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libman
 # shellcheck disable=SC2034
 REMOVE=false
-declare -i MAXTHREAD
+builtin declare -i MAXTHREAD
 MAXTHREAD=$(getcorenumber)
 # shellcheck disable=SC2034
 ISFORCE=false
@@ -18,14 +18,14 @@ for opt in "${@}"; do
         case "${opt}" in
         "-h" | "--help")
             yldoc autozip
-            exit 0
+            builtin exit 0
             ;;
         "-v" | "--version")
-            echo ${VERSION}
-            exit 0
+            builtin echo ${VERSION}
+            builtin exit 0
             ;;
         "-x")
-            set -x
+            builtin set -x
             ;;
         esac
         OPT=("${OPT[@]}" "${opt}")
@@ -35,11 +35,15 @@ for opt in "${@}"; do
 done
 # Check for all components: backend.
 ckavail() {
-    local CK_PROG=("${@}")
-    local CK_EXT="${1} "
-    local FOUND=false
-    local i=1
-    unset "CK_PROG[0]"
+    builtin local CK_PROG
+    CK_PROG=("${@}")
+    builtin local CK_EXT
+    CK_EXT="${1} "
+    builtin local FOUND
+    FOUND=false
+    builtin local i
+    i=1
+    builtin unset "CK_PROG[0]"
     for prog_grp in "${CK_PROG[@]}"; do
         # shellcheck disable=SC2206
         CK_PROG_TMP=(${prog_grp})
@@ -47,18 +51,18 @@ ckavail() {
         for prog in "${CK_PROG_TMP[@]}"; do
             evalstr="${evalstr}"'&&[ ${my'${prog}'} != "ylukh" ]'
         done
-        if eval "${evalstr}"; then
-            echo "${CK_EXT}(${i}) --> ${prog_grp}"
+        if eval "${evalstr}"; then # TODO: Why I can't use builtin here?
+            builtin echo "${CK_EXT}(${i}) --> ${prog_grp}"
             FOUND=true
             i=$((${i} + 1))
         fi
     done
-    if ! ${FOUND}; then return 1; fi
+    if ! ${FOUND}; then builtin return 1; fi
 }
 # Check for all components: frontend.
 autozipck() {
     infoh "Start checking formats..."
-    echo "Extension (ORDER) --> Program"
+    builtin echo "Extension (ORDER) --> Program"
     ckavail "tar" tar && TAR=true || TAR=false
     ckavail "gz GZ" pigz gzip 7za 7z && GZ=true || GZ=false
     # shellcheck disable=SC2034
@@ -76,24 +80,24 @@ autozipck() {
     # shellcheck disable=SC2034
     ckavail "rar" "rar unrar" && RAR=true || RAR=false
     ckavail "zip" "zip unzip" && ZIP=true || ZIP=false
-    echo "Combined formats:"
-    ${TAR} && ${GZ} && printf "tar.gz tgz "
-    ${TAR} && ${BZ2} && printf "tar.bz2 tbz "
-    ${TAR} && ${XZ} && printf "tar.xz txz "
-    ${TAR} && ${LZMA} && printf "tar.lzma tar.lz tlz "
-    ${TAR} && ${LZ4} && printf "tar.lz4 "
-    ${TAR} && ${ZST} && printf "tar.zst "
-    ${TAR} && ${LZO} && printf "tar.lzo "
-    ${TAR} && ${BR} && printf "tar.br "
-    ${TAR} && ${Z7} && printf "tar.7z "
-    ${TAR} && ${LZ} && printf "tar.lz "
-    ${TAR} && ${LZFSE} && printf "tar.lzfse "
-    ${TAR} && ${ZIP} && printf "tar.zip "
+    builtin echo "Combined formats:"
+    ${TAR} && ${GZ} && builtin printf "tar.gz tgz "
+    ${TAR} && ${BZ2} && builtin printf "tar.bz2 tbz "
+    ${TAR} && ${XZ} && builtin printf "tar.xz txz "
+    ${TAR} && ${LZMA} && builtin printf "tar.lzma tar.lz tlz "
+    ${TAR} && ${LZ4} && builtin printf "tar.lz4 "
+    ${TAR} && ${ZST} && builtin printf "tar.zst "
+    ${TAR} && ${LZO} && builtin printf "tar.lzo "
+    ${TAR} && ${BR} && builtin printf "tar.br "
+    ${TAR} && ${Z7} && builtin printf "tar.7z "
+    ${TAR} && ${LZ} && builtin printf "tar.lz "
+    ${TAR} && ${LZFSE} && builtin printf "tar.lzfse "
+    ${TAR} && ${ZIP} && builtin printf "tar.zip "
     infoh "\nCheck complete"
     # shellcheck disable=SC2154
-    [ "${myparallel}" != 'ylukh' ] && echo -e "Checking for 'parallel' in ${myparallel}...${GREEN}OK${YELLOW}" || echo -e "Checking for 'parallel' ...${RED}NO${YELLOW}"
+    [ "${myparallel}" != 'ylukh' ] && builtin echo -e "Checking for 'parallel' in ${myparallel}...${GREEN}OK${YELLOW}" || builtin echo -e "Checking for 'parallel' ...${RED}NO${YELLOW}"
     infoh "Available core number: ${MAXTHREAD}"
-    exit 0
+    builtin exit 0
 }
 # Check extension name
 __ckext() {
@@ -123,8 +127,10 @@ fcat() {
 }
 # Check level
 __cklvl() {
-    local lvl_able=""
-    local lvl_pref="-"
+    builtin local lvl_able
+    lvl_able=""
+    builtin local lvl_pref
+    lvl_pref="-"
     case "${1}" in
     "tar" | "z" | "Z" | "lzfse")
         lvl_able="0"
@@ -155,13 +161,13 @@ __cklvl() {
         lvl_able="[123456789]"
         ;;
     esac
-    if [ -z "${LVL}" ] || echo "${LVL}" | grep -E '${lvl_able}' &>/dev/null; then
+    if [ -z "${LVL}" ] || builtin echo "${LVL}" | grep -E '${lvl_able}' &>/dev/null; then
         warnh "Compression level '${LVL}' undefined. You can use ${lvl_able} for ${1} algorithm.\nWill use default value provided by corresponding algorithm"
         LVL=''
     else
         LVL="${lvl_pref}${LVL}"
     fi
-    unset lvl_able lvl_pref
+    builtin unset lvl_able lvl_pref
     if [ ${THREAD} -gt ${MAXTHREAD} ]; then
         warnh "Too many threads. Will be resetted to ${MAXTHREAD}"
         THREAD=${MAXTHREAD}

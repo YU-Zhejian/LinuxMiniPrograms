@@ -9,7 +9,7 @@ export GIT_PS1_SHOWUPSTREAM="verbose"
 # Fantastic ${PS1} with additional linebreak.
 __prevp() {
     local r=${?}
-    [ ${r} -eq 0 ] && echo -e "\e[42m\e[30m${r}\e[32m\e[46m \e[0m" || echo -e "\e[41m\e[30m${r}\e[31m\e[46m \e[0m"
+    [ ${r} -eq 0 ] && builtin echo -e "\e[42m\e[30m${r}\e[32m\e[46m \e[0m" || builtin echo -e "\e[41m\e[30m${r}\e[31m\e[46m \e[0m"
 }
 
 # Useful paths if you install software with configure option --prefix="${HOME}/usr/local".
@@ -46,9 +46,9 @@ alias diff='diff --color=auto'   # More readable diff.
 alias ip='ip --color=auto'       # More readable ip.
 # alias grep="ack" # ack to replace grep.
 # Shutdown, reboot and sudo is banned. For those who need to those commands, please comment the following three lines.
-alias shutdown="echo What the hell you\'re thinking?\!"
-alias reboot="echo What the hell you\'re thinking?\!"
-alias sudo="echo What the hell you\'re thinking?\!"
+alias shutdown="builtin echo What the hell you\'re thinking?\!"
+alias reboot="builtin echo What the hell you\'re thinking?\!"
+alias sudo="builtin echo What the hell you\'re thinking?\!"
 alias rm="rm -i"                                                            # Safer $(rm).
 alias git-log="git log --pretty=oneline --abbrev-commit --graph --branches" # More readable git log.
 alias git-gc="git gc --aggressive --prune=now"                              # Clean git up

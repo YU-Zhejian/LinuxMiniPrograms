@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-set -eu
+builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 # shellcheck disable=SC2034
 PROGNAME=livechat
 . "${DN}"/00_libtest.sh
-__DO echo '!ls' \| livechat tester
+__DO builtin echo '!ls' \| livechat tester
 __DO lcman
 __DO lcman -m:"quitted"
 __DO lcman -s

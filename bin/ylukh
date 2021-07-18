@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=2.1
-echo "YuZJLab UnKnown Handler: command not found. Please check $(readlink -f "$(dirname "${0}")/../etc/path.conf")"
-exit 127
+VERSION=2.2
+builtin echo "YuZJLab UnKnown Handler: command not found. Please check $(readlink -f "$(dirname "${0}")/../etc/path.conf")"
+builtin exit 127

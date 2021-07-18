@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-VERSION=1.10
-set -ue
+VERSION=1.11
+builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../etc/path.conf
@@ -14,16 +14,16 @@ for opt in "${@}"; do
         case "${opt}" in
         "-h" | "--help")
             yldoc yldoc
-            exit 0
+            builtin exit 0
             ;;
         "-v" | "--version")
-            echo ${VERSION}
-            exit 0
+            builtin echo ${VERSION}
+            builtin exit 0
             ;;
         "-l" | "--list")
             infoh "Reading database..."
             ls -1 "${DN}"/../share/doc/usage | sort | sed 's/.usage$//'
-            exit 0
+            builtin exit 0
             ;;
         *)
             warnh "Option '${opt}' invalid. Ignored"
@@ -35,11 +35,11 @@ for opt in "${@}"; do
 done
 if [ ${#STDS[@]} -eq 0 ]; then
     yldoc yldoc
-    exit 0
+    builtin exit 0
 fi
 if [ -f "${DN}"/../etc/yldoc.conf ]; then
-    while read line; do
-        mapfile -t li  < <(echo ${line} | tr ' ' '\n' )
+    while builtin read line; do
+        builtin mapfile -t li  < <(builtin echo ${line} | tr ' ' '\n' )
         for ((i = 0; i < ${#STDS[@]}; i++)); do
             if [ ${STDS[${i}]} = ${li[0]} ]; then
                 STDS[${i}]=${li[1]}

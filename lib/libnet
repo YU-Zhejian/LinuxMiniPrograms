@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VERSION=1.3
+# VERSION=1.4
 IP_ADDR=()
 
 # Need libstr
@@ -12,7 +12,7 @@ getIpAddr() {
     else
         errh "Need command 'ip' or 'ifconfig'."
     fi
-    while read line; do
+    while builtin read line; do
         : trimstr "${line}" | cut -d ' ' -f 2
         IP_ADDR=("${IP_ADDR[@]}" "${_}")
     done <"${tmp}"

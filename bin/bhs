@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-VERSION=1.9
-set -ue
+VERSION=1.10
+builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libisopt
@@ -13,14 +13,14 @@ for opt in "${@}"; do
         case "${opt}" in
         "-h" | "--help")
             yldoc bhs
-            exit 0
+            builtin exit 0
             ;;
         "-v" | "--version")
-            echo ${VERSION}
-            exit 0
+            builtin echo ${VERSION}
+            builtin exit 0
             ;;
         "-x")
-            set -x
+            builtin set -x
             ;;
         *)
             warnh "Option '${opt}' invalid. Ignored"
@@ -30,10 +30,10 @@ for opt in "${@}"; do
         STDS="${STDS} -e '${opt}'"
     fi
 done
-STDS=$(echo "${STDS}" | sed "s/ $//")
+STDS=$(builtin echo "${STDS}" | sed "s/ $//")
 if [ -n "${STDS}" ]; then
-    # echo "${STDS}"
-    eval cat -n ~/.bash_history \| grep --color=auto "${STDS}"
+    # builtin echo "${STDS}"
+    builtin eval cat -n ~/.bash_history \| grep --color=auto "${STDS}"
 else
     cat -n ~/.bash_history
 fi

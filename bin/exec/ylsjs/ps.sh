@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.4
+VERSION=1.5
 VERBOSE=false
 TOP=false
 PST=false
@@ -14,11 +14,11 @@ for opt in "${UKOPT[@]}"; do
         case "${opt}" in
         "-h" | "--help")
             yldoc ylsjs
-            exit 0
+            builtin exit 0
             ;;
         "-v" | "--version")
-            echo "${VERSION}"
-            exit 0
+            builtin echo "${VERSION}"
+            builtin exit 0
             ;;
         "-V" | "--verbose")
             VERBOSE=true
@@ -55,45 +55,45 @@ for opt in "${UKOPT[@]}"; do
 done
 
 __psv() {
-    local PID
-    echo "${@}" | tr ' ' '\n' | sort -n | while read ps_name; do
+    builtin local PID
+    builtin echo "${@}" | tr ' ' '\n' | sort -n | while builtin read ps_name; do
         if [ -f "${ps_name}.i" ]; then
             PID=$(cat "${ps_name}.i" | tail -n 1)
-            echo -e "# ---------------No=${ps_name},\tNAME=$(cat ${ps_name}.i | head -n 1),\tPID=${PID},\tSTATUS=EXEC---------------"
+            builtin echo -e "# ---------------No=${ps_name},\tNAME=$(cat ${ps_name}.i | head -n 1),\tPID=${PID},\tSTATUS=EXEC---------------"
             #if ${PS};then
-            #	echo "    # ---------------ps ${ps_name}---------------"
+            #	builtin echo "    # ---------------ps ${ps_name}---------------"
             #	ps -p ${PID} || true
             #fi
             if ${PST}; then
-                echo "    # ---------------pstree ${ps_name}---------------"
+                builtin echo "    # ---------------pstree ${ps_name}---------------"
                 ${PST} && pstree -ap ${PID} || true
             fi
             if ${TOP}; then
-                echo "    # ---------------top ${ps_name}---------------"
+                builtin echo "    # ---------------top ${ps_name}---------------"
                 top -H -p ${PID} -bc -n1 || true
             fi
         elif [ -f "${ps_name}.f" ]; then
             PID=$(cat "${ps_name}.f" | tail -n 1)
-            echo -e "# ---------------No=${ps_name},\tNAME=$(cat ${ps_name}.f | head -n 1),\tPID=${PID},\tSTATUS=DONE---------------"
+            builtin echo -e "# ---------------No=${ps_name},\tNAME=$(cat ${ps_name}.f | head -n 1),\tPID=${PID},\tSTATUS=DONE---------------"
         elif [ -f "${ps_name}.q" ]; then
             PID=$(cat "${ps_name}.q" | tail -n 1)
-            echo -e "# ---------------No=${ps_name},\tNAME=$(cat ${ps_name}.q | head -n 1),\tPID=UK,\tSTATUS=PEND---------------"
+            builtin echo -e "# ---------------No=${ps_name},\tNAME=$(cat ${ps_name}.q | head -n 1),\tPID=UK,\tSTATUS=PEND---------------"
         fi
-        echo "    # ---------------Working directory=$(cat ${ps_name}.wd)---------------"
+        builtin echo "    # ---------------Working directory=$(cat ${ps_name}.wd)---------------"
         if ${CAT}; then
-            echo "    # ---------------Submitted ${ps_name}.sh---------------"
+            builtin echo "    # ---------------Submitted ${ps_name}.sh---------------"
             cat -n ${ps_name}.sh
         fi
         if ${STDOUT}; then
-            echo "    # ---------------STDOUT---------------"
+            builtin echo "    # ---------------STDOUT---------------"
             cat "${ps_name}.stdout" 2>/dev/null || true
         fi
         if ${STDERR}; then
-            echo "    # ---------------STDERR---------------"
+            builtin echo "    # ---------------STDERR---------------"
             cat "${ps_name}.stderr" 2>/dev/null || true
         fi
         if ${SHOWENV}; then
-            echo "    # ---------------Environment---------------"
+            builtin echo "    # ---------------Environment---------------"
             cat "${ps_name}.env" 2>/dev/null || true
         fi
     done
@@ -101,18 +101,18 @@ __psv() {
 
 __psc() {
     table=$(mktemp -t ylsjs_ps.XXXXXX)
-    echo -e "#1\n#1\n#1\n#1\n#1" >"${table}"
-    echo "NO.;NAME;PID;EXECTIME;STATUS" >>"${table}"
-    echo "${@}" | tr ' ' '\n' | sort -n | while read ps_name; do
-        [ -f "${ps_name}.i" ] && echo "${ps_name};$(cat ${ps_name}.i | head -n 1);$(cat ${ps_name}.i | tail -n 1);$(bash "${DN}"/exec/datediff.sh $(cat ${ps_name}.start) $(date +%s) s);EXEC" >>"${table}" || true
-        [ -f "${ps_name}.q" ] && echo "${ps_name};$(cat ${ps_name}.q);UK;$(bash "${DN}"/exec/datediff.sh $(stat --printf=%Z ${ps_name}.q) $(date +%s) s);PEND" >>"${table}" || true
-        [ -f "${ps_name}.f" ] && echo "${ps_name};$(cat ${ps_name}.f | head -n 1);$(cat ${ps_name}.f | tail -n 1);$(bash "${DN}"/exec/datediff.sh $(cat ${ps_name}.start) $(cat ${ps_name}.end) s);DONE" >>"${table}" || true
+    builtin echo -e "#1\n#1\n#1\n#1\n#1" >"${table}"
+    builtin echo "NO.;NAME;PID;EXECTIME;STATUS" >>"${table}"
+    builtin echo "${@}" | tr ' ' '\n' | sort -n | while builtin read ps_name; do
+        [ -f "${ps_name}.i" ] && builtin echo "${ps_name};$(cat ${ps_name}.i | head -n 1);$(cat ${ps_name}.i | tail -n 1);$(bash "${DN}"/exec/datediff.sh $(cat ${ps_name}.start) $(date +%s) s);EXEC" >>"${table}" || true
+        [ -f "${ps_name}.q" ] && builtin echo "${ps_name};$(cat ${ps_name}.q);UK;$(bash "${DN}"/exec/datediff.sh $(stat --printf=%Z ${ps_name}.q) $(date +%s) s);PEND" >>"${table}" || true
+        [ -f "${ps_name}.f" ] && builtin echo "${ps_name};$(cat ${ps_name}.f | head -n 1);$(cat ${ps_name}.f | tail -n 1);$(bash "${DN}"/exec/datediff.sh $(cat ${ps_name}.start) $(cat ${ps_name}.end) s);DONE" >>"${table}" || true
     done
     ylmktbl "${table}"
     rm "${table}"
 }
 __pspid() {
-    echo "${@}" | tr ' ' '\n' | sort -n | while read ps_name; do
+    builtin echo "${@}" | tr ' ' '\n' | sort -n | while builtin read ps_name; do
         [ -f "${ps_name}.i" ] && cat ${ps_name}.i | tail -n 1 | tr '\n' ' ' || true
     done
 }
@@ -123,7 +123,7 @@ if [ ${#STDS[@]} -eq 0 ]; then
     elif ${PID_ONLY}; then
         __pspid $(ls -1 | grep '^[0-9]*\.i$' | sed 's;.i$;;' | xargs)
     elif ${ID_ONLY}; then
-        printf "$(ls -1 | grep '^[0-9]*\.i$' | sed 's;.i$;;' | xargs)"
+        builtin printf "$(ls -1 | grep '^[0-9]*\.i$' | sed 's;.i$;;' | xargs)"
     else
         __psc $(ls -1 | grep '^[0-9]*\.[qif]$' | sed 's;.[qif]$;;' | xargs)
     fi

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-VERSION=3.8
+VERSION=3.9
 _grep() {
     regstr="${1}"
-    local tmpff
+    builtin local tmpff
     tmpff=$(mktemp -t pls.XXXXXX)
     cat "${tmpf}" | grep -v "${regstr}" >"${tmpff}"
     mv "${tmpff}" "${tmpf}"
@@ -12,8 +12,8 @@ _grep() {
 INPATH="${PATH}"
 . "${DN}"/../lib/libpath
 # shellcheck disable=SC2154
-mapfile -t eachpath  < <(echo ${valid_path} | tr ' ' '\n' )
-unset duplicated_path
+builtin mapfile -t eachpath  < <(builtin echo ${valid_path} | tr ' ' '\n' )
+builtin unset duplicated_path
 allow_x=true
 allow_d=false
 allow_o=true
@@ -23,11 +23,11 @@ for opt in "${@}"; do
         case "${opt}" in
         "-h" | "--help")
             yldoc pathls
-            exit 0
+            builtin exit 0
             ;;
         "-v" | "--version")
-            echo ${VERSION}
-            exit 0
+            builtin echo ${VERSION}
+            builtin exit 0
             ;;
         "--no-x")
             allow_x=false
@@ -39,18 +39,18 @@ for opt in "${@}"; do
             allow_o=false
             ;;
         "-l" | "--list")
-            echo ${valid_path} | tr ':' '\n'
-            unset valid_path
-            exit 0
+            builtin echo ${valid_path} | tr ':' '\n'
+            builtin unset valid_path
+            builtin exit 0
             ;;
         "-i" | "--invalid")
             # shellcheck disable=SC2154
-            echo ${invalid_path} | tr ':' '\n'
-            unset invalid_set invalid_path valid_path
-            exit 0
+            builtin echo ${invalid_path} | tr ':' '\n'
+            builtin unset invalid_set invalid_path valid_path
+            builtin exit 0
             ;;
         "-x")
-            set -x
+            builtin set -x
             ;;
         "-p" | "--parallel")
             # TODO: support parallel
@@ -64,11 +64,11 @@ for opt in "${@}"; do
         STDS=("${STDS[@]}" "${opt}")
     fi
 done
-unset invalid_path valid_path
+builtin unset invalid_path valid_path
 tmpf="$(mktemp -t pls.XXXXXX)"
 infoh "Reading database..."
 for dir in "${eachpath[@]}"; do
-    ls -1 -F "${dir}" 2>/dev/null | sed "s;^;$(echo "${dir}")/;" >>"${tmpf}" || true
+    ls -1 -F "${dir}" 2>/dev/null | sed "s;^;$(builtin echo "${dir}")/;" >>"${tmpf}" || true
 done
 ${allow_d} || _grep '/$'
 ${allow_x} || _grep '\*$'
@@ -80,6 +80,6 @@ else
     for fn in "${STDS[@]}"; do
         grepstr="${grepstr} -e ${fn}"
     done
-    eval cat \"${tmpf}\"\|grep "${grepstr}"
+    builtin eval cat \"${tmpf}\"\|grep "${grepstr}"
 fi
 rm "${tmpf}"

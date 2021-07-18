@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-# VERSION=2.3
+# -*- coding: utf-8 -*-
+# VERSION=2.4
 '''
 Python version of lib/libpath, includes common utilities to manipulate
 environment variables separated by ':'.

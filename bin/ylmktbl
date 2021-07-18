@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=4.4
-set -ue
+VERSION=4.5
+builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
 # shellcheck disable=SC2154
 if [ "${mypython}" != "ylukh" ]; then
-    exec "${mypython}" "${DN}"/exec/ylmktbl.py "${@}"
+    builtin exec "${mypython}" "${DN}"/exec/ylmktbl.py "${@}"
 else
     errh "Python not found"
 fi

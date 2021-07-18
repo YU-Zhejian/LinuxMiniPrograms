@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 '''
 Ultility to monitor a specific PID, used in LibDO version 3.
 '''

@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
-VERSION=2.8
-set -eu
+VERSION=2.9
+builtin set -eu
 if [ ${BASH_VERSINFO[0]} -lt 4 ] && [ ${BASH_VERSINFO[1]} -lt 4 ]; then
-    echo -e "\033[31mERROR: Your Bash is obsolete.
+    builtin echo -e "\033[31mERROR: Your Bash is obsolete.
 To run LinuxMiniPrograms, you need Bash >=4.4\033[0m"
 fi
 if ! readlink -f . &>/dev/null; then
     if ! greadlink -f . &>/dev/null; then
-        echo -e "\033[31mERROR: NO readlink & greadlink available
+        builtin echo -e "\033[31mERROR: NO readlink & greadlink available
 For MacOS users, please install 'coreutils' by HomeBrew
 For BSD users, please install 'coreutils' by your package management systems\033[0m"
-        exit 1
+        builtin exit 1
     else
         ln -s "$(which greadlink)" "$(greadlink -f "$(dirname "${0}")")"/bin/readlink || true
         PATH="$(greadlink -f "$(dirname "${0}")")/bin:${PATH}"
-        export PATH
+        builtin export PATH
     fi
 fi
-cd "$(readlink -f "$(dirname "${0}")")"
+builtin cd "$(readlink -f "$(dirname "${0}")")"
 . lib/libisopt
 . lib/libstr
 infoh "Configure file for YuZJLab Installer"
@@ -40,12 +40,12 @@ for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
         "-v" | "--version")
-            echo ${VERSION}
-            exit 0
+            builtin echo ${VERSION}
+            builtin exit 0
             ;;
         "-h" | "--help")
             cat src/doc/configure.txt
-            exit 0
+            builtin exit 0
             ;;
         "-a" | "--all")
             VAR_install_config=true
@@ -87,7 +87,7 @@ for opt in "${@}"; do
             #	PREFIX="${opt:8}"
             #	;;
         "-x")
-            set -x
+            builtin set -x
             ;;
         *)
             warnh "Option '${opt}' invalid. Ignored"
@@ -107,26 +107,26 @@ if [ ! -f "${path_sh}" ] && [ -f 'etc/path.sh' ]; then mv 'etc/path.sh' "${path_
 if [ ! -f "${path_sh}" ]; then
     mkdir -p etc
     touch "${path_sh}"
-    echo "#!/usr/bin/env bash" >>"${path_sh}"
-    echo "# Generated at $(date)" >>"${path_sh}"
+    builtin echo "#!/usr/bin/env bash" >>"${path_sh}"
+    builtin echo "# Generated at $(date)" >>"${path_sh}"
     #=====os=====
     if [ -z "${myos:-}" ]; then
-        mapfile -t < <(uname -mrs | tr ' ' '\n')                             # Do not use pipes; it will initiate a subshell
-        echo "myos=\"$(printf ${MAPFILE[0]})\" # $(printf ${MAPFILE[1]})" >>"${path_sh}"
+        builtin mapfile -t < <(uname -mrs | tr ' ' '\n')                             # Do not use pipes; it will initiate a subshell
+        builtin echo "myos=\"$(printf ${MAPFILE[0]})\" # $(printf ${MAPFILE[1]})" >>"${path_sh}"
     fi
     #=====path=====
     infoh "Enumerating valid path..."
     # shellcheck disable=SC2034
     INPATH="${PATH}"
     . lib/libpath
-    unset invalid_path duplicated_path
+    builtin unset invalid_path duplicated_path
     # shellcheck disable=SC2154
     # shellcheck disable=SC2034
-    mapfile -t eachpath < <(echo ${valid_path} | tr ':' '\n' )
-    unset binpath
-    echo ${valid_path} | tr ':' '\n'
+    builtin mapfile -t eachpath < <(builtin echo ${valid_path} | tr ':' '\n' )
+    builtin unset binpath
+    builtin echo ${valid_path} | tr ':' '\n'
     infoh "End locating valid path"
-    unset valid_path
+    builtin unset valid_path
     # shellcheck disable=SC1090
     for PROGNAME in ps python; do . "src/exec/find${PROGNAME}.sh"; done
     for PROGNAME in 7z 7za bgzip brotli bzip2 compress gzip lz4 lzfse lzip lzma lzop pbz2 pbzip pbzip2 pigz rar tar unzip unrar xz zip zstd \
@@ -159,10 +159,10 @@ if [ ! -f "${path_sh}" ]; then
     # shellcheck disable=SC2154
     [ "${mygsplit}" != 'ylukh' ] && sed -i".bak" 's;^mygsplit;mysplit;' "${path_sh}"
     infoh "All configurations are printed as follows:"
-    cat "${path_sh}" | grep -v '^$' | grep -v '^#' | sort | while read line; do echo -e "${line}${NOCOLOR}"; done
+    cat "${path_sh}" | grep -v '^$' | grep -v '^#' | sort | while builtin read line; do builtin echo -e "${line}${NOCOLOR}"; done
 fi
 for STDI in "${STDS[@]}"; do
-    echo my"${STDI}" >>"${path_sh}"
+    builtin echo my"${STDI}" >>"${path_sh}"
 done
 . etc/path.conf
 # shellcheck disable=SC2154
@@ -222,7 +222,7 @@ elif [ "${mycc}" != "ylukh" ]; then
 fi
 #========Makefile Generation========
 MAKE_ARGS="${MAKE_ARGS}:PYTHON=${mypython}:RM=rm -rf:CP=cp -rf:PREFIX=${PREFIX}"
-echo "${MAKE_ARGS}" | sed 's;:;\'$'\nexport ;g' | sort | uniq >GNUmakefile
-echo "all: ${MAKE_TARGETS}" >>GNUmakefile
+builtin echo "${MAKE_ARGS}" | sed 's;:;\'$'\nexport ;g' | sort | uniq >GNUmakefile
+builtin echo "all: ${MAKE_TARGETS}" >>GNUmakefile
 cat src/Makefile.in >>GNUmakefile
 infoh "Finished. Please execute 'make' or 'gmake' (For BSD or macOS) to build the program"

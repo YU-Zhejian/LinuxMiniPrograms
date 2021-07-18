@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=6.4
-set -eu
+VERSION=6.5
+builtin set -eu
 PAR=''
 SUFF=''
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -16,7 +16,7 @@ done
 [ ${#STDS[@]} -gt 0 ] || autozipck
 for fulln in "${STDS[@]}"; do
     ISBLANK=false
-    fn="$(echo ${fulln%.*} | sed "s;.part1$;;" | sed "s;.part01$;;")"
+    fn="$(builtin echo ${fulln%.*} | sed "s;.part1$;;" | sed "s;.part01$;;")"
     ext="${fulln##*.}"
     if [ "${fn##*.}" = "tar" ]; then
         ext="tar.${ext}"
@@ -24,7 +24,7 @@ for fulln in "${STDS[@]}"; do
     fi
     if [ ! -e "${fulln}" ]; then
         warnh "Filename '${fulln}' invalid"
-        continue
+        builtin continue
     fi
     __ckext
     infoh "Received: ${0} ${fulln} ${OPT[*]} ==>Extension=${ext}"
@@ -130,4 +130,4 @@ for fulln in "${STDS[@]}"; do
 done
 # ============ Finished ============
 infoh "Finished"
-exit 0
+builtin exit 0

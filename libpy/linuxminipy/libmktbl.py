@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-# VERSION=1.1
+# -*- coding: utf-8 -*-
+# VERSION=1.2
 '''
 Print table.
 '''

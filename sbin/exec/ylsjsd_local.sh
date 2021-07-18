@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.5
-set -ue
-declare -i YLSJSD_MAX_JOB
+VERSION=1.6
+builtin set -eu
+builtin declare -i YLSJSD_MAX_JOB
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../../etc/path.conf
 . "${DN}"/../../lib/libstr
@@ -15,21 +15,21 @@ fi
 if [ -z "${YLSJSD_HOME:-}" ]; then
     YLSJSD_HOME="${DN}"/../../var/ylsjs.d
 fi
-echo ${$} >>ylsjsd.lock
+builtin echo ${$} >>ylsjsd.lock
 infoh "ylsjsd started at $(date)"
 
 __exit() {
     infoh "ylsjsd terminated at $(date)"
     rm -f ylsjsd.lock 2>/dev/null
-    exit
+    builtin exit
 }
-trap "__exit" SIGINT SIGTERM
+builtin trap "__exit" SIGINT SIGTERM
 
 while true; do
     sleep 1
     # Rmove done jobs
     # shellcheck disable=SC2010
-    ls -1 2>/dev/null | grep '\.i' | sed 's;.i$;;' | while read ps_name; do
+    ls -1 2>/dev/null | grep '\.i' | sed 's;.i$;;' | while builtin read ps_name; do
         PID=$(cat ${ps_name}.i | tail -n 1)
         if ! ps -p ${PID} &>>/dev/null; then
             mv "${ps_name}.i" "${ps_name}.f"
@@ -44,11 +44,11 @@ while true; do
         lastq=$(ls -1 2>/dev/null | grep '\.q$' | sort -n | head -n 1 | sed 's;.q$;;')
         if [ "${lastq}" = "" ]; then break; fi
         date +%s >${lastq}.start
-        declare >"${lastq}".env
-        cd "$(cat "${lastq}.wd")"
+        builtin declare >"${lastq}".env
+        builtin cd "$(cat "${lastq}.wd")"
         bash "${YLSJSD_HOME}"/${lastq}.sh 1>"${YLSJSD_HOME}"/${lastq}.stdout 2>"${YLSJSD_HOME}"/${lastq}.stderr &
-        cd "${YLSJSD_HOME}"
-        echo "${!}" >>"${lastq}".q
+        builtin cd "${YLSJSD_HOME}"
+        builtin echo "${!}" >>"${lastq}".q
         mv "${lastq}.q" "${lastq}.i"
     done
 done

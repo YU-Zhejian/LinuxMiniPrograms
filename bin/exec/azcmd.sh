@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=6.4
+VERSION=6.5
 # ============ Functions ============
-set -eu
+builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")/../")"
 PAR=""
 # shellcheck disable=SC2034
 GCMD=false
 DECOMPRESS=false
 . "${DN}"/exec/libautozip.sh
-# exec 2>/dev/null
+# builtin exec 2>/dev/null
 # ============ Start ============
 for opt in "${OPT[@]}"; do
     case "${opt}" in
@@ -117,7 +117,7 @@ if ${DECOMPRESS}; then
         fi
         ;;
     *)
-        exit 1
+        builtin exit 1
         ;;
     esac
 else
@@ -233,8 +233,8 @@ else
     #	fi
     #	;;
     *)
-        exit 1
+        builtin exit 1
         ;;
     esac
 fi
-echo "${cmd}"
+builtin echo "${cmd}"

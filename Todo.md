@@ -55,6 +55,10 @@
 * zopfli
 * zutil
 
+## Bugs
+
+* `rar` multithreading support
+
 ## New Programs
 
 * General-purpose enigma crypto.

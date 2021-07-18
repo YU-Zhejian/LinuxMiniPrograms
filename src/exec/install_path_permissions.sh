@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.9
-set -eu
+VERSION=1.10
+builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")/../../")"
-cd "${DN}"
+builtin cd "${DN}"
 . lib/libstr
 . etc/path.conf
 
 rcWrite() {
-    echo "${1}" | tee -a "${HOME}"/.bashrc | tee -a "${HOME}"/.zshrc
+    builtin echo "${1}" | tee -a "${HOME}"/.bashrc | tee -a "${HOME}"/.zshrc
     # TODO: Support SH, ZSH
 }
 
@@ -23,7 +23,7 @@ if ! which ylsjsd &>/dev/null; then
 fi
 #========Install PYTHONPATH========
 # shellcheck disable=SC2154
-if [ "${mypython}" != "ylukh" ] && ! echo "from linuxminipy.libylfile import *" | "${mypython}" &>>/dev/null; then
+if [ "${mypython}" != "ylukh" ] && ! builtin echo "from linuxminipy.libylfile import *" | "${mypython}" &>>/dev/null; then
     rcWrite "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\""
     infoh "Will configure PYTHONPATH...${GREEN}PASSED"
 fi
@@ -34,15 +34,15 @@ if [ -e man/man1 ] && ! man yldoc &>>/dev/null; then
 fi
 #========Install Permissions========
 __change_dir_permissions() {
-    ls -1 | while read file_name; do
+    ls -1 | while builtin read file_name; do
         if [ -f "${file_name}" ]; then
-            # echo - "${file_name}"
+            # builtin echo - "${file_name}"
             chmod -x "${file_name}"
         else
-            # echo + "${file_name}"
-            cd "${file_name}"
+            # builtin echo + "${file_name}"
+            builtin cd "${file_name}"
             __change_dir_permissions
-            cd ..
+            builtin cd ..
         fi
     done
 }
@@ -51,4 +51,4 @@ chmod -R +r+w *
 __change_dir_permissions
 chmod +x configure bin/* sbin/* bin/exec/*.co* sbin/exec/*.co* *.sh || true
 infoh "Modifying file permissions...${GREEN}PASSED"
-infoh "Finished. Please execute 'exec bash' to restart bash"
+infoh "Finished. Please execute 'builtin exec bash' to restart bash"

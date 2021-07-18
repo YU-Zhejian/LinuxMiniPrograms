@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-VERSION=1.4
+VERSION=1.5
 n=15
 for opt in "${UKOPT[@]}"; do
     case "${opt}" in
     "-h" | "--help")
         yldoc ylsjs
-        exit 0
+        builtin exit 0
         ;;
     "-v" | "--version")
-        echo "${VERSION}"
-        exit 0
+        builtin echo "${VERSION}"
+        builtin exit 0
         ;;
     -n\:*)
         n=${opt:3}
@@ -35,7 +35,7 @@ __kill() {
     killtree ${PID} ${n} || true
     sleep 1
     if ps -p ${PID} &>>/dev/null; then
-        warnh "Failed to kill ${1} with PID=${PID}. Retry with -n:9 option"
+        warnh "Failed to builtin kill ${1} with PID=${PID}. Retry with -n:9 option"
     else
         infoh "${1} killed"
     fi

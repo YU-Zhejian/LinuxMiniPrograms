@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.3
-set -ue
+VERSION=1.4
+builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.conf
 for fn in "${DN}"/exec/pst.co "${DN}"/exec/pst.co.exe; do
     if [ -e "${fn}" ]; then
-        exec "${fn}" "${@}"
+        builtin exec "${fn}" "${@}"
     fi
 done
 # shellcheck disable=SC2154
 if [ "${mypython}" != "ylukh" ]; then
-    exec "${mypython}" "${DN}"/exec/pst.py "${@}"
+    builtin exec "${mypython}" "${DN}"/exec/pst.py "${@}"
 else
     errh "No python found!"
 fi

@@ -11,7 +11,7 @@ export GIT_PS1_SHOWUPSTREAM="verbose"
 # Fantastic ${PS1} with additional linebreak.
 __prevp (){
 	local r=${?}
-	[ ${r} -eq 0 ] && echo -e "\e[32m${r}\e[0m" || echo -e "\e[31m${r}\e[0m"
+	[ ${r} -eq 0 ] && builtin echo -e "\e[32m${r}\e[0m" || builtin echo -e "\e[31m${r}\e[0m"
 }
 
 # TODO: bugs in MSYS2

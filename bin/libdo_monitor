@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# VERSION=1.2
-set -ue
+# VERSION=1.3
+builtin set -eu
 
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
 . "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
 __exit() {
-	kill -9 ${$}
+	builtin kill -9 ${$}
 }
 STDS=()
 for opt in "${@}"; do
@@ -15,14 +15,14 @@ for opt in "${@}"; do
 		case "${opt}" in
 		"-h" | "--help")
 			yldoc libdo_monitor
-			exit 0
+			builtin exit 0
 			;;
 		"-v" | "--version")
-			echo ${VERSION}
-			exit 0
+			builtin echo ${VERSION}
+			builtin exit 0
 			;;
 		"-x")
-			set -x
+			builtin set -x
 			;;
 		*)
 			warnh "Option '${opt}' invalid. Ignored"
@@ -33,10 +33,10 @@ for opt in "${@}"; do
 	fi
 done
 
-trap "__exit" SIGINT
+builtin trap "__exit" SIGINT
 # shellcheck disable=SC2154
 if [ "${mypython}" != "ylukh" ]; then
-	exec "${mypython}" "${DN}"/exec/libdo_monitor.py "${STDS@}"
+	builtin exec "${mypython}" "${DN}"/exec/libdo_monitor.py "${STDS@}"
 else
 	errh "Python not found"
 fi

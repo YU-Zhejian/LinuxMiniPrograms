@@ -1,7 +1,7 @@
 # ~/.zshrc file for zsh interactive shells.
 # see /usr/share/doc/zsh/examples/zshrc for examples
 
-setopt autocd              # change directory just by typing its name
+setopt autobuiltin cd              # change directory just by typing its name
 #setopt correct            # auto correct mistakes
 setopt interactivecomments # allow comments in interactive mode
 setopt magicequalsubst     # enable filename expansion for arguments of the form ‘anything=expression’
@@ -61,7 +61,7 @@ fi
 # override default virtualenv indicator in prompt
 VIRTUAL_ENV_DISABLE_PROMPT=1
 venv_info() {
-    [ $VIRTUAL_ENV ] && echo "(%B%F{reset}$(basename $VIRTUAL_ENV)%b%F{%(#.blue.green)})"
+    [ $VIRTUAL_ENV ] && builtin echo "(%B%F{reset}$(basename $VIRTUAL_ENV)%b%F{%(#.blue.green)})"
 }
 
 # set a fancy prompt (non-color, unless we know we "want" color)

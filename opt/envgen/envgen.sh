@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #set -euo pipefail
 set -v
-echo "YuZJLab Environment Generator version 1.0.0
+builtin echo "YuZJLab Environment Generator version 1.0.0
 Copyright 2021 (C) YuZJLab
 
 Basic environment generator for GNU/Linux.
@@ -64,7 +64,7 @@ done
 DN="${HOME}"/envgen_"$(date +%Y-%m-%d_%H-%M-%S)"
 mkdir -p "${DN}"
 cp -r "$(readlink -f "$(dirname "${0}")")"/* "${DN}"
-cd "${DN}" || exit
+builtin cd "${DN}" || builtin exit
 
 sed -i 's/\r$//g' etc/*
 
@@ -74,7 +74,7 @@ if ${INSTALL_BASH_SETTINGS}; then
     mv etc/git.sh "${HOME}"/.git-prompt.sh
     mv etc/common.bashrc "${HOME}"/.bashrc
     mv etc/common.sh "${HOME}"/.common.sh
-    [ -f "${HOME}/.bash_profile" ] || echo ". \${HOME}/.bashrc" >>"${HOME}/.profile"
+    [ -f "${HOME}/.bash_profile" ] || builtin echo ". \${HOME}/.bashrc" >>"${HOME}/.profile"
 fi
 if ${INSTALL_ZSH_SETTINGS}; then
     mv "${HOME}"/.zshrc .zshrc.bak
@@ -172,7 +172,7 @@ fi
 if ${INSTALL_R_SETTINGS}; then
     mv "${HOME}"/.Rprofile .Rprofile.bak
     cp etc/common.Rprofile "${HOME}"/.Rprofile
-    echo 'install.packages(c("ggpubr","tidyverse","rmarkdown","knitr","viridis","stringr","devtools","BiocManager"))' | R --no-save # May cause problems.
+    builtin echo 'install.packages(c("ggpubr","tidyverse","rmarkdown","knitr","viridis","stringr","devtools","BiocManager"))' | R --no-save # May cause problems.
 fi
 
 # ________________________Ruby Settings________________________

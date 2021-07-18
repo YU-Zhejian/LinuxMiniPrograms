@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=6.4
+VERSION=6.5
 # ============ Functions ============
-set -eu
+builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 # shellcheck disable=SC2034
 ISAUTOZIP=true
@@ -53,14 +53,14 @@ if [ -z "${STDS[1]:-}" ]; then
     if [ -f "${fn}" ] || [ "${fn}" = "/dev/stdin" ]; then
         ext="gz"
     elif [ -d "${fn}" ]; then
-        fn=$(echo ${fn} | sed "s;/$;;")
+        fn=$(builtin echo ${fn} | sed "s;/$;;")
         ext="tar"
     fi
 else
     ext=${STDS[1]}
     __ckext
     if [ -d "${fn}" ]; then
-        fn=$(echo "${fn}" | sed 's;/$;;')
+        fn=$(builtin echo "${fn}" | sed 's;/$;;')
         case "${ext}" in
         t* | "rar" | "zip" | "7z") ;;
         *)
@@ -138,6 +138,7 @@ t*z)
     if [ "${fn}" = "/dev/stdin" ]; then
         errh "Not implemented in zip"
     fi
+    # shellcheck disable=SC2154
     if [ "${my7za}" != 'ylukh' ]; then
         __cklvl 7z
         if ${STDOUT}; then
@@ -168,7 +169,7 @@ t*z)
     #if ${STDOUT}; then
     #	"${myrar}" -mt${THREAD} a /dev/stdout "${fn}"
     #else
-    "${myrar}" -mt${THREAD} a "${fn}".${ext} "${fn}"
+    "${myrar}" a "${fn}".${ext} "${fn}" # Multithreading not supported here
     #fi
     ;;
 *)

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=3.4
-set -ue
+VERSION=3.5
+builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 infoh "YuZJLab PATH ls"
@@ -9,7 +9,7 @@ infoh "Copyright (C) 2019-2021 YU Zhejian"
 . "${DN}"/../etc/path.conf
 # shellcheck disable=SC2154
 if [ "${mypython}" != "ylukh" ]; then
-    exec "${mypython}" "${DN}"/exec/pathls.py "${@}"
+    builtin exec "${mypython}" "${DN}"/exec/pathls.py "${@}"
 else
     . "${DN}"/exec/pathls.sh
 fi

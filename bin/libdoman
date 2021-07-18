@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# VERSION=6.1
-set -ue
+# VERSION=6.2
+builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr

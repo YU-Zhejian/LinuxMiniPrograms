@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-echo "YuZJLab Environment Checker version 1.0.0
+builtin echo "YuZJLab Environment Checker version 1.0.0
 Copyright 2021 (C) YuZJLab
 
 WARNING: This application have the capacity of collecting sensitive information
@@ -44,7 +44,7 @@ if [ ${HAVE_COLOR} -eq 1 ];then
 fi
 
 
-declare -i LINE_NUMBERS
+builtin declare -i LINE_NUMBERS
 LINE_NUMBERS=1
 [ -n "${1:-}" ] && out_file="${1}" || out_file=Report_"$(date +%Y-%m-%d_%H-%M-%S)".log
 tmpsh=$(mktemp -t envgen_XXXXX.sh)
@@ -52,22 +52,22 @@ DN="$(readlink -f "$(dirname "${0}")")"
 
 __exec() {
     if [ "${1:-}" = '#' ]; then
-        echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
+        builtin echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
     else
         local PF="\033[032mPASS${NOCOLOR}"
         printf "${LINE_NUMBERS}/${ALL_LINE_NUMBERS} ${*}..." >&2
-        echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
+        builtin echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
         # shellcheck disable=SC2048
-        eval ${*} > >(sed 's;^;OO ;') 2> >(sed 's;^;EE ;') |
+        builtin eval ${*} > >(sed 's;^;OO ;') 2> >(sed 's;^;EE ;') |
             sed 's;^OO EE;EE;' |
             cat -n || PF="\033[031mFAIL${NOCOLOR}"
-        echo -e "${PF}" >&2
+        builtin echo -e "${PF}" >&2
     fi
     LINE_NUMBERS=$((${LINE_NUMBERS} + 1))
 }
 __rc_cat() {
     for file in /etc/rc*/*; do
-        echo \# ----------${file}----------
+        builtin echo \# ----------${file}----------
         cat ${file} || true
     done
 }
@@ -81,13 +81,13 @@ __cron_cat() {
         /etc/cron.weekly/* \
         /etc/anacrontab \
         /var/spool/anacron/*; do
-        echo \# ----------${file}----------
+        builtin echo \# ----------${file}----------
         cat ${file} || true
     done
 }
 __log_cat() {
     find /var/log | grep -v '/$' | while read file; do
-        echo \# ----------${file}----------
+        builtin echo \# ----------${file}----------
         cat ${file} || true
     done
 }
@@ -106,7 +106,7 @@ cat <<EOF |
 # It just prints the working directory you're in.
 # If you do not understand concepts like woring directory,
 # please search the web.
-echo "${PWD}"
+builtin echo "${PWD}"
 
 # ________________________Operating System Info________________________
 uname -a # Kernel information.
@@ -265,8 +265,8 @@ cat ${HOME}/.bash_history
 cat ${HOME}/.bash_logout
 cat ${HOME}/.bash_profile
 # Check differences in interactive amd non-interactive mode.
-echo "exit" \| bash -vi
-echo "exit" \| bash -v
+builtin echo "exit" \| bash -vi
+builtin echo "exit" \| bash -v
 
 # ________________________Bourne shell________________________
 # See the aove section for more details.
@@ -277,16 +277,16 @@ cat ${HOME}/.profile
 # See the aove section for more details.
 WHERE csh
 cat ${HOME}/.cshrc
-echo "exit" \| csh -Vi
-echo "exit" \| csh -V
+builtin echo "exit" \| csh -Vi
+builtin echo "exit" \| csh -V
 
 # ________________________Z Shell________________________
 # See the aove section for more details.
 WHERE zsh
 cat ${HOME}/.zshrc
 zsh --version
-echo "exit" \| zsh -vi /dev/stdin
-echo "exit" \| zsh -v
+builtin echo "exit" \| zsh -vi /dev/stdin
+builtin echo "exit" \| zsh -v
 
 # ________________________Friendly Interactive Shell________________________
 # See the aove section for more details.
@@ -316,15 +316,15 @@ cvs --version
 # ________________________Python________________________
 WHERE python
 python --version
-echo '' \| python -v
+builtin echo '' \| python -v
 
 WHERE python3
 python3 --version
-echo '' \| python3 -v
+builtin echo '' \| python3 -v
 
 WHERE python2
 python2 --version
-echo '' \| python2 -v
+builtin echo '' \| python2 -v
 
 WHERE pip
 pip --version
@@ -351,10 +351,10 @@ WHERE perl
 perl -v
 perl -V
 perl "${DN}"/exec/list_packages.pl # I
-echo -e 'l\\\nq' \| instmodsh # I
+builtin echo -e 'l\\\nq' \| instmodsh # I
 
 WHERE cpan
-echo "m" \| cpan # I
+builtin echo "m" \| cpan # I
 
 WHERE perldoc
 perldoc -V
@@ -398,7 +398,7 @@ g++ --version
 g++ --verbose
 WHERE cpp
 cpp --version
-echo '' \| cpp --verbose
+builtin echo '' \| cpp --verbose
 
 # Tiny C Compiler.
 WHERE tcc
@@ -444,7 +444,7 @@ ruby --version
 # ________________________FORTRAN________________________
 WHERE gfortran
 gfortran --version
-echo \| gfortran --verbose
+builtin echo \| gfortran --verbose
 WHERE ifort
 ifort --version
 
@@ -599,7 +599,7 @@ EOF
     grep -v '^$' |
     sed 's;^#;\\#;' |
     sed 's;^WHERE \(.*\);whereis -b \1\nwhereis -m \1\nwhich \1;' |
-    sed 's;^;__exec ;' >"${tmpsh}"
+    sed 's;^;__builtin exec ;' >"${tmpsh}"
 
 ALL_LINE_NUMBERS=$(wc -l "${tmpsh}" | awk '{print $1}')
 # shellcheck disable=SC1090
@@ -607,11 +607,11 @@ ALL_LINE_NUMBERS=$(wc -l "${tmpsh}" | awk '{print $1}')
 # ________________________TOC________________________
 printf "Generating TOC..." >&2
 
-echo "# ________________________TOC________________________" >"${out_file}".tmp
+builtin echo "# ________________________TOC________________________" >"${out_file}".tmp
 cat "${out_file}" -n | grep --text -v 'OO ' | grep --text -v 'EE ' >>"${out_file}".tmp &&
     cat "${out_file}".tmp >>"${out_file}" &&
     rm "${out_file}".tmp &&
-    echo -e "\033[032mPASS${NOCOLOR}" >&2 || echo -e "\033[031mFAIL${NOCOLOR}" >&2
+    builtin echo -e "\033[032mPASS${NOCOLOR}" >&2 || builtin echo -e "\033[031mFAIL${NOCOLOR}" >&2
 
 rm -f "${tmpsh}"
-echo "Finished." >&2
+builtin echo "Finished." >&2

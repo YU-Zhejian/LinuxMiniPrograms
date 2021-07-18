@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VERSION=1.4
+# VERSION=1.5
 
 # Check for color support
 RED=""
@@ -31,18 +31,18 @@ fi
 trimstr() {
 	: "${1#"${1%%[![:space:]]*}"}" # Trim trailing space
 	: "${_%"${_##*[![:space:]]}"}" # Trim leading space
-	printf '%s\n' "${_}"
+	builtin printf '%s\n' "${_}"
 }
 
 errh() {
-	builtin echo -e "${RED}ERROR: ${*}${NOCOLOR}" >&2
-	exit 1
+	builtin builtin echo -e "${RED}ERROR: ${*}${NOCOLOR}" >&2
+	builtin exit 1
 }
 
 warnh() {
-	builtin echo -e "${RED}WARNING: ${*}${NOCOLOR}" >&2
+	builtin builtin echo -e "${RED}WARNING: ${*}${NOCOLOR}" >&2
 }
 
 infoh() {
-	builtin echo -e "${YELLOW}INFO: ${*}${NOCOLOR}" >&2
+	builtin builtin echo -e "${YELLOW}INFO: ${*}${NOCOLOR}" >&2
 }

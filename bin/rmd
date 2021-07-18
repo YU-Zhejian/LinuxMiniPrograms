@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-VERSION=1.10
-set -ue
+VERSION=1.11
+builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libisopt
@@ -13,14 +13,14 @@ for opt in "${@}"; do
         case "${opt}" in
         "-h" | "--help")
             yldoc rmd
-            exit 0
+            builtin exit 0
             ;;
         "-v" | "--version")
-            echo ${VERSION}
-            exit 0
+            builtin echo ${VERSION}
+            builtin exit 0
             ;;
         "-x")
-            set -x
+            builtin set -x
             ;;
         *)
             warnh "Option '${opt}' invalid. Ignored"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# VERSION=2.3
-mapfile -t eachpath  < <(echo ${INPATH} | tr ':' '\n' )
+# VERSION=2.4
+builtin mapfile -t eachpath  < <(builtin echo ${INPATH} | tr ':' '\n' )
 valid_path=':'
 invalid_path=':'
 duplicated_path=':'
@@ -13,7 +13,7 @@ for dir in "${eachpath[@]}"; do
     else
         valid_path="${valid_path}${dir_full}:"
     fi
-    unset dir_full dir
+    builtin unset dir_full dir
 done
 [ "${duplicated_path}" = ":" ] || duplicated_path=${duplicated_path:1:-1}
 [ "${invalid_path}" = ":" ] || invalid_path=${invalid_path:1:-1}
