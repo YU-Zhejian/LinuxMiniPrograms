@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.2
+VERSION=1.3
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
@@ -8,23 +8,23 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/exec/pathutils.sh
 infoh "YuZJLab INCLUDEPATH ls"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
-oldifs="${IFS}"
-
+# shellcheck disable=SC2063
 gccinclude=$(for dir in \
     $(__addpref 'lib*/gcc*/*/*/include') \
     $(__addpref 'lib*/gcc*/*/include') \
     $(__addpref 'lib*/gcc*/include'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
 
+# shellcheck disable=SC2063
 clanginclude=$(for dir in \
     $(__addpref 'lib*/clang*/*/include') \
     $(__addpref 'lib*/clang*/include'); do echo "${dir}"; done | grep -v '*' | tr '\n' ':')
 
+# shellcheck disable=SC2034
 INPATH="/clang*/include:/mingw*/include:$(__addpref 'include'):${gccinclude}:${clanginclude}:${C_INCLUDE_PATH:-}"${CPLUS_INCLUDE_PATH:-}
 . "${DN}"/../lib/libpath
-IFS=":"
-eachpath=(${valid_path})
+# shellcheck disable=SC2154
+mapfile -t eachpath  < <(echo ${valid_path} | tr ' ' '\n' )
 unset duplicated_path invalid_path
-IFS=''
 STDS=()
 for opt in "${@}"; do
     if isopt "${opt}"; then
@@ -50,7 +50,7 @@ for opt in "${@}"; do
             ;;
         esac
     else
-        STDS=(${STDS[@]} "${opt}")
+        STDS=("${STDS[@]}" "${opt}")
     fi
 done
 unset valid_path
@@ -62,7 +62,6 @@ done
 if [ ${#STDS[@]} -eq 0 ]; then
     cat "${tmpf}"
 else
-    IFS=''
     grepstr=''
     for fn in "${STDS[@]}"; do
         grepstr="${grepstr} -e ${fn}"
@@ -70,4 +69,3 @@ else
     eval cat \"${tmpf}\"\|grep "${grepstr}"
 fi
 rm "${tmpf}"
-IFS="${oldifs}"

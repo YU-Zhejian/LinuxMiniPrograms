@@ -135,7 +135,7 @@ __git_ps1_show_upstream ()
 			upstream=svn+git # default upstream is SVN if available, else git
 			;;
 		esac
-	done <<< "$output"
+	done <<< "${output}"
 
 	# parse configuration values
 	local option

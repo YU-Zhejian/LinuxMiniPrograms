@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-VERSION=2.7
+VERSION=2.8
 set -eu
 if [ ${BASH_VERSINFO[0]} -lt 4 ] && [ ${BASH_VERSINFO[1]} -lt 4 ]; then
     echo -e "\033[31mERROR: Your Bash is obsolete.
 To run LinuxMiniPrograms, you need Bash >=4.4\033[0m"
 fi
-OLDIFS="${IFS}"
 if ! readlink -f . &>/dev/null; then
     if ! greadlink -f . &>/dev/null; then
         echo -e "\033[31mERROR: NO readlink & greadlink available
@@ -112,7 +111,7 @@ if [ ! -f "${path_sh}" ]; then
     echo "# Generated at $(date)" >>"${path_sh}"
     #=====os=====
     if [ -z "${myos:-}" ]; then
-        mapfile < <(uname -mrs | tr ' ' '\n')                             # Do not use pipes; it will initiate a subshell
+        mapfile -t < <(uname -mrs | tr ' ' '\n')                             # Do not use pipes; it will initiate a subshell
         echo "myos=\"$(printf ${MAPFILE[0]})\" # $(printf ${MAPFILE[1]})" >>"${path_sh}"
     fi
     #=====path=====
@@ -121,10 +120,9 @@ if [ ! -f "${path_sh}" ]; then
     INPATH="${PATH}"
     . lib/libpath
     unset invalid_path duplicated_path
-    IFS=':'
+    # shellcheck disable=SC2154
     # shellcheck disable=SC2034
-    eachpath=(${valid_path})
-    IFS=''
+    mapfile -t eachpath < <(echo ${valid_path} | tr ':' '\n' )
     unset binpath
     echo ${valid_path} | tr ':' '\n'
     infoh "End locating valid path"
@@ -139,16 +137,26 @@ if [ ! -f "${path_sh}" ]; then
         gtar gsed ggrep gmake gsplit; do . src/exec/findornot.sh; done
     # To change myasciidoctor-pdf because bash do not support variable names with '-' inside
     sed -i".bak" 's;^myasciidoctor-pdf;myasciidoctor_pdf;' "${path_sh}"
+    # shellcheck disable=SC1090
     . "${path_sh}"
+    # shellcheck disable=SC2154
     [ "${mypbz2}" == 'ylukh' ] && [ "${mypbzip}" != 'ylukh' ] && sed -i".bak" 's;^mypbzip;mypbz2;' "${path_sh}"
+    # shellcheck disable=SC1090
     . "${path_sh}"
+    # shellcheck disable=SC2154
     [ "${mypbz2}" == 'ylukh' ] && [ "${mypbzip2}" != 'ylukh' ] && sed -i".bak" 's;^mypbzip2;mypbz2;' "${path_sh}"
+    # shellcheck disable=SC1090
     . "${path_sh}"
     # Remove g for GNU CoreUtils installed under BSD systems
+    # shellcheck disable=SC2154
     [ "${mygtar}" != 'ylukh' ] && sed -i".bak" 's;^mygtar;mytar;' "${path_sh}"
+    # shellcheck disable=SC2154
     [ "${mygsed}" != 'ylukh' ] && sed -i".bak" 's;^mygsed;mysed;' "${path_sh}"
+    # shellcheck disable=SC2154
     [ "${myggrep}" != 'ylukh' ] && sed -i".bak" 's;^myggrep;mygrep;' "${path_sh}"
+    # shellcheck disable=SC2154
     [ "${mygmake}" != 'ylukh' ] && sed -i".bak" 's;^mygmake;mymake;' "${path_sh}"
+    # shellcheck disable=SC2154
     [ "${mygsplit}" != 'ylukh' ] && sed -i".bak" 's;^mygsplit;mysplit;' "${path_sh}"
     infoh "All configurations are printed as follows:"
     cat "${path_sh}" | grep -v '^$' | grep -v '^#' | sort | while read line; do echo -e "${line}${NOCOLOR}"; done
@@ -157,9 +165,11 @@ for STDI in "${STDS[@]}"; do
     echo my"${STDI}" >>"${path_sh}"
 done
 . etc/path.conf
+# shellcheck disable=SC2154
 [ "${mymake}" = "ylukh" ] && errh "GNU Make not found"
 #========Install ETC========
 if ${VAR_install_config} && [ -d "etc" ]; then
+    # shellcheck disable=SC2154
     "${mytar}" czf etc_backup.tgz etc
     infoh "Backing up settings...${GREEN}PASSED"
 fi
@@ -169,11 +179,14 @@ if ${VAR_clear_history} && [ -d "var" ]; then
     infoh "Backing up histories...${GREEN}PASSED"
 fi
 #========Install DOC========
+# shellcheck disable=SC2154
 if [ "${myasciidoctor}" == "ylukh" ]; then
     VAR_install_man=false
     [ "${myasciidoc}" == "ylukh" ] && VAR_install_html=false
 fi
+# shellcheck disable=SC2154
 [ "${myasciidoctor_pdf}" != "ylukh" ] || VAR_install_pdf=false
+# shellcheck disable=SC2154
 [ "${mypython}" != "ylukh" ] || VAR_install_usage=false
 if ${VAR_install_pdf}; then
     MAKE_TARGETS="${MAKE_TARGETS} share/doc/pdf"
@@ -196,7 +209,8 @@ if ${VAR_install_html}; then
     MAKE_TARGETS="${MAKE_TARGETS} share/doc/html"
 fi
 #========C========
-[ "${mygcc}" != "ylukh" ] || [ "${myclang}" != "ylukh" ] || [ "${mycc}" != "ylukh" ] & [ "${mylibtool}" != "ylukh" ] && MAKE_TARGETS="${MAKE_TARGETS} C"
+# shellcheck disable=SC2154
+[ "${mygcc}" != "ylukh" ] || [ "${myclang}" != "ylukh" ] || [ "${mycc}" != "ylukh" ] && [ "${mylibtool}" != "ylukh" ] && MAKE_TARGETS="${MAKE_TARGETS} C"
 if cat "${path_sh}" | grep -i BSD >/dev/null; then
     MAKE_ARGS="${MAKE_ARGS}:CC=${myclang}:LIBTOOL=${mylibtool}" # Use Clang for FreeBSD.
 elif [ "${mygcc}" != "ylukh" ]; then
@@ -212,4 +226,3 @@ echo "${MAKE_ARGS}" | sed 's;:;\'$'\nexport ;g' | sort | uniq >GNUmakefile
 echo "all: ${MAKE_TARGETS}" >>GNUmakefile
 cat src/Makefile.in >>GNUmakefile
 infoh "Finished. Please execute 'make' or 'gmake' (For BSD or macOS) to build the program"
-IFS="${OLDIFS}"

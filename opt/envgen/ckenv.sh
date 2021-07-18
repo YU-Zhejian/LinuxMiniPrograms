@@ -38,10 +38,8 @@ COLORS="$(tput colors 2> /dev/null)" || true
 [ ${COLORS} -gt 2 ] && HAVE_COLOR=1
 [[ "${TERM:-}" =~ "256" ]] && HAVE_COLOR=1
 if [ ${HAVE_COLOR} -eq 1 ];then
-    RED="\033[31m"
     # shellcheck disable=SC2034
     GREEN="\033[32m"
-    YELLOW="\033[33m"
     NOCOLOR="\033[0m"
 fi
 
@@ -59,6 +57,7 @@ __exec() {
         local PF="\033[032mPASS${NOCOLOR}"
         printf "${LINE_NUMBERS}/${ALL_LINE_NUMBERS} ${*}..." >&2
         echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
+        # shellcheck disable=SC2048
         eval ${*} > >(sed 's;^;OO ;') 2> >(sed 's;^;EE ;') |
             sed 's;^OO EE;EE;' |
             cat -n || PF="\033[031mFAIL${NOCOLOR}"
@@ -73,7 +72,7 @@ __rc_cat() {
     done
 }
 __cron_cat() {
-    for files in /var/spool/cron/* \
+    for file in /var/spool/cron/* \
         /etc/crontab \
         /etc/cron.d/* \
         /etc/cron.daily/* \
@@ -603,6 +602,7 @@ EOF
     sed 's;^;__exec ;' >"${tmpsh}"
 
 ALL_LINE_NUMBERS=$(wc -l "${tmpsh}" | awk '{print $1}')
+# shellcheck disable=SC1090
 . "${tmpsh}" >"${out_file}"
 # ________________________TOC________________________
 printf "Generating TOC..." >&2

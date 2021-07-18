@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-VERSION=1.4
+# shellcheck disable=SC2034
+VERSION=1.5
 set +ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
@@ -28,7 +29,7 @@ pass_int() {
     [ ! ${_PID} -eq 0 ] && kill -13 ${_PID}
 }
 
-builtins=("." "[" "bind" "break" "builtin" "caller" "command" "compgen" "complete" "compopt" "continue" "declare" "dirs" "disown" "echo" "enable" "eval" "exec" "exit" "export" "false" "fc" "hash" "help" "history" "kill" "let" "local" "mapfile" "popd" "printf" "pushd" " pwd" " read" "readonly" "return" "set" "shift" "shopt" "source" "suspend" "test" "times" "true" "type" "typeset" "ulimit" "umask" "unset")
+builtins=("." "[" "bind" "break" "builtin" "caller" "command" "compgen" "complete" "compopt" "continue" "declare" "dirs" "disown" "echo" "enable" "eval" "exec" "exit" "export" "false" "fc" "hash" "help" "history" "kill" "let" "local" "mapfile -t" "popd" "printf" "pushd" " pwd" " read" "readonly" "return" "set" "shift" "shopt" "source" "suspend" "test" "times" "true" "type" "typeset" "ulimit" "umask" "unset")
 disabled=(":" "alias" "bg" "fg" "jobs" "logout" "trap" "unalias" "wait" "getopts")
 
 if [ -f "${HOME}/.bashrc" ]; then
@@ -51,6 +52,7 @@ while read -p "$(__ps1)" line; do
                 infoh "Builtin"
                 echo "${buffer}"' 2>&1 | tee -a "${log}" && prev_out=0 || prev_out=${?}' >"${tmpf}"
                 cat "${tmpf}"
+                # shellcheck disable=SC1090
                 . "${tmpf}"
                 rm "${tmpf}"
                 break
@@ -70,7 +72,7 @@ while read -p "$(__ps1)" line; do
             exit
             ;;
         "cd "*)
-            cd "${buffer:3}"
+            cd "${buffer:3}" || warnh "cd failed"
             prev_out=${?}
             ;;
         *)

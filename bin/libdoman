@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# VERSION=6.0
+# VERSION=6.1
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
 infoh "YuZJLab LibDO Manager"
 infoh "Copyright (C) 2020 YU Zhejian"
+# shellcheck disable=SC2154
 if [ "${mypython}" != "ylukh" ]; then "${mypython}" "${DN}"/exec/libdoman.py "${@}"; else . "${DN}"/exec/libdoman.sh; fi

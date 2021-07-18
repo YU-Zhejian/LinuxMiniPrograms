@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VERSION=1.4
+# VERSION=1.5
 getuser() {
     if [ -n "${USER:-}" ]; then
         printf "${USER}"
@@ -12,6 +12,7 @@ getuser() {
     fi
 }
 getcorenumber() {
+    # shellcheck disable=SC2154
     if [[ "${myos}" == *"BSD"* ]] || [[ "${myos}" == *"Darwin"* ]]; then
         sysctl -a | grep hw.ncpu | awk '{print $2;}'
     else

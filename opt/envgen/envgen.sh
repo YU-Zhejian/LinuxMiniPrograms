@@ -59,7 +59,7 @@ done
 DN="${HOME}"/envgen_"$(date +%Y-%m-%d_%H-%M-%S)"
 mkdir -p "${DN}"
 cp -r "$(readlink -f "$(dirname "${0}")")"/* "${DN}"
-cd "${DN}"
+cd "${DN}" || exit
 
 sed -i 's/\r$//g' etc/*
 
@@ -101,7 +101,7 @@ if ${INSTALL_BREW} && ! which brew &>>/dev/null; then
     cat etc/brew.bashrc >>"${HOME}"/.bashrc
     cat etc/brew.bashrc >>"${HOME}"/.Renviron
     . etc/brew.bashrc
-    HOMEBREW_BOTTLE_DOMAIN=https://mirrors.cloud.tencent.com/homebrew-bottles/ # USTC mirror do not provide bottles-portable-ruby.
+    export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.cloud.tencent.com/homebrew-bottles/ # USTC mirror do not provide bottles-portable-ruby.
     mkdir -p "$(brew --repo homebrew/core)"
     # mkdir -p "$(brew --repo)"/Library/Taps/homebrew/homebrew-cask
     git clone https://mirrors.ustc.edu.cn/linuxbrew-core.git "$(brew --repo homebrew/core)"

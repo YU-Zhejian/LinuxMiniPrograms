@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-VERSION=1.1
+# shellcheck disable=SC2034
+VERSION=1.2
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libstr
 warnh "This program is no longer monitored and updates may not be provided"

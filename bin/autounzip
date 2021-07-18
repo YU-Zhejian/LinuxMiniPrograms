@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-VERSION=6.2
+# shellcheck disable=SC2034
+VERSION=6.3
 # TODO: autounzip -c
 set -eu
 ISAOTOZIP=false
@@ -43,6 +44,7 @@ done
 __extract_tar() {
     cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${2})"
     infoh "${cmd}"
+    # shellcheck disable=SC2154
     [ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
     if [ -f "${1}" ]; then
         cat "${1}" | ${cmd} | "${mytar}" -xv -f -
@@ -74,6 +76,7 @@ for fulln in "${STDS[@]}"; do
         __extract_tar "${fulln}" "bz2"
         ;;
     "tar.7z")
+        # shellcheck disable=SC2154
         "${my7za}" e -aoa "${fulln}" -so -y -t7z | "${mytar}" -xv -f -
         ;;
     "tar.zip")
@@ -93,6 +96,7 @@ for fulln in "${STDS[@]}"; do
         __extract_tar "${fulln}" "${ext//t/}"
         ;;
     "7z")
+        # shellcheck disable=SC2154
         [ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
         ! [ ${THREAD} -gt 0 ] || PAR="-mmt${THREAD}"
         "${my7z}" -y ${PAR} x "${fulln}"${SUFF}
@@ -107,6 +111,7 @@ for fulln in "${STDS[@]}"; do
         fi
         ;;
     "rar")
+        # shellcheck disable=SC2154
         [ "${myunrar}" != 'ylukh' ] || errh "unrar NO exist"
         ! [ ${THREAD} -gt 0 ] || PAR="-mt${THREAD}"
         "${myunrar}" ${PAR} x "${fulln}"

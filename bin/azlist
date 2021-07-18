@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-VERSION=6.3
+# shellcheck disable=SC2034
+VERSION=6.4
 set -eu
 PAR=''
 SUFF=''
@@ -31,6 +32,7 @@ for fulln in "${STDS[@]}"; do
     __list_tar() {
         cmd="$(bash ${DN}/exec/azcmd.sh --decompress ${1})"
         infoh "${cmd}"
+        # shellcheck disable=SC2154
         [ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
         fcat "${fulln}" | ${cmd} | "${mytar}" -tv -f -
     }
@@ -45,6 +47,7 @@ for fulln in "${STDS[@]}"; do
         __list_tar "${ext//t/}"
         ;;
     "7z")
+        # shellcheck disable=SC2154
         [ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
         if [ ! -f "${fulln}" ] && [ -f "${fulln}.001" ]; then
             fulln="${fulln}.001"
@@ -52,10 +55,13 @@ for fulln in "${STDS[@]}"; do
         "${my7z}" l "${fulln}"
         ;;
     "zip")
+        # shellcheck disable=SC2154
         [ "${myunzip}" != 'ylukh' ] || errh "unzip NO exist"
         if [ -f "${fn}".z01 ]; then
+            # shellcheck disable=SC2154
             [ "${myzip}" != 'ylukh' ] || errh "zip NO exist"
             mktmp
+            # shellcheck disable=SC2154
             cp "${fn}".z* "${tempdir}"/
             "${myzip}" -FF "${tempdir}"/"${fn}".zip --out "${tempdir}"/"${fn}".fzip
             "${myunzip}" -v "${tempdir}"/"${fn}".fzip
@@ -64,10 +70,12 @@ for fulln in "${STDS[@]}"; do
         fi
         ;;
     "rar")
+        # shellcheck disable=SC2154
         [ "${myunrar}" != 'ylukh' ] || errh "unrar NO exist"
         "${myunrar}" v "${fulln}"
         ;;
     "gz" | "GZ" | "bgz")
+        # shellcheck disable=SC2154
         if [ "${mypigz}" != 'ylukh' ]; then
             cmd="${mypigz} -clvf"
         elif [ "${mygzip}" != 'ylukh' ]; then
@@ -75,6 +83,7 @@ for fulln in "${STDS[@]}"; do
         fi
         ;;
     "xz")
+        # shellcheck disable=SC2154
         if [ "${myxz}" != 'ylukh' ]; then
             cmd="${myxz} -clvvf -"
         fi
@@ -83,6 +92,7 @@ for fulln in "${STDS[@]}"; do
         [ ${THREAD} -gt 1 ] && warnh "${1} do not support parallel. Thread will be resetted to 1"
         if [ "${myxz}" != 'ylukh' ]; then
             cmd="${myxz} -clvvf --format=lzma -"
+        # shellcheck disable=SC2154
         elif [ "${mylzma}" != 'ylukh' ]; then
             cmd="${mylzma} -clvf -"
         fi

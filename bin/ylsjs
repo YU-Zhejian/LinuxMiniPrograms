@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-VERSION=1.4
+VERSION=1.5
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
+# shellcheck disable=SC2034
 WD="$(pwd)"
 . "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libstr
@@ -36,25 +37,27 @@ for opt in "${@}"; do
     fi
 done
 ylcmd=${STDS[0]:-}
+# shellcheck disable=SC2184
 unset STDS[0]
 
 if [ "${ylcmd}" = "lscmd" ]; then
+    # shellcheck disable=SC2010
     ls -1 "${DN}"/exec/ylsjs/ | grep -v lib | sed 's;\.sh$;;'
 elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".co ]; then
     exec "${DN}"/exec/ylsjs/"${ylcmd}".co "${@}"
 elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".co.exe ]; then
     exec "${DN}"/exec/ylsjs/"${ylcmd}".co.exe "${@}"
 elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".py ]; then
-    IFS="${OLD_IFS}"
+    # shellcheck disable=SC2154
     if [ "${mypython}" != "ylukh" ]; then
         "${mypython}" "${DN}"/exec/ylsjs/"${sjscmd}".py "${@}"
     fi
 elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".sh ]; then
+    # shellcheck disable=SC1090
     . "${DN}"/exec/ylsjs/"${ylcmd}".sh
 elif [ -z "${ylcmd}" ]; then
     ${HAVEHELP} && yldoc ylsjs
     ${HAVEVER} && echo "${VERSION}"
 else
-    IFS="${OLD_IFS}"
     errh "subcommand '${ylcmd}' invalid. Use '${0} lscmd' to get a list of available commands"
 fi

@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-VERSION=4.3
+# shellcheck disable=SC2034
+VERSION=4.4
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
+# shellcheck disable=SC2154
 if [ "${mypython}" != "ylukh" ]; then
     exec "${mypython}" "${DN}"/exec/ylmktbl.py "${@}"
 else

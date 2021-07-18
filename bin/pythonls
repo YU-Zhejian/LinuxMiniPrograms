@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.2
+VERSION=1.3
 # TODO: docs
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -9,16 +9,15 @@ DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/exec/pathutils.sh
 infoh "YuZJLab PYTHONPATH ls"
 infoh "Copyright (C) 2021 YU Zhejian"
-oldifs="${IFS}"
 INPATH="${PATH}"
 PACKAGE=false
 . "${DN}"/../lib/libpath
-IFS=":"
-eachpath=(${valid_path})
-IFS=''
+# shellcheck disable=SC2154
+mapfile -t eachpath  < <(echo ${valid_path} | tr ' ' '\n' )
 tmpf=$(mktemp -t configpath.XXXXXX)
 for dir in "${eachpath[@]}"; do
     # TODO: test CygWin exe support
+    # shellcheck disable=SC2010
     ls -F -1 "${dir}" 2>/dev/null | grep '.[*@]$' | sed 's;[*@]$;;' | grep -E '^(python(3|2){0,1}(\.[[:digit:]]+)*(d|m|u){0,1}(.exe){0,1}$)' | sed "s;^;$(echo ${dir})/;" | while read line; do
         if echo "exit()" | "${line}" -v 2>&1 | grep -E '([C-Z]:\\)' >/dev/null; then
             infoh "Windows Python found in ${line}"
@@ -33,13 +32,12 @@ for dir in "${eachpath[@]}"; do
     done
 done
 
+# shellcheck disable=SC2034
 INPATH="${PYTHONPATH}:$(cat "${tmpf}" | tr '\n' ':')"
 rm "${tmpf}"
 . "${DN}"/../lib/libpath
-IFS=":"
-eachpath=(${valid_path})
+mapfile -t eachpath  < <(echo ${valid_path} | tr ' ' '\n' )
 unset duplicated_path invalid_path
-IFS=''
 STDS=()
 for opt in "${@}"; do
     if isopt "${opt}"; then
@@ -81,7 +79,6 @@ if ${PACKAGE}; then
     if [ ${#STDS[@]} -eq 0 ]; then
         cat "${tmpf}"
     else
-        IFS=''
         grepstr=''
         for fn in "${STDS[@]}"; do
             grepstr="${grepstr} -e ${fn}"
@@ -95,7 +92,6 @@ else
     if [ ${#STDS[@]} -eq 0 ]; then
         cat "${tmpf}"
     else
-        IFS=''
         grepstr=''
         for fn in "${STDS[@]}"; do
             grepstr="${grepstr} -e ${fn}"
@@ -104,4 +100,3 @@ else
     fi
 fi
 rm "${tmpf}"
-IFS="${oldifs}"

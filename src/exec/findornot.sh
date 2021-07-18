@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-VERSION=2.2
+# shellcheck disable=SC2034
+VERSION=2.3
+# shellcheck disable=SC2154
 if ! grep "^my${PROGNAME}=" "${path_sh}"; then
     if which "${PROGNAME}" &>>/dev/null; then
         line="$(which "${PROGNAME}")"

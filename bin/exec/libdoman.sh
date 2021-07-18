@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=7.3
+VERSION=7.4
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 warnh "This program is no longer monitored and updates may not be provided"
@@ -48,11 +48,9 @@ if [ ${cmd} -eq 0 ]; then
     for fn in "${STDS[@]}"; do
         [ -f "${fn}" ] || errh "Filename '${fn}' invalid"
         infoh "Loading ${fn}...0 item proceeded"
-        ffn="$(mktemp -t libdo_man.XXXXXX)"
-        cat "${fn}" | grep LIBDO >"${ffn}"
         while read line; do
             all_lines=("${all_lines[@]}" "${line}")
-        done <"${ffn}"
+        done < <(cat "${fn}" | grep LIBDO)
         i=0
         Proj=0
         while [ ${#all_lines[@]} -gt ${i} ]; do
@@ -111,17 +109,15 @@ if [ ${cmd} -eq 0 ]; then
                 echo "${i};${Proj_CMD[${i}]};${Proj_Exit[${i}]};${Proj_Time[${i}]}" >>"${table}"
             done
             ylmktbl "${table}"
-            rm "${ffn}" "${table}"
+            rm "${table}"
         fi
-        unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table ffn all_lines
+        unset Proj Proj_CMD Proj_Exit Proj_Time_e Proj_Time_s table all_lines
     done
 else
     fn="${STDS[0]}"
     [ -f "${fn}" ] || errh "Filename '${fn}' invalid"
     ln_s=0
     ln_e=0
-    tmps="$(mktemp -t libdo_man.XXXXXX)"
-    cat -n "${fn}" | grep "LIBDO IS GOING TO EXECUTE" >"${tmps}"
     ln=0
     while read line; do
         ln=$((${ln} + 1))
@@ -131,8 +127,7 @@ else
             ln_e="$(($(echo ${line} | cut -f 1 -d " ") - 1))"
             break
         fi
-    done <"${tmps}"
-    rm "${tmps}"
+    done < <(cat -n "${fn}" | grep "LIBDO IS GOING TO EXECUTE")
     [ ${ln_s} -ne 0 ] || echo -e "${cmd} invalid"
     [ ${ln_e} -ne 0 ] || ln_e=$(wc -l ${fn} | awk '{print $1}')
     unset line

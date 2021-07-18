@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.8
+VERSION=1.9
 set -eu
-OLDIFS="${IFS}"
 DN="$(readlink -f "$(dirname "${0}")/../../")"
 cd "${DN}"
 . lib/libstr
@@ -23,6 +22,7 @@ if ! which ylsjsd &>/dev/null; then
     infoh "Will configure PATH (sbin)...${GREEN}PASSED"
 fi
 #========Install PYTHONPATH========
+# shellcheck disable=SC2154
 if [ "${mypython}" != "ylukh" ] && ! echo "from linuxminipy.libylfile import *" | "${mypython}" &>>/dev/null; then
     rcWrite "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\""
     infoh "Will configure PYTHONPATH...${GREEN}PASSED"
@@ -51,5 +51,4 @@ chmod -R +r+w *
 __change_dir_permissions
 chmod +x configure bin/* sbin/* bin/exec/*.co* sbin/exec/*.co* *.sh || true
 infoh "Modifying file permissions...${GREEN}PASSED"
-IFS="${OLDIFS}"
 infoh "Finished. Please execute 'exec bash' to restart bash"

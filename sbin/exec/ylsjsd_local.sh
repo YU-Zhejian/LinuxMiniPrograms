@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-VERSION=1.4
+# shellcheck disable=SC2034
+VERSION=1.5
 set -ue
 declare -i YLSJSD_MAX_JOB
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -27,6 +28,7 @@ trap "__exit" SIGINT SIGTERM
 while true; do
     sleep 1
     # Rmove done jobs
+    # shellcheck disable=SC2010
     ls -1 2>/dev/null | grep '\.i' | sed 's;.i$;;' | while read ps_name; do
         PID=$(cat ${ps_name}.i | tail -n 1)
         if ! ps -p ${PID} &>>/dev/null; then
@@ -35,7 +37,10 @@ while true; do
         fi
     done
     # Check the queue
+    # shellcheck disable=SC2046
+    # shellcheck disable=SC2010
     while [ $(ls -1 2>/dev/null | grep '\.i' | wc -l | awk '{ printf $1 }') -lt ${YLSJSD_MAX_JOB} ]; do
+        # shellcheck disable=SC2010
         lastq=$(ls -1 2>/dev/null | grep '\.q$' | sort -n | head -n 1 | sed 's;.q$;;')
         if [ "${lastq}" = "" ]; then break; fi
         date +%s >${lastq}.start

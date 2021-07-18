@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.9
+VERSION=1.10
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../lib/libisopt
@@ -39,7 +39,7 @@ if [ ${#STDS[@]} -eq 0 ]; then
 fi
 if [ -f "${DN}"/../etc/yldoc.conf ]; then
     while read line; do
-        li=(${line})
+        mapfile -t li  < <(echo ${line} | tr ' ' '\n' )
         for ((i = 0; i < ${#STDS[@]}; i++)); do
             if [ ${STDS[${i}]} = ${li[0]} ]; then
                 STDS[${i}]=${li[1]}

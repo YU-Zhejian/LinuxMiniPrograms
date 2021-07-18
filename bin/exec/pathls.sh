@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
-VERSION=3.7
-oldifs="${IFS}"
+VERSION=3.8
 _grep() {
     regstr="${1}"
-    local tmpff=$(mktemp -t pls.XXXXXX)
+    local tmpff
+    tmpff=$(mktemp -t pls.XXXXXX)
     cat "${tmpf}" | grep -v "${regstr}" >"${tmpff}"
     mv "${tmpff}" "${tmpf}"
 }
 . "${DN}"/../lib/libisopt
+# shellcheck disable=SC2034
 INPATH="${PATH}"
 . "${DN}"/../lib/libpath
-IFS=":"
-eachpath=(${valid_path})
+# shellcheck disable=SC2154
+mapfile -t eachpath  < <(echo ${valid_path} | tr ' ' '\n' )
 unset duplicated_path
-IFS=''
 allow_x=true
 allow_d=false
 allow_o=true
@@ -44,6 +44,7 @@ for opt in "${@}"; do
             exit 0
             ;;
         "-i" | "--invalid")
+            # shellcheck disable=SC2154
             echo ${invalid_path} | tr ':' '\n'
             unset invalid_set invalid_path valid_path
             exit 0
@@ -75,7 +76,6 @@ ${allow_o} || _grep '[^\*/]$'
 if [ ${#STDS[@]} -eq 0 ]; then
     cat "${tmpf}"
 else
-    IFS=''
     grepstr=''
     for fn in "${STDS[@]}"; do
         grepstr="${grepstr} -e ${fn}"
@@ -83,4 +83,3 @@ else
     eval cat \"${tmpf}\"\|grep "${grepstr}"
 fi
 rm "${tmpf}"
-IFS="${oldifs}"

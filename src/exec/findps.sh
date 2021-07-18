@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
-VERSION=1.3
+# shellcheck disable=SC2034
+VERSION=1.4
+# shellcheck disable=SC1090
+# shellcheck disable=SC2154
 . "${path_sh}"
+
 if [ -z "${myps:-}" ]; then
     GNU_found=false
+    # shellcheck disable=SC2154
     for dir in "${eachpath[@]}"; do
         ! ${GNU_found} || break
-        tmpf=$(mktemp -t configpath.XXXXXX)
-        ls -F -1 "${dir}" | grep '.[*@]$' | sed 's;[*@]$;;' | grep '^ps\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" >"${tmpf}"
+
+        continue
         while read line; do
             lntmp="${line}"
             ps_ver=$("${line}" --version 2>&1 || true)
@@ -23,10 +28,10 @@ if [ -z "${myps:-}" ]; then
                 echo "myps=\"${line}\" #${type}" >>"${path_sh}"
                 break
             fi
-        done <"${tmpf}"
-        rm "${tmpf}"
-        unset tmpf dir
+        done < <(ls -F -1 "${dir}" | grep '.[*@]$' | sed 's;[*@]$;;' | grep '^ps\(\.exe\)*$' | sed "s;^;$(echo ${dir})/;" )
+        unset dir
     done
+    # shellcheck disable=SC1090
     . "${path_sh}"
     if [ -z "${myps:-}" ]; then
         if [ -z "${lntmp:-}" ]; then

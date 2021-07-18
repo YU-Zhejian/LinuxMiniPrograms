@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-# VERSION=6.5
+# VERSION=6.6
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.conf
 . "${DN}"/../lib/libman
+# shellcheck disable=SC2034
 REMOVE=false
 declare -i MAXTHREAD
 MAXTHREAD=$(getcorenumber)
+# shellcheck disable=SC2034
 ISFORCE=false
 THREAD=1
 OPT=()
@@ -37,8 +39,9 @@ ckavail() {
     local CK_EXT="${1} "
     local FOUND=false
     local i=1
-    unset CK_PROG[0]
+    unset "CK_PROG[0]"
     for prog_grp in "${CK_PROG[@]}"; do
+        # shellcheck disable=SC2206
         CK_PROG_TMP=(${prog_grp})
         evalstr="true"
         for prog in "${CK_PROG_TMP[@]}"; do
@@ -58,6 +61,7 @@ autozipck() {
     echo "Extension (ORDER) --> Program"
     ckavail "tar" tar && TAR=true || TAR=false
     ckavail "gz GZ" pigz gzip 7za 7z && GZ=true || GZ=false
+    # shellcheck disable=SC2034
     ckavail "bgz" bgzip && BGZ=true || BGZ=false
     ckavail "bz2" pbz2 bzip2 7za 7z && BZ2=true || BZ2=false
     ckavail "xz" xz 7za 7z && XZ=true || XZ=false
@@ -69,6 +73,7 @@ autozipck() {
     ckavail "br" brotli && BR=true || BR=false
     ckavail "7z" 7za 7z && Z7=true || Z7=false
     ckavail "lzfse" lzfse && LZFSE=true || LZFSE=false
+    # shellcheck disable=SC2034
     ckavail "rar" "rar unrar" && RAR=true || RAR=false
     ckavail "zip" "zip unzip" && ZIP=true || ZIP=false
     echo "Combined formats:"
@@ -85,6 +90,7 @@ autozipck() {
     ${TAR} && ${LZFSE} && printf "tar.lzfse "
     ${TAR} && ${ZIP} && printf "tar.zip "
     infoh "\nCheck complete"
+    # shellcheck disable=SC2154
     [ "${myparallel}" != 'ylukh' ] && echo -e "Checking for 'parallel' in ${myparallel}...${GREEN}OK${YELLOW}" || echo -e "Checking for 'parallel' ...${RED}NO${YELLOW}"
     infoh "Available core number: ${MAXTHREAD}"
     exit 0
@@ -92,6 +98,7 @@ autozipck() {
 # Check extension name
 __ckext() {
     for name in "gz" "xz" "bz2" "lzma" "GZ" "lz" "zip" "7z" "lz4" "lzo" "zst" "Z" "z" "lzfse" "br"; do
+        # shellcheck disable=SC2154
         if [ "${ext}" = "${name}" ] || [ "${ext}" = "tar.${name}" ]; then
             return
         fi
@@ -106,6 +113,7 @@ __ckext() {
 # cat file; tar folder
 fcat() {
     if [ -d "${1}" ]; then
+        # shellcheck disable=SC2154
         "${mytar}" -f - -cv "${1}"
     elif [ -f "${1}" ] || [ "${fn}" = "/dev/stdin" ]; then
         cat "${1}"
@@ -172,6 +180,7 @@ __cklvl() {
                 warnh "No parallel available. Thread will be resetted to 1"
                 THREAD=1
             else
+                # shellcheck disable=SC2034
                 PAR="${myparallel} -j ${THREAD} --pipe --recend '' -k"
             fi
             ;;

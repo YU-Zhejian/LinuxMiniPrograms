@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-VERSION=6.3
+# shellcheck disable=SC2034
+VERSION=6.4
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
+# shellcheck disable=SC2034
 ISAUTOZIP=true
 STDOUT=false
 . "${DN}"/exec/libautozip.sh
@@ -72,6 +74,7 @@ else
             errh "You're about to compress FILE '${fn}' with extension '${ext}', which is designed for compressing FOLDERs"
             ;;
         esac
+        # shellcheck disable=SC2154
         [ "${mytar}" != 'ylukh' ] || errh "Tar NO exist"
     else
         errh "Filename '${fn}' invalid"
@@ -103,6 +106,7 @@ case ${ext} in
     ;;
 "tar.7z")
     __cklvl 7z
+    # shellcheck disable=SC2154
     fcat "${fn}" | "${my7za}" a -aoa -si -y "${fn}".${ext} -mmt=${THREAD} ${LVL} -t7z
     ;;
 tar.*)
@@ -115,6 +119,7 @@ t*z)
     __do_job "${ext//t/}"
     ;;
 "7z")
+    # shellcheck disable=SC2154
     [ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
     __cklvl 7z
     # TODO: No implement
@@ -153,6 +158,7 @@ t*z)
 
     ;;
 "rar")
+    # shellcheck disable=SC2154
     [ "${myrar}" != 'ylukh' ] || errh "rar NO exist"
     # TODO: No implement
     if [ "${fn}" = "/dev/stdin" ]; then

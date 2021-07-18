@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-VERSION=1.0
+# shellcheck disable=SC2034
+VERSION=1.1
 # _____________________
 #< Black lives matter. >
 # ---------------------

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-VERSION=1.4
+# shellcheck disable=SC2034
+VERSION=1.5
 set -eu
-OLDIFS="${IFS}"
 DN="$(readlink -f "$(dirname "${0}")/../../")"
 cd "${DN}"
 . lib/libstr

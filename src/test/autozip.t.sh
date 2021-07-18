@@ -5,7 +5,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 PROGNAME=autozip
 . "${DN}"/00_libtest.sh
 DO dd if=/dev/zero of=tf bs=512 count=1
-mapfile < <(autozip 2>/dev/null | grep '>' | cut -f 1 -d '(' | xargs | tr ' ' '\n')
+mapfile -t < <(autozip 2>/dev/null | grep '>' | cut -f 1 -d '(' | xargs | tr ' ' '\n')
 for ext in gz bgz xz bz2 lzma lz4 zst lzo lz br Z lzfse; do
     echo "${MAPFILE[*]}" | grep '^'"${ext}"'$' &>>/dev/null || continue
     DO autozip --force --parallel tf "${ext}" 1

@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
+# shellcheck disable=SC2034
 PROGNAME=b16c
 . "${DN}"/00_libtest.sh
 sha512sum="sha512sum"
 ! which sha512sum &>>/dev/null && sha512sum="gsha512sum" # For compatibility under FreeBSD
+# shellcheck disable=SC1081
 DO b16c --version
 DO cat /bin/ls \| "${sha512sum}" \> ls.512
 DO cat /bin/ls \| b16c \| b16c -d \| "${sha512sum}" -c ls.512 &>>/dev/null

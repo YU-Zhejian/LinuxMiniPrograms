@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.3
+VERSION=1.4
 
 # LibDO 2.1 rewritten with environment variable support
 DO_ECHO() {
     echo "${@}" >>"${LIBDO_LOG}"
 }
+# shellcheck disable=SC1081
 DO() {
     local LIBDO_CMD="${*}"
     tmpf1="$(mktemp "libdo.XXXXXX")"

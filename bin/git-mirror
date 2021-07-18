@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-VERSION=1.7
+VERSION=1.8
 DN="$(readlink -f "$(dirname "${0}")")"
 set -ue
 trap '' SIGINT
-OLD_IFS="${IFS}"
 touch "${DN}"/../etc/git-mirror.conf
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
@@ -43,7 +42,7 @@ for opt in "${@}"; do
     fi
 done
 gmcmd=${STDS[0]:-}
-unset STDS[0]
+unset "STDS[0]"
 if [ -z "${GITM_HOME:-}" ]; then
     warnh "GITM_HOME undefined. Will use ${DN}/../var/git-mirror.d"
     GITM_HOME=${DN}/../var/git-mirror.d
@@ -53,21 +52,21 @@ cd "${GITM_HOME}"
 ls uuidtable.d/* &>>/dev/null || touch uuidtable.d/"$(date '+%Y-%m-%d_%H-%M-%S')"
 touch act.log
 if [ "${gmcmd}" = "lscmd" ]; then
+    # shellcheck disable=SC2010
     ls -1 "${DN}"/exec/gitm/ | grep -v lib | sed 's;\.sh$;;'
 elif [ -f "${DN}"/exec/gitm/"${gmcmd}".co.exe ]; then
     exec "${DN}"/exec/gitm/"${gmcmd}".co.exe "${@}"
 elif [ -f "${DN}"/exec/gitm/"${gmcmd}".py ]; then
-    IFS="${OLD_IFS}"
+    # shellcheck disable=SC2154
     if [ "${mypython}" != "ylukh" ]; then
         exec "${mypython}" "${DN}"/exec/gitm/"${gmcmd}".py "${@}"
     fi
 elif [ -f "${DN}"/exec/gitm/"${gmcmd}".sh ]; then
+    # shellcheck disable=SC1090
     . "${DN}"/exec/gitm/"${gmcmd}".sh
 elif [ -z "${gmcmd}" ]; then
     ${HAVEHELP} && yldoc git-mirror
     ${HAVEVER} && echo "${VERSION}"
 else
-    IFS="${OLD_IFS}"
     errh "subcommand '${gmcmd}' invalid. Use '${0} lscmd' to get a list of available commands"
 fi
-IFS="${OLD_IFS}"

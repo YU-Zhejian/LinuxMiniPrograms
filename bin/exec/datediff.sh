@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-VERSION=3.2
+# shellcheck disable=SC2034
+VERSION=3.3
 if [ -n "${3:-}" ] && [ "${3:-}" != "machine" ]; then
     Start_Sec=${1}
     End_Sec=${2}

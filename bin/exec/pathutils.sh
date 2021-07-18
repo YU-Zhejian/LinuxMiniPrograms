@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-VERSION=1.3
+# shellcheck disable=SC2034
+VERSION=1.4
 
 __addpref() {
     echo "/${1}"

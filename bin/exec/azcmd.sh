@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-VERSION=6.3
+# shellcheck disable=SC2034
+VERSION=6.4
 # ============ Functions ============
 set -eu
 DN="$(readlink -f "$(dirname "${0}")/../")"
 PAR=""
+# shellcheck disable=SC2034
 GCMD=false
 DECOMPRESS=false
 . "${DN}"/exec/libautozip.sh
@@ -35,9 +37,10 @@ LVL="${STDS[1]:-}"
 if ${DECOMPRESS}; then
     case ${ext} in
     "txt" | "cat" | "tar")
-        cmd=cat
+        cmd="cat"
         ;;
     "gz" | "GZ" | "bgz")
+        # shellcheck disable=SC2154
         if [ "${mypigz}" != 'ylukh' ]; then
             cmd="${mypigz} -cdvf"
         elif [ "${mygzip}" != 'ylukh' ]; then
@@ -47,6 +50,7 @@ if ${DECOMPRESS}; then
         fi
         ;;
     "xz")
+        # shellcheck disable=SC2154
         if [ "${myxz}" != 'ylukh' ]; then
             cmd="${myxz} -cdvvf -"
         elif [ "${my7za}" != 'ylukh' ]; then
@@ -54,6 +58,7 @@ if ${DECOMPRESS}; then
         fi
         ;;
     "bz2")
+        # shellcheck disable=SC2154
         if [ "${mypbz2}" != 'ylukh' ]; then
             cmd="${mypbz2} -cdvf"
         elif [ "${mybzip2}" != 'ylukh' ]; then
@@ -66,6 +71,7 @@ if ${DECOMPRESS}; then
         [ ${THREAD} -gt 1 ] && warnh "${1} do not support parallel. Thread will be resetted to 1"
         if [ "${myxz}" != 'ylukh' ]; then
             cmd="${myxz} -cdvvf --format=lzma -"
+        # shellcheck disable=SC2154
         elif [ "${mylzma}" != 'ylukh' ]; then
             cmd="${mylzma} -cdvf -"
         fi

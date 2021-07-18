@@ -58,13 +58,10 @@
 ## New Programs
 
 * General-purpose enigma crypto.
-* Google coding standard
-	* C/C++
 * Test in Python
 * gitm in Python
 * libdo in Python
 * pydoc
-* migrate libyuzjstd here
 
 ## Documentation
 

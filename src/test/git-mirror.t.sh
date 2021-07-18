@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-exit 0 # For errors in git-mirror
+exit 0 # FIXME: For errors in git-mirror
 set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 # shellcheck disable=SC2034
