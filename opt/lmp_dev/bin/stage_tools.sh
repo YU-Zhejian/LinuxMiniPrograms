@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.5
+VERSION=1.6
 builtin set -u +e
 builtin cd "$(readlink -f "$(dirname "${0}")")"/../../../ || builtin exit 1
-./shlib/libinclude.sh
+. ./shlib/libinclude.sh
 
 __include libstr
 rm_crlf() {

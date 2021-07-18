@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-# VERSION=1.5
 
 if [ -z "${__LIBSTR_VERSION:-}" ];then
-    __LIBSTR_VERSION=1.5
+    __LIBSTR_VERSION=1.6
     # Check for color support
     RED=""
     GREEN=""

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-# VERSION=1.6
 if [ -z "${__LIBISOPT_VERSION:-}" ];then
-    __LIBISOPT_VERSION=1.6
+    __LIBISOPT_VERSION=1.7
     isopt() {
         case "${1:-}" in
         -? | --* | -?\:*)

@@ -1,5 +1,7 @@
 # What will be Done
 
+VERSION=1.1
+
 ## AutoZip series:
 
 * lrzip
@@ -70,3 +72,5 @@
 ## Documentation
 
 * `src/doc`
+* libnet
+* libinclude

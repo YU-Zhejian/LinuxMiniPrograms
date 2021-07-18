@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
-# VERSION=1.0
 # TODO: finish the function
 
 
 if [ -z "${__LIBINCLUDE_VERSION:-}" ];then
-    __LIBINCLUDE_VERSION=1.0
+    __LIBINCLUDE_VERSION=1.1
 
     # This function is identical as it is in `libpath.sh`
     __addpref() {

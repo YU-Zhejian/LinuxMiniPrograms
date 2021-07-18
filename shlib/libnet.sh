@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-# VERSION=1.4
 
 if [ -z "${__LIBNET_VERSION:-}" ];then
-    __LIBNET_VERSION=1.4
+    __LIBNET_VERSION=1.5
     IP_ADDR=()
 
     # Need libstr

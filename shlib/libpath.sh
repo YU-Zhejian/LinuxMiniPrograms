@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-# VERSION=2.4
 
 if [ -z "${__LIBPATH_VERSION:-}" ];then
-    __LIBPATH_VERSION=2.4
+    __LIBPATH_VERSION=2.5
     validate_path (){
         builtin mapfile -t eachpath  < <(builtin echo ${1} | tr ':' '\n' )
         valid_path=':'

@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# VERSION=3.7
 __include libstr
 
 if [ -z "${__LIBDO_VERSION:-}" ];then
-    __LIBDO_VERSION= 3.7
+    __LIBDO_VERSION=3.8
 
     __DO_ECHO() {
         [ "${LIBDO_LOG_MODE:-}" = "S" ] && builtin return || true
