@@ -1,6 +1,6 @@
-# VERSION=1.2
+# VERSION=1.3
 TARGETS := lib bin
-export BASE=$(PWD)
+export BASE=$(PWD)/src/C
 export VPATH += $(BASE)/bin/ $(BASE)/lib/ $(BASE)/include/
 export CFLAGS += -I$(BASE)/include
 
@@ -25,3 +25,5 @@ distclean: clean
 	@$(MAKE) -C lib distclean
 	@$(MAKE) -C include distclean
 .PHONY: distclean
+
+# TODO: Install them to bin

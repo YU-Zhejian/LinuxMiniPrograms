@@ -1,7 +1,11 @@
 # TODO: BSD Make
-# VERSION=1.1
+# VERSION=1.2
 export MKDIR = mkdir -p
-export TT = all
+export TT =
+# Disable implicit rules and variables
+MAKEFLAGS += --no-builtin-rules
+.SUFFIXES:
+
 ETC_SOURCES := $(notdir $(wildcard src/etc/*))
 ETC_OBJECTS := $(foreach fn, $(ETC_SOURCES), $(addprefix etc/, $(fn)))
 
@@ -48,7 +52,7 @@ pp:
 
 .PHONY: test
 test:
-	bash src/test/00_index.sh $(TT)
+	@-$(MAKE) -C src/test TT=$(TT)
 
 .PHONY: pytest
 pytest:
@@ -56,12 +60,14 @@ pytest:
 
 .PHONY: clean
 clean:
-	$(RM) src/test/*.t/ etc/path.conf GNUmakefile
+	$(RM) etc/path.conf
+	@-$(MAKE) -C src/test clean
 	@-$(MAKE) -C src/C clean
 
 .PHONY: distclean
 distclean:clean
-	$(RM) etc var share
+	$(RM) etc var share GNUmakefile
+	@-$(MAKE) -C src/test distclean
 	@-$(MAKE) -C src/C distclean
 
 .PHONY: test_list

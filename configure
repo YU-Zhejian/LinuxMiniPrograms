@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=2.6
+VERSION=2.7
 set -eu
 if [ ${BASH_VERSINFO[0]} -lt 4 ] && [ ${BASH_VERSINFO[1]} -lt 4 ]; then
     echo -e "\033[31mERROR: Your Bash is obsolete.
@@ -113,7 +113,7 @@ if [ ! -f "${path_sh}" ]; then
     #=====os=====
     if [ -z "${myos:-}" ]; then
         mapfile < <(uname -mrs | tr ' ' '\n')                             # Do not use pipes; it will initiate a subshell
-        echo "myos=\"$(printf ${MAPFILE[1]})\" # $(printf ${MAPFILE[2]})" # >>"${path_sh}"
+        echo "myos=\"$(printf ${MAPFILE[0]})\" # $(printf ${MAPFILE[1]})" >>"${path_sh}"
     fi
     #=====path=====
     infoh "Enumerating valid path..."
@@ -151,7 +151,7 @@ if [ ! -f "${path_sh}" ]; then
     [ "${mygmake}" != 'ylukh' ] && sed -i".bak" 's;^mygmake;mymake;' "${path_sh}"
     [ "${mygsplit}" != 'ylukh' ] && sed -i".bak" 's;^mygsplit;mysplit;' "${path_sh}"
     infoh "All configurations are printed as follows:"
-    cat "${path_sh}" | grep -v '^$' | grep -v '^#' | sed 's/^my//' | sed 's/=/\\\${YELLOW} in \\\${NOCOLOR}/ ' | sed 's/ #/\\\${YELLOW}, \\\${GREEN}/' | sort | while read line; do echo -e "${line}${NOCOLOR}"; done
+    cat "${path_sh}" | grep -v '^$' | grep -v '^#' | sort | while read line; do echo -e "${line}${NOCOLOR}"; done
 fi
 for STDI in "${STDS[@]}"; do
     echo my"${STDI}" >>"${path_sh}"
@@ -198,11 +198,13 @@ fi
 #========C========
 [ "${mygcc}" != "ylukh" ] || [ "${myclang}" != "ylukh" ] || [ "${mycc}" != "ylukh" ] & [ "${mylibtool}" != "ylukh" ] && MAKE_TARGETS="${MAKE_TARGETS} C"
 if cat "${path_sh}" | grep -i BSD >/dev/null; then
-    MAKE_ARGS="${MAKE_ARGS}:CC=${myclang}" # Use Clang for FreeBSD.
+    MAKE_ARGS="${MAKE_ARGS}:CC=${myclang}:LIBTOOL=${mylibtool}" # Use Clang for FreeBSD.
 elif [ "${mygcc}" != "ylukh" ]; then
-    MAKE_ARGS="${MAKE_ARGS}:CC=${mygcc}"
+    MAKE_ARGS="${MAKE_ARGS}:CC=${mygcc}:LIBTOOL=${mylibtool}"
 elif [ "${myclang}" != "ylukh" ]; then
-    MAKE_ARGS="${MAKE_ARGS}:CC=${myclang}"
+    MAKE_ARGS="${MAKE_ARGS}:CC=${myclang}:LIBTOOL=${mylibtool}"
+elif [ "${mycc}" != "ylukh" ]; then
+    MAKE_ARGS="${MAKE_ARGS}:CC=${mycc}:LIBTOOL=${mylibtool}"
 fi
 #========Makefile Generation========
 MAKE_ARGS="${MAKE_ARGS}:PYTHON=${mypython}:RM=rm -rf:CP=cp -rf:PREFIX=${PREFIX}"
@@ -211,5 +213,3 @@ echo "all: ${MAKE_TARGETS}" >>GNUmakefile
 cat src/Makefile.in >>GNUmakefile
 infoh "Finished. Please execute 'make' or 'gmake' (For BSD or macOS) to build the program"
 IFS="${OLDIFS}"
-[ -z "${SHELL:-}" ] && SHELL=bash
-exec "${SHELL}"

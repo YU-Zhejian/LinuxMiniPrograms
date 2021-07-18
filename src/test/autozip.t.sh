@@ -5,9 +5,9 @@ DN="$(readlink -f "$(dirname "${0}")")"
 PROGNAME=autozip
 . "${DN}"/00_libtest.sh
 DO dd if=/dev/zero of=tf bs=512 count=1
-AAA=($(echo $(autozip 2>/dev/null | grep '>' | cut -f 1 -d '(' | xargs) | tr ' ' '\n'))
+mapfile < <(autozip 2>/dev/null | grep '>' | cut -f 1 -d '(' | xargs | tr ' ' '\n')
 for ext in gz bgz xz bz2 lzma lz4 zst lzo lz br Z lzfse; do
-    echo "${AAA}" | grep '^'"${ext}"'$' &>>/dev/null || continue
+    echo "${MAPFILE[*]}" | grep '^'"${ext}"'$' &>>/dev/null || continue
     DO autozip --force --parallel tf "${ext}" 1
     [ "${ext}" = "bz2" ] || DO azlist tf."${ext}"
     DO autounzip --force --remove --parallel tf."${ext}"
@@ -38,7 +38,7 @@ for ext in tar tgz; do
     DO azlist td.asc."${ext}"
 done
 for ext in gz xz bz2 lzma lz4 zst lzo lz br 7z zip Z lzfse; do
-    echo "${AAA}" | grep '^'"${ext}"'$' &>>/dev/null || continue
+    echo "${MAPFILE[*]}" | grep '^'"${ext}"'$' &>>/dev/null || continue
     ext="tar.${ext}"
     DO autozip td --force --parallel -1 "${ext}"
     [ "${ext}" = "bz2" ] || DO azlist td."${ext}"
