@@ -3,9 +3,10 @@ VERSION=1.5
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
-. "${DN}"/../lib/libstr
-. "${DN}"/../lib/libisopt
-. "${DN}"/../lib/libman
+. "${DN}"/../shlib/libinclude.sh
+__include libisopt
+__include libstr
+__include libman
 touch "${DN}"/../etc/ylsjsd.conf
 . "${DN}"/../etc/ylsjsd.conf
 if [ -z "${YLSJSD_HOME:-}" ]; then

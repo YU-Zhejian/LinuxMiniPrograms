@@ -4,7 +4,9 @@ VERSION=1.6
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")/../../")"
 builtin cd "${DN}"
-. lib/libstr
+./shlib/libinclude.sh
+
+__include libstr
 . etc/path.conf
 #========Install PATH========
 if ! which stage_tools.sh &>/dev/nulll; then

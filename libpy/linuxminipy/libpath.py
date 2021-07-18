@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # VERSION=2.4
 '''
-Python version of lib/libpath, includes common utilities to manipulate
+Python version of shlib/libpath, includes common utilities to manipulate
 environment variables separated by ':'.
 See 'yldoc libpath' for more details.
 '''

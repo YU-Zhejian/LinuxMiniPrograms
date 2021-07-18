@@ -1,6 +1,6 @@
 # VERSION=1.2
 """
-Python version of lib/libstr, includes common string-output utilities.
+Python version of shlib/libstr, includes common string-output utilities.
 See 'yldoc libstr' for more details.
 """
 import os

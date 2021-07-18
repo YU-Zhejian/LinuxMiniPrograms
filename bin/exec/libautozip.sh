@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 # VERSION=6.7
-. "${DN}"/../lib/libisopt
-. "${DN}"/../lib/libstr
+
 . "${DN}"/../etc/path.conf
-. "${DN}"/../lib/libman
+. "${DN}"/../shlib/libinclude.sh
+__include libisopt
+__include libstr
+__include libman
+
 # shellcheck disable=SC2034
 REMOVE=false
 builtin declare -i MAXTHREAD

@@ -4,7 +4,8 @@ VERSION=1.4
 # TODO: Add C Version
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../lib/libstr
+. "${DN}"/../shlib/libinclude.sh
+__include libstr
 . "${DN}"/../etc/path.conf
 mkdir -p "${DN}"/../var/enigma.d
 for fn in "${DN}"/exec/enigma.co "${DN}"/exec/enigma.co.exe; do

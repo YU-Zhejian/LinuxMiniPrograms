@@ -3,40 +3,37 @@ VERSION=1.4
 # TODO: docs
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../lib/libisopt
-. "${DN}"/../lib/libstr
 . "${DN}"/../etc/path.conf
-. "${DN}"/exec/pathutils.sh
+. "${DN}"/../shlib/libinclude.sh
+__include libisopt
+__include libstr
+__include libpath
 infoh "YuZJLab PYTHONPATH ls"
 infoh "Copyright (C) 2021 YU Zhejian"
-INPATH="${PATH}"
+
 PACKAGE=false
-. "${DN}"/../lib/libpath
+validate_path "${PATH}"
 # shellcheck disable=SC2154
-builtin mapfile -t eachpath  < <(builtin echo ${valid_path} | tr ' ' '\n' )
+builtin mapfile -t eachpath  < <(builtin echo ${valid_path} | tr ':' '\n' )
 tmpf=$(mktemp -t configpath.XXXXXX)
 for dir in "${eachpath[@]}"; do
     # TODO: test CygWin exe support
     # shellcheck disable=SC2010
-    ls -F -1 "${dir}" 2>/dev/null | grep '.[*@]$' | sed 's;[*@]$;;' | grep -E '^(python(3|2){0,1}(\.[[:digit:]]+)*(d|m|u){0,1}(.exe){0,1}$)' | sed "s;^;$(builtin echo ${dir})/;" | while builtin read line; do
+    ls -F -1 "${dir}" 2>/dev/null | grep '.[*@]$' | sed 's;[*@]$;;' | grep -E '^(python(3|2){0,1}(\.[[:digit:]]+)*(d|m|u){0,1}(.exe){0,1}$)' | sed "s;^;$(builtin echo ${dir})/;" | while read line; do
         if builtin echo "exit()" | "${line}" -v 2>&1 | grep -E '([C-Z]:\\)' >/dev/null; then
             infoh "Windows Python found in ${line}"
             builtin continue
         fi
-        infoh "Finding python at ${line}"
-        if builtin echo -e "import sys\nprint(':'.join(sys.path))" | "${line}" &>/dev/null; then
-            builtin echo -e "import sys\nprint(':'.join(sys.path))" | "${line}" >>"${tmpf}" 2>/dev/null || true
-        else
-            builtin echo -e "import sys\nprint ':'.join(sys.path)" | "${line}" >>"${tmpf}" 2>/dev/null || true
-        fi
+        infoh "Python found in ${line}"
+        builtin echo -e "import sys\nprint (':'.join(sys.path))" | "${line}" >>"${tmpf}" 2>/dev/null || true
     done
 done
 
 # shellcheck disable=SC2034
 INPATH="${PYTHONPATH}:$(cat "${tmpf}" | tr '\n' ':')"
 rm "${tmpf}"
-. "${DN}"/../lib/libpath
-builtin mapfile -t eachpath  < <(builtin echo ${valid_path} | tr ' ' '\n' )
+validate_path "${INPATH}"
+builtin mapfile -t eachpath  < <(builtin echo ${valid_path} | tr ':' '\n' )
 builtin unset duplicated_path invalid_path
 STDS=()
 for opt in "${@}"; do

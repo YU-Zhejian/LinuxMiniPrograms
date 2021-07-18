@@ -18,11 +18,16 @@ For BSD users, please install 'coreutils' by your package management systems\033
     fi
 fi
 builtin cd "$(readlink -f "$(dirname "${0}")")"
-. lib/libisopt
-. lib/libstr
+. shlib/libinclude.sh
+if ! __core_include libstr &>> /dev/null;then
+    export SH_INCLUDE_PATH="${SH_INCLUDE_PATH:-}:${PWD}/shlib"
+fi
+__include libisopt
+__include libstr
+__include libpath
 infoh "Configure file for YuZJLab Installer"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
-# ./opt/lmp_dev/bin/BeforeAdd.sh
+
 # ========Def Var========
 VAR_install_config=false
 VAR_clear_history=false
@@ -100,7 +105,7 @@ done
 
 # ========Check========
 infoh "Checking FileSystem..."
-#mkdir -p "${PREFIX}" || errh "Installation prefix ${PREFIX} cannot be accessed"
+# mkdir -p "${PREFIX}" || errh "Installation prefix ${PREFIX} cannot be accessed"
 path_sh="etc/path.conf"
 ${VAR_update_path} && rm -f "${path_sh}"
 if [ ! -f "${path_sh}" ] && [ -f 'etc/path.sh' ]; then mv 'etc/path.sh' "${path_sh}"; fi
@@ -116,9 +121,7 @@ if [ ! -f "${path_sh}" ]; then
     fi
     #=====path=====
     infoh "Enumerating valid path..."
-    # shellcheck disable=SC2034
-    INPATH="${PATH}"
-    . lib/libpath
+    validate_path "${PATH}"
     builtin unset invalid_path duplicated_path
     # shellcheck disable=SC2154
     # shellcheck disable=SC2034

@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 builtin set -u +e
 builtin cd "$(readlink -f "$(dirname "${0}")")"/../../../ || builtin exit 1
-. lib/libstr
+./shlib/libinclude.sh
+
+__include libstr
 
 # TODO: output all versions to Version.md
 

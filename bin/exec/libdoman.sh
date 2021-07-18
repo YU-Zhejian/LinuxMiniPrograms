@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 VERSION=7.5
-. "${DN}"/../lib/libisopt
-. "${DN}"/../lib/libstr
+. "${DN}"/../shlib/libinclude.sh
+__include libisopt
+__include libstr
 warnh "This program is no longer monitored and updates may not be provided"
 cmd=0
 STDS=()

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # VERSION=3.2
 """
-Python version of lib/libisopt, includes utilities to judge whether an argument
+Python version of shlib/libisopt, includes utilities to judge whether an argument
 is an option.
 See 'yldoc libisopt' for more details.
 """

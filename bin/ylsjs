@@ -5,8 +5,9 @@ DN="$(readlink -f "$(dirname "${0}")")"
 # shellcheck disable=SC2034
 WD="$(pwd)"
 . "${DN}"/../etc/path.conf
-. "${DN}"/../lib/libstr
-. "${DN}"/../lib/libisopt
+. "${DN}"/../shlib/libinclude.sh
+__include libisopt
+__include libstr
 ylsjsd start
 # ============ Possess arguments ============
 STDS=()

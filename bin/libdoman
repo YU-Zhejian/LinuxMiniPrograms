@@ -3,7 +3,8 @@
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
-. "${DN}"/../lib/libstr
+. "${DN}"/../shlib/libinclude.sh
+__include libstr
 infoh "YuZJLab LibDO Manager"
 infoh "Copyright (C) 2020 YU Zhejian"
 # shellcheck disable=SC2154

@@ -5,9 +5,10 @@ builtin set -eu
 builtin declare -i YLSJSD_MAX_JOB
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../../etc/path.conf
-. "${DN}"/../../lib/libstr
-. "${DN}"/../../lib/libisopt
-. "${DN}"/../../lib/libman
+. "${DN}"/../../shlib/libinclude.sh
+__include libisopt
+__include libstr
+__include libman
 
 if [ -z "${YLSJSD_MAX_JOB:-}" ]; then
     YLSJSD_MAX_JOB=$(getcorenumber)

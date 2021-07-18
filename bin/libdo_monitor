@@ -3,9 +3,10 @@
 builtin set -eu
 
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../lib/libisopt
 . "${DN}"/../etc/path.conf
-. "${DN}"/../lib/libstr
+. "${DN}"/../shlib/libinclude.sh
+__include libisopt
+__include libstr
 __exit() {
 	builtin kill -9 ${$}
 }

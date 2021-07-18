@@ -5,7 +5,8 @@ DN="$(readlink -f "$(dirname "${0}")")"
 PROGNAME=ylsjs
 . "${DN}"/00_libtest.sh
 . "${DN}"/../../etc/path.conf
-. "${DN}"/../../lib/libman
+. "${DN}"/../../shlib/libinclude.sh
+__include libman
 CORENUM=$((2 * $(getcorenumber)))
 builtin export YLSJSD_HOME
 YLSJSD_HOME="${PWD}/ylsjs.d"

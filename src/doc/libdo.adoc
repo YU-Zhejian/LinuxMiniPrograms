@@ -90,7 +90,7 @@ Please be aware that we __DO  NOT__ recommend using LibDO interactively. You may
 [source]
 ----
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
-$ . lib/libdo
+$ . shlib/libdo
 
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ __DO  ls
@@ -130,7 +130,7 @@ admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
 $ cat ls.sh
 LIBDO_LOG_MODE=4
 LIBDO_LOG=ls.log
-. lib/libdo
+. shlib/libdo
 __DO  ls
 
 admin@DESKTOP-FFEV0AF /d/Software/LinuxMiniPrograms
