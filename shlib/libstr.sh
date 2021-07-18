@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ -z "${__LIBSTR_VERSION:-}" ];then
+if [ -z "${__LIBSTR_VERSION:-}" ]; then
     __LIBSTR_VERSION=1.6
     # Check for color support
     RED=""
@@ -11,11 +11,11 @@ if [ -z "${__LIBSTR_VERSION:-}" ];then
     CRAYON=""
     NOCOLOR=""
     HAVE_COLOR=0
-    COLORS="$(tput colors 2> /dev/null)" || true
+    COLORS="$(tput colors 2>/dev/null)" || true
     # shellcheck disable=SC2086
     [ ${COLORS} -gt 2 ] && HAVE_COLOR=1
     [[ "${TERM:-}" =~ "256" ]] && HAVE_COLOR=1
-    if [ ${HAVE_COLOR} -eq 1 ];then
+    if [ ${HAVE_COLOR} -eq 1 ]; then
         RED="\033[31m"
         # shellcheck disable=SC2034
         GREEN="\033[32m"

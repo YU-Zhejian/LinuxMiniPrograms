@@ -20,13 +20,12 @@ clanginclude=$(for dir in \
     $(__addpref 'lib*/clang*/*/include') \
     $(__addpref 'lib*/clang*/include'); do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
 
-
 INPATH="/clang*/include:/mingw*/include:$(__addpref 'include'):${gccinclude}:${clanginclude}:${C_INCLUDE_PATH:-}"${CPLUS_INCLUDE_PATH:-}
 
 validate_path "${INPATH}"
 unset INPATH
 # shellcheck disable=SC2154
-builtin mapfile -t eachpath  < <(builtin echo ${valid_path} | tr ':' '\n' )
+builtin mapfile -t eachpath < <(builtin echo ${valid_path} | tr ':' '\n')
 builtin unset duplicated_path invalid_path
 STDS=()
 for opt in "${@}"; do

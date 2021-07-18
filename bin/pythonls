@@ -14,7 +14,7 @@ infoh "Copyright (C) 2021 YU Zhejian"
 PACKAGE=false
 validate_path "${PATH}"
 # shellcheck disable=SC2154
-builtin mapfile -t eachpath  < <(builtin echo ${valid_path} | tr ':' '\n' )
+builtin mapfile -t eachpath < <(builtin echo ${valid_path} | tr ':' '\n')
 tmpf=$(mktemp -t configpath.XXXXXX)
 for dir in "${eachpath[@]}"; do
     # TODO: test CygWin exe support
@@ -33,7 +33,7 @@ done
 INPATH="${PYTHONPATH}:$(cat "${tmpf}" | tr '\n' ':')"
 rm "${tmpf}"
 validate_path "${INPATH}"
-builtin mapfile -t eachpath  < <(builtin echo ${valid_path} | tr ':' '\n' )
+builtin mapfile -t eachpath < <(builtin echo ${valid_path} | tr ':' '\n')
 builtin unset duplicated_path invalid_path
 STDS=()
 for opt in "${@}"; do

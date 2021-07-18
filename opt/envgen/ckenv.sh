@@ -33,16 +33,15 @@ GREEN=""
 YELLOW=""
 NOCOLOR=""
 HAVE_COLOR=0
-COLORS="$(tput colors 2> /dev/null)" || true
+COLORS="$(tput colors 2>/dev/null)" || true
 # shellcheck disable=SC2086
 [ ${COLORS} -gt 2 ] && HAVE_COLOR=1
 [[ "${TERM:-}" =~ "256" ]] && HAVE_COLOR=1
-if [ ${HAVE_COLOR} -eq 1 ];then
+if [ ${HAVE_COLOR} -eq 1 ]; then
     # shellcheck disable=SC2034
     GREEN="\033[32m"
     NOCOLOR="\033[0m"
 fi
-
 
 builtin declare -i LINE_NUMBERS
 LINE_NUMBERS=1

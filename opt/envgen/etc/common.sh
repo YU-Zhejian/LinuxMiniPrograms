@@ -54,7 +54,7 @@ alias git-log="git log --pretty=oneline --abbrev-commit --graph --branches" # Mo
 alias git-gc="git gc --aggressive --prune=now"                              # Clean git up
 alias top="htop"                                                            # htop is a task manager better than top.
 alias emacs="emacs -nw"
-alias DO=eval # LibDO simulator
+alias DO=eval    # LibDO simulator
 alias __DO =eval # LibDO simulator
 
 # Initializing thefuck.

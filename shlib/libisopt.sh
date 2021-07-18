@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if [ -z "${__LIBISOPT_VERSION:-}" ];then
+if [ -z "${__LIBISOPT_VERSION:-}" ]; then
     __LIBISOPT_VERSION=1.7
     isopt() {
         case "${1:-}" in

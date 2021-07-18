@@ -12,8 +12,8 @@ LIBDO_LOG_MODE=4
 # shellcheck disable=SC2034
 LIBDO_LOG=libdo2.log
 for i in {1..4}; do
-	# shellcheck disable=SC2034
-	LIBDO_LOG_MODE=${i}
+    # shellcheck disable=SC2034
+    LIBDO_LOG_MODE=${i}
     __DO ls -la "${HOME}"
 done
 __DO libdoman libdo2.log

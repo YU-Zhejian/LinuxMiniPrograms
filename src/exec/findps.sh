@@ -28,7 +28,7 @@ if [ -z "${myps:-}" ]; then
                 builtin echo "myps=\"${line}\" #${type}" >>"${path_sh}"
                 break
             fi
-        done < <(ls -F -1 "${dir}" | grep '.[*@]$' | sed 's;[*@]$;;' | grep '^ps\(\.exe\)*$' | sed "s;^;$(builtin echo ${dir})/;" )
+        done < <(ls -F -1 "${dir}" | grep '.[*@]$' | sed 's;[*@]$;;' | grep '^ps\(\.exe\)*$' | sed "s;^;$(builtin echo ${dir})/;")
         builtin unset dir
     done
     # shellcheck disable=SC1090

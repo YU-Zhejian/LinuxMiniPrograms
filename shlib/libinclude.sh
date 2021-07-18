@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # TODO: finish the function
 
-
-if [ -z "${__LIBINCLUDE_VERSION:-}" ];then
+if [ -z "${__LIBINCLUDE_VERSION:-}" ]; then
     __LIBINCLUDE_VERSION=1.1
 
     # This function is identical as it is in `libpath.sh`
@@ -10,11 +9,11 @@ if [ -z "${__LIBINCLUDE_VERSION:-}" ];then
         builtin printf "/${1}:/usr/${1}:/usr/local/${1}:${HOME}/${1}:${HOME}/usr/${1}:${HOME}/usr/local/${1}"
     }
 
-    __core_include(){
-        builtin mapfile -t eachpath  < <(builtin echo ${SH_INCLUDE_PATH:-} | tr ':' '\n' )
-        for item in "${eachpath[@]}";do
-            for ext in '' '.sh' '.bash' '.dash' '.zsh';do 
-                if [ -f "${item}/${1}${ext}" ];then
+    __core_include() {
+        builtin mapfile -t eachpath < <(builtin echo ${SH_INCLUDE_PATH:-} | tr ':' '\n')
+        for item in "${eachpath[@]}"; do
+            for ext in '' '.sh' '.bash' '.dash' '.zsh'; do
+                if [ -f "${item}/${1}${ext}" ]; then
                     builtin source "${item}/${1}${ext}"
                     builtin return 0
                 fi
@@ -22,12 +21,12 @@ if [ -z "${__LIBINCLUDE_VERSION:-}" ];then
         done
         builtin return 1
     }
-    
-    __include(){
-        if [ -z "${SH_INCLUDE_PATH:-}" ];then
+
+    __include() {
+        if [ -z "${SH_INCLUDE_PATH:-}" ]; then
             export SH_INCLUDE_PATH="${PWD}:$(__addpref shlib)"
         fi
-        if ! __core_include "${@}";then
+        if ! __core_include "${@}"; then
             builtin echo "ERROR: ${1} not found in SH_INCLUDE_PATH='${SH_INCLUDE_PATH:-}'"
             exit 1
         fi

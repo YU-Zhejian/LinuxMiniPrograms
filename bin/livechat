@@ -25,7 +25,7 @@ __reciever() {
     builtin trap "__exit" SIGINT SIGTERM
     tail -f "${LIVECHAT_HOME}"/SYSTEM | while builtin read line; do
         builtin local M_A
-        builtin mapfile -t M_A  < <(builtin echo ${line} | tr ';' '\n')
+        builtin mapfile -t M_A < <(builtin echo ${line} | tr ';' '\n')
         builtin echo -e "${RED}[${M_A[0]}]${NOCOLOR} \033[36m[${M_A[1]}]${NOCOLOR} ${M_A[2]}"
     done
 }
@@ -37,7 +37,6 @@ __exit() {
     killtree ${pid_rec} 9
     builtin exit 0
 }
-
 
 mkdir -p "${LIVECHAT_HOME}"
 touch "${LIVECHAT_HOME}"/SYSTEM

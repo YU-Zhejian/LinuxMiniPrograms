@@ -20,7 +20,7 @@ INPATH="$(manpath 2>/dev/null || true):${locallib}:$(cat /usr/local/etc/man.d/*.
 
 validate_path "${INPATH}"
 # shellcheck disable=SC2154
-builtin mapfile -t eachpath  < <(builtin echo ${valid_path} | tr ':' '\n' )
+builtin mapfile -t eachpath < <(builtin echo ${valid_path} | tr ':' '\n')
 builtin unset duplicated_path
 STDS=()
 for opt in "${@}"; do
@@ -68,4 +68,3 @@ else
     builtin eval cat \"${tmpf}\"\|grep "${grepstr}"
 fi
 rm "${tmpf}"
-

@@ -6,7 +6,7 @@ VERSION=1.6
 __DO_ECHO() {
     builtin echo "${@}" >>"${LIBDO_LOG}"
 }
-__DO () {
+__DO() {
     builtin local LIBDO_CMD
     LIBDO_CMD="${*}"
     tmpf1="$(mktemp "libdo.XXXXXX")"

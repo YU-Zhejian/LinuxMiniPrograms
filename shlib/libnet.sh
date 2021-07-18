@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ -z "${__LIBNET_VERSION:-}" ];then
+if [ -z "${__LIBNET_VERSION:-}" ]; then
     __LIBNET_VERSION=1.5
     IP_ADDR=()
 

@@ -12,7 +12,7 @@ __include libisopt
 __include libstr
 validate_path "${PATH}"
 # shellcheck disable=SC2154
-builtin mapfile -t eachpath  < <(builtin echo ${valid_path} | tr ':' '\n' )
+builtin mapfile -t eachpath < <(builtin echo ${valid_path} | tr ':' '\n')
 builtin unset duplicated_path
 allow_x=true
 allow_d=false

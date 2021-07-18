@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 __include libstr
 
-if [ -z "${__LIBDO_VERSION:-}" ];then
+if [ -z "${__LIBDO_VERSION:-}" ]; then
     __LIBDO_VERSION=2.8
 
     __DO_ECHO() {
@@ -9,7 +9,7 @@ if [ -z "${__LIBDO_VERSION:-}" ];then
         [ -n "${LIBDO_LOG:-}" ] && builtin echo "${*}" >>"${LIBDO_LOG}" || builtin echo -e "${YELLOW}${*}${NOCOLOR}" >&2
     }
 
-    __DO () {
+    __DO() {
         builtin local LIBDO_CMD
         LIBDO_CMD="${*}"
         __DO_ECHO "LIBDO IS GOING TO EXECUTE ${LIBDO_CMD}"
@@ -58,11 +58,11 @@ if [ -z "${__LIBDO_VERSION:-}" ];then
 
     # Compatibility support
     # shellcheck disable=SC1081
-    DO(){
+    DO() {
         __DO "${@}"
     }
 
-    DO_ECHO(){
+    DO_ECHO() {
         __DO_ECHO "${@}"
     }
 fi

@@ -63,7 +63,7 @@ done
 infoh "Reading Databases..."
 i=0
 while builtin read line; do
-    builtin mapfile -t msg_tmp  < <(builtin echo ${line} | tr ';' '\n')
+    builtin mapfile -t msg_tmp < <(builtin echo ${line} | tr ';' '\n')
     f[${i}]="${msg_tmp[1]}"
     m[${i}]="${msg_tmp[2]}"
     uf[${i}]=false
@@ -104,7 +104,7 @@ fi
 n=0
 while builtin read line; do
     if ${uf[${n}]} && ${um[${n}]}; then
-        builtin mapfile -t msg_tmp  < <(builtin echo ${line} | tr ';' '\n')
+        builtin mapfile -t msg_tmp < <(builtin echo ${line} | tr ';' '\n')
         builtin echo -e "${RED}[${msg_tmp[0]}]${NOCOLOR} \033[36m[${msg_tmp[1]}]${NOCOLOR} ${msg_tmp[2]}" >>"${tmpfff}"
     fi
     n=$((n + 1))

@@ -27,7 +27,7 @@ INPATH="/mingw*/lib*:/clang*/lib*:${locallib}:${LD_LIBRARY_PATH:-}${LIBRARY_PATH
 validate_path "${INPATH}"
 unset INPATH
 # shellcheck disable=SC2154
-builtin mapfile -t eachpath  < <(builtin echo ${valid_path} | tr ':' '\n' )
+builtin mapfile -t eachpath < <(builtin echo ${valid_path} | tr ':' '\n')
 builtin unset duplicated_path invalid_path
 
 STDS=()
@@ -99,4 +99,3 @@ else
     builtin eval cat \"${tmpf}\"\|grep "${grepstr}"
 fi
 rm "${tmpf}"
-

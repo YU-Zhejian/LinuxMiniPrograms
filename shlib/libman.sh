@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if [ -z "${__LIBMAN_VERSION:-}" ];then
+if [ -z "${__LIBMAN_VERSION:-}" ]; then
     __LIBMAN_VERSION=1.7
     getuser() {
         if [ -n "${USER:-}" ]; then

@@ -6,7 +6,7 @@ DN="$(readlink -f "$(dirname "${0}")/../../")"
 builtin cd "${DN}"
 . shlib/libinclude.sh
 VAR_install_shinclude=false
-if ! __core_include libstr &>> /dev/null;then
+if ! __core_include libstr &>>/dev/null; then
     export SH_INCLUDE_PATH="${SH_INCLUDE_PATH:-}:${PWD}/shlib"
     VAR_install_shinclude=true
 fi
@@ -28,7 +28,7 @@ if ! which ylsjsd &>/dev/null; then
     __rc_write "export PATH=\"${DN}/sbin/:\${PATH:-}\""
     infoh "Will configure PATH (sbin)...${GREEN}PASSED"
 fi
-if ${VAR_install_shinclude};then
+if ${VAR_install_shinclude}; then
     __rc_write "export SH_INCLUDE_PATH=\"${DN}/shlib/:\${SH_INCLUDE_PATH:-}\""
     infoh "Will configure PATH (sbin)...${GREEN}PASSED"
 fi
