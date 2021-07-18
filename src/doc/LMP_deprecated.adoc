@@ -29,7 +29,10 @@ Here gives a list of deprecated programs in YuZJLab LinuxMiniPrograms.
 .. `bin/b16c`
 .. `bin/exec/b16c.co`
 .. `bin/exec/b16c.py`
-.. `src/C/b16c/*`
+.. `src/C/bin/b16c.c`
+. git-mirror
+.. `bin/git-mirror`
+.. `bin/exec/gitm/*`
 
 == SEE ALSO
 

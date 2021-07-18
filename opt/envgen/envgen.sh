@@ -20,6 +20,7 @@ INSTALL_BREW=false
 INSTALL_EMACS_SETTINGS=false
 INSTALL_R_SETTINGS=false
 INSTALL_RUBY_SETTINGS=false
+INSTALL_MACHINE_LEARNING=false
 CONDA_BASE_PKGS=("ipython" "matplotlib" "numpy" "pandoc" "tqdm" "jupyterlab")
 
 for pg in "${@}"; do
@@ -32,6 +33,9 @@ for pg in "${@}"; do
         ;;
     "conda")
         INSTALL_CONDA=true
+        ;;
+    "ml")
+        INSTALL_MACHINE_LEARNING=true
         ;;
     "brew")
         INSTALL_BREW=true
@@ -51,6 +55,7 @@ for pg in "${@}"; do
         INSTALL_BREW=true
         INSTALL_EMACS_SETTINGS=true
         INSTALL_R_SETTINGS=true
+        INSTALL_MACHINE_LEARNING=true
         INSTALL_RUBY_SETTINGS=true
         ;;
     esac
@@ -178,7 +183,6 @@ fi
 
 # ________________________Machine Learning________________________
 if ${INSTALL_MACHINE_LEARNING}; then
-    # TODO: Not configured in the headers
     for lib in pytorch-gpu tensorflow-gpu mxnet-gpu; do
         conda create -n "${lib}" "${lib}" "${CONDA_BASE_PKGS[@]}"
     done

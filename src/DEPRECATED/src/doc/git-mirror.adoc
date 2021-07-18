@@ -11,6 +11,8 @@ git-mirror - Getting Git-server backed-up.
 
 `git-mirror [subcommand]`
 
+WARNING: This program is no longer monitored and updates may not be provided
+
 == DESCRIPTION
 
 Execute `[subcommand]` which will be introduced bellow.

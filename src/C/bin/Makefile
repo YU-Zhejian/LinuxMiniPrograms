@@ -1,5 +1,5 @@
 # VERSION=1.0
-TARGETS = b16c pst
+TARGETS = pst.co
 
 SOURCES := $(wildcard *.c *.cpp)
 OBJECTS := $(SOURCES:.c=.o)
@@ -12,11 +12,8 @@ all: $(TARGETS)
 
 .PHONY : all
 
-b16c: b16c.lo
-	$(LIBTOOL) --tag=CC --mode=link $(LIBTOOL_FLAGS) $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@ $<
-
-pst: pst.lo
-	$(LIBTOOL) --tag=CXX --mode=link $(LIBTOOL_FLAGS) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) -lpthread -o $@ $<
+pst.co: pst.lo
+	$(LIBTOOL) --tag=CC --mode=link $(LIBTOOL_FLAGS) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) -lpthread -o $@ $<
 
 %.lo: %.c
 	$(LIBTOOL) --tag=CC --mode=compile  $(LIBTOOL_FLAGS) $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -c -o $@

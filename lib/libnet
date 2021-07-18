@@ -4,7 +4,6 @@ IP_ADDR=()
 
 # Need libstr
 getIpAddr() {
-    # TODO: tmp
     tmp="$(mktemp "ipaddr.XXXXX")"
     if which ip &>>/dev/null; then
         ip addr | grep inet | grep -v inet6 >"${tmp}"

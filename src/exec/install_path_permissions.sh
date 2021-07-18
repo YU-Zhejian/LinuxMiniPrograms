@@ -9,7 +9,7 @@ cd "${DN}"
 
 rcWrite() {
     echo "${1}" | tee -a "${HOME}"/.bashrc | tee -a "${HOME}"/.zshrc
-    # TODO: Support SH, ZSH and CSH
+    # TODO: Support SH, ZSH
 }
 
 #========Install PATH========

@@ -11,6 +11,7 @@ touch "${DN}"/../etc/git-mirror.conf
 . "${DN}"/exec/gitm/libgitm.sh
 infoh "YuZJLab Git Mirror Manager"
 infoh "Copyright (C) 2020-2021 YU Zhejian"
+warnh "This program is no longer monitored and updates may not be provided"
 STDS=()
 UKOPT=()
 HAVEHELP=false

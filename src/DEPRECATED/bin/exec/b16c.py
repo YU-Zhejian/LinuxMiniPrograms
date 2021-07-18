@@ -12,7 +12,7 @@ from linuxminipy.libisopt import isopt
 VERSION = 2.3
 
 
-# TODO: Still bugs in MSYS2
+# T#O#D#O: Still bugs in MSYS2
 
 def main():
     decode = False
