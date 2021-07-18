@@ -1,8 +1,9 @@
-# VERSION=1.3
+# VERSION=1.4
 TARGETS := lib bin
 export BASE=$(PWD)/src/C
 export VPATH += $(BASE)/bin/ $(BASE)/lib/ $(BASE)/include/
 export CFLAGS += -I$(BASE)/include
+export LDFLAGS += -L$(BASE)/lib
 
 all: $(TARGETS)
 

@@ -18,6 +18,9 @@
 #define PATH_SEPARATOR_STR  "/"
 #endif
 
+#ifndef PATH_MAX
+#define PATH_MAX 256
+#endif
 
 void infoh(char *msg);
 void warnh(char *msg);
