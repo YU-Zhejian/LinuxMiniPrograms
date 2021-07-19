@@ -32,5 +32,6 @@ int touch(char *abspath);
 FILE *safe_fopen(char *abspath, char *);
 int safe_fgetc(FILE *fd);
 int is_empty(char *abspath);
+int isopt(char *argv);
 
 #endif //YUZJSTD_H

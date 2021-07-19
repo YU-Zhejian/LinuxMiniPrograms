@@ -10,22 +10,26 @@ __include libpath
 infoh "YuZJLab LIBRARY ls"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 _grep() {
+    builtin local regstr
     regstr="${1}"
     cat "${tmpf}" | grep "${regstr}" >>"${tmpff}"
+    builtin unset regstr
 }
 
+# TODO: msys2 path
 # shellcheck disable=SC2063
-locallib=$(for dir in \
+local_lib=$(for dir in \
     $(__addpref 'lib*') \
     $(__addpref 'lib*/gcc*/*/*/x*') \
     $(__addpref 'lib*/gcc*/*/x*') \
     $(__addpref 'lib*/gcc*/x*') \
     $(__addpref 'lib*/clang*/*/lib*') \
-    $(__addpref 'lib*/clang*/lib*'); do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+    $(__addpref 'lib*/clang*/lib*') \
+    '/mingw*/lib*' '/clang*/lib*'; do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+ld_lib="$(ld --verbose | grep SEARCH_DIR | tr ';' '\n' | cut -f 2 -d '=' | cut -f 1 -d '"' | tr '\n' ';')"
 
-INPATH="/mingw*/lib*:/clang*/lib*:${locallib}:${LD_LIBRARY_PATH:-}${LIBRARY_PATH:-}"
-validate_path "${INPATH}"
-unset INPATH
+validate_path "${local_lib}:${ld_lib}:${LD_LIBRARY_PATH:-}:${LIBRARY_PATH:-}:${LD_RUN_PATH:-}"
+builtin unset local_lib ld_lib
 # shellcheck disable=SC2154
 builtin mapfile -t eachpath < <(builtin echo ${valid_path} | tr ':' '\n')
 builtin unset duplicated_path invalid_path

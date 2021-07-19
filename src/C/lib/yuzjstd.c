@@ -426,10 +426,26 @@ int safe_fgetc(FILE *fd)
     return i;
 }
 
+/**
+ * To check whether a file is empty
+ * @param abspath Absolute path
+ * @return 0 if empty, 1 otherwise
+ */
 int is_empty(char *abspath)
 {
     FILE *fd = safe_fopen(abspath, "rb");
     int i = (fgetc(fd) == EOF);
     fclose(fd);
     return i;
+}
+
+/**
+ * Check whether an argument is an option
+ * @param argv String
+ * @return 0 if yes, 1 if no
+ */
+int isopt(char *argv)
+{
+    // FIXME: TODO
+    return 0;
 }

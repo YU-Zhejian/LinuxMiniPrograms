@@ -36,15 +36,15 @@ if [ -z "${__LIBSTR_VERSION:-}" ]; then
     }
 
     errh() {
-        builtin builtin echo -e "${RED}ERROR: ${*}${NOCOLOR}" >&2
+        builtin echo -e "${RED}ERROR: ${*}${NOCOLOR}" >&2
         builtin exit 1
     }
 
     warnh() {
-        builtin builtin echo -e "${RED}WARNING: ${*}${NOCOLOR}" >&2
+        builtin echo -e "${RED}WARNING: ${*}${NOCOLOR}" >&2
     }
 
     infoh() {
-        builtin builtin echo -e "${YELLOW}INFO: ${*}${NOCOLOR}" >&2
+        builtin echo -e "${YELLOW}INFO: ${*}${NOCOLOR}" >&2
     }
 fi

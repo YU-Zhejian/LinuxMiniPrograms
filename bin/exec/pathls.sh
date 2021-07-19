@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 VERSION=3.9
 _grep() {
+    builtin local regstr
     regstr="${1}"
     builtin local tmpff
     tmpff=$(mktemp -t pls.XXXXXX)
