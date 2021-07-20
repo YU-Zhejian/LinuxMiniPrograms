@@ -1,0 +1,7 @@
+= Readme for `DEPRECATED`
+
+For names and locations of deprecated programs, see `LMP_deprecated` for more details.
+
+== File Organization
+
+// TODO

@@ -1,5 +1,5 @@
-# This file is used for CLion tracking ONLY.
-# DO NOT USE THIS FILE TO BUILD EXECUTABLES.
+# This file is used for CLion tracking and building executables STANDALONE.
+# This file should only be used if you only want to build the C part of LinuxMiniPrograms.
 
 cmake_minimum_required(VERSION 3.2)
 project(LinuxMiniPrograms VERSION 1.0.0.0  LANGUAGES C CXX)

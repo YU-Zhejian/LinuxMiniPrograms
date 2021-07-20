@@ -34,6 +34,8 @@ Here gives a list of deprecated programs in YuZJLab LinuxMiniPrograms.
 .. `bin/git-mirror`
 .. `bin/exec/gitm/*`
 
+These files should appear in `src/DEPRECATED`, and will no longer be updated.
+
 == SEE ALSO
 
 LMP_basis, LMP_license

@@ -1,6 +1,6 @@
 # What will be Done
 
-VERSION=1.1
+VERSION=1.2
 
 ## AutoZip series:
 
@@ -57,10 +57,6 @@ VERSION=1.1
 * zopfli
 * zutil
 
-## Bugs
-
-* `rar` multithreading support
-
 ## New Programs
 
 * General-purpose enigma crypto.
@@ -68,6 +64,7 @@ VERSION=1.1
 * gitm in Python
 * libdo in Python
 * pydoc
+* `docker-test` in centos, fedora, alpine, debian, arch, manjaro, kali
 
 ## Documentation
 

@@ -22,3 +22,7 @@ clean:
 .PHONY: distclean
 distclean: clean
 	$(RM) *.Dockerfile
+
+.PHONY: list
+list:
+	@echo $(RUN_TARGETS)

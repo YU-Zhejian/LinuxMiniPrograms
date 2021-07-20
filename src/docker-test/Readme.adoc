@@ -1,0 +1,3 @@
+= Readme for `docker-test`
+
+Here consists of some automatic testing files in Dockerfile. They are intended to test the code on all popular GNU/Linux distributions.

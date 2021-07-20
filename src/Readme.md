@@ -1,4 +1,4 @@
-# ReadMe for `src` folder
+# Readme for `src` folder
 
 WARNING: **Developers only, not for tourists!**
 

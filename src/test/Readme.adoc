@@ -1,4 +1,4 @@
-= ReadMe for `test`
+= Readme for `test`
 
 This folder contains the testing scripts. These scripts can be executed in a stand-alone order, or to be accessed by using `make test` in the root directory of LinuxMiniPrograms. See `LMP_basis` for more details.
 

@@ -1,4 +1,4 @@
-= ReadMe for `src` folder
+= Readme for `src` folder
 
 This is the Readme file for `src` folder. It mainly stores the source code for the documentation, C programs, news, testing scripts, and default `etc/` and `var/`. There are also codes executed during the installation process.
 
