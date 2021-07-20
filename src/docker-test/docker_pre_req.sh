@@ -28,5 +28,8 @@ cat codename_ubuntu.csv | grep -v '^#' | while builtin read -r line;do
     cat ubuntu_minimal.Dockerfile.in | \
     sed "s;__REPLACE_VERSION__;$(builtin echo "${CODENAME[0]}");g" | \
     sed "s;__REPLACE_CODENAME__;$(builtin echo "${CODENAME[1]}");g" > ubuntu_"${CODENAME[0]}"_minimal.Dockerfile
+    cat ubuntu_all.Dockerfile.in | \
+    sed "s;__REPLACE_VERSION__;$(builtin echo "${CODENAME[0]}");g" | \
+    sed "s;__REPLACE_CODENAME__;$(builtin echo "${CODENAME[1]}");g" > ubuntu_"${CODENAME[0]}"_all.Dockerfile
 done
 exit 0

@@ -30,13 +30,13 @@ usage:../../share/doc/usage/ $(USAGE_OBJECTS)
 	$(MKDIR) ../../share/doc/usage/
 
 ../../share/doc/pdf/%.pdf: %.adoc
-	$(ADOC_PDF) $(AOPTS) $< -o $@
+	$(ADOC_PDF) $(AOPTS) -o $@ $<
 
 ../../share/doc/html/%.html: %.adoc
-	$(ADOC) $(AOPTS) $< -o $@
+	$(ADOC) $(AOPTS) -o $@ $<
 
 ../../share/man/man1/%.1: %.adoc
-	$(ADOC) $(AOPTS) -b manpage $< -o $@
+	$(ADOC) $(AOPTS) -b manpage -o $@ $<
 
 ../../share/doc/usage/%.usage: %.adoc
 	$(PYTHON) ../exec/adoc2usage.py $< $@

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.10
+VERSION=1.11
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/path.conf
@@ -35,7 +35,7 @@ done
 STDS=$(builtin echo "${STDS}" | sed "s/ $//")
 if [ -n "${STDS}" ]; then
     # builtin echo "${STDS}"
-    builtin eval cat -n ~/.bash_history \| grep --color=auto "${STDS}"
+    builtin eval cat -n ~/.bash_history \| grep --color=auto "${STDS}" || true
 else
-    cat -n ~/.bash_history
+    cat -n ~/.bash_history || true
 fi

@@ -33,6 +33,24 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
+RUN apt-get install -y --no-install-recommends --no-install-suggests \
+p7zip-full \
+brotli \
+ncompress \
+lzip \
+lzop \
+pigz \
+unrar \
+xz-utils \
+zstd \
+asciidoctor \
+parallel \
+clang \
+libtool-bin
+
+RUN apt-get install -y --no-install-recommends --no-install-suggests lz4 || true
+RUN apt-get install -y --no-install-recommends --no-install-suggests tabix || true
+
 # TODO: .bashrc failed for non-interactive shell
 # Temporarily use zshrc
 RUN echo '#!/usr/env/bin bash \n\
