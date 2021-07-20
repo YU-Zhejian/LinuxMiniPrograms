@@ -19,6 +19,3 @@ __DO docker run --name "lmp_test_${NAME}" "lmp_test_${NAME}:${TARGET_VERSION}"
 __DO docker cp "lmp_test_${NAME}:/lmp_test_${NAME}.tar" .
 __DO autounzip --remove "lmp_test_${NAME}.tar"
 __DO docker rm "lmp_test_${NAME}"
-
-# debian_10_minimal-1.0.tar
-# LMP-debian-9

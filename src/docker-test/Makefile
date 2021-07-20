@@ -18,7 +18,7 @@ pre_req:
 
 .PHONY: clean
 clean:
-	 $(RM) log/*.log
+	 $(RM) log/*.log lmp_test*/
 
 .PHONY: distclean
 distclean: clean

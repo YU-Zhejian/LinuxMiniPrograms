@@ -32,6 +32,7 @@ __DO() {
     else
         __DO_ECHO "LIBDO EXITED SUCCESSFULLY"
     fi
+    builtin echo "${PROGNAME};${LIBDO_PRIV};${LIBDO_CMD}" >> "${REPORT}"
     builtin return ${LIBDO_PRIV}
 }
 
@@ -40,3 +41,5 @@ TDN="${DN}/${PROGNAME}_$(date +%Y-%m-%d_%H-%M-%S).t"
 mkdir -p "${TDN}"
 builtin cd "${TDN}" || builtin exit 1
 LIBDO_LOG="${PROGNAME}.log"
+
+export REPORT="../${1}"
