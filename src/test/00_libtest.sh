@@ -24,7 +24,7 @@ __DO() {
     __DO_ECHO "LIBDO ENVIRONS:"
     builtin export >>"${tmpf2}"
     __DO_ECHO "$(diff -u "${tmpf2}" "${tmpf1}")"
-    rm "${tmpf2}" "${tmpf1}"
+    rm -fr "${tmpf2}" "${tmpf1}"
     if [ ${LIBDO_PRIV} -ne 0 ]; then
         __DO_ECHO "LIBDO FAILED, GOT \$?=${LIBDO_PRIV}"
         __DO_ECHO "LIBDO WILL KILL ${LIBDO_TOP_PID}"

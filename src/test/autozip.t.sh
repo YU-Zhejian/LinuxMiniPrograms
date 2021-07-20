@@ -51,4 +51,4 @@ for ext in 7z zip rar; do
     __DO azlist td."${ext}"
     __DO autounzip --force --remove --parallel td."${ext}"
 done
-rm -rf "${TDN}"
+

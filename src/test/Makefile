@@ -19,4 +19,4 @@ all: $(TARGETS)
 clean:
 	 $(RM) *.t/
 
-distclean:
+distclean: clean

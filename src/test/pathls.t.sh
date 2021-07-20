@@ -16,4 +16,4 @@ __DO manls
 __DO manls -l
 __DO libls
 __DO libls -l
-rm -rf "${TDN}"
+

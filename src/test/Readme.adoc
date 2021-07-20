@@ -22,7 +22,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 PROGNAME=[PROGNAME]
 . "${DN}"/00_libtest.sh
 [...]
-rm -rf "${TDN}" # This variable is specified in "${DN}"/00_libtest.sh. It is where the tests are executed. It is removed if the test is successful.
+# This variable is specified in "${DN}"/00_libtest.sh. It is where the tests are executed.
 ----
 
 You may specify the program(s) you need to test in `[PROGNAME]` and write what you need to test in `[...]`.

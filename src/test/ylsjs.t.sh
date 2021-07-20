@@ -17,4 +17,4 @@ done
 __DO ylsjs ps
 __DO ylsjs ps -V -t -p -s
 __DO ylsjsd clear
-rm -rf "${TDN}"
+

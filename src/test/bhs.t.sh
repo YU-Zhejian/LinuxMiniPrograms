@@ -5,4 +5,4 @@ DN="$(readlink -f "$(dirname "${0}")")"
 PROGNAME=bhs
 . "${DN}"/00_libtest.sh
 __DO bhs
-rm -rf "${TDN}"
+

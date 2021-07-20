@@ -3,10 +3,10 @@
 # Usage: docker_wrapper.sh [FILE].Dockerfile
 # shellcheck disable=SC2034
 VERSION=1.0
-set -ue
+set -eu
 builtin cd "$(readlink -f "$(dirname "${0}")")" || builtin exit 1
 NAME="$(basename -s '.Dockerfile' "${1}")"
-TARGET_VERSION="$(cat "${NAME}.Dockerfile" | grep '^LABEL version' | cut -f 2 -d '=' | sed 's;";;g')"
+TARGET_VERSION="$(cat "out/${NAME}.Dockerfile" | grep '^LABEL version' | cut -f 2 -d '=' | sed 's;";;g')"
 . ../../shlib/libinclude.sh
 __include libdo
 mkdir -p log/
