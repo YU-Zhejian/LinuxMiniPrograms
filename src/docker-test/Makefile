@@ -26,4 +26,4 @@ distclean: clean
 
 .PHONY: list
 list:
-	@echo $(RUN_TARGETS)
+	@echo $(RUN_TARGETS) | tr ' ' '\n'

@@ -3,7 +3,7 @@
 """
 Report generator -- Generate Asciidoc report from csv-like source
 """
-import datetime
+
 import sys
 import time
 

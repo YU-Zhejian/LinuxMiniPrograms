@@ -53,4 +53,10 @@ cat etc/debian.csv | grep -v '^#' | while builtin read -r line;do
     sed "s;__REPLACE_CODENAME__;$(builtin echo "${CODENAME[1]}");g" | \
     sed "s;__MIN_PACKAGES__;$(cat etc/debian.min.packages | tr '\n' ' ');g"  > out/debian_"${CODENAME[0]}"_minimal.Dockerfile
 done
+cat etc/fedora.csv | grep -v '^#' | while builtin read -r line;do
+    cat fedora_minimal.Dockerfile.in run.Dockerfile.in | \
+    sed "s;__REPLACE_DISTRO__;fedora;g" | \
+    sed "s;__REPLACE_VERSION__;$(builtin echo "${line}");g" | \
+    sed "s;__MIN_PACKAGES__;$(cat etc/fedora.min.packages | tr '\n' ' ');g"  > out/fedora_"${line}"_minimal.Dockerfile
+done
 exit 0

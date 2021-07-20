@@ -1,11 +1,3 @@
-# Locale and Timezone
-RUN ln -fs /usr/share/zoneinfo/PRC /etc/localtime && dpkg-reconfigure --frontend noninteractive tzdata
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
-
 RUN apt-get install -y --no-install-recommends --no-install-suggests __ADD_PACKAGES__
-
 RUN apt-get install -y --no-install-recommends --no-install-suggests lz4 || true
 RUN apt-get install -y --no-install-recommends --no-install-suggests tabix || true

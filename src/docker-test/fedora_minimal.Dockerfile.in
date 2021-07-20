@@ -1,0 +1,8 @@
+FROM __REPLACE_DISTRO__:__REPLACE_VERSION__
+
+LABEL maintainer="Zhejian.19@intl.zju.edu.cn"
+LABEL version="1.0"
+
+RUN dnf update -y
+
+RUN dnf install -y __MIN_PACKAGES__

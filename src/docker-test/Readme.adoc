@@ -1,3 +1,21 @@
 = Readme for `docker-test`
 
 Here consists of some automatic testing files in Dockerfile. They are intended to test the code on all popular GNU/Linux distributions.
+
+WARNING: Due to the fact that both Docker platform, testing operating systems and is changing, we may fail to test newest distributions, software, etc., meaning that bugs here is *NORMAL*. If this happens, please inform us by E-mail.
+
+== Mechanism for `docker-test`
+
+The Dockerfiles located in this directory will firstly be pre-processed by `bin/docker_pre_req.sh`
+
+== Selected Distributions and why We Select Them
+
+[Horizontal]
+ArchLinux:: The "base" of all Arch GNU/Linux family, including Manjaro and Black Arch.
+Alpine:: A small GNU/Linux distribution that is popular among containers and virtual machines. It is based on musl-c and busybox.
+CentOS:: No.1 popular server RedHat-based GNU/Linux distribution.
+Debian:: The "base" and upstream of the Debian GNU/Linux family, including Linux Mint, Ubuntu and Kali. It is also popular among servers.
+Fedora:: No.1 popular desktop RedHat-based GNU/Linux distribution, the testing field for RedHat.
+Kali:: A widely-used pen-test GNU/Linux distribution.
+Manjaro:: No.1 popular desktop Arch-based GNU/Linux distribution.
+Ubuntu:: No.1 popular desktop Debian-based GNU/Linux distribution.
