@@ -1,3 +1,4 @@
+# TODO: errors in docker
 SOURCES := $(wildcard *.adoc)
 PDF_OBJECTS := $(foreach fn, $(SOURCES), $(addprefix ../../share/doc/pdf/, $(fn)))
 PDF_OBJECTS := $(PDF_OBJECTS:.adoc=.pdf)
