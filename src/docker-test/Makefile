@@ -15,7 +15,10 @@ pre_req:
 %.Dockerfile.ex: %.Dockerfile
 	-bash docker_wrapper.sh $^
 
+.PHONY: clean
 clean:
-	 $(RM) *.log *.Dockerfile
+	 $(RM) *.log
 
-distclean:
+.PHONY: distclean
+distclean: clean
+	$(RM) *.Dockerfile

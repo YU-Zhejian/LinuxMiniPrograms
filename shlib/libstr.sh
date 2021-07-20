@@ -13,7 +13,7 @@ if [ -z "${__LIBSTR_VERSION:-}" ]; then
     HAVE_COLOR=0
     COLORS="$(tput colors 2>/dev/null)" || true
     # shellcheck disable=SC2086
-    [ ${COLORS} -gt 2 ] && HAVE_COLOR=1
+    [ ${COLORS:-0} -gt 2 ] && HAVE_COLOR=1
     [[ "${TERM:-}" =~ "256" ]] && HAVE_COLOR=1
     if [ ${HAVE_COLOR} -eq 1 ]; then
         RED="\033[31m"

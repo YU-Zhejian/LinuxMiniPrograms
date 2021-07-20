@@ -2,5 +2,5 @@
 20.04, focal
 19.04, disco
 18.04, bionic
-16.04, xenial
-# 14.04, trusty # Not used, bash version too low.
+# 16.04, xenial, Not used -- bash version too low.
+# 14.04, trusty, Not used -- bash version too low.

@@ -1,6 +1,8 @@
 # VERSION=1.3
 export MKDIR = mkdir -p
 export TT =
+export RM=rm -rf
+export CP=cp -rf
 # Disable implicit rules and variables
 MAKEFLAGS += --no-builtin-rules
 .SUFFIXES:

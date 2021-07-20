@@ -207,10 +207,11 @@ fi
 if ${VAR_install_html}; then
     if [ "${myasciidoctor}" != "ylukh" ]; then
         MAKE_ARGS="${MAKE_ARGS}:ADOC=\"${myasciidoctor}\""
-    else
+        MAKE_TARGETS="${MAKE_TARGETS} share/doc/html"
+    elif [ "${myasciidoc}" != "ylukh" ]; then
         MAKE_ARGS="${MAKE_ARGS}:ADOC=\"${myasciidoc}\":AOPT=\"\""
+        MAKE_TARGETS="${MAKE_TARGETS} share/doc/html"
     fi
-    MAKE_TARGETS="${MAKE_TARGETS} share/doc/html"
 fi
 #========C========
 # shellcheck disable=SC2154
@@ -225,7 +226,7 @@ elif [ "${mycc}" != "ylukh" ]; then
     MAKE_ARGS="${MAKE_ARGS}:CC=${mycc}:LIBTOOL=${mylibtool}"
 fi
 #========Makefile Generation========
-MAKE_ARGS="${MAKE_ARGS}:PYTHON=${mypython}:RM=rm -rf:CP=cp -rf:PREFIX=${PREFIX}"
+MAKE_ARGS="${MAKE_ARGS}:PYTHON=${mypython}:PREFIX=${PREFIX}"
 builtin echo "${MAKE_ARGS}" | sed 's;:;\'$'\nexport ;g' | sort | uniq >GNUmakefile
 builtin echo "all: ${MAKE_TARGETS}" >>GNUmakefile
 cat src/Makefile.in >>GNUmakefile

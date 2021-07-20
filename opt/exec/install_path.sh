@@ -3,8 +3,8 @@
 VERSION=1.6
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")/../../")"
-builtin cd "${DN}"
-./shlib/libinclude.sh
+builtin cd "${DN}" || exit 1
+. ./shlib/libinclude.sh
 
 __include libstr
 . etc/path.conf

@@ -12,8 +12,11 @@ __include libdo
 LIBDO_LOG_MODE=4
 LIBDO_LOG="${NAME}_$(date +%Y-%m-%d_%H-%M-%S).log"
 
-if docker images | awk '{print $1;}'| grep "^${NAME}$" &>> /dev/null;then
-    docker rmi "${NAME}"
+#if docker images | awk '{print $1;}'| grep "^lmp_test_${NAME}$" &>> /dev/null;then
+#    docker rmi "lmp_test_${NAME}"
+#fi
+if ! docker images | awk '{print $1;}'| grep "^lmp_test_${NAME}$" &>> /dev/null;then
+    __DO docker build . --file "${1}" --tag "lmp_test_${NAME}:${TARGET_VERSION}"
 fi
-__DO docker build . --file "${1}" --tag "lmp_test_${NAME}:${TARGET_VERSION}"
+
 __DO docker run --rm "lmp_test_${NAME}:${TARGET_VERSION}"
