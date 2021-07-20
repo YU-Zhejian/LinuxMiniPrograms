@@ -33,7 +33,20 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-COPY docker_run.sh /
+RUN echo 'git clone https://gitee.com/YuZJLab/LinuxMiniPrograms \n\
+builtin cd LinuxMiniPrograms || exit 1 \n\
+git checkout feature/google \n\
+./configure --all \n\
+cat GNUmakefile \n\
+. ~/.bashrc \n\
+make \n\
+. ~/.bashrc \n\
+cat ~/.bashrc \n\
+make test -j20 \n\
+. ~/.bashrc \n\
+exit 0' > docker_run.sh
+
+RUN cat docker_run.sh
 
 # Start testing
 CMD bash docker_run.sh

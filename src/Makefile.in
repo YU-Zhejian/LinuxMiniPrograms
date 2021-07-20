@@ -49,7 +49,6 @@ share/doc/usage:
 .PHONY: pp
 pp:
 	bash src/exec/install_path_permissions.sh
-	@-$(MAKE) -C opt permissions
 
 .PHONY: test
 test:

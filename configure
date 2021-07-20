@@ -202,7 +202,6 @@ if ${VAR_install_man}; then
 fi
 if ${VAR_install_usage}; then
     MAKE_TARGETS="${MAKE_TARGETS} share/doc/usage"
-    MAKE_ARGS="${MAKE_ARGS}:ADOC=\"${myasciidoctor}\""
 fi
 if ${VAR_install_html}; then
     if [ "${myasciidoctor}" != "ylukh" ]; then
