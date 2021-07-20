@@ -1,3 +1,2 @@
 *.Dockerfile
-rebuild.ex
-*.Dockerfile.build
+lmp_test*/

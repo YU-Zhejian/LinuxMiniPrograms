@@ -26,7 +26,7 @@ local_lib=$(for dir in \
     $(__addpref 'lib*/clang*/*/lib*') \
     $(__addpref 'lib*/clang*/lib*') \
     '/mingw*/lib*' '/clang*/lib*'; do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
-ld_lib="$(ld --verbose | grep SEARCH_DIR | tr ';' '\n' | cut -f 2 -d '=' | cut -f 1 -d '"' | tr '\n' ';')"
+ld_lib="$(ld --verbose || true | grep SEARCH_DIR | tr ';' '\n' | cut -f 2 -d '=' | cut -f 1 -d '"' | tr '\n' ';')"
 
 validate_path "${local_lib}:${ld_lib}:${LD_LIBRARY_PATH:-}:${LIBRARY_PATH:-}:${LD_RUN_PATH:-}"
 builtin unset local_lib ld_lib

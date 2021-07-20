@@ -1,0 +1,8 @@
+FROM __REPLACE_DISTRO__:__REPLACE_VERSION__
+
+LABEL maintainer="Zhejian.19@intl.zju.edu.cn"
+LABEL version="1.0"
+
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
+
+RUN apk add __MIN_PACKAGES__

@@ -1,7 +1,7 @@
 9, strech
 10, buster
-11, bullseye
-# oldstable, strech
-# testing, bullseye
-# stable, buster
+# 11, bullseye, not released
+# oldstable, strech, duplicated
+# testing, bullseye, duplicated
+# stable, buster, duplicated
 unstable, sid

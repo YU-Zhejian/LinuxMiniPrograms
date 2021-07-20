@@ -1,0 +1,22 @@
+# TODO: .bashrc failed for non-interactive shell
+# Temporarily use zshrc
+RUN echo '#!/usr/env/bin bash \n\
+set -v \n\
+git clone https://gitee.com/YuZJLab/LinuxMiniPrograms \n\
+builtin cd LinuxMiniPrograms || exit 1 \n\
+git checkout feature/google \n\
+./configure --all \n\
+cat GNUmakefile \n\
+. ~/.zshrc \n\
+make \n\
+. ~/.zshrc \n\
+cat ~/.zshrc \n\
+export \n\
+make test -j20 \n\
+. ~/.zshrc \n\
+exit 0' > docker_run.sh
+
+ARG tarname
+ENV tarname ${tarname}
+# Start testing
+CMD mkdir -p /LinuxMiniPrograms && bash docker_run.sh || true && mv LinuxMiniPrograms ${tarname} && tar -c -v -f ${tarname}.tar ${tarname}

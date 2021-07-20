@@ -1,4 +1,4 @@
-FROM ubuntu:__REPLACE_VERSION__
+FROM __REPLACE_DISTRO__:__REPLACE_VERSION__
 
 LABEL maintainer="Zhejian.19@intl.zju.edu.cn"
 LABEL version="1.0"
@@ -7,51 +7,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Package Manager Initialization
 RUN apt-get update && apt-get install -y apt-transport-https ca-certificates apt-utils
-# RUN echo -e 'deb [trusted=yes] https://mirrors.tuna.tsinghua.edu.cn/ubuntu __REPLACE_CODENAME__ main restricted universe multiverse\ndeb [trusted=yes] https://mirrors.tuna.tsinghua.edu.cn/ubuntu __REPLACE_CODENAME__-updates main restricted universe multiverse\ndeb [trusted=yes] https://mirrors.tuna.tsinghua.edu.cn/ubuntu   __REPLACE_CODENAME__-backports main restricted universe multiverse\ndeb [trusted=yes] https://mirrors.tuna.tsinghua.edu.cn/ubuntu __REPLACE_CODENAME__-security main restricted universe multiverse' > /etc/apt/sources.list
-RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list
+RUN echo 'deb [trusted=yes] https://mirrors.tuna.tsinghua.edu.cn/ubuntu __REPLACE_CODENAME__ main restricted universe multiverse\n\
+deb [trusted=yes] https://mirrors.tuna.tsinghua.edu.cn/ubuntu __REPLACE_CODENAME__-updates main restricted universe multiverse\n\
+deb [trusted=yes] https://mirrors.tuna.tsinghua.edu.cn/ubuntu   __REPLACE_CODENAME__-backports main restricted universe multiverse\n\
+deb [trusted=yes] https://mirrors.tuna.tsinghua.edu.cn/ubuntu __REPLACE_CODENAME__-security main restricted universe multiverse' > /etc/apt/sources.list
+# RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list
 RUN apt-get update && apt-get upgrade -y --no-install-recommends --no-install-suggests
 
-RUN apt-get install -y --no-install-recommends --no-install-suggests \
-r-base \
-sudo \
-git-core \
-psmisc \
-lsb-release \
-libclang-dev \
-locales \
-libcurl4-gnutls-dev \
-g++ \
-make \
-openssh-server \
-vim \
-asciidoc
-
-# Locale and Timezone
-RUN ln -fs /usr/share/zoneinfo/PRC /etc/localtime && dpkg-reconfigure --frontend noninteractive tzdata
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
-
-# TODO: .bashrc failed for non-interactive shell
-# Temporarily use zshrc
-RUN echo '#!/usr/env/bin bash \n\
-set -v \n\
-git clone https://gitee.com/YuZJLab/LinuxMiniPrograms \n\
-builtin cd LinuxMiniPrograms || exit 1 \n\
-git checkout feature/google \n\
-./configure --all \n\
-cat GNUmakefile \n\
-. ~/.zshrc \n\
-make \n\
-. ~/.zshrc \n\
-cat ~/.zshrc \n\
-export \n\
-make test -j20 \n\
-. ~/.zshrc \n\
-exit 0' > docker_run.sh
-
-RUN cat docker_run.sh
-
-# Start testing
-CMD bash docker_run.sh
+RUN apt-get install -y --no-install-recommends --no-install-suggests __MIN_PACKAGES__

@@ -1,4 +1,4 @@
-SOURCES := $(wildcard *.Dockerfile)
+SOURCES := $(wildcard out/*.Dockerfile)
 RUN_TARGETS := $(foreach fn, $(SOURCES), $(addsuffix .run, $(fn)))
 
 # Disable implicit rules and variables
@@ -10,10 +10,11 @@ all: pre_req  $(RUN_TARGETS)
 
 .PHONY: pre_req
 pre_req:
-	bash docker_pre_req.sh
+	mkdir -p out
+	bash bin/docker_pre_req.sh
 
 %.Dockerfile.run: %.Dockerfile
-	-bash docker_run_wrapper.sh $^
+	-bash bin/docker_run_wrapper.sh $^
 
 .PHONY: clean
 clean:
@@ -21,7 +22,7 @@ clean:
 
 .PHONY: distclean
 distclean: clean
-	$(RM) *.Dockerfile
+	$(RM) out/*.Dockerfile
 
 .PHONY: list
 list:

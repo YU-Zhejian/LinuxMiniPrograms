@@ -1,0 +1,17 @@
+FROM __REPLACE_DISTRO__:__REPLACE_VERSION__
+
+LABEL maintainer="Zhejian.19@intl.zju.edu.cn"
+LABEL version="1.0"
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Package Manager Initialization
+RUN apt-get update && apt-get install -y apt-transport-https ca-certificates apt-utils
+
+RUN echo 'deb https://mirrors.tuna.tsinghua.edu.cn/debian/ __REPLACE_CODENAME__ main contrib non-free\n\
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ __REPLACE_CODENAME__-updates main contrib non-free\n\
+deb https://mirrors.tuna.tsinghua.edu.cn/debian/ __REPLACE_CODENAME__-backports main contrib non-free\n\
+deb https://mirrors.tuna.tsinghua.edu.cn/debian-security __REPLACE_CODENAME__/updates main contrib non-free'
+RUN apt-get update && apt-get upgrade -y --no-install-recommends --no-install-suggests
+
+RUN apt-get install -y --no-install-recommends --no-install-suggests __MIN_PACKAGES__
