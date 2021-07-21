@@ -21,6 +21,11 @@
       <excludeFolder url="file://$MODULE_DIR$/src/C/bin/.libs" />
       <excludeFolder url="file://$MODULE_DIR$/src/C/lib/.libs" />
       <excludeFolder url="file://$MODULE_DIR$/src/C/cmake-build-debug" />
+      <excludeFolder url="file://$MODULE_DIR$/.scannerwork" />
+      <excludeFolder url="file://$MODULE_DIR$/src/C/analyse-cppcheck-build-dir" />
+      <excludeFolder url="file://$MODULE_DIR$/src/C/scan-build" />
+      <excludeFolder url="file://$MODULE_DIR$/src/docker-test/log" />
+      <excludeFolder url="file://$MODULE_DIR$/src/docker-test/out" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.9 (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -16,7 +16,7 @@ all: $(TARGETS)
 %.so: %.la
 	$(LIBTOOL) --tag=CC --mode=link $(LIBTOOL_FLAGS) $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
 
-libyuzjstd.la: yuzjstd.lo
+libyuzjstd.la: yuzjstd_core.lo yuzjstd_str.lo yuzjstd_io.lo
 	$(LIBTOOL) --tag=CC --mode=link $(LIBTOOL_FLAGS) $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
 %.lo: %.c

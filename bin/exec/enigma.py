@@ -130,7 +130,6 @@ def main():
                 inp = ord(inp)
                 b1 = inp // 16
                 b2 = inp % 16
-                dcl = chr(b1 + 65) + chr(b2 + 65)
                 sys.stdout.write(myenigma.encode(chr(b1 + 65)) +
                                  myenigma.encode(chr(b2 + 65)))
 

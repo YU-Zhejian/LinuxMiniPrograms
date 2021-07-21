@@ -6,3 +6,4 @@ LABEL version="1.0"
 RUN dnf update -y
 
 RUN dnf install -y __MIN_PACKAGES__
+# TODO: Lots of bugs afterwards!
