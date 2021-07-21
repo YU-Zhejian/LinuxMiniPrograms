@@ -13,7 +13,7 @@ all: $(TARGETS)
 .PHONY : all
 
 pst.co: pst.lo
-	$(LIBTOOL) --tag=CC --mode=link $(LIBTOOL_FLAGS) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) -lpthread -o $@ $<
+	$(LIBTOOL) --tag=CC --mode=link $(LIBTOOL_FLAGS) $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -lpthread -o $@ $<
 
 %.lo: %.c
 	$(LIBTOOL) --tag=CC --mode=compile  $(LIBTOOL_FLAGS) $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< -c -o $@
