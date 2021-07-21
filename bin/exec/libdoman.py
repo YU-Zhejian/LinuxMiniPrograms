@@ -91,14 +91,13 @@ class LibdoRecord:
         To generate time. Note the difference in machines and humans.
         :return: Nothing
         """
-        if self.time == "ERR":
-            if self.time_e != "0" and self.time_s != "0":
-                time_calc = (datetime.strptime(self.time_e, FMTSTR) -
-                             datetime.strptime(self.time_s, FMTSTR)).seconds
-                if ISMACHINE:
-                    self.time = str(time_calc)
-                else:
-                    self.time = timediff(time_calc)
+        if self.time == "ERR" and self.time_e != "0" and self.time_s != "0":
+            time_calc = (datetime.strptime(self.time_e, FMTSTR) -
+                          datetime.strptime(self.time_s, FMTSTR)).seconds
+            if ISMACHINE:
+                self.time = str(time_calc)
+            else:
+                self.time = timediff(time_calc)
 
     def pppos(self):
         '''

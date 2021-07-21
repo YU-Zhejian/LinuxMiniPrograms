@@ -3,3 +3,12 @@
 Here stores the source code of all C programs. A `CMakeList` is provided to help you install this program stand-alone.
 
 // TODO
+
+
+== Linting and Testing
+
+You may install SonarLint in your IDE.
+
+You may use CPPCheck. A configuration file of its GUI is provided.
+
+You may use `scan-build`, which is a part of `clang-tools` by running `make assess`.

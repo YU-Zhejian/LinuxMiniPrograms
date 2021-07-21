@@ -6,3 +6,5 @@ cmake-build-debug
 *.la
 *.so
 *.co
+scan-build/
+analyse-cppcheck-build-dir/

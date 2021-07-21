@@ -12,8 +12,10 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 11)
 include_directories(include)
 
-add_library(yuzjstd SHARED lib/yuzjstd.c include/yuzjstd.h)
+add_library(yuzjstd SHARED lib/yuzjstd_core.c lib/yuzjstd_str.c lib/yuzjstd_io.c include/yuzjstd.h)
 
 add_executable(pst.co bin/pst.c)
+add_executable(cmain.co test/cmain.c)
 
 target_link_libraries(pst.co pthread yuzjstd)
+target_link_libraries(cmain.co yuzjstd)

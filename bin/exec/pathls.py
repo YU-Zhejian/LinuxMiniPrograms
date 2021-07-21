@@ -28,14 +28,14 @@ def mygrep(mylist: list, regxp: str) -> list:
     return mylist
 
 
-def do_search(P: str) -> list:
-    if not os.path.isdir(P):
+def do_search(inpath: str) -> list:
+    if not os.path.isdir(inpath):
         return []
-    ls_ret = os.popen('ls -1 -F ' + '\'' + P + '\'', 'r')
+    ls_ret = os.popen('ls -1 -F ' + '\'' + inpath + '\'', 'r')
     ls_all = ls_ret.readlines()
     ls_ret.close()
     for n in range(len(ls_all)):
-        ls_all[n] = P + '/' + ls_all[n].strip()
+        ls_all[n] = inpath + '/' + ls_all[n].strip()
     if not allow_d:
         ls_all = mygrep(ls_all, r'/$')
     if not allow_o:
@@ -45,17 +45,17 @@ def do_search(P: str) -> list:
     return ls_all
 
 
-def do_search_py(P: str) -> list:
+def do_search_py(inpath: str) -> list:
     '''
     Deprecated due to slow speed
-    :param P: path
+    :param inpath: path
     :return: Items under that path
     '''
-    if not os.path.isdir(P):
+    if not os.path.isdir(inpath):
         return []
-    ls_ret = os.listdir(P)
+    ls_ret = os.listdir(inpath)
     for n in range(len(ls_ret)):
-        ls_ret[n] = os.path.abspath(P + '/' + ls_ret[n])
+        ls_ret[n] = os.path.abspath(inpath + '/' + ls_ret[n])
         if not allow_d and os.path.isdir(ls_ret[n]):
             ls_ret[n] = ''
         if not allow_o and not os.access(ls_ret[n], os.X_OK):
@@ -70,9 +70,9 @@ class ParallelDoSearch(threading.Thread):
     Multi-threading support
     '''
 
-    def __init__(self, P: str):
+    def __init__(self, inpath: str):
         super().__init__()
-        self.P = P
+        self.P = inpath
         self.outlist = []
 
     def run(self) -> None:
@@ -82,24 +82,24 @@ class ParallelDoSearch(threading.Thread):
         return self.outlist
 
 
-def parallel_do_search(Plist: list) -> list:
+def parallel_do_search(inpath_list: list) -> list:
     search_threads = []
     i = 0
-    for P in Plist:
+    for P in inpath_list:
         search_threads.append(ParallelDoSearch(P))
         search_threads[i].start()
         i += 1
     outlist = []
     for n in range(i):
-        infoh("Waiting " + Plist[n])
+        infoh("Waiting " + inpath_list[n])
         search_threads[n].join()
         outlist.extend(search_threads[n].result())
     return outlist
 
 
-def non_parallel_do_search(Plist: list) -> list:
+def non_parallel_do_search(inpath_list: list) -> list:
     outlist = []
-    for P in Plist:
+    for P in inpath_list:
         infoh("Searching " + P)
         outlist.extend(do_search(P))
     return outlist

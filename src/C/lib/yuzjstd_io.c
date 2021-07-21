@@ -9,69 +9,7 @@
 #include <libgen.h>
 
 void core_mkdir_p(char *abspath);
-FILE *core_fopen(char *abspath,char* mode);
-
-/**
- * Create an INFO: message.
- * @param msg Message
- */
-void infoh(char *msg)
-{
-    fprintf(stderr, "%s%s%s%s\n", ANSI_YELLOW, "INFO: ", msg, ANSI_CLEAR);
-    fflush(stderr);
-}
-
-/**
- * Create an ERROR: message and exit.
- * @param msg Message
- * @param exit_value Exit value
- */
-void errh(char *msg, int exit_value)
-{
-    fprintf(stderr, "%s%s%s%s\n", ANSI_RED, "ERROR: ", msg, ANSI_CLEAR);
-    fflush(stderr);
-    exit(exit_value);
-}
-/**
- * Create a WARNING: message and exit.
- * @param msg Message
- */
-void warnh(char *msg)
-{
-    fprintf(stderr, "%s%s%s%s\n", ANSI_RED, "WARNING: ", msg, ANSI_CLEAR);
-    fflush(stderr);
-}
-
-/**
- * A Perl-like replacement for `errh`. See `errh` for more details.
- */
-void die(char *msg, int exit_value)
-{ errh(msg, exit_value); }
-
-/**
- * Get the substring of input and store it inside a buffer.
- * @param string The input string
- * @param targetstr The target buffer
- * @param position From position
- * @param length Target length
- * @return 0 if succeed, -1 if error
- */
-int substring(char *string, char *targetstr, int position, int length)
-{
-    int c;
-    char *tmpstr = malloc(length + 1);
-    if (tmpstr == NULL) {
-        targetstr = NULL;
-        return -1;
-    }
-    for (c = 0; c < length; c++) {
-        *(tmpstr + c) = *(string + position);
-        string++;
-    }
-    *(tmpstr + c) = '\0';
-    sprintf(targetstr, "%s", tmpstr);
-    return 0;
-}
+FILE *core_fopen(char *abspath,const char* mode);
 
 /**
  * Get the normalized absolute path of an existing or non-existing path.
@@ -102,25 +40,28 @@ int substring(char *string, char *targetstr, int position, int length)
  */
 int get_abspath(char *path, char *outpath)
 {
-    char *tmppath = malloc(PATH_MAX); // The input of each step
+    char *tmppath = (char*) safe_malloc(PATH_MAX); // The input of each step
     sprintf(tmppath, "%s", path);
     // Resolve ~
     if (strncmp(tmppath, "~", 1) == 0) {
         char *home_dir = getenv("HOME");
         if (home_dir == NULL) {// Failed to get HOME environment variable
             outpath = NULL;
+            free(tmppath);
             return -1;
         }
-        char *path_without_header = malloc(PATH_MAX);
+        char *path_without_header = safe_malloc(PATH_MAX);
         substring(tmppath, path_without_header, 1, (int)strlen(tmppath) - 1);
         sprintf(outpath, "%s%c%s", home_dir, PATH_SEPARATOR, path_without_header);
         sprintf(tmppath, "%s", outpath);
+        free(path_without_header);
     }
     // Resolve ${PWD}
     if (strncmp(tmppath, "/", 1) != 0) {
         char *pwd = getenv("PWD");
         if (pwd == NULL) {// Failed to get PWD environment variable
             outpath = NULL;
+            free(tmppath);
             return -1;
         }
         sprintf(outpath, "%s%c%s", pwd, PATH_SEPARATOR, path);
@@ -128,18 +69,20 @@ int get_abspath(char *path, char *outpath)
     }
     // Resolve . and ..
     sprintf(outpath, "");
-    char *token = strtok(tmppath, PATH_SEPARATOR_STR);
+    char* save_ptr = safe_malloc((int) strlen(tmppath));
+    char *token = strtok_r(tmppath, PATH_SEPARATOR_STR,&save_ptr);
     while (token != NULL) {
         if (strcmp(token, "..") == 0) { // Removge the previous one if meeting '..'
             int last_sep = (int)(strrchr(outpath, PATH_SEPARATOR) - outpath + 1);
-            char *outpath_prev = (char *)malloc(strlen(tmppath));
+            char *outpath_prev = (char *)safe_malloc((int) strlen(tmppath));
             substring(outpath, outpath_prev, 0, last_sep);
             sprintf(outpath, "%s", outpath_prev);
+            free(outpath_prev);
         }
         else if (strcmp(token, ".") != 0) {
             sprintf(outpath, "%s%c%s", outpath, PATH_SEPARATOR, token);
         }
-        token = strtok(NULL, PATH_SEPARATOR_STR);
+        token = strtok_r(NULL, PATH_SEPARATOR_STR,&save_ptr);
     }
     free(token);
     sprintf(tmppath, "%s", outpath);
@@ -168,10 +111,11 @@ int get_abspath(char *path, char *outpath)
  */
 void core_mkdir_p(char *abspath)
 {
-    char *ERRSTR = (char *)malloc(500);
     if (mkdir(abspath, S_IRWXU) == -1) {
+        char *ERRSTR = (char *)safe_malloc(500);
         if (errno == EEXIST) { // SKIP
-            ERRSTR = "fuck";
+            free(ERRSTR);
+            return;
         }
         else if (errno == ENOTDIR) {
             sprintf(ERRSTR, "%s is a file rather than a directory.", abspath);
@@ -209,24 +153,27 @@ void core_mkdir_p(char *abspath)
         else {
             sprintf(ERRSTR, "%s: Unknown error NO %i", abspath, errno);
         }
-
         errh(ERRSTR, 1);
     }
 }
+
 /**
  * Create a directory from absolute path if not exist. Just like mkdir -p.
  * @param abspath Absolute path
  * @return 0 if success, -1 if error
  */
-int mkdir_p(char *abspath)
+int mkdir_p(const char *abspath)
 {
-    char *abspath_created = (char *)malloc(strlen(abspath));
-    char *token = strtok(abspath, PATH_SEPARATOR_STR);
+    char *abspath_created = (char *)safe_malloc((int) strlen(abspath));
+    memset(abspath_created,0,(int) strlen(abspath));
+    char* save_ptr = safe_malloc((int) strlen(abspath));
+    char *token = strtok_r((char*) abspath, PATH_SEPARATOR_STR,&save_ptr);
     while (token != NULL) {
         sprintf(abspath_created, "%s%c%s", abspath_created, PATH_SEPARATOR, token);
+
         DIR *dir = opendir(abspath_created);
         if (dir == NULL) {
-            char *ERRSTR = (char *)malloc(500);
+            char *ERRSTR = (char *)safe_malloc(500);
             if (errno == ENOTDIR) {
                 sprintf(ERRSTR, "%s is a file rather than a directory.", abspath_created);
             }
@@ -242,7 +189,8 @@ int mkdir_p(char *abspath)
             }
             else if (errno == ENOENT) { // Directory not exist. Try to create it.
                 core_mkdir_p(abspath_created);
-                token = strtok(NULL, PATH_SEPARATOR_STR);
+                token = strtok_r(NULL, PATH_SEPARATOR_STR,&save_ptr);
+                free(ERRSTR);
                 continue;
             }
             errh(ERRSTR, 1);
@@ -250,8 +198,9 @@ int mkdir_p(char *abspath)
         else {
             closedir(dir);
         }
-        token = strtok(NULL, PATH_SEPARATOR_STR);
+        token = strtok_r(NULL, PATH_SEPARATOR_STR,&save_ptr);
     }
+    free(abspath_created);
     return 0;
 }
 
@@ -262,8 +211,9 @@ int mkdir_p(char *abspath)
 void create_no_exist(char *abspath)
 {
     if (creat(abspath, S_IRUSR | S_IWUSR) == -1) {
-        char *ERRSTR = (char *)malloc(500);
+        char *ERRSTR = (char *)safe_malloc(500);
         if (errno == EEXIST) { // SKIP
+            free(ERRSTR);
             return;
         }
         else if (errno == ENOENT) { // SKIP
@@ -272,7 +222,7 @@ void create_no_exist(char *abspath)
         else if (errno == ENFILE || errno == EMFILE) {
             sprintf(ERRSTR, "Limit on the total number of open files has been reached.");
         }
-        else if (errno == EBUSY || errno == EBUSY) {
+        else if (errno == EBUSY) {
             sprintf(ERRSTR, "%s: resource busy", abspath);
         }
         else if (errno == EACCES) {
@@ -316,15 +266,15 @@ void create_no_exist(char *abspath)
  * @param mode Mode
  * @return FD if normal; NULL if error
  */
-FILE* core_fopen(char *abspath, char *mode)
+FILE* core_fopen(char *abspath, const char *mode)
 {
     FILE *fd = fopen(abspath, mode);
     if (fd == NULL) {
-        char *ERRSTR = (char *)malloc(500);
+        char *ERRSTR = (char *)safe_malloc(500);
         if (errno == ENFILE || errno == EMFILE) {
             sprintf(ERRSTR, "Limit on the total number of open files has been reached.");
         }
-        else if (errno == EBUSY || errno == EBUSY) {
+        else if (errno == EBUSY) {
             sprintf(ERRSTR, "%s: resource busy", abspath);
         }
         else if (errno == EACCES) {
@@ -368,24 +318,32 @@ FILE* core_fopen(char *abspath, char *mode)
  */
 int touch(char *abspath)
 {
-    char *tabp = (char *)malloc(PATH_MAX);
+    char *tabp = (char *)safe_malloc(PATH_MAX);
     if (strncmp(abspath, "/", 1) != 0) {
         get_abspath(abspath, tabp);
     }
     else {
         sprintf(tabp, "%s", abspath);
     }
-    char *tmppath = malloc(strlen(tabp));
+    char *tmppath = safe_malloc((int) strlen(tabp));
     sprintf(tmppath, "%s", tabp);
     mkdir_p(dirname(tmppath));
-    if (fopen(tabp, "r") == NULL) {
+    FILE* tmpfd=fopen(tabp, "r");
+    if (tmpfd == NULL) {
         if (errno == ENOENT) {// Create one
             create_no_exist(abspath);
         }
         else {// Other errors, let it show!
-            core_fopen(tabp, "r");
+            FILE* tmp = core_fopen(tabp, "r");
+            if (tmp != NULL) {
+                fclose(tmp);
+            }
         }
+    } else {
+        fclose(tmpfd);
     }
+    free(tmppath);
+    free(tabp);
     return 0;
 }
 
@@ -394,9 +352,9 @@ int touch(char *abspath)
  * @param abspath Absolute path
  * @return FD if normal; NULL if error
  */
-FILE *safe_fopen(char *abspath, char *mode)
+FILE *safe_fopen(char *abspath, const char *mode)
 {
-    char *tabp = (char *)malloc(PATH_MAX);
+    char *tabp = (char *)safe_malloc(PATH_MAX);
     if (strncmp(abspath, "/", 1) != 0) {
         get_abspath(abspath, tabp);
     }
@@ -410,18 +368,17 @@ FILE *safe_fopen(char *abspath, char *mode)
         fclose(fd);
     }
     fd = core_fopen(tabp, mode);
+    free(tabp);
     return fd;
 }
 
 int safe_fgetc(FILE *fd)
 {
     int i = fgetc(fd);
-    if (i == EOF) {
-        if (errno != 0) {
-            char *ERRSTR = (char *)malloc(500);
+    if (i == EOF && errno != 0) {
+            char *ERRSTR = (char *)safe_malloc(500);
             sprintf(ERRSTR, "Unknown error NO %i", errno);
             errh(ERRSTR, 1);
-        }
     }
     return i;
 }
@@ -434,18 +391,10 @@ int safe_fgetc(FILE *fd)
 int is_empty(char *abspath)
 {
     FILE *fd = safe_fopen(abspath, "rb");
+    if (fd==NULL){ // Which is unlikely to happen
+        return -1;
+    }
     int i = (fgetc(fd) == EOF);
     fclose(fd);
     return i;
-}
-
-/**
- * Check whether an argument is an option
- * @param argv String
- * @return 0 if yes, 1 if no
- */
-int isopt(char *argv)
-{
-    // FIXME: TODO
-    return 0;
 }
