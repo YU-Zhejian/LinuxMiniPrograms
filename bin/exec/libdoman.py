@@ -3,7 +3,7 @@
 '''
 LibDO Manager in Python.
 '''
-from libpy.linuxminipy.libstr import ANSI_YELLOW,ANSI_CLEAR,ANSI_CRAYON
+from linuxminipy.libstr import ANSI_YELLOW,ANSI_CLEAR,ANSI_CRAYON
 import os
 import sys
 from datetime import datetime

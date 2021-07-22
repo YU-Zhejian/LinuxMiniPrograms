@@ -15,6 +15,8 @@ includels [STRING] [[STRING2]...] [OPTIONS]
 
 Search `[STRING]` in C/C++ include paths. If `[STRING]` is omitted, the program will list all contents in each valid C include paths.
 
+WARNING: This file searches include path for *C*, not `libinclude`!
+
 == OPTIONS
 
 include::include/cmnopt.adoc[]

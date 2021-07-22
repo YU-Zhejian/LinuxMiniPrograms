@@ -17,6 +17,10 @@ Firstly, use `. /PATH/TO/LIBSTR` to import `libstr`. (Command `source` is equal 
 
 You can then use functions inside!
 
+There are also multiple ANSI-standard colors named `ANSI_*` inside this library.
+
+WARNING: Raw use of ANSI escape characters may cause problems! When the output is not a tty (e.g. redirected to some file), the escape characters will mess up the file and the program handling the file! YuZJLab `libstr` includes function to check whether the output terminal have color support and can avoid that tragedy from happening.
+
 == FUNCTIONS
 
 === `trimstr [STRING]`
