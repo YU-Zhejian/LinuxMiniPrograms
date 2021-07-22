@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# VERSION=1.2
+__LIBMKTBL_VERSION=1.2
 '''
 Print table.
 '''
 from linuxminipy.libylfile import ylreadline
+from linuxminipy.libstr import ANSI_CRAYON, ANSI_CLEAR
 
 
 def mktbl(fn: str, split: str = ';', commentstr: str = '#'):
@@ -44,11 +45,11 @@ def mktbl(fn: str, split: str = ';', commentstr: str = '#'):
     alllen = 0
     for item in normalline[0]:
         alllen = alllen + len(item) + 1
-    spb = '\033[36m|' + '=' * (alllen - 1) + '|\033[0m'
+    spb = ANSI_CRAYON +'|'+'=' * (alllen - 1) + '|'+ANSI_CLEAR
     for item in normalline:
         print(spb)
-        pl = '\033[36m|\033[0m'
+        pl = ANSI_CRAYON+'|'+ANSI_CLEAR
         for jtem in item:
-            pl = pl + jtem + '\033[36m|\033[0m'
+            pl = pl + jtem + ANSI_CRAYON+'|'+ANSI_CLEAR
         print(pl)
     print(spb)

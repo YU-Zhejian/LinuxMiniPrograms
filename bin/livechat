@@ -26,7 +26,7 @@ __reciever() {
     tail -f "${LIVECHAT_HOME}"/SYSTEM | while builtin read line; do
         builtin local M_A
         builtin mapfile -t M_A < <(builtin echo ${line} | tr ';' '\n')
-        builtin echo -e "${RED}[${M_A[0]}]${NOCOLOR} \033[36m[${M_A[1]}]${NOCOLOR} ${M_A[2]}"
+        builtin echo -e "${ANSI_RED}[${M_A[0]}]${ANSI_CLEAR} ${ANSI_CRAYON}[${M_A[1]}]${ANSI_CLEAR} ${M_A[2]}"
     done
 }
 __exit() {

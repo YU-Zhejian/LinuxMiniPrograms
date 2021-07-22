@@ -6,7 +6,7 @@ if [ -z "${__LIBDO_VERSION:-}" ]; then
 
     __DO_ECHO() {
         [ "${LIBDO_LOG_MODE:-}" = "S" ] && builtin return || true
-        [ -n "${LIBDO_LOG:-}" ] && builtin echo "${*}" >>"${LIBDO_LOG}" || builtin echo -e "${YELLOW}${*}${NOCOLOR}" >&2
+        [ -n "${LIBDO_LOG:-}" ] && builtin echo "${*}" >>"${LIBDO_LOG}" || builtin echo -e "${ANSI_YELLOW}${*}${ANSI_CLEAR}" >&2
     }
 
     __DO() {

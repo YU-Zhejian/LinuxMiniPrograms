@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# VERSION=3.2
+__LIBISOPY_VERSION=3.2
 """
 Python version of shlib/libisopt, includes utilities to judge whether an argument
 is an option.

@@ -11,5 +11,5 @@ __include libstr
 #========Install PATH========
 if ! which stage_tools.sh &>/dev/nulll; then
     builtin echo "export PATH=\"${DN}/opt/lmp_dev/bin/:\${PATH:-}\"" >>"${HOME}"/.bashrc
-    infoh "Will configure PATH (lmp_dev)...${GREEN}PASSED"
+    infoh "Will configure PATH (lmp_dev)...${ANSI_GREEN}PASSED"
 fi

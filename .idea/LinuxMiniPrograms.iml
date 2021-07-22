@@ -26,8 +26,9 @@
       <excludeFolder url="file://$MODULE_DIR$/src/C/scan-build" />
       <excludeFolder url="file://$MODULE_DIR$/src/docker-test/log" />
       <excludeFolder url="file://$MODULE_DIR$/src/docker-test/out" />
+      <excludeFolder url="file://$MODULE_DIR$/src/C/build" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9 (2)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.9" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

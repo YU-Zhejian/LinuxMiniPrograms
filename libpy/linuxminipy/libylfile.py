@@ -1,4 +1,4 @@
-# VERSION=1.1
+__LIBYLFILE_VERSION=1.1
 '''
 Include utils to deal with files.
 '''

@@ -1,3 +1,4 @@
+#include <stdio.h>
 #ifndef YUZJSTD_H
 #define YUZJSTD_H
 #define ANSI_BLACK "\033[0;30m"

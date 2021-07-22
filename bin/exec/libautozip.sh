@@ -98,7 +98,7 @@ autozipck() {
     ${TAR} && ${ZIP} && builtin printf "tar.zip "
     infoh "\nCheck complete"
     # shellcheck disable=SC2154
-    [ "${myparallel}" != 'ylukh' ] && builtin echo -e "Checking for 'parallel' in ${myparallel}...${GREEN}OK${YELLOW}" || builtin echo -e "Checking for 'parallel' ...${RED}NO${YELLOW}"
+    [ "${myparallel}" != 'ylukh' ] && builtin echo -e "Checking for 'parallel' in ${myparallel}...${ANSI_GREEN}OK${ANSI_YELLOW}" || builtin echo -e "Checking for 'parallel' ...${ANSI_RED}NO${ANSI_YELLOW}"
     infoh "Available core number: ${MAXTHREAD}"
     builtin exit 0
 }

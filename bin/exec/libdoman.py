@@ -3,6 +3,7 @@
 '''
 LibDO Manager in Python.
 '''
+from libpy.linuxminipy.libstr import ANSI_YELLOW,ANSI_CLEAR,ANSI_CRAYON
 import os
 import sys
 from datetime import datetime
@@ -166,7 +167,7 @@ def extract_segment(n: int = -1) -> []:
     '''
     global fn
     grep_lns = open(fn, "r")
-    Proj = []
+    proj = []
     n_record = 0
     pos_s = 0
     while True:
@@ -193,9 +194,9 @@ def extract_segment(n: int = -1) -> []:
                     segment.append(line.strip('\n'))
             segment.append(line)
         if n == -1 or n == n_record:
-            Proj.append(extract_record(segment, pos_s))
+            proj.append(extract_record(segment, pos_s))
     grep_lns.close()
-    return Proj
+    return proj
 
 
 def extract_procedure(start_pos: int, end_pos: int):
@@ -273,12 +274,12 @@ def cmd1(cmd: int):
     record = extract_segment(cmd)[0]
     record.pp()
     record.pppos()
-    print("\033[33mJOB_CMD      \033[36m:", record.cmd_exec, "\033[0m")
-    print("\033[33mELAPSED_TIME \033[36m:", record.time_s, "TO", record.time_e, ", Total", record.time, "\033[0m")
-    print("\033[33mEXIT_STATUS  \033[36m:", record.exit_stat, "\033[0m")
-    print("\033[33m________________JOB_________OUTPUT________________\033[0m")
+    print(ANSI_YELLOW, "JOB_CMD      " ,ANSI_CRAYON ,":", record.cmd_exec, ANSI_CLEAR)
+    print(ANSI_YELLOW, "ELAPSED_TIME " ,ANSI_CRAYON ,":", record.time_s, "TO", record.time_e, ", Total", record.time, ANSI_CLEAR)
+    print(ANSI_YELLOW, "EXIT_STATUS  " ,ANSI_CRAYON ,":", record.exit_stat, ANSI_CLEAR)
+    print(ANSI_YELLOW, "________________JOB_________OUTPUT________________",ANSI_CLEAR)
     extract_procedure(record.pos_s, record.pos_e)
-    print("\033[33m_______________OUTPUT____FINISHED________________\033[0m")
+    print(ANSI_YELLOW, "_______________OUTPUT____FINISHED________________",ANSI_CLEAR)
 
 
 if __name__ == '__main__':

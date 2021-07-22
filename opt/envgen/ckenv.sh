@@ -28,10 +28,10 @@ Usage:
 Initiating..."
 
 # Check for color support
-RED=""
-GREEN=""
-YELLOW=""
-NOCOLOR=""
+ANSI_RED=""
+ANSI_GREEN=""
+ANSI_YELLOW=""
+ANSI_CLEAR=""
 HAVE_COLOR=0
 COLORS="$(tput colors 2>/dev/null)" || true
 # shellcheck disable=SC2086
@@ -39,8 +39,8 @@ COLORS="$(tput colors 2>/dev/null)" || true
 [[ "${TERM:-}" =~ "256" ]] && HAVE_COLOR=1
 if [ ${HAVE_COLOR} -eq 1 ]; then
     # shellcheck disable=SC2034
-    GREEN="\033[32m"
-    NOCOLOR="\033[0m"
+    ANSI_GREEN="\033[32m"
+    ANSI_CLEAR="\033[0m"
 fi
 
 builtin declare -i LINE_NUMBERS
@@ -53,13 +53,13 @@ __exec() {
     if [ "${1:-}" = '#' ]; then
         builtin echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
     else
-        local PF="\033[032mPASS${NOCOLOR}"
+        local PF="\033[032mPASS${ANSI_CLEAR}"
         printf "${LINE_NUMBERS}/${ALL_LINE_NUMBERS} ${*}..." >&2
         builtin echo "$(date +%Y-%d-%m,%H:%M:%S) \$ ${*}"
         # shellcheck disable=SC2048
         builtin eval ${*} > >(sed 's;^;OO ;') 2> >(sed 's;^;EE ;') |
             sed 's;^OO EE;EE;' |
-            cat -n || PF="\033[031mFAIL${NOCOLOR}"
+            cat -n || PF="\033[031mFAIL${ANSI_CLEAR}"
         builtin echo -e "${PF}" >&2
     fi
     LINE_NUMBERS=$((${LINE_NUMBERS} + 1))
@@ -610,7 +610,7 @@ builtin echo "# ________________________TOC________________________" >"${out_fil
 cat "${out_file}" -n | grep --text -v 'OO ' | grep --text -v 'EE ' >>"${out_file}".tmp &&
     cat "${out_file}".tmp >>"${out_file}" &&
     rm "${out_file}".tmp &&
-    builtin echo -e "\033[032mPASS${NOCOLOR}" >&2 || builtin echo -e "\033[031mFAIL${NOCOLOR}" >&2
+    builtin echo -e "\033[032mPASS${ANSI_CLEAR}" >&2 || builtin echo -e "\033[031mFAIL${ANSI_CLEAR}" >&2
 
 rm -f "${tmpsh}"
 builtin echo "Finished." >&2

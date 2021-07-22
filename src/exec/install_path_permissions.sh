@@ -22,26 +22,26 @@ __rc_write() {
 #========Install PATH========
 if ! which yldoc &>/dev/null; then
     __rc_write "export PATH=\"${DN}/bin/:\${PATH:-}\""
-    infoh "Will configure PATH (bin)...${GREEN}PASSED"
+    infoh "Will configure PATH (bin)...${ANSI_GREEN}PASSED"
 fi
 if ! which ylsjsd &>/dev/null; then
     __rc_write "export PATH=\"${DN}/sbin/:\${PATH:-}\""
-    infoh "Will configure PATH (sbin)...${GREEN}PASSED"
+    infoh "Will configure PATH (sbin)...${ANSI_GREEN}PASSED"
 fi
 if ${VAR_install_shinclude}; then
     __rc_write "export SH_INCLUDE_PATH=\"${DN}/shlib/:\${SH_INCLUDE_PATH:-}\""
-    infoh "Will configure PATH (sbin)...${GREEN}PASSED"
+    infoh "Will configure PATH (sbin)...${ANSI_GREEN}PASSED"
 fi
 #========Install PYTHONPATH========
 # shellcheck disable=SC2154
 if [ "${mypython}" != "ylukh" ] && ! builtin echo "from linuxminipy.libylfile import *" | "${mypython}" &>>/dev/null; then
     __rc_write "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\""
-    infoh "Will configure PYTHONPATH...${GREEN}PASSED"
+    infoh "Will configure PYTHONPATH...${ANSI_GREEN}PASSED"
 fi
 #========Install MANPATH========
 if [ -e man/man1 ] && ! man yldoc &>>/dev/null; then
     __rc_write "export MANPATH=\"${DN}/man/:\${MANPATH:-}\""
-    infoh "Will configure MANPATH...${GREEN}PASSED"
+    infoh "Will configure MANPATH...${ANSI_GREEN}PASSED"
 fi
 #========Install Permissions========
 __change_dir_permissions() {
@@ -61,5 +61,5 @@ chown -R "$(id -u)" *
 chmod -R +r+w *
 __change_dir_permissions
 chmod +x configure bin/* sbin/* bin/exec/*.co* sbin/exec/*.co* *.sh || true
-infoh "Modifying file permissions...${GREEN}PASSED"
+infoh "Modifying file permissions...${ANSI_GREEN}PASSED"
 infoh "Finished. Please execute 'builtin exec bash' to restart bash"

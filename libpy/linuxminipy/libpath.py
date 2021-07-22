@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# VERSION=2.4
+__LIBPATH_VERSION=2.4
 '''
 Python version of shlib/libpath, includes common utilities to manipulate
 environment variables separated by ':'.

@@ -159,9 +159,9 @@ else
             Exit="${line:21}"
         fi
     fi
-    infoh "JOB_CMD	  \033[36m: ${CMD}" >&2
-    infoh "ELAPSED_TIME \033[36m: ${Time_s} to ${Time_e}, Total ${Time}" >&2
-    infoh "EXIT_STATUS  \033[36m: ${Exit}" >&2
+    infoh "JOB_CMD	  ${ANSI_CRAYON}: ${CMD}" >&2
+    infoh "ELAPSED_TIME ${ANSI_CRAYON}: ${Time_s} to ${Time_e}, Total ${Time}" >&2
+    infoh "EXIT_STATUS  ${ANSI_CRAYON}: ${Exit}" >&2
     infoh "________________JOB_________OUTPUT________________" >&2
     tls=$((${ln_s} + 2))
     els=$((${ln_e} - 2))

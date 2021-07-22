@@ -1,17 +1,32 @@
 #!/usr/bin/env bash
 VERSION=2.9
 builtin set -eu
+# From libstr
+    ANSI_RED=""
+    HAVE_COLOR=0
+    COLORS="$(tput colors 2>/dev/null)" || true
+    test -t && HAVE_COLOR=1
+    # shellcheck disable=SC2086
+    [ ${COLORS:-0} -gt 2 ] && HAVE_COLOR=1
+    [[ "${TERM:-}" =~ "256" ]] && HAVE_COLOR=1
+    if [ ${HAVE_COLOR} -eq 1 ]; then
+        ANSI_RED="\033[31m"
+    fi
+
+    errh() {
+        builtin echo -e "${ANSI_RED}ERROR: ${*}${ANSI_CLEAR}" >&2
+        builtin exit 1
+    }
+
+
 if [ ${BASH_VERSINFO[0]} -eq 4 ] && [ ${BASH_VERSINFO[1]} -lt 4 ] || [ ${BASH_VERSINFO[0]} -lt 4 ]; then
-    builtin echo -e "\033[31mERROR: Your Bash is obsolete.
-To run LinuxMiniPrograms, you need Bash >=4.4\033[0m"
-    builtin exit 1
+    errh "Your Bash is obsolete. To run LinuxMiniPrograms, you need Bash >=4.4"
 fi
 if ! readlink -f . &>/dev/null; then
     if ! greadlink -f . &>/dev/null; then
-        builtin echo -e "\033[31mERROR: NO readlink & greadlink available
+        errh "NO readlink & greadlink available
 For MacOS users, please install 'coreutils' by HomeBrew
-For BSD users, please install 'coreutils' by your package management systems\033[0m"
-        builtin exit 1
+For BSD users, please install 'coreutils' by your package management systems"
     else
         ln -s "$(which greadlink)" "$(greadlink -f "$(dirname "${0}")")"/bin/readlink || true
         PATH="$(greadlink -f "$(dirname "${0}")")/bin:${PATH}"
@@ -163,7 +178,7 @@ if [ ! -f "${path_sh}" ]; then
     # shellcheck disable=SC2154
     [ "${mygsplit}" != 'ylukh' ] && sed -i".bak" 's;^mygsplit;mysplit;' "${path_sh}"
     infoh "All configurations are printed as follows:"
-    cat "${path_sh}" | grep -v '^$' | grep -v '^#' | sort | while builtin read line; do builtin echo -e "${line}${NOCOLOR}"; done
+    cat "${path_sh}" | grep -v '^$' | grep -v '^#' | sort | while builtin read line; do builtin echo -e "${line}${ANSI_CLEAR}"; done
 fi
 for STDI in "${STDS[@]}"; do
     builtin echo my"${STDI}" >>"${path_sh}"
@@ -175,12 +190,12 @@ done
 if ${VAR_install_config} && [ -d "etc" ]; then
     # shellcheck disable=SC2154
     "${mytar}" czf etc_backup.tgz etc
-    infoh "Backing up settings...${GREEN}PASSED"
+    infoh "Backing up settings...${ANSI_GREEN}PASSED"
 fi
 #========Install VAR========
 if ${VAR_clear_history} && [ -d "var" ]; then
     "${mytar}" czf var_backup.tgz var
-    infoh "Backing up histories...${GREEN}PASSED"
+    infoh "Backing up histories...${ANSI_GREEN}PASSED"
 fi
 #========Install DOC========
 # shellcheck disable=SC2154
