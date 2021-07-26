@@ -188,8 +188,7 @@ Then, you may execute `make` to compile the source code for programs written in 
 If your access to GitHub is declined, you may use LinuxMiniPrograms on Gitee instead. For a cloned repository, it will be:
 
 ```bash
-git remote rm origin
-git remote add origin https://gitee.com/yuzjlab/LinuxMiniPrograms/
+git remote set-url origin https://gitee.com/yuzjlab/LinuxMiniPrograms/
 ```
 
 There will be instructions on how to set up a tracking branch if you're performing a `git pull`.

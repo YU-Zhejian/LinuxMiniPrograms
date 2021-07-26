@@ -26,4 +26,4 @@ Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 rm started
 Repository UUID=da2e4859-1cb2-40c0-a375-f9d557aafe09 rm success
 ----
 
-include::include/copy.adoc[]
+include::../include/copy.adoc[]

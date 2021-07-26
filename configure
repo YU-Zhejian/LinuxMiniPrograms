@@ -209,21 +209,21 @@ fi
 [ "${mypython}" != "ylukh" ] || VAR_install_usage=false
 if ${VAR_install_pdf}; then
     MAKE_TARGETS="${MAKE_TARGETS} share/doc/pdf"
-    MAKE_ARGS="${MAKE_ARGS}:ADOC_PDF=\"${myasciidoctor_pdf}\""
+    MAKE_ARGS="${MAKE_ARGS}:ADOC_PDF=${myasciidoctor_pdf}:PDF_AOPTS=-a allow-uri-read"
 fi
 if ${VAR_install_man}; then
     MAKE_TARGETS="${MAKE_TARGETS} share/man"
-    MAKE_ARGS="${MAKE_ARGS}:ADOC=\"${myasciidoctor}\""
+    MAKE_ARGS="${MAKE_ARGS}:ADOC=${myasciidoctor}"
 fi
 if ${VAR_install_usage}; then
     MAKE_TARGETS="${MAKE_TARGETS} share/doc/usage"
 fi
 if ${VAR_install_html}; then
     if [ "${myasciidoctor}" != "ylukh" ]; then
-        MAKE_ARGS="${MAKE_ARGS}:ADOC=\"${myasciidoctor}\""
+        MAKE_ARGS="${MAKE_ARGS}:ADOC=${myasciidoctor}"
         MAKE_TARGETS="${MAKE_TARGETS} share/doc/html"
     elif [ "${myasciidoc}" != "ylukh" ]; then
-        MAKE_ARGS="${MAKE_ARGS}:ADOC=\"${myasciidoc}\":AOPT=\"\""
+        MAKE_ARGS="${MAKE_ARGS}:ADOC=${myasciidoc}"
         MAKE_TARGETS="${MAKE_TARGETS} share/doc/html"
     fi
 fi

@@ -56,6 +56,9 @@ alias top="htop"                                                            # ht
 alias emacs="emacs -nw"
 alias DO=eval    # LibDO simulator
 alias __DO =eval # LibDO simulator
+if ! which code &>> /dev/null && which code-insiders &>> /dev/null;then
+    alias code=code-insiders
+fi
 
 # Initializing thefuck.
 # eval "$(thefuck -a)"

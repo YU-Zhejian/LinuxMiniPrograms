@@ -4,7 +4,6 @@ VERSION=1.3
 for opt in "${UKOPT[@]}"; do
     case "${opt}" in
     "-h" | "--help")
-        # TODO
         warnh "TODO"
         exit 0
         ;;

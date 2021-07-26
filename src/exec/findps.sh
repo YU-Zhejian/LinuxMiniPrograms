@@ -10,8 +10,6 @@ if [ -z "${myps:-}" ]; then
     # shellcheck disable=SC2154
     for dir in "${eachpath[@]}"; do
         ! ${GNU_found} || break
-
-        builtin continue
         while builtin read line; do
             lntmp="${line}"
             ps_ver=$("${line}" --version 2>&1 || true)

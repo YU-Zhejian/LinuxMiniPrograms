@@ -13,6 +13,7 @@ lib:
 
 bin: lib
 	@$(MAKE) -C bin/
+	-$(CP) bin/*.co bin/*.co.exe ../../bin
 .PHONY: bin
 
 clean:
@@ -31,5 +32,3 @@ assess: # Used for developmental purpose only.
 	scan-build -o scan-build make clean all RM="rm -rf" LIBTOOL=libtool BASE=$(PWD)
 	cppcheck --library=zlib --library=posix -I include --platform=unix64  bin include lib
 .PHONY: assess
-
-# TODO: Install them to bin

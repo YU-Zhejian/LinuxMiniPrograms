@@ -37,4 +37,4 @@ Add lock to `[URL/UUID]`. Can be removed with `git-mirror lock rm`.
 
 OPTION: `-f` for force add without confirmation.
 
-include::include/copy.adoc[]
+include::../include/copy.adoc[]

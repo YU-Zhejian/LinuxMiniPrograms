@@ -15,8 +15,11 @@ __include libstr
 . etc/path.conf
 
 __rc_write() {
-    builtin echo "${1}" | tee -a "${HOME}"/.bashrc | tee -a "${HOME}"/.zshrc
-    # TODO: Support SH
+    # ~/.LMP_TEST_NOINTERCTIVErc is used for debugging in a non-interactive shell, like those in Docker
+    builtin echo "${1}" | \
+    tee -a "${HOME}"/.bashrc | \
+    tee -a "${HOME}"/.zshrc | \
+    tee -a "${HOME}"/.LMP_TEST_NOINTERCTIVErc
 }
 
 #========Install PATH========

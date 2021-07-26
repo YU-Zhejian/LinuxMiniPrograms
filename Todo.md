@@ -70,4 +70,3 @@ VERSION=1.2
 
 * `src/doc`
 * libnet
-* libinclude

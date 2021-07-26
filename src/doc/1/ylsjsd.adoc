@@ -1,0 +1,56 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= ylsjsd(1)
+
+== NAME
+
+ylsjsd - YuZJLab Simple Job Server Daemon.
+
+== SYNOPSIS
+
+`ylsjsd start` Start ylsjsd.
+
+`ylsjsd stop` Stop ylsjsd. WILL NOT remove the queue or stop current jobs.
+
+`ylsjsd restart` Restart ylsjsd.
+
+`ylsjsd clear` Clear the current queue.
+
+`ylsjsd status` Show the PID of ylsjsd.
+
+== DESCRIPTION
+
+ylsjsd is the daemon of ylsjs. It acts as a dispatcher.
+
+Its workflow are as follows:
+
+. Start the daemon.
+. Read the waiting queue. Find jobs that are not executed. Load them to the working queue until the number of jobs get executed same as the core number of the CPU.
+. For jobs in the waiting queue, move those who was killed or finished to the finished queue.
+
+== OPTIONS
+
+include::../include/cmnopt.adoc[]
+
+== EXAMPLES
+
+See ylsjs.
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== FILES
+
+== SEE ALSO
+
+ylsjs
+
+include::../include/copy.adoc[]

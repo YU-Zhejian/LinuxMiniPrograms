@@ -74,7 +74,6 @@ distclean:clean
 test_list:
 	ls src/test/ | grep '\.t\.sh' | sed 's;\.t\.sh;;'
 
-# TODO: Implement installation
 #install:
 #	$(CP) -buv . ~/opt/LinuxMiniPrograms/ &>> install.log
 #

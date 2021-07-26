@@ -1,0 +1,110 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= livechat(1)
+
+== NAME
+
+livechat - A chatting server
+
+== SYNOPSIS
+
+livechat [USER] [OPTIONS]
+
+== DESCRIPTION
+
+Logon as [USER] and start chatting!
+
+== USAGE
+
+There's no need to register. However, you cannot take `SYSTEM` as your account.
+
+When you start chatting, please use `logout`/`exit`/`quit` or press `Ctrl-C` to exit the chatting room.
+
+You may execute shell commands with the prefix "!". For example, `!ls` will execute `ls` and send the result to the network.
+
+Every time there're people joining or leaving, the account named SYSTEM will announce.
+
+=== On a None-Specific User
+
+* Situation: Multiple users operate one non-specific account for particular jobs, for example, different steps in a bioinformatics project. You need to set up a secret chatting server.
+
+=== On a Specific User
+
+* Situation: You need to set up a chatting server inside a LAN.
+* Installation:
+
+. Add a specific user on your server. e.g. user `chat`.
+
+. Modify the `.profile` file as follows:
+
+[source,bash]
+----
+echo -e "\033[33mChatting server on LAN ***.\033[0m"
+livechat
+logout
+exit
+----
+
+and have `.bashrc`, `.bash_profile` removed.
+
+* Usage: On the client, use `ssh chat@server_ip_addr` to access the chatting server.
+
+== EXAMPLE
+
+[source]
+----
+(base) 137 2021-01-19_17-54-39 /home/ubuntu/LinuxMiniPrograms  (BSD)
+$ livechat yuzj
+Welcome to YuZJLab LiveChat
+Copyright (C) 2019-2021 YU Zhejian
+The following users are now online:
+SYSTEM
+yuzj
+Please use 'logout'/'exit'/'quit' or Ctrl-C to exit
+PID of reciever: 53674
+>[2021-01-19,18:03:58] [SYSTEM] yuzj is now on line
+>[2021-01-19,18:04:01] [yuzj] test
+! ls
+>[2021-01-19,18:04:04] [yuzj] BeforeAdd.sh
+[2021-01-19,18:04:04] [yuzj] bin
+[2021-01-19,18:04:04] [yuzj] configure
+[2021-01-19,18:04:04] [yuzj] doc
+[2021-01-19,18:04:04] [yuzj] etc
+[2021-01-19,18:04:04] [yuzj] lib
+[2021-01-19,18:04:04] [yuzj] libpy
+[2021-01-19,18:04:04] [yuzj] LICENSE.md
+[2021-01-19,18:04:04] [yuzj] Makefile
+[2021-01-19,18:04:04] [yuzj] opt
+[2021-01-19,18:04:04] [yuzj] Readme.md
+[2021-01-19,18:04:04] [yuzj] src
+[2021-01-19,18:04:04] [yuzj] TODO
+[2021-01-19,18:04:04] [yuzj] var
+exit
+Thanks for using this system
+Killed
+----
+
+== OPTIONS
+
+include::../include/cmnopt.adoc[]
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== FILES
+
+. `var/livechat.d/SYSTEM` The file containing all messages.
+
+== SEE ALSO
+
+lcman
+
+include::../include/copy.adoc[]

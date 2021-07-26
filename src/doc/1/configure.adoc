@@ -1,0 +1,214 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= configure(1)
+
+== NAME
+
+configure - YuZJLab LinuxMiniPrograms Configuration Script
+
+== SYNOPSIS
+
+`configure [OPTIONS]`
+
+== DESCRIPTION
+
+Configure YuZJLab LinuxMiniPrograms with options. It will generate:
+
+. `GNUmakefile` for building this program.
+. `etc/path.conf` where paths of the executables used are recorded (See LMP_basis for more information).
+
+== OPTIONS
+
+include::../include/cmnopt.adoc[]
+* `-a|--all` Install all components.
+* `--install-config` (Re)Install configuration files in `etc`.
+* `--clear-history` (Re)Install histories in `var`.
+* `--install-doc` Install all documentations, need 'asciidoctor' 'asciidoctor-pdf' (available from Ruby gems) or 'asciidoc' (available from Python pip) and Python 3.
+* `--install-man` Install Groff man to `share/man`, need `asciidoctor`.
+* `--install-usage` Install yldoc usage to `share/doc/usage`, need python 3.
+* `--install-pdf` Install doc in pdf to `share/doc/pdf`, need `asciidoctor-pdf`.
+* `--install-html` Install doc in html to `share/doc/html`, need `asciidoctor` or `asciidoc`.
+* `--skip-path` Do not update `etc/path.conf`.
+
+== EXAMPLES
+
+These examples are tested under WSL.
+
+WARNING: The example listed below may not consistent with the current version.
+
+[source]
+----
+(base) 0 2021-01-22_01-55-05 /mnt/d/Software/LinuxMiniPrograms  (BSD)
+$ ./configure
+Configure file for YuZJLab Installer
+Copyright (C) 2019-2021 YU Zhejian
+Checking FileSystem...
+Current OS: Linux 5.4.72-microsoft-standard-WSL2 x86_64
+Enumerating valid path...
+/home/yuzj/bin
+/home/yuzj/LinuxMiniPrograms/bin
+/home/yuzj/miniconda3/bin
+/home/yuzj/miniconda3/condabin
+[...]
+/mnt/c/Users/admin/AppData/Local/Microsoft/WindowsApps
+End locating valid path
+ls found in /usr/bin/ls, GNU version in GNU/Linux systems
+grep found in /usr/bin/grep, GNU version in GNU/Linux systems
+sed found in /usr/bin/sed, GNU version in GNU/Linux systems
+rm found in /usr/bin/rm, GNU version in GNU/Linux systems
+Python found in /home/yuzj/miniconda3/bin/python
+Python found in /home/yuzj/miniconda3/bin/python3
+Python found in /home/yuzj/miniconda3/bin/python3.9
+Python found in /usr/bin/python
+[...]
+Python found in /mnt/c/Users/admin/AppData/Local/Microsoft/WindowsApps/python.exe
+Python found in /usr/bin/python3.9, version 3.9.1+
+ps found in /usr/bin/ps, GNU version in GNU/Linux systems
+parallel found in /usr/bin/parallel, GNU version
+cat found in /usr/bin/cat, GNU version in GNU/Linux systems
+chmod found in /usr/bin/chmod, GNU version in GNU/Linux systems
+[...]
+lzop found in /usr/bin/lzop
+WARNING: pbz2 still not found. Please configure it manually in /mnt/d/Software/LinuxMiniPrograms/etc/path.conf
+WARNING: pbzip still not found. Please configure it manually in /mnt/d/Software/LinuxMiniPrograms/etc/path.conf
+pigz found in /usr/bin/pigz
+[...]
+make found in /usr/bin/make
+All configurations are printed as follows:
+7z in "/usr/bin/7z", UNIVERSE
+7za in "/usr/bin/7za", UNIVERSE
+asciidoc in "/usr/local/bin/asciidoc", UNIVERSE
+asciidoctor in "/usr/local/bin/asciidoctor", UNIVERSE
+[...]
+zstd in "/home/yuzj/miniconda3/bin/zstd", UNIVERSE
+Finished. Please execute 'make' to build the program
+----
+
+The `GNUmakefile` it generated is as follows:
+
+[source,Makefile]
+----
+
+export CC=/usr/bin/gcc
+export CP=/usr/bin/cp -rf
+export PYTHON=/usr/bin/python3.9
+export RM=/usr/bin/rm -rf
+all: etc var pp C
+export VERBOSE = TRUE
+
+.PHONY : all pp
+
+etc:
+	$(CP) src/etc/* etc/
+
+var:
+	$(CP) -fr src/var/* var/
+
+C:
+	@-$(MAKE) -C src/C
+
+pdf:
+	@-$(MAKE) -C src/doc pdf
+
+html:
+	@-$(MAKE) -C src/doc html
+
+man:
+	@-$(MAKE) -C src/doc man
+
+usage:
+	@-$(MAKE) -C src/doc usage
+
+pp:
+	bash src/exec/install_path_permissions.sh
+	@-$(MAKE) -C opt permissions
+----
+
+Another example:
+
+[source]
+----
+(base) 0 2021-01-22_01-57-45 /mnt/d/Software/LinuxMiniPrograms  (BSD)
+$ ./configure --skip-path --install-doc
+Configure file for YuZJLab Installer
+Copyright (C) 2019-2021 YU Zhejian
+Checking FileSystem...
+Finished. Please execute 'make' to build the program
+----
+
+With following `GNUmakefile`:
+
+[source,Makefile]
+----
+
+export ADOC="/usr/local/bin/asciidoctor"
+export ADOC_PDF="/usr/local/bin/asciidoctor-pdf"
+export CC=/usr/bin/gcc
+export CP=/usr/bin/cp -rf
+export PYTHON=/usr/bin/python3.9
+export RM=/usr/bin/rm -rf
+all: etc var pp pdf man usage html C
+export VERBOSE = TRUE
+
+.PHONY : all pp
+
+etc:
+	$(CP) src/etc/* etc/
+
+var:
+	$(CP) -fr src/var/* var/
+
+C:
+	@-$(MAKE) -C src/C
+
+pdf:
+	@-$(MAKE) -C src/doc pdf
+
+html:
+	@-$(MAKE) -C src/doc html
+
+man:
+	@-$(MAKE) -C src/doc man
+
+usage:
+	@-$(MAKE) -C src/doc usage
+
+pp:
+	bash src/exec/install_path_permissions.sh
+	 @-$(MAKE) -C opt permissions
+----
+
+They all generate `etc/path.conf` as follows:
+
+[source,bash]
+----
+myos="Linux" #5.4.72-microsoft-standard-WSL2
+myls="/usr/bin/ls" #GNU version in GNU/Linux systems
+mygrep="/usr/bin/grep" #GNU version in GNU/Linux systems
+mysed="/usr/bin/sed" #GNU version in GNU/Linux systems
+[..]
+mymake="/usr/bin/make" #UNIVERSE
+----
+
+== DEVELOPMENT
+
+For developers, it is important to understand how the installer of YuZJLab LinuxMiniPrograms work.
+
+The reason why I do not use programs like `autoconf` to generate configuration is because of compatibility. This script is designed to fit all tyes of machines 
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+== SEE ALSO
+
+LMP_basis, ylukh
+
+include::../include/copy.adoc[]

@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# TODO: finish the function
 
 if [ -z "${__LIBINCLUDE_VERSION:-}" ]; then
     __LIBINCLUDE_VERSION=1.1
@@ -24,7 +23,8 @@ if [ -z "${__LIBINCLUDE_VERSION:-}" ]; then
 
     __include() {
         if [ -z "${SH_INCLUDE_PATH:-}" ]; then
-            export SH_INCLUDE_PATH="${PWD}:$(__addpref shlib)"
+            SH_INCLUDE_PATH="${PWD}:$(__addpref shlib)"
+            export SH_INCLUDE_PATH
         fi
         if ! __core_include "${@}"; then
             builtin echo "ERROR: ${1} not found in SH_INCLUDE_PATH='${SH_INCLUDE_PATH:-}'"

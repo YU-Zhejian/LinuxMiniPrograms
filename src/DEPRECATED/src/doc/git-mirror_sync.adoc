@@ -24,4 +24,4 @@ Repository UUID=a42446b2-03b6-4999-a11b-4791d6e1edf6 sync started
 Repository UUID=a42446b2-03b6-4999-a11b-4791d6e1edf6 sync success
 ----
 
-include::include/copy.adoc[]
+include::../include/copy.adoc[]

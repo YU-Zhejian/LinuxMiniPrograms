@@ -19,7 +19,7 @@ Execute `[subcommand]` which will be introduced bellow.
 
 == OPTIONS
 
-include::include/cmnopt.adoc[]
+include::../include/cmnopt.adoc[]
 
 == SUBCOMMANDS
 
@@ -55,4 +55,4 @@ URL with one longer than another with same leading digits may fail.
 
 Example: http://git.a.com/a and http://git.a.com/aas
 
-include::include/copy.adoc[]
+include::../include/copy.adoc[]

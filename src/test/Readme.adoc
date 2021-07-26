@@ -12,6 +12,8 @@ Due to the reason that all testing scripts uses YuZJLab LibDO, by default LibDO 
 
 All test files sources `00_libtest.sh`. It sources YuZJLab LibDO and creates a test directory whose path is stored in `${TDN}`.
 
+== Write a New Test
+
 To write a new test, the template is provided as follows:
 
 [source,bash]
@@ -26,3 +28,10 @@ PROGNAME=[PROGNAME]
 ----
 
 You may specify the program(s) you need to test in `[PROGNAME]` and write what you need to test in `[...]`.
+
+== Automatic Report Generation
+
+Report is generated in an Asciidoc format. You may compile it to other formats if you wish.
+
+Please make sure that module `pandas` is installed in your _DEFAULT_ Python.
+

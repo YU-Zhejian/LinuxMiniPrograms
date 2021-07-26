@@ -23,4 +23,4 @@ https://github.com/YuZJLab/SoftInstall  a42446b2-03b6-4999-a11b-4791d6e1edf6
 Repository ls success
 ----
 
-include::include/copy.adoc[]
+include::../include/copy.adoc[]

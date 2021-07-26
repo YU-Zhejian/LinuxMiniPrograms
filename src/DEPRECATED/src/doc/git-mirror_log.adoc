@@ -39,4 +39,4 @@ WARNING: GITM_HOME undefined. Will use /home/yuzj/LinuxMiniPrograms/bin/../var/g
 Repository readlog success
 ----
 
-include::include/copy.adoc[]
+include::../include/copy.adoc[]
