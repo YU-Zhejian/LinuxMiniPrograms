@@ -11,7 +11,7 @@ __include libstr
 __include libman
 
 if [ -z "${YLSJSD_MAX_JOB:-}" ]; then
-    YLSJSD_MAX_JOB=$(getcorenumber)
+    YLSJSD_MAX_JOB=$(get_core_number)
 fi
 if [ -z "${YLSJSD_HOME:-}" ]; then
     YLSJSD_HOME="${DN}"/../../var/ylsjs.d
@@ -32,7 +32,7 @@ while true; do
     # shellcheck disable=SC2010
     ls -1 2>/dev/null | grep '\.i' | sed 's;.i$;;' | while builtin read ps_name; do
         PID=$(cat ${ps_name}.i | tail -n 1)
-        if ! ps -p ${PID} &>>/dev/null; then
+        if ! ps -p ${PID} &> /dev/null; then
             mv "${ps_name}.i" "${ps_name}.f"
             date +%s >${ps_name}.end
         fi

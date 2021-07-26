@@ -6,7 +6,7 @@ DN="$(readlink -f "$(dirname "${0}")/../../")"
 builtin cd "${DN}"
 . shlib/libinclude.sh
 VAR_install_shinclude=false
-if ! __core_include libstr &>>/dev/null; then
+if ! __core_include libstr &> /dev/null; then
     export SH_INCLUDE_PATH="${SH_INCLUDE_PATH:-}:${PWD}/shlib"
     VAR_install_shinclude=true
 fi
@@ -37,12 +37,12 @@ if ${VAR_install_shinclude}; then
 fi
 #========Install PYTHONPATH========
 # shellcheck disable=SC2154
-if [ "${mypython}" != "ylukh" ] && ! builtin echo "from linuxminipy.libylfile import *" | "${mypython}" &>>/dev/null; then
+if [ "${mypython}" != "ylukh" ] && ! builtin echo "from linuxminipy.libylfile import *" | "${mypython}" &> /dev/null; then
     __rc_write "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\""
     infoh "Will configure PYTHONPATH...${ANSI_GREEN}PASSED"
 fi
 #========Install MANPATH========
-if [ -e man/man1 ] && ! man yldoc &>>/dev/null; then
+if [ -e man/man1 ] && ! man yldoc &> /dev/null; then
     __rc_write "export MANPATH=\"${DN}/man/:\${MANPATH:-}\""
     infoh "Will configure MANPATH...${ANSI_GREEN}PASSED"
 fi

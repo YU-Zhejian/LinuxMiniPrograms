@@ -7,7 +7,7 @@ builtin cd "$(readlink -f "$(dirname "${0}")")"/../../../ || builtin exit 1
 
 __include libstr
 rm_crlf() {
-    if which dos2unix &>>/dev/null; then
+    if which dos2unix &> /dev/null; then
         /usr/bin/find . -path './.git' -prune -o -type f -print | while builtin read fn; do dos2unix "${fn}"; done
     else
         /usr/bin/find . -path './.git' -prune -o -type f -print | xargs file | grep text | cut -d: -f1 | while builtin read fn; do
@@ -21,7 +21,7 @@ rm_crlf() {
 bump_version() {
     git status | grep '^\smodified:\s' | cut -f 2 -d ':' | while builtin read line; do
         line="$(trimstr "${line}")"
-        if ! file ${line} | grep text &>>/dev/null; then
+        if ! file ${line} | grep text &> /dev/null; then
             builtin continue
         fi
         infoh "Modifying ${line}..."

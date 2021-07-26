@@ -1,0 +1,88 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= pythonls(1)
+
+== NAME
+
+pythonls - A program to search Python package path for different version.
+
+== SYNOPSIS
+
+pythonls [STRING] [[STRING2]...] [OPTIONS]
+
+== DESCRIPTION
+
+Search Python files or packages. If [STRING] is omitted, the program will list all files/packages in all found Python distribution and `${PYTHONPATH}`.
+
+== OPTIONS
+
+include::../include/cmnopt.adoc[]
+
+* `-l|--list` List all valid Python package directories.
+* `-p|--package` List packages only.
+
+== EXAMPLES
+
+[source]
+----
+(base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
+$ pythonls -l
+INFO: YuZJLab PYTHONPATH ls
+INFO: Copyright (C) 2021 YU Zhejian
+INFO: Python found in /home/yuzj/miniconda3/bin/python
+INFO: Python found in /home/yuzj/miniconda3/bin/python3
+INFO: Python found in /home/yuzj/miniconda3/bin/python3.7
+INFO: Python found in /home/yuzj/miniconda3/bin/python3.7m
+INFO: Python found in /usr/bin/python
+INFO: Python found in /usr/bin/python2
+INFO: Python found in /usr/bin/python2.7
+INFO: Python found in /usr/bin/python3
+INFO: Python found in /usr/bin/python3.9
+/home/yuzj/miniconda3/lib/python3.7
+/home/yuzj/miniconda3/lib/python3.7/lib-dynload
+/home/yuzj/miniconda3/lib/python3.7/site-packages
+/usr/lib/python2.7
+/usr/lib/python2.7/plat-x86_64-linux-gnu
+/usr/lib/python2.7/lib-tk
+/usr/lib/python2.7/lib-dynload
+/usr/local/lib/python2.7/dist-packages
+/usr/local/lib/python2.7/dist-packages/dblatex-0.3.10-py2.7.egg
+/usr/lib/python2.7/dist-packages
+/usr/lib/python3.9
+/usr/lib/python3.9/lib-dynload
+/usr/local/lib/python3.9/dist-packages
+/usr/lib/python3/dist-packages
+----
+
+[source]
+----
+(base) [yuzj@yuzj-HP-ENVY-x360-Convertible-15-dr1xxx]::[~/LinuxMiniPrograms]
+$ pythonls linuxminipy
+INFO: YuZJLab PYTHONPATH ls
+INFO: Copyright (C) 2021 YU Zhejian
+INFO: Python found in /home/yuzj/miniconda3/bin/python
+INFO: Python found in /home/yuzj/miniconda3/bin/python3
+INFO: Python found in /home/yuzj/miniconda3/bin/python3.7
+INFO: Python found in /home/yuzj/miniconda3/bin/python3.7m
+INFO: Python found in /usr/bin/python
+INFO: Python found in /usr/bin/python2
+INFO: Python found in /usr/bin/python2.7
+INFO: Python found in /usr/bin/python3
+INFO: Python found in /usr/bin/python3.9
+INFO: Reading database...
+/home/yuzj/miniconda3/lib/python3.7/site-packages/linuxminipy-1.1-py3.7.egg
+/home/yuzj/miniconda3/lib/python3.7/site-packages/linuxminipy-1.1-py3.7.egg
+----
+
+== COMPATIBILITY
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+Tested with all functions supported.
+
+include::../include/copy.adoc[]

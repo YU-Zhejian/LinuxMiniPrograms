@@ -19,15 +19,15 @@ You can then use functions inside!
 
 == FUNCTIONS
 
-=== `getuser`
+=== `get_user`
 
 Return the current user.
 
-=== `getcorenumber`
+=== `get_core_number`
 
 Return available CPU core number. Can be used in both BSD (maOS, Darwin) or GNU/Linux.
 
-=== `killtree [PID] [SIGNAL]`
+=== `kill_tree [PID] [SIGNAL]`
 
 Kill a PID and all its sub-processes with SIGNAL.
 

@@ -84,7 +84,7 @@ if ${INSTALL_ZSH_SETTINGS}; then
 fi
 
 # ________________________Installing Miniconda________________________
-if ${INSTALL_CONDA} && ! which conda &>>/dev/null; then
+if ${INSTALL_CONDA} && ! which conda &> /dev/null; then
     wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
     bash Miniconda3-latest-Linux-x86_64.sh -b -p ${HOME}/conda
     mv "${HOME}"/.condarc .condarc.bak
@@ -101,7 +101,7 @@ fi
 
 # ________________________Installing LinuxBrew________________________
 # brew uninstall $(brew list | xargs) # Removing all programs
-if ${INSTALL_BREW} && ! which brew &>>/dev/null; then
+if ${INSTALL_BREW} && ! which brew &> /dev/null; then
     git clone https://mirrors.ustc.edu.cn/brew.git "${HOME}"/linuxbrew
     cat etc/brew.bashrc >>"${HOME}"/.bashrc
     cat etc/brew.bashrc >>"${HOME}"/.Renviron
@@ -130,10 +130,10 @@ fi
 # ________________________Installing Brew Utils________________________
 if ${INSTALL_BREW}; then
     __brew_install() {
-        which ${1} &>>/dev/null || brew install --force-bottle ${2}
+        which ${1} &> /dev/null || brew install --force-bottle ${2}
     }
     __brew_src_install() {
-        which ${1} &>>/dev/null || brew install --build-from-source ${2}
+        which ${1} &> /dev/null || brew install --build-from-source ${2}
     }
     __brew_install 7za p7zip
     __brew_install compress ncompress

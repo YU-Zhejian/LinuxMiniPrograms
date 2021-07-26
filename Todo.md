@@ -61,12 +61,10 @@ VERSION=1.2
 
 * General-purpose enigma crypto.
 * Test in Python
-* gitm in Python
 * libdo in Python
 * pydoc
 * `docker-test` in centos, fedora, alpine, debian, arch, manjaro, kali
 
 ## Documentation
 
-* `src/doc`
 * libnet

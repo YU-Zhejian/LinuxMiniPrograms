@@ -7,7 +7,7 @@ PROGNAME=ylsjs
 . "${DN}"/../../etc/path.conf
 . "${DN}"/../../shlib/libinclude.sh
 __include libman
-CORENUM=$((2 * $(getcorenumber)))
+CORENUM=$((2 * $(get_core_number)))
 builtin export YLSJSD_HOME
 YLSJSD_HOME="${PWD}/ylsjs.d"
 __DO ylsjsd stop

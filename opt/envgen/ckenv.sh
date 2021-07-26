@@ -343,8 +343,6 @@ conda list # I
 conda info --all
 cat ${HOME}/.condarc
 
-# TODO: ActiveState Python.
-
 # ________________________Perl________________________
 WHERE perl
 perl -v

@@ -10,7 +10,7 @@ __include libman
 # shellcheck disable=SC2034
 REMOVE=false
 builtin declare -i MAXTHREAD
-MAXTHREAD=$(getcorenumber)
+MAXTHREAD=$(get_core_number)
 # shellcheck disable=SC2034
 ISFORCE=false
 THREAD=1

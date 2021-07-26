@@ -34,7 +34,7 @@ __exit() {
     __send "SYSTEM" "${LCUN} had quitted"
     rm -f "${LIVECHAT_HOME}"/"${LCUN}"
     infoh "Thanks for using this system"
-    killtree ${pid_rec} 9
+    kill_tree ${pid_rec} 9
     builtin exit 0
 }
 

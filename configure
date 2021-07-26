@@ -35,7 +35,7 @@ For BSD users, please install 'coreutils' by your package management systems"
 fi
 builtin cd "$(readlink -f "$(dirname "${0}")")"
 . shlib/libinclude.sh
-if ! __core_include libstr &>> /dev/null;then
+if ! __core_include libstr &> /dev/null;then
     export SH_INCLUDE_PATH="${SH_INCLUDE_PATH:-}:${PWD}/shlib"
 fi
 __include libisopt
@@ -159,13 +159,11 @@ if [ ! -f "${path_sh}" ]; then
     # shellcheck disable=SC1090
     . "${path_sh}"
     # shellcheck disable=SC2154
-    [ "${mypbz2}" == 'ylukh' ] && [ "${mypbzip}" != 'ylukh' ] && sed -i".bak" 's;^mypbzip;mypbz2;' "${path_sh}"
     # shellcheck disable=SC1090
-    . "${path_sh}"
+    [ "${mypbz2}" == 'ylukh' ] && [ "${mypbzip}" != 'ylukh' ] && sed -i".bak" 's;^mypbzip;mypbz2;' "${path_sh}" && . "${path_sh}"
     # shellcheck disable=SC2154
-    [ "${mypbz2}" == 'ylukh' ] && [ "${mypbzip2}" != 'ylukh' ] && sed -i".bak" 's;^mypbzip2;mypbz2;' "${path_sh}"
     # shellcheck disable=SC1090
-    . "${path_sh}"
+    [ "${mypbz2}" == 'ylukh' ] && [ "${mypbzip2}" != 'ylukh' ] && sed -i".bak" 's;^mypbzip2;mypbz2;' "${path_sh}" && . "${path_sh}"
     # Remove g for GNU CoreUtils installed under BSD systems
     # shellcheck disable=SC2154
     [ "${mygtar}" != 'ylukh' ] && sed -i".bak" 's;^mygtar;mytar;' "${path_sh}"

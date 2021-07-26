@@ -4,6 +4,8 @@ From the `.adoc` suffix you may know this file is for developers only.
 
 In this folder, you will see helper scripts for developers. They are located under `bin` directory and are:
 
+// TODO: Obsolete information.
+
 * `BeforeAdd.sh` The script will turn all CRLF to LF. It should be executed before staging (adding) any new files.
 * `BumpVersion.sh` The script will search for all modified scripts and bump its version (Add 0.1 to the version number). It should be executed before staging (adding).
 * `RmBAK.sh` To remove backup files.

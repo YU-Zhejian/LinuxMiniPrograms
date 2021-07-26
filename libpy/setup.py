@@ -6,7 +6,6 @@ The installation script
 from setuptools import setup
 
 VERSION = 1.1
-# TODO: Implement installation.
 
 setup(name='linuxminipy',
       version=VERSION,

@@ -55,7 +55,7 @@ elif [ "${STDS:-}" = "restart" ]; then
     ylsjsd start
 elif [ "${STDS:-}" = "clear" ]; then
     ylsjsd stop
-    if [ -n "${YLSJSD_HOME_PID}" ]; then killtree "${YLSJSD_HOME_PID}" 9; fi
+    if [ -n "${YLSJSD_HOME_PID}" ]; then kill_tree "${YLSJSD_HOME_PID}" 9; fi
     rm -rf * || true
 elif [ "${STDS:-}" = "status" ]; then
     cat ylsjsd.lock 2>/dev/null || errh "ylsjsd not started"

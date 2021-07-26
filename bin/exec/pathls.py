@@ -18,9 +18,6 @@ allow_d = False
 allow_o = True
 PARALLEL = False
 
-
-# TODO: Treads in parallel
-
 def mygrep(mylist: list, regxp: str) -> list:
     for idx in range(len(mylist) - 1, -1, -1):
         if re.search(regxp, mylist[idx]):

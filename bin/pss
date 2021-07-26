@@ -34,7 +34,7 @@ for opt in "${@}"; do
 done
 psstmp=$(mktemp -t psstmp.XXXXXX)
 pssstmp=$(mktemp -t psstmp.XXXXXX)
-if ! ps --version &>>/dev/null; then
+if ! ps --version &> /dev/null; then
     ps -al &>"${psstmp}"
 elif [[ $(ps --version) == *"Cygwin"* ]]; then
     ps -aeW &>"${psstmp}"
