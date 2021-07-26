@@ -10,8 +10,6 @@ The documentations for shared libraries are listed in `LMP/src/doc/7/` folder.
 
 == Linting and Testing
 
-The code listed here can be linted using ``
-
 You may install SonarLint in your IDE. SonarLint is open source, free and installable in popular IDEs like VSCode or Intellij IDEA.
 
 You may use CPPCheck. A configuration file of its GUI is provided. The commans-line version is provided in `make assess`.

@@ -27,6 +27,9 @@
       <excludeFolder url="file://$MODULE_DIR$/src/docker-test/log" />
       <excludeFolder url="file://$MODULE_DIR$/src/docker-test/out" />
       <excludeFolder url="file://$MODULE_DIR$/src/C/build" />
+      <excludeFolder url="file://$MODULE_DIR$/libpy/build" />
+      <excludeFolder url="file://$MODULE_DIR$/libpy/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/libpy/linuxminipy.egg-info" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.9 (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
