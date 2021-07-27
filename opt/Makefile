@@ -4,4 +4,4 @@ all : permissions
 
 permissions :
 	chmod +x envgen/*.sh lmp_dev/bin/*.sh
-	bash exec/install_path.sh
+	# bash exec/install_path.sh # Automatic installation od lmp_dev canceled.

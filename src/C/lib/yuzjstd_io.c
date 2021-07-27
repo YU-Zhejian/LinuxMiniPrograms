@@ -152,6 +152,7 @@ void core_mkdir_p(char *abspath)
         }
         else {
             sprintf(ERRSTR, "%s: Unknown error NO %i", abspath, errno);
+            perror("Description: ");
         }
         errh(ERRSTR, 1);
     }
@@ -254,6 +255,7 @@ void create_no_exist(char *abspath)
         }
         else {
             sprintf(ERRSTR, "%s: Unknown error NO %i", abspath, errno);
+            perror("Description: ");
         }
         errh(ERRSTR, 1);
     }
@@ -306,6 +308,7 @@ FILE* core_fopen(char *abspath, const char *mode)
         }
         else {
             sprintf(ERRSTR, "%s: Unknown error NO %i", abspath, errno);
+            perror("Description: ");
         }
         errh(ERRSTR, 1);
     }

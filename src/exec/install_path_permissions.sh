@@ -50,9 +50,12 @@ if [ "${mypython}" != "ylukh" ] && ! has_python_package linuxminipy "${mypython}
 fi
 #========Install MANPATH========
 if [ -e man/man1 ] && ! man yldoc &> /dev/null; then
-    __rc_write "export MANPATH=\"${DN}/man/:\${MANPATH:-}\""
-    infoh "Will configure MANPATH...${ANSI_GREEN}PASSED"
+    __rc_write "export MANPATH=\"${DN}/man1/:\${MANPATH:-}\""
 fi
+if [ -e man/man7 ] && ! man libisopt &> /dev/null; then
+    __rc_write "export MANPATH=\"${DN}/man7/:\${MANPATH:-}\""
+fi
+infoh "Will configure MANPATH...${ANSI_GREEN}PASSED"
 #========Install Permissions========
 __change_dir_permissions() {
     ls -1 | while builtin read file_name; do

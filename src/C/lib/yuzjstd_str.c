@@ -85,6 +85,7 @@ void safe_regcomp(regex_t* regex, const char* pattern,int cflags){
                     "Out of memory");
         } else {
             sprintf(ERRSTR, "%s: Format error NO %i", pattern, errno);
+            perror("Description: ");
         }
         errh(ERRSTR, 1);
     }

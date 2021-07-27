@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <regex.h>
+#include <unistd.h>
 #ifndef YUZJSTD_H
 #define YUZJSTD_H
 #define ANSI_BLACK "\033[0;30m"
@@ -20,8 +21,8 @@
 #define PATH_SEPARATOR_STR  "/"
 #endif
 
-#ifndef PATH_MAX
-#define PATH_MAX 256
+#ifndef PATH_MAX // Compatibility settings for musl c
+const int PATH_MAX =256;
 #endif
 
 void infoh(char *msg);
