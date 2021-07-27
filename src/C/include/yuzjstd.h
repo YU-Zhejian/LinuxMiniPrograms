@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include <regex.h>
-#include <unistd.h>
+#include <pcre2posix.h>
 #ifndef YUZJSTD_H
 #define YUZJSTD_H
 #define ANSI_BLACK "\033[0;30m"
@@ -22,12 +21,12 @@
 #endif
 
 #ifndef PATH_MAX // Compatibility settings for musl c
-const int PATH_MAX =256;
+#define PATH_MAX 256
 #endif
 
 void infoh(char *msg);
 void warnh(char *msg);
-void errh(char *msg, int exit_value);
+_Noreturn void errh(char *msg, int exit_value);
 void die(char *msg, int exit_value);
 int get_abspath(char *path, char *outpath);
 int mkdir_p(const char *abspath);

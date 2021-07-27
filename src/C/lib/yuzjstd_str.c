@@ -1,9 +1,6 @@
-#include <stdio.h>
+#include <yuzjstd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <yuzjstd.h>
-#include <stdnoreturn.h>
-#include <regex.h>
 #include <errno.h>
 
 /**
@@ -21,7 +18,7 @@ void infoh(char *msg)
  * @param msg Message
  * @param exit_value Exit value
  */
-noreturn void errh(char *msg, int exit_value)
+_Noreturn void errh(char *msg, int exit_value)
 {
     fprintf(stderr, "%s%s%s%s\n", ANSI_RED, "ERROR: ", msg, ANSI_CLEAR);
     fflush(stderr);
@@ -41,7 +38,7 @@ void warnh(char *msg)
 /**
  * A Perl-like replacement for `errh`. See `errh` for more details.
  */
-noreturn void die(char *msg, int exit_value)
+_Noreturn void die(char *msg, int exit_value)
 { errh(msg, exit_value); }
 
 /**
@@ -78,7 +75,7 @@ int substring(char *string, char *targetstr, int position, int length)
 }
 
 void safe_regcomp(regex_t* regex, const char* pattern,int cflags){
-    if (regcomp(regex, pattern, cflags) != 0){
+    if (pcre2_regcomp(regex, pattern, cflags) != 0){
         char *ERRSTR = (char *)safe_malloc(500);
         if (errno == REG_ESPACE){
             sprintf(ERRSTR,
@@ -99,12 +96,11 @@ void safe_regcomp(regex_t* regex, const char* pattern,int cflags){
 int isopt(const char *argv)
 {
     regex_t opt_regex ;
-    safe_regcomp(&opt_regex,"^-[^-/s]$|^--/S+$|^-[^-/s]:/S+$",0);
-    // FIXME: Still errors!
-    if (regexec(&opt_regex, argv, 0, NULL, 0) == 0){
-        regfree(&opt_regex);
+    safe_regcomp(&opt_regex,"^-[^-/s]$|^--[^-/s]+$|^-[^-/s]:[^-/s]+$",0);
+    if (pcre2_regexec(&opt_regex, argv, 0, NULL, 0) == 0){
+        pcre2_regfree(&opt_regex);
         return 0;
     }
-    regfree(&opt_regex);
+    pcre2_regfree(&opt_regex);
     return 1;
 }

@@ -2,7 +2,7 @@
 TARGETS := lib bin
 export BASE=$(PWD)/src/C
 export VPATH += $(BASE)/bin/ $(BASE)/lib/ $(BASE)/include/
-export CFLAGS += -I$(BASE)/include
+export CFLAGS += -I$(BASE)/include --std=c99
 export LDFLAGS += -L$(BASE)/lib
 
 all: $(TARGETS)
@@ -29,6 +29,6 @@ distclean: clean
 .PHONY: distclean
 
 assess: # Used for developmental purpose only.
-	scan-build -o scan-build make clean all RM="rm -rf" LIBTOOL=libtool BASE=$(PWD)
+	scan-build -o scan-build make clean all RM="rm -rf" LIBTOOL=libtool BASE=$(PWD) CP="echo"
 	cppcheck --library=zlib --library=posix -I include --platform=unix64  bin include lib
 .PHONY: assess

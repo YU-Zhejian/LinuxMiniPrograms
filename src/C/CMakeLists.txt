@@ -17,5 +17,6 @@ add_library(yuzjstd SHARED lib/yuzjstd_core.c lib/yuzjstd_str.c lib/yuzjstd_io.c
 add_executable(pst.co bin/pst.c)
 add_executable(cmain.co test/cmain.c)
 
+target_link_libraries(yuzjstd pcre2-posix)
 target_link_libraries(pst.co pthread yuzjstd)
 target_link_libraries(cmain.co yuzjstd)

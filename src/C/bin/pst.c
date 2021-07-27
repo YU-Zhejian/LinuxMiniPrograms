@@ -3,21 +3,20 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
-#include "yuzjstd.h"
+#include <yuzjstd.h>
 
-_Noreturn void *print_l(void *args);
+_Noreturn void *print_l();
 
-char *tohuman(long inl);
+void tohuman(long inl, char* outstr);
 
 long l = 0;
 long t = 0;
 int ISMACHINE = 0;
-char *dc, *lhm,*ldhm;
+
 
 
 int main(int argc, char *argv[]) {
-	int i;
-	for (i = 0; i < argc; i++) {
+	for (int i = 0; i < argc; i++) {
 		if (! isopt(argv[i])){
 			if (strcmp(argv[i], "-h") == 0 | strcmp(argv[i], "--help") == 0) {
 				system("yldoc pst");
@@ -32,7 +31,7 @@ int main(int argc, char *argv[]) {
     }
     char a;
     pthread_t thrd1;
-    pthread_create(&thrd1, NULL, print_l, NULL);
+    pthread_create(&thrd1, NULL, &print_l, NULL);
     while (EOF != (a = (char) getchar())) {
         putchar(a);
         l++;
@@ -40,7 +39,7 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-_Noreturn void *print_l(void *args)
+_Noreturn void *print_l()
 {
     long tmpl;
     long _l = 0;
@@ -53,38 +52,37 @@ _Noreturn void *print_l(void *args)
             sleep(1);
         }
 	} else {
+        char *lhm = (char*) safe_malloc(100); // Count
+        char *ldhm = (char*) safe_malloc(100); // Speed
 		while (1) {
 			tmpl=l;
 			t++;
-			lhm = tohuman(tmpl);
-			ldhm = tohuman(tmpl - _l);
+			tohuman(tmpl,lhm);
+			tohuman(tmpl - _l,ldhm);
 			fprintf(stderr, "\n\033[1ACC=%s, TE=%ld, SPEED=%s/s", lhm, t, ldhm);
-			//fprintf(stderr,"\n\033[1ACC=%ld, TE=%ld, SPEED=%ld/s",l,t,ldiff);
+			// fprintf(stderr,"\n\033[1ACC=%ld, TE=%ld, SPEED=%ld/s",l,t,ldiff);
 			_l = l;
-			free(lhm);
-			free(ldhm);
 			sleep(1);
 		}
 	}
 }
 
-char * (tohuman)(long inl)
+void tohuman(long inl, char* outstr)
 {
-    char *str = (char *) malloc(50);
+    char* dc;
     double ddiff = (double) inl;
-    dc = "b";
+    dc = "B";
     if (ddiff >= 1024) {
         ddiff = ddiff / 1024;
-        dc = "kb";
+        dc = "KiB";
     }
     if (ddiff >= 1024) {
         ddiff = ddiff / 1024;
-        dc = "mb";
+        dc = "MiB";
     }
     if (ddiff >= 1024) {
 		ddiff = ddiff / 1024;
-		dc = "gb";
+		dc = "GiB";
 	}
-	sprintf(str, "%f%s", ddiff, dc);
-	return str;
+	sprintf(outstr, "%f%s", ddiff, dc);
 }
