@@ -12,6 +12,7 @@ if ! __core_include libstr &> /dev/null; then
 fi
 
 __include libstr
+__include libman
 . etc/path.conf
 
 __rc_write() {
@@ -37,8 +38,14 @@ if ${VAR_install_shinclude}; then
 fi
 #========Install PYTHONPATH========
 # shellcheck disable=SC2154
-if [ "${mypython}" != "ylukh" ] && ! builtin echo "from linuxminipy.libylfile import *" | "${mypython}" &> /dev/null; then
-    __rc_write "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\""
+if [ "${mypython}" != "ylukh" ] && ! has_python_package linuxminipy "${mypython}"; then
+    if has_python_package setuptools "${mypython}" ;then
+        builtin cd "${DN}"/libpy || exit 1
+        "${mypython}" setup.py install
+        builtin cd .. || exit 1
+    else
+        __rc_write "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\""
+    fi
     infoh "Will configure PYTHONPATH...${ANSI_GREEN}PASSED"
 fi
 #========Install MANPATH========

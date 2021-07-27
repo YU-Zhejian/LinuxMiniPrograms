@@ -54,6 +54,17 @@ void print_test()
     infoh("Chinese in UTF-8:     简体中文 爲政若沐也。雖有棄發之費而有長發之利也。");
 }
 
+void test_isopt(char* argv){
+    char* INFOSTR = (char *)safe_malloc(200);
+    if (isopt(argv) == 0){
+        sprintf(INFOSTR,"%s is an option",argv);
+    } else {
+        sprintf(INFOSTR,"%s is not an option",argv);
+    }
+    infoh(INFOSTR);
+    free(INFOSTR);
+}
+
 /**
  * Test libcapple and libyuzjstd
  * @param argv0 The argv[0] value
@@ -61,9 +72,9 @@ void print_test()
 void libself_test(char *argv0)
 {
     // Try to create & read from a configuration file
-    char *tabp = (char *)malloc(PATH_MAX);
+    char *tabp = (char *)safe_malloc(PATH_MAX);
     get_abspath(argv0, tabp);
-    char *INFOSTR = malloc(PATH_MAX + 40);
+    char *INFOSTR = safe_malloc(PATH_MAX + 40);
     sprintf(INFOSTR, "The absolute path of the program is %s", tabp);
     infoh(INFOSTR);
     char *etc_path = safe_malloc(PATH_MAX);
@@ -89,4 +100,10 @@ void libself_test(char *argv0)
         }
         fclose(fd);
     }
+    test_isopt("-a");
+    test_isopt("--all");
+    test_isopt("all");
+    test_isopt("-all");
+    test_isopt("-a:ll");
+    test_isopt("--all:all");
 }

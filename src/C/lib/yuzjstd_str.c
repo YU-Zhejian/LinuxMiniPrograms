@@ -3,6 +3,8 @@
 #include <string.h>
 #include <yuzjstd.h>
 #include <stdnoreturn.h>
+#include <regex.h>
+#include <errno.h>
 
 /**
  * Create an INFO: message.
@@ -75,13 +77,33 @@ int substring(char *string, char *targetstr, int position, int length)
     return 0;
 }
 
+void safe_regcomp(regex_t* regex, const char* pattern,int cflags){
+    if (regcomp(regex, pattern, cflags) != 0){
+        char *ERRSTR = (char *)safe_malloc(500);
+        if (errno == REG_ESPACE){
+            sprintf(ERRSTR,
+                    "Out of memory");
+        } else {
+            sprintf(ERRSTR, "%s: Format error NO %i", pattern, errno);
+        }
+        errh(ERRSTR, 1);
+    }
+}
+
 /**
  * Check whether an argument is an option
  * @param argv String
  * @return 0 if yes, 1 if no
  */
-int isopt(char *argv)
+int isopt(const char *argv)
 {
-    // FIXME: TODO
-    return 0;
+    regex_t opt_regex ;
+    safe_regcomp(&opt_regex,"^-[^-/s]$|^--/S+$|^-[^-/s]:/S+$",0);
+    // FIXME: Still errors!
+    if (regexec(&opt_regex, argv, 0, NULL, 0) == 0){
+        regfree(&opt_regex);
+        return 0;
+    }
+    regfree(&opt_regex);
+    return 1;
 }

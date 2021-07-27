@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <regex.h>
 #ifndef YUZJSTD_H
 #define YUZJSTD_H
 #define ANSI_BLACK "\033[0;30m"
@@ -35,6 +36,8 @@ void* safe_malloc(int size);
 int substring(char *string, char *targetstr, int position, int length);
 int safe_fgetc(FILE *fd);
 int is_empty(char *abspath);
-int isopt(char *argv);
+int isopt(const char *argv);
+void safe_regcomp(regex_t* regex, const char* pattern,int cflags);
+
 
 #endif //YUZJSTD_H
