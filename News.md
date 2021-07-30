@@ -1,3 +1,3 @@
 # News
 
-Here records all news since the first release.
+Please see `src/news` to get recent updates.
