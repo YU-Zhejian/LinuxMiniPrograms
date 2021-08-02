@@ -13,7 +13,11 @@
 #define ANSI_WHITE "\033[0;37m"
 #define ANSI_CLEAR "\033[0;00m"
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BORLANDC__) || defined(_MSC_VER)
+#define OS_WIN
+#endif
+
+#ifdef OS_WIN
 #define PATH_SEPARATOR '\\'
 #define PATH_SEPARATOR_STR "\\"
 #else

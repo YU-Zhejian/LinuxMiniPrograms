@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#ifdef OS_WIN
+#else
 #include <execinfo.h>
+#endif
 #include <time.h>
 #include <stdarg.h>
 #include <stdnoreturn.h>
@@ -45,6 +48,22 @@ void debugh(const char* message, ...) {
 void debugh(const char* message, ...){}
 #endif
 
+#ifdef OS_WIN
+// TODO: stack trace
+/**
+ * Create an ERROR: message and exit.
+ * @param msg Message
+ * @param exit_value Exit value
+ */
+noreturn void errh(char *msg, int exit_value)
+{
+    fprintf(stderr, "%s%s%s%s\n", ANSI_RED, "ERROR: ", msg, ANSI_CLEAR);
+    printf("%s Stack trace:%s\n",ANSI_RED,ANSI_CLEAR);
+    fflush(stderr);
+    safe_free(msg);
+    exit(exit_value);
+}
+#else
 /**
  * Create an ERROR: message and exit.
  * @param msg Message
@@ -61,10 +80,12 @@ noreturn void errh(char *msg, int exit_value)
     for (i = 0; i < frames; ++i) {
         fprintf(stderr,"%s\n", strs[i]);
     }
-    free(strs);
+    safe_free(strs);
     safe_free(msg);
     exit(exit_value);
 }
+#endif
+
 /**
  * Create a WARNING: message and exit.
  * @param msg Message

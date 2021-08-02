@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# VERSION=1.6
+VERSION=1.7
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/linuxminiprograms/path.conf
@@ -16,19 +16,44 @@ _grep() {
     builtin unset regstr
 }
 
-# TODO: msys2 path
+
 # shellcheck disable=SC2063
-local_lib=$(for dir in \
+gcclib=$(for dir in \
     $(__addpref 'lib*') \
     $(__addpref 'lib*/gcc*/*/*/x*') \
     $(__addpref 'lib*/gcc*/*/x*') \
-    $(__addpref 'lib*/gcc*/x*') \
-    $(__addpref 'lib*/clang*/*/lib*') \
-    $(__addpref 'lib*/clang*/lib*') \
-    '/mingw*/lib*' '/clang*/lib*'; do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
-ld_lib="$(ld --verbose || true | grep SEARCH_DIR | tr ';' '\n' | cut -f 2 -d '=' | cut -f 1 -d '"' | tr '\n' ';')"
+    $(__addpref 'lib*/gcc*/x*') ; do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
 
-validate_path "${local_lib}:${ld_lib}:${LD_LIBRARY_PATH:-}:${LIBRARY_PATH:-}:${LD_RUN_PATH:-}"
+# shellcheck disable=SC2063
+clanglib=$(for dir in \
+    $(__addpref 'lib*/clang*/*/lib*') \
+    $(__addpref 'lib*/clang*/lib*') ; do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+msys2_gcclib=""
+msys2_clanglib=""
+for dir_path in mingw32 mingw64 clang32 clang64 ucrt32 ucrt64; do
+    # shellcheck disable=SC2063
+    msys2_gcclib_tmp=$(for dir in \
+        $(__addpref_msys2 'lib*' "${dir_path}") \
+        $(__addpref_msys2 'lib*/gcc*/*/*/x*' "${dir_path}") \
+        $(__addpref_msys2 'lib*/gcc*/*/x*' "${dir_path}") \
+        $(__addpref_msys2 'lib*/gcc*/x*' "${dir_path}"); do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+    msys2_gcclib="${msys2_gcclib}:${msys2_gcclib_tmp}"
+
+    # shellcheck disable=SC2063
+    msys2_clanglib_tmp=$(for dir in \
+        $(__addpref_msys2 'lib*/clang*/*/lib*' "${dir_path}") \
+        $(__addpref_msys2 'lib*/clang*/lib*' "${dir_path}"); do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+    msys2_clanglib="${msys2_clanglib}:${msys2_clanglib_tmp}"
+done
+
+ld_lib="$(ld --verbose || true | grep SEARCH_DIR | tr ';' '\n' | cut -f 2 -d '=' | cut -f 1 -d '"' | tr '\n' ';')"
+validate_path "${msys2_clanglib}:\
+${msys2_gcclib}:\
+${gcclib}:${clanglib}:\
+${ld_lib}:\
+${LD_LIBRARY_PATH:-}:\
+${LIBRARY_PATH:-}:\
+${LD_RUN_PATH:-}"
 builtin unset local_lib ld_lib
 # shellcheck disable=SC2154
 builtin mapfile -t eachpath < <(builtin echo ${valid_path} | tr ':' '\n')

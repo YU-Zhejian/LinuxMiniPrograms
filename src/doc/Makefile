@@ -5,6 +5,8 @@ export MAN_TMP_PREFIX=$(CURDIR)/../../share/man/
 
 all:pdf html man
 
+# TODO: Errors in msys2
+
 pdf:
 	@-$(MAKE) -C 1 $@
 	@-$(MAKE) -C 7 $@

@@ -27,6 +27,8 @@ if [ "${mypython}" != "ylukh" ] && ! has_python_package linuxminipy "${mypython}
     fi
     infoh "Will configure PYTHONPATH...${ANSI_GREEN}PASSED"
 fi
+# FIXME: ERRORS in msys2
+exit
 #========Install Permissions========
 __change_dir_permissions() {
     ls -1 | while builtin read file_name; do

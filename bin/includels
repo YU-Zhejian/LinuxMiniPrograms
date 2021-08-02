@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.5
+VERSION=1.6
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../etc/linuxminiprograms/path.conf
@@ -20,13 +20,29 @@ clanginclude=$(for dir in \
     $(__addpref 'lib*/clang*/*/include') \
     $(__addpref 'lib*/clang*/include') \
     $(__addpref 'include'); do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+msys2_gccinclude=""
+msys2_clanginclude=""
+for dir_path in mingw32 mingw64 clang32 clang64 ucrt32 ucrt64; do
+    # shellcheck disable=SC2063
+    msys2_gccinclude_tmp=$(for dir in \
+        $(__addpref_msys2 'lib*/gcc*/*/*/include' "${dir_path}") \
+        $(__addpref_msys2 'lib*/gcc*/*/include' "${dir_path}") \
+        $(__addpref_msys2 'lib*/gcc*/include' "${dir_path}"); do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+    msys2_gccinclude="${msys2_gccinclude}:${msys2_gccinclude_tmp}"
 
-# TODO: msys2 include
-# shellcheck disable=SC2063
-mingwinclude=$(for dir in \
-    $(__addpref 'mingw*/include'); do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+    # shellcheck disable=SC2063
+    msys2_clanginclude_tmp=$(for dir in \
+        $(__addpref_msys2 'lib*/clang*/*/include' "${dir_path}") \
+        $(__addpref_msys2 'lib*/clang*/include' "${dir_path}") \
+        $(__addpref_msys2 'include' "${dir_path}"); do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
+    msys2_clanginclude="${msys2_clanginclude}:${msys2_clanginclude_tmp}"
+done
 
-validate_path "${mingwinclude}:${gccinclude}:${clanginclude}:${C_INCLUDE_PATH:-}:${CPLUS_INCLUDE_PATH:-}:${CPP_INCLUDE_PATH:-}:${CXX_INCLUDE_PATH:-}"
+validate_path "${msys2_clanginclude}:\
+${msys2_gccinclude}:\
+${gccinclude}:${clanginclude}:\
+${C_INCLUDE_PATH:-}:${CPLUS_INCLUDE_PATH:-}:\
+${CPP_INCLUDE_PATH:-}:${CXX_INCLUDE_PATH:-}"
 
 # shellcheck disable=SC2154
 builtin mapfile -t eachpath < <(builtin echo ${valid_path} | tr ':' '\n')
