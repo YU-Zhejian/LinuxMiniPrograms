@@ -62,7 +62,7 @@ void test_isopt(char* argv){
         sprintf(INFOSTR,"%s is not an option",argv);
     }
     infoh(INFOSTR);
-    free(INFOSTR);
+    safe_free(INFOSTR);
 }
 
 /**
@@ -79,18 +79,18 @@ void libself_test(char *argv0)
     infoh(INFOSTR);
     char *etc_path = safe_malloc(PATH_MAX);
     sprintf(etc_path,"%s/etc/test.conf",dirname(dirname(tabp)));
-    free(tabp);
+    safe_free(tabp);
     if (is_empty(etc_path)) {
         sprintf(INFOSTR, "%s is blank; creating one", etc_path);
-        infoh(INFOSTR);free(INFOSTR);
+        infoh(INFOSTR);safe_free(INFOSTR);
         FILE *fd = safe_fopen(etc_path, "w");
         fprintf(fd, "Initialized content\n");
-        fclose(fd);
+        safe_fclose(fd);
     }
     else {
         sprintf(INFOSTR, "Contents from %s:", etc_path);
         infoh(INFOSTR);
-        free(INFOSTR);
+        safe_free(INFOSTR);
         FILE *fd = safe_fopen(etc_path, "r");
         fseek(fd, 0L, 0);
         int ch = safe_fgetc(fd);
@@ -98,7 +98,7 @@ void libself_test(char *argv0)
             printf("%c", ch);
             ch = fgetc(fd);
         }
-        fclose(fd);
+        safe_fclose(fd);
     }
     test_isopt("-a");
     test_isopt("--all");

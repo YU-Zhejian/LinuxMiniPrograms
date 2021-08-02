@@ -2,6 +2,8 @@
 
 Here stores the source code of all LMP programs written in C, and its supporting headers and libraries. A `CMakeList` is provided to help you install this program stand-alone.
 
+WARNING: Before you proceed, please deactivate Conda!
+
 == Using Shared Libraries in LinuxMiniProgram
 
 All C programs in LMP uses `libylstd`, a wrapper of multiple system functions.

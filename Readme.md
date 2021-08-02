@@ -1,5 +1,9 @@
 # Readme For YuZJLab LinuxMiniPrograms
 
+WARNING: Support Bourne Again Shell (bash) only, Bourne Shell (sh), Almquist shell (ash) and Debian Almquist shell (dash) NOT supported!
+
+## About This File
+
 This file is written in Markdown, a lightweight Markup language. If you have no idea how to read them, you may use Pandoc (<https://www.pandoc.org/>) or Markdown editors like Typora (<https://www.typora.io/>) if you have access to a Graphical User Interface (GUI). This documentation can be converted to PDF, HTML or other various formats by Pandoc available from <https://www.pandoc.org/>. 
 
 ## Copyright

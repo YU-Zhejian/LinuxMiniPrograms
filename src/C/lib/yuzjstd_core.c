@@ -9,3 +9,9 @@ void* safe_malloc(int size){
     }
     return tmptr;
 }
+
+void safe_free(void* ptr){
+    if (ptr != NULL){
+        free(ptr);
+    }
+}

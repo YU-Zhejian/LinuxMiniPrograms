@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <dirent.h>
 #include <pcre2posix.h>
 #ifndef YUZJSTD_H
 #define YUZJSTD_H
@@ -26,18 +27,21 @@
 
 void infoh(char *msg);
 void warnh(char *msg);
-_Noreturn void errh(char *msg, int exit_value);
+void errh(char *msg, int exit_value);
 void die(char *msg, int exit_value);
 int get_abspath(char *path, char *outpath);
 int mkdir_p(const char *abspath);
 int touch(char *abspath);
 FILE *safe_fopen(char *abspath, const char * mode);
 void* safe_malloc(int size);
+void safe_free(void* ptr);
 int substring(char *string, char *targetstr, int position, int length);
 int safe_fgetc(FILE *fd);
 int is_empty(char *abspath);
 int isopt(const char *argv);
 void safe_regcomp(regex_t* regex, const char* pattern,int cflags);
-
+void safe_fclose(FILE* fd);
+DIR* safe_opendir(char* abspath);
+void debugh(const char* message, ...);
 
 #endif //YUZJSTD_H

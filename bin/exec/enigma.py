@@ -8,6 +8,7 @@ import random
 import sys
 
 from linuxminipy.libisopt import isopt
+from linuxminipy.libstr import warnh
 from linuxminipy.libylfile import ylread, ylwrite
 
 VERSION = 2.1
@@ -18,7 +19,7 @@ class Enigma():
     Special-purpose Enigma machine
     """
 
-    def encode(self, instr: str):
+    def encode(self, instr: str) -> str:
         for i in range(0, len(self.all_gear)):
             # print(instr+'->',end='')
             instr = self.all_gear[i][(ord(instr) - 65 +
@@ -28,6 +29,10 @@ class Enigma():
         return instr
 
     def _inc_gear(self):
+        """
+        Rotate the gears.
+        :return: NULL
+        """
         # print(self.all_gear_s)
         self.all_gear_s[0] = self.all_gear_s[0] + 1
         for i in range(0, len(self.all_gear) - 1):
@@ -38,7 +43,7 @@ class Enigma():
         self.all_gear_s[len(self.all_gear) - 1] = \
             self.all_gear_s[len(self.all_gear) - 1] % 16
 
-    def decode(self, instr: str):
+    def decode(self, instr: str) -> int:
         for i in range(len(self.all_gear) - 1, -1, -1):
             # print(instr+'->',end='')
             instr = chr((self.all_gear[i].index(instr) -
@@ -68,8 +73,8 @@ class Enigma():
 
 
 def main():
-    enigmagear = []
-    startingstring = ''
+    use_gear = []
+    start_string = ''
     os.chdir(os.path.abspath(os.path.dirname(sys.argv[0]) + '/../../var/linuxminiprograms/enigma.d/'))
     decode = False
     for sysarg in sys.argv[1:]:
@@ -86,15 +91,16 @@ def main():
             elif sysarg in ('-d', '--decode'):
                 decode = True
             elif sysarg.startswith('-c:'):
-                enigmagear.append(int(sysarg[3:]))
+                use_gear.append(int(sysarg[3:]))
             elif sysarg.startswith('-s:'):
-                startingstring = sysarg[3:]
+                start_string = sysarg[3:]
 
     if decode:
         f = open(sys.stdin.fileno(), mode='r')
         o = open(sys.stdout.fileno(), mode='wb')
         otmp = []
-        if len(startingstring) != len(enigmagear) or len(enigmagear) == 0:
+        if len(start_string) != len(use_gear) or len(use_gear) == 0:
+            warnh("b16c -d mode")
             while True:
                 inp = f.read(2)
                 if len(inp) < 2: break
@@ -102,7 +108,7 @@ def main():
                 o.write(bytes(otmp))
                 otmp.pop()
         else:
-            myenigma = Enigma(startingstring, enigmagear)
+            myenigma = Enigma(start_string, use_gear)
             while True:
                 inp = f.read(2)
                 if len(inp) < 2: break
@@ -112,7 +118,8 @@ def main():
         o.close()
     else:
         f = open(sys.stdin.fileno(), mode='rb')
-        if len(startingstring) != len(enigmagear) or len(enigmagear) == 0:
+        if len(start_string) != len(use_gear) or len(use_gear) == 0:
+            warnh("b16c mode")
             while True:
                 inp = f.read(1)
                 if not inp: break
@@ -123,7 +130,7 @@ def main():
                 sys.stdout.write(chr(b1 + 65) + chr(b2 + 65))
 
         else:
-            myenigma = Enigma(startingstring, enigmagear)
+            myenigma = Enigma(start_string, use_gear)
             while True:
                 inp = f.read(1)
                 if not inp: break

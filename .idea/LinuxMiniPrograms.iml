@@ -30,8 +30,9 @@
       <excludeFolder url="file://$MODULE_DIR$/libpy/build" />
       <excludeFolder url="file://$MODULE_DIR$/libpy/dist" />
       <excludeFolder url="file://$MODULE_DIR$/libpy/linuxminipy.egg-info" />
+      <excludeFolder url="file://$MODULE_DIR$/src/C/.vscode" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9 (2)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.9" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
