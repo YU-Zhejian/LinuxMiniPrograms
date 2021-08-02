@@ -1,6 +1,3 @@
-# TODO: .bashrc failed for non-interactive shell
-# Temporarily use zshrc
-
 ARG tarname
 ENV tarname ${tarname}
 # Start testing

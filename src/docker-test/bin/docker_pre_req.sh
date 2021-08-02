@@ -7,7 +7,7 @@ builtin cd "$(readlink -f "$(dirname "${0}")/../")" || builtin exit 1
 __include libstr
 
 # Test 'docker' command
-docker ps &>> /dev/null && EXITV=0 || EXITV=${?}
+docker ps &> /dev/null && EXITV=0 || EXITV=${?}
 case ${EXITV} in
     0)
     ;;

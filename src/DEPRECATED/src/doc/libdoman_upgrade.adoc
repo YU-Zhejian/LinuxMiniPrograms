@@ -31,4 +31,4 @@ Tested with all functions supported.
 
 libdo, libdoman
 
-include::include/copy.adoc[]
+include::../include/copy.adoc[]

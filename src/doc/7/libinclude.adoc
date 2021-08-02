@@ -1,0 +1,78 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= libinclude(1)
+
+== NAME
+
+libinclude - A library to include shell libraries as what is done in C.
+
+== SYNOPSIS
+
+`. /PATH/TO/LIBINCLUDE`
+
+`__include "filename"`
+
+== DESCRIPTION
+
+The `libinclude` simulates the behaviour of C Pre-Precessor, allowing users to use `__include` command to source the content of a shell script defined in `SH_INCLUDE_PATH`.
+
+The file you wish to include have to be placed in a folder specified in `SH_INCLUDE_PATH` environment variable, _OR__ in one of the following standard directories:
+
+* `/shlib`
+* `/usr/shlib`
+* `/usr/local/shlib`
+* `${HOME}/shlib`
+* `${HOME}/usr/shlib`
+* `${HOME}/usr/local/shlib`
+
+WARNING: Please note that if `SH_INCLUDE_PATH` is set, these standard directories will _NOT_ be searched!
+
+You can spefify a name and the file with this name or with `.sh` `.bash` `.dash` `.zsh` suffix will be searched.
+
+`libinclude` is widely used in LinuxMiniPrograms and its standard libraries. So source this file before using library provided by LinuxMiniPrograms.
+
+== FUNCTIONS
+
+=== `__core_include`
+
+The core include function, will take `SH_INCLUDE_PATH` environment variable and add suffix automatically.
+
+If the item is not found, the function will return 1.
+
+=== `__include`
+
+The function described in <<DESCRIPTION>> section, will automatically create a `SH_INCLUDE_PATH` using standard directories and invoke `__core_include`.
+
+The function will terminate the program with exit status 1 if the item is not found.
+
+== EXAMPLES
+
+[source,bash]
+----
+. shlib/libinclude.sh
+type isopt
+__include libisopt
+type isopt
+----
+
+Will give an output like:
+
+[source]
+----
+bash: type: isopt: not found
+isopt is a function
+isopt ()
+{
+    case "${1:-}" in
+        -? | --* | -?\:*)
+            builtin return 0
+        ;;
+        *)
+            builtin return 1
+        ;;
+    esac
+}
+----
+
+include::../include/copy.adoc[]

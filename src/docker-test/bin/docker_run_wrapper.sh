@@ -14,7 +14,7 @@ LIBDO_LOG_MODE=4
 LIBDO_LOG="log/${NAME}_$(date +%Y-%m-%d_%H-%M-%S).log"
 
 __DO docker build . --file "${1}" --tag "lmp_test_${NAME}:${TARGET_VERSION}" --build-arg tarname="lmp_test_${NAME}"
-docker ps -a -f name="lmp_test_${NAME}" | grep "lmp_test_${NAME}" &>> /dev/null || docker rm --force "lmp_test_${NAME}"
+docker ps -a -f name="lmp_test_${NAME}" | grep "lmp_test_${NAME}" &> /dev/null || docker rm --force "lmp_test_${NAME}"
 __DO docker run --name "lmp_test_${NAME}" "lmp_test_${NAME}:${TARGET_VERSION}"
 __DO docker cp "lmp_test_${NAME}:/lmp_test_${NAME}.tar" .
 __DO autounzip --remove "lmp_test_${NAME}.tar"

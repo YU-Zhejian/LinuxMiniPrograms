@@ -1,50 +1,33 @@
-# VERSION=1.3
+# VERSION=1.4
 export MKDIR = mkdir -p
 export TT =
 export RM=rm -rf
 export CP=cp -rf
+export TIMESTAMP := $(shell date +%Y_%d_%m-%H_%M_%S)
 # Disable implicit rules and variables
 MAKEFLAGS += --no-builtin-rules
 .SUFFIXES:
 
-ETC_SOURCES := $(notdir $(wildcard src/etc/*))
-ETC_OBJECTS := $(foreach fn, $(ETC_SOURCES), $(addprefix etc/, $(fn)))
-
 .PHONY : all
 
 .PHONY: doc
-doc: share/doc/pdf share/doc/html share/doc/usage share/man
-
-.PHONY: etc
-etc : $(ETC_OBJECTS)
-
-etc/%: src/etc/%
-	$(CP) $< $@
-
-.PHONY: var
-var:
-	$(MKDIR) -p var/
-	$(CP) src/var/* var/
+doc: pdf html man
 
 .PHONY: C
 C:
 	@-$(MAKE) -C src/C
 
-.PHONY: share/doc/pdf
-share/doc/pdf:
+.PHONY: pdf
+pdf:
 	@-$(MAKE) -C src/doc pdf
 
-.PHONY: share/doc/html
-share/doc/html:
+.PHONY: html
+html:
 	@-$(MAKE) -C src/doc html
 
-.PHONY: share/man
-share/man:
+.PHONY: man
+man:
 	@-$(MAKE) -C src/doc man
-
-.PHONY: share/doc/usage
-share/doc/usage:
-	@-$(MAKE) -C src/doc usage
 
 .PHONY: pp
 pp:
@@ -54,19 +37,16 @@ pp:
 test:
 	@-$(MAKE) -C src/test TT=$(TT)
 
-.PHONY: pytest
-pytest:
-	@-$(MAKE) -C src/pytest TT=$(TT)
-
 .PHONY: clean
 clean:
-	$(RM) etc/path.conf
+	$(RM) *.log
+	$(RM) *.tgz # For compatibility
 	@-$(MAKE) -C src/test clean
 	@-$(MAKE) -C src/C clean
 
 .PHONY: distclean
 distclean:clean
-	$(RM) etc var share GNUmakefile
+	$(RM) share GNUmakefile
 	@-$(MAKE) -C src/test distclean
 	@-$(MAKE) -C src/C distclean
 
@@ -74,9 +54,46 @@ distclean:clean
 test_list:
 	ls src/test/ | grep '\.t\.sh' | sed 's;\.t\.sh;;'
 
-# TODO: Implement installation
-#install:
-#	$(CP) -buv . ~/opt/LinuxMiniPrograms/ &>> install.log
-#
+PHONY: install
+install: all
+	@-$(MAKE) install_doc
+	@-$(MAKE) install_var
+	@-$(MAKE) install_etc
+	@-$(MAKE) install_shlib
+	@-$(MAKE) install_bin
+	@-$(MAKE) install_sbin
+	@-$(MAKE) -C src/C install
+
+.PHONY: install_doc
+install_doc:
+	$(MKDIR) $(PREFIX)/share/ share/
+	$(CP) -uv share/* $(PREFIX)/share/ >> install_$(TIMESTAMP).log
+
+.PHONY: install_var
+install_var:
+	$(MKDIR) $(PREFIX)/var/
+	$(CP) -uv src/var/* $(PREFIX)/var/ >> install_$(TIMESTAMP).log
+
+.PHONY: install_etc
+install_etc:
+	$(MKDIR) $(PREFIX)/etc/
+	$(CP) -uv etc/linuxminiprograms/path.conf $(PREFIX)/etc/linuxminiprograms/ >> install_$(TIMESTAMP).log
+	$(CP) -uv src/etc/* $(PREFIX)/etc/ >> install_$(TIMESTAMP).log
+
+.PHONY: install_shlib
+install_shlib:
+	$(MKDIR) $(PREFIX)/shlib/
+	$(CP) -uv shlib/* $(PREFIX)/shlib/ >> install_$(TIMESTAMP).log
+
+.PHONY: install_bin
+install_bin:
+	$(MKDIR) $(PREFIX)/bin/
+	$(CP) -uv bin/* $(PREFIX)/bin/ >> install_$(TIMESTAMP).log
+
+.PHONY: install_sbin
+install_sbin:
+	$(MKDIR) $(PREFIX)/sbin/
+	$(CP) -uv sbin/* $(PREFIX)/sbin/ >> install_$(TIMESTAMP).log
+
 #uninstall:
 #	bash -c 'cat install.log |  | while read line;do '

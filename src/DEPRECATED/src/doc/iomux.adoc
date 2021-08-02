@@ -54,4 +54,4 @@ Tested with all functions supported.
 
 LMP_deprecated
 
-include::include/copy.adoc[]
+include::../include/copy.adoc[]

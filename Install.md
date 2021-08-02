@@ -80,10 +80,9 @@ For most programs written in Shell, the following programs will be needed and GN
 
 * Some programs such as `libmktbl` have their Python version (Need Python>=3.5), which is typically faster than those written in Shell script. There are also programs written purely in Python,
   like `libdo-monitor`. During the configuring process of LinuxMiniPrograms, the installer will search for all Python 3 interpreters inside your `${PATH}` variable and locate the newest Python
-  interpreter as the default Python interpreter of the LinuxMiniPrograms. However, you can modify this by editing `etc/path.conf` to specific your own Python interpreter.
+  interpreter as the default Python interpreter of the LinuxMiniPrograms. However, you can modify this by editing `etc/linuxminiprograms/path.conf` to specific your own Python interpreter.
 
-* Some programs such as `pst` have its C version, which is faster than those written in Python. You may need to install GNU Compiler Collection (gcc)>=10.2.1-1 (Available from <http://gcc.gnu.org/>)
-  or FreeBSD Clang for FreeBSD\* to build these programs.
+* Some programs such as `pst` have its C version, which is faster than those written in Python. You may need to install GNU Compiler Collection (gcc)>=4.4 (Available from <http://gcc.gnu.org/>) or FreeBSD Clang for FreeBSD\* to build these programs. You also need `libtool` in your PATH (Available from <https://www.gnu.org/software/libtool/>) to provide compatibility.
 
 \*: If you insist to use GCC under FreeBSD, please make sure that your machine is able to use GNU/Linux executables. This can be enabled by:
 
@@ -188,10 +187,13 @@ Then, you may execute `make` to compile the source code for programs written in 
 If your access to GitHub is declined, you may use LinuxMiniPrograms on Gitee instead. For a cloned repository, it will be:
 
 ```bash
-git remote rm origin
-git remote add origin https://gitee.com/yuzjlab/LinuxMiniPrograms/
+git remote set-url origin https://gitee.com/yuzjlab/LinuxMiniPrograms/
 ```
 
 There will be instructions on how to set up a tracking branch if you're performing a `git pull`.
 
 If you wish to change back to GitHub, just repeat the code with URLs modified.
+
+## Bugs That May Occur
+
+If you met bugs in C compilation, you may try to disable anaconda (if installed) by `conda deactivate` or `source deactivate` (old version).

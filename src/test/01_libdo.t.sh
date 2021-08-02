@@ -5,7 +5,7 @@ DN="$(readlink -f "$(dirname "${0}")")"
 PROGNAME=libdo
 . "${DN}"/00_libtest.sh
 for LIBDO_LOG_MODE in {1..4} S; do
-    __DO ls -la "${HOME}" &>>/dev/null
+    __DO ls -la "${HOME}" &> /dev/null
 done
 # shellcheck disable=SC2034
 LIBDO_LOG_MODE=4

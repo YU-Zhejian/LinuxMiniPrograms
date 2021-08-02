@@ -1,0 +1,3 @@
+= News: C-Like `__include` Supported by Shell
+
+We created `libinclude.sh` under `/shlib` (Originally `/lib`) to enable a C-like `__include` function.

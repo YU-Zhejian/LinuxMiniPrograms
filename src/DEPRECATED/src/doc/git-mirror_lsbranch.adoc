@@ -28,4 +28,4 @@ https://github.com/YuZJLab/SoftInstall
 * master 8bf2bae Some software added
 ----
 
-include::include/copy.adoc[]
+include::../include/copy.adoc[]

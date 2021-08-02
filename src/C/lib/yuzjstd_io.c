@@ -47,21 +47,21 @@ int get_abspath(char *path, char *outpath)
         char *home_dir = getenv("HOME");
         if (home_dir == NULL) {// Failed to get HOME environment variable
             outpath = NULL;
-            free(tmppath);
+            safe_free(tmppath);
             return -1;
         }
         char *path_without_header = safe_malloc(PATH_MAX);
         substring(tmppath, path_without_header, 1, (int)strlen(tmppath) - 1);
         sprintf(outpath, "%s%c%s", home_dir, PATH_SEPARATOR, path_without_header);
         sprintf(tmppath, "%s", outpath);
-        free(path_without_header);
+        safe_free(path_without_header);
     }
     // Resolve ${PWD}
     if (strncmp(tmppath, "/", 1) != 0) {
         char *pwd = getenv("PWD");
         if (pwd == NULL) {// Failed to get PWD environment variable
             outpath = NULL;
-            free(tmppath);
+            safe_free(tmppath);
             return -1;
         }
         sprintf(outpath, "%s%c%s", pwd, PATH_SEPARATOR, path);
@@ -73,18 +73,18 @@ int get_abspath(char *path, char *outpath)
     char *token = strtok_r(tmppath, PATH_SEPARATOR_STR,&save_ptr);
     while (token != NULL) {
         if (strcmp(token, "..") == 0) { // Removge the previous one if meeting '..'
-            int last_sep = (int)(strrchr(outpath, PATH_SEPARATOR) - outpath + 1);
+            int last_sep = (int)(strrchr(outpath, PATH_SEPARATOR) - outpath);
             char *outpath_prev = (char *)safe_malloc((int) strlen(tmppath));
             substring(outpath, outpath_prev, 0, last_sep);
             sprintf(outpath, "%s", outpath_prev);
-            free(outpath_prev);
+            safe_free(outpath_prev);
         }
         else if (strcmp(token, ".") != 0) {
             sprintf(outpath, "%s%c%s", outpath, PATH_SEPARATOR, token);
         }
         token = strtok_r(NULL, PATH_SEPARATOR_STR,&save_ptr);
     }
-    free(token);
+    safe_free(token);
     sprintf(tmppath, "%s", outpath);
     // Resolve //
     sprintf(outpath, "");
@@ -101,7 +101,7 @@ int get_abspath(char *path, char *outpath)
             }
         }
     }
-    free(tmppath);
+    safe_free(tmppath);
     return 0;
 }
 
@@ -114,7 +114,7 @@ void core_mkdir_p(char *abspath)
     if (mkdir(abspath, S_IRWXU) == -1) {
         char *ERRSTR = (char *)safe_malloc(500);
         if (errno == EEXIST) { // SKIP
-            free(ERRSTR);
+            safe_free(ERRSTR);
             return;
         }
         else if (errno == ENOTDIR) {
@@ -152,6 +152,7 @@ void core_mkdir_p(char *abspath)
         }
         else {
             sprintf(ERRSTR, "%s: Unknown error NO %i", abspath, errno);
+            perror("Description: ");
         }
         errh(ERRSTR, 1);
     }
@@ -167,10 +168,11 @@ int mkdir_p(const char *abspath)
     char *abspath_created = (char *)safe_malloc((int) strlen(abspath));
     memset(abspath_created,0,(int) strlen(abspath));
     char* save_ptr = safe_malloc((int) strlen(abspath));
-    char *token = strtok_r((char*) abspath, PATH_SEPARATOR_STR,&save_ptr);
+    char* tmp_path =  (char *)safe_malloc((int) strlen(abspath));
+    sprintf(tmp_path,"%s",abspath);
+    char *token = strtok_r((char*) tmp_path, PATH_SEPARATOR_STR,&save_ptr);
     while (token != NULL) {
         sprintf(abspath_created, "%s%c%s", abspath_created, PATH_SEPARATOR, token);
-
         DIR *dir = opendir(abspath_created);
         if (dir == NULL) {
             char *ERRSTR = (char *)safe_malloc(500);
@@ -190,7 +192,7 @@ int mkdir_p(const char *abspath)
             else if (errno == ENOENT) { // Directory not exist. Try to create it.
                 core_mkdir_p(abspath_created);
                 token = strtok_r(NULL, PATH_SEPARATOR_STR,&save_ptr);
-                free(ERRSTR);
+                safe_free(ERRSTR);
                 continue;
             }
             errh(ERRSTR, 1);
@@ -200,7 +202,7 @@ int mkdir_p(const char *abspath)
         }
         token = strtok_r(NULL, PATH_SEPARATOR_STR,&save_ptr);
     }
-    free(abspath_created);
+    safe_free(abspath_created);
     return 0;
 }
 
@@ -210,10 +212,12 @@ int mkdir_p(const char *abspath)
  */
 void create_no_exist(char *abspath)
 {
+    debugh("Entering create_no_exist with abspath=%s",abspath);
     if (creat(abspath, S_IRUSR | S_IWUSR) == -1) {
         char *ERRSTR = (char *)safe_malloc(500);
         if (errno == EEXIST) { // SKIP
-            free(ERRSTR);
+            debugh("File exists; leaving create_no_exist");
+            safe_free(ERRSTR);
             return;
         }
         else if (errno == ENOENT) { // SKIP
@@ -254,9 +258,11 @@ void create_no_exist(char *abspath)
         }
         else {
             sprintf(ERRSTR, "%s: Unknown error NO %i", abspath, errno);
+            perror("Description: ");
         }
         errh(ERRSTR, 1);
     }
+    debugh("File created; leaving create_no_exist");
 }
 
 /**
@@ -306,6 +312,7 @@ FILE* core_fopen(char *abspath, const char *mode)
         }
         else {
             sprintf(ERRSTR, "%s: Unknown error NO %i", abspath, errno);
+            perror("Description: ");
         }
         errh(ERRSTR, 1);
     }
@@ -318,6 +325,7 @@ FILE* core_fopen(char *abspath, const char *mode)
  */
 int touch(char *abspath)
 {
+    debugh("Entering touch with abspath=%s",abspath);
     char *tabp = (char *)safe_malloc(PATH_MAX);
     if (strncmp(abspath, "/", 1) != 0) {
         get_abspath(abspath, tabp);
@@ -325,6 +333,7 @@ int touch(char *abspath)
     else {
         sprintf(tabp, "%s", abspath);
     }
+    debugh("Get absolute path tabp=%s",tabp);
     char *tmppath = safe_malloc((int) strlen(tabp));
     sprintf(tmppath, "%s", tabp);
     mkdir_p(dirname(tmppath));
@@ -336,14 +345,15 @@ int touch(char *abspath)
         else {// Other errors, let it show!
             FILE* tmp = core_fopen(tabp, "r");
             if (tmp != NULL) {
-                fclose(tmp);
+                safe_fclose(tmp);
             }
         }
     } else {
-        fclose(tmpfd);
+        safe_fclose(tmpfd);
     }
-    free(tmppath);
-    free(tabp);
+    safe_free(tmppath);
+    safe_free(tabp);
+    debugh("Leaving touch");
     return 0;
 }
 
@@ -354,6 +364,7 @@ int touch(char *abspath)
  */
 FILE *safe_fopen(char *abspath, const char *mode)
 {
+    debugh("Entering safe_fopen with abspath=%s, mode=%s",abspath,mode);
     char *tabp = (char *)safe_malloc(PATH_MAX);
     if (strncmp(abspath, "/", 1) != 0) {
         get_abspath(abspath, tabp);
@@ -365,10 +376,11 @@ FILE *safe_fopen(char *abspath, const char *mode)
     if (fd == NULL && errno == ENOENT) {
         touch(tabp);
     } else if ( fd != NULL) {
-        fclose(fd);
+        safe_fclose(fd);
     }
     fd = core_fopen(tabp, mode);
-    free(tabp);
+    safe_free(tabp);
+    debugh("Leaving safe_fopen");
     return fd;
 }
 
@@ -378,6 +390,7 @@ int safe_fgetc(FILE *fd)
     if (i == EOF && errno != 0) {
             char *ERRSTR = (char *)safe_malloc(500);
             sprintf(ERRSTR, "Unknown error NO %i", errno);
+            perror("Description: ");
             errh(ERRSTR, 1);
     }
     return i;
@@ -391,10 +404,39 @@ int safe_fgetc(FILE *fd)
 int is_empty(char *abspath)
 {
     FILE *fd = safe_fopen(abspath, "rb");
-    if (fd==NULL){ // Which is unlikely to happen
-        return -1;
-    }
     int i = (fgetc(fd) == EOF);
-    fclose(fd);
+    safe_fclose(fd);
     return i;
+}
+
+void safe_fclose(FILE* fd){
+    if (fd != NULL){
+        fclose(fd);
+    }
+}
+
+DIR* safe_opendir(char* abspath){
+    DIR *dir = opendir(abspath);
+    if (dir == NULL) {
+        char *ERRSTR = (char *)safe_malloc(500);
+        if (errno == ENOTDIR) {
+            sprintf(ERRSTR, "%s is a file rather than a directory.", abspath);
+        }
+        else if (errno == ENFILE || errno == EMFILE) {
+            sprintf(ERRSTR, "Limit on the total number of open files has been reached.");
+        }
+        else if (errno == EACCES) {
+            sprintf(ERRSTR, "%s: Permission denied", abspath);
+        }
+        else if (errno == ENOMEM) {
+            sprintf(ERRSTR,
+                    "Out of memory");
+        }
+        else if (errno == ENOENT) {
+            sprintf(ERRSTR, "%s: No such directory", abspath);
+        }
+        errh(ERRSTR, 1);
+    } else{
+        return dir;
+    }
 }

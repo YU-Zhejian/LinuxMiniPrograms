@@ -7,7 +7,7 @@ PROGNAME=autozip
 __DO dd if=/dev/zero of=tf bs=512 count=1
 builtin mapfile -t < <(autozip 2>/dev/null | grep '>' | cut -f 1 -d '(' | xargs | tr ' ' '\n')
 for ext in gz bgz xz bz2 lzma lz4 zst lzo lz br Z lzfse; do
-    builtin echo "${MAPFILE[*]}" | grep '^'"${ext}"'$' &>>/dev/null || builtin continue
+    builtin echo "${MAPFILE[*]}" | grep '^'"${ext}"'$' &> /dev/null || builtin continue
     __DO autozip --force --parallel tf "${ext}" 1
     [ "${ext}" = "bz2" ] || __DO azlist tf."${ext}"
     __DO autounzip --force --remove --parallel tf."${ext}"
@@ -38,7 +38,7 @@ for ext in tar tgz; do
     __DO azlist td.asc."${ext}"
 done
 for ext in gz xz bz2 lzma lz4 zst lzo lz br 7z zip Z lzfse; do
-    builtin echo "${MAPFILE[*]}" | grep '^'"${ext}"'$' &>>/dev/null || builtin continue
+    builtin echo "${MAPFILE[*]}" | grep '^'"${ext}"'$' &> /dev/null || builtin continue
     ext="tar.${ext}"
     __DO autozip td --force --parallel -1 "${ext}"
     [ "${ext}" = "bz2" ] || __DO azlist td."${ext}"

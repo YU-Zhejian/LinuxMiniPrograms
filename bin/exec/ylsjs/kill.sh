@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-VERSION=1.5
+VERSION=1.6
 n=15
 for opt in "${UKOPT[@]}"; do
     case "${opt}" in
     "-h" | "--help")
-        yldoc ylsjs
+        man ylsjs
         builtin exit 0
         ;;
     "-v" | "--version")
@@ -32,9 +32,9 @@ __kill() {
         return
     fi
     PID=$(cat ${1}.i | tail -n 1)
-    killtree ${PID} ${n} || true
+    kill_tree ${PID} ${n} || true
     sleep 1
-    if ps -p ${PID} &>>/dev/null; then
+    if ps -p ${PID} &> /dev/null; then
         warnh "Failed to builtin kill ${1} with PID=${PID}. Retry with -n:9 option"
     else
         infoh "${1} killed"

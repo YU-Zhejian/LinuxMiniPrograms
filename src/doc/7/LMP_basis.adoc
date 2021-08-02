@@ -1,0 +1,236 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= LMP_basis(1)
+
+== NAME
+
+LMP_Basis - Basic configuration for YuZJLab LinuxMiniPrograms.
+
+== SYNOPSIS
+
+`man LMP_basis`
+
+// TODO: yldoc
+
+== DESCRIPTION
+
+This is a description manual; it shows you the basic configuration for YuZJLab LinuxMiniPrograms.
+
+== FOLDER STRUCTURE
+
+All codes and binaries of LinuxMiniProgram are installed in a well-organized order resembling FHS.
+
+Following shows a list of all directories which may be useful. Comments added are presented behind `#`.
+
+
+|===
+|Header 1 |Header 2
+
+|./.git/
+|[DEVELOPER ONLY] Git, a version control system.
+
+|./.gitignore
+|[DEVELOPER ONLY] Another file for Git, telling which to ignore.
+
+|./.idea/
+|[DEVELOPER ONLY] Files for JetBrains IDEs.
+
+|./etc/
+|Configuration files.
+
+|./html
+|Help files in HTML. You may use an internet browser to view these files.
+
+|./configure
+|The installer you've just used.
+
+|./lib
+|Libraries written in Shell Script which is used by executables in ./bin/ and may be useful in your own program.
+
+|./libpy
+|Python libraries. They may be useful in your own program.
+
+|./LICENSE.md
+|The license file.
+
+|./man
+|Help files in Groff Manpages. You may use command man to view these files. [NOT SUPPORTED ON BSD]
+
+|./opt
+|Optional programs.
+
+|./pdf
+|Help files in PDF. You may use a PDF viewer to view these files.
+
+|./Readme.md
+|The Readme.
+
+|./src
+|[DEVELOPER ONLY] Source code.
+
+|./TODO
+|What will happen net.
+
+|./var/
+|Variable files like logs.
+
+|./.vs/
+|[DEVELOPER ONLY] Files for Visual Studio Code.
+
+|./BeforeAdd.sh
+|Files for changing line endings. If you met problems in line endings, this file should be executed.
+
+|./bin
+|Here are the path of BINARIES; That is, what will get exected when you input names of them in a shell.
+
+|./bin/exec
+|Supplementary executable files for those in ./bin/
+
+|./usage
+|Help files in YuZJLab Usage. You may use command man to view these files.
+|===
+
+== EXECUTABLES USED IN THIS PROGRAM
+
+During installation, the installer will search for dependent executables inside the `${PATH}` variable and locate their GNU version as the default program of the LinuxMiniProgram. All path information will be recorded in `etc/linuxminiprograms/path.conf` and will be used in programs written in Shell Script. The reason why we make an extra `etc/linuxminiprograms/path.conf` instead of using the first executable found in `${PATH}` is that users in BSD systems may not want to use GNU executables by default, or there are multiple versions installed. In this circumstance, one may manually specify which to use.
+
+You may use `pathls -l` to list usable `${PATH}`.
+
+== COMPATIBILITY
+
+Although we tried our best to eliminate the experience difference between platforms, compatibility errors still exist. Following is a list of common compatibility problems found in LinuxMiniPrograms, please alert. More compatibility problems specified in each program can be found at corresponding manuals.
+
+WARNING: If ypu spot any problems, please firstly search for the manual of each program and `Readme.md`.
+
+=== Testing LinuxMiniPrograms for Your Operating System
+
+You may execute `make test` (`gmake` under FreeBSD or macOS) to test all programs inside LinuxMiniPrograms in your operating system. To test a specific program, use `make test TT=[PROGRAM]`. Use `make test_list` to list all available tests.
+
+A general testing procedure may like follows (Under Cygwin):
+
+[source]
+----
+0 2021-04-08_12-51-33 /cygdrive/d/Work/LinuxMiniPrograms (BSD u=)
+$ make test
+bash src/test/00_index.sh all
+INFO: Performing tests with args=all...
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/01_libdo.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/autozip.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/b16c.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/bhs.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/git-mirror.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/iomux.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/libdosh.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/livechat.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/pathls.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/pss.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/pst.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/yldoc.t.sh...PASS
+Executing /cygdrive/d/Work/LinuxMiniPrograms/src/test/ylsjs.t.sh...PASS
+----
+
+WARNING: Please stop all running LinuxMiniProgram when executing tests!
+
+=== GNU/Linux Distributions, including Windows Subsystem of Linux (WSL)
+
+There should be no compatibility problems in this platform because this is what this suite of program designed for. Tested and fully supported. If there are problems, they suppose to be bugs. Please report them.
+
+=== FreeBSD
+
+* `readlink` needs to support `-f` option. This can be solved by installing GNU CoreUtils. No and will not be fixed.
+* We need you to mount `proc` under `proc`. This can be done by (require root privilege ) adding `proc /proc procfs rw 0 0` to `/etc/fstab` with `mount -a` afterwards. No reboot is required.
+* Other BSD distributions like NetBSD or OpenBSD is not tested. We do not have that much time.
+
+=== Cygwin
+
+* There are differences between Cygwin's and GNU/Linux's `ps`. Fixed.
+* Please use Cygwin's Python and Ruby instead of those provided by Conda/Official Python distribution. Not but will be fixed. A way to determine whether this interpreter is compiled under Cygwin or Microsoft Windows is being developed.
+
+=== Git Bash
+
+Git bash is considered a modified version of Cygwin. So only limited support is provided.
+
+* If you install both Cygwin and Git Bash, there would be disagreement in a version of `Cygwin.dll`. Not and will not be fixed. Can be fixed by uninstalling one of them or, at least, remove `Cygwin.dll` of one distribution from the `${PATH}` environment variable of Windows. You should not worry about unable to use binaries provided by the distribution. You may specify the ${PATH}` environment variable in the startup script of your shell, like `${HOME}/.bashrc`.
+* Python and Ruby may fail: Refer to Cygwin.
+
+=== MSYS2
+
+MSYS2 is considered a modified version of Cygwin. So only limited support is provided.
+
+There will be same problems as Git Bash.
+
+=== macOS/Darwin
+
+Tested and supported. See <<FreeBSD>> for further details.
+
+=== Other Interesting UNIX-Like Operating Systems
+
+Not tested with unknown level of support. We would also like to provide support to other interesting UNIX-Like operating systems like MINIX or AIX, we lack usable hardware that may match those operating systems.
+
+However, as you may see the support information in FreeBSD, differences still exist when talking about UNIX-Like operating systems, especially those early ones. So use with care.
+
+== THE DOCUMENTATION SYSTEMS FOR USERS
+
+All documentation for user is written in Asciidoc except the help file of `configure`, or some programs located under `opt/`. Please execute `configure --help` refer to `Readme.md` under `opt` for more details.
+
+There are multiple documentation format supported. When installing the software by `./configure`, you can choose to build specific formats.
+
+For most programs in `bin/` or `lib/`, you can also use `program --help` to read manual. You may also search for help files in the directories listed below.
+
+=== Available Formats
+
+* Asciidoctor. The source format to generate formats below. They can be found at `src/doc`.
+* PDF. This is generated by command `asciidoctor` and can be found at the folder `pdf`.
+* HTML5. This is generated by command `asciidoctor` and can be found at the folder `html`.
+* Groff man. This is generated by command `asciidoctor` and can be found at the folder `man`. You can use command `man` to show the contents after restarting your `bash` shell. Please notice that BSD `man` may not support customized `${MANPATH}`.
+
+=== Using Documentation System
+
+The first documents to check is `LMP_basis` and `LMP_license`. It specifies the basic configuration of the LinuxMiniPrograms and what you should pay attention to if you like to share it with your friends. You can also use the command `man -l` to list all available documentations.
+
+Please read the documentation *BEFORE* using a software, otherwise you may experience data loss.
+
+To get help on `yldoc` or the format of YuZJLab Usage, just execute `man -h` or `man yldoc`.
+
+== DEVELOPING
+
+We are very glad to have you assist us in developing this software! Any help will be welcomed.
+
+=== Git as a Version Control System
+
+As we're developing programs mostly under Microsoft Windows, we **DO NOT** pay attention to file permissions. You can execute `git config core.filemode false` to make your own copy of repository ignore them as well.
+
+==== Branches on GitHub
+
+There are two main branches on GitHub: `master` and `testing`. `master` branch is a stable releasing branch and `testing` branch is cutting-edge developing branch. Other branches (e.g. `BSD`) should be considered as unstable.
+
+==== The Installer
+
+The installation process can be split into 2 phases: configuration and installation. The configuration is done by executing `configure` script, and installation is done by `make`. See the Asciidoc version of documentation of `configure` for more details.
+
+=== Other Documentations for Developers
+
+Developers should pay attention to the `Readme.adoc` under each folder and news in `src/news`. All documentations for developers are written in Asciidoc instead of Markdown due to its excellent extensibility. No complex syntax are used in the documentations and should be considered easy to understand by most readers with the experience of writing Markdown.
+
+To convert documentations from Asciidoc to the format you wish, you may use `asciidoc` or `asciidoctor`. Due to some incompatibility problems, using `pandoc` is not recommended.
+
+Documentations of Python libraries are included in those Python files.
+
+== UPGRADE
+
+Here are the instructions on how to upgrade LinuxMiniPrograms.
+
+. Use `git pull` to pull down the newest version.
+
+. Use `./configure` to re-generate `etc/linuxminiprograms/path.conf`. You may also re-compile the documentations.
+
+== LIFE CYCLE
+
+Deprecated programs are noted in LMP_deprecated. Execute `man LMP_deprecated` for more details.
+
+== SEE ALSO
+
+libisopt, yldoc, LMP_license, LMP_deprecated
+
+include::../include/copy.adoc[]

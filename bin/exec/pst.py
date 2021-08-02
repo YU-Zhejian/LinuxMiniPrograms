@@ -18,7 +18,7 @@ ISMACHINE = False
 for sysarg in sys.argv[1:]:
     if isopt(sysarg):
         if sysarg in ('-h', '--help'):
-            os.system('yldoc pst')
+            os.system('man pst')
             sys.exit(0)
         elif sysarg in ('-v', '--version'):
             print(str(VERSION) + ' in Python')

@@ -1,0 +1,55 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= ylmktbl(1)
+
+== NAME
+
+ylmktbl - A command to make tables.
+
+== SYNOPSIS
+
+ylmktbl [OPTIONS] ${tabel_file}
+
+include::../include/cmnopt.adoc[]
+
+== DESCRIPTION
+
+On executing, the program will check whether there's an active Python installation in `etc/python.conf`. If so, a Python script will be used.
+
+Use `ylmktbl ${tabel_file}` to print table from a table file.
+
+The table file can be separated into two parts: column instructions and main body. Colum's instruction is started with `#` and records the specific option of a particular column. Those started in S means if the length of this column exceeds the value after S, the column will be shrunk by adding `...`. The columns should be separated by `;`.
+
+Please note that the `ylmktbl` written in Shell script is no longer monitored and updates may not be provided. Please use the Python version instead.
+
+== EXAMPLE
+
+This is an example of YuZJLab table file.
+
+[source]
+----
+#1
+#S90
+#1
+#1
+NO.;COMMAND;EXIT;TIME
+1;bwa mem -M -R @RG"tID:case4_techrep_2tSM:case4_techrep_2tLB:WXStPL:Illumina" /gpfsdata/hg38.fa 1.fq 2.fq;0;3:47:51
+----
+
+Outcome:
+
+[source]
+----
+============================================================================================================|
+|NO.|COMMAND                                                                                   |EXIT|TIME   |
+============================================================================================================|
+|1  |bwa mem -M -R @RG"tID:case4_techrep_2tSM:case4_techrep_2tLB:WXStPL:Illumina" /gpfsdata/...|0   |3:47:51|
+============================================================================================================|
+----
+
+== SEE ALSO
+
+LMP_basis
+
+include::../include/copy.adoc[]

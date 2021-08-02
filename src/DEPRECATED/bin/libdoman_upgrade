@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -ue
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.conf
+. "${DN}"/../etc/linuxminiprograms/path.conf
 . "${DN}"/../lib/libstr
 warnh "This program is no longer monitored and updates may not be provided!"
 for fn in "${@}"; do

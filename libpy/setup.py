@@ -6,13 +6,12 @@ The installation script
 from setuptools import setup
 
 VERSION = 1.1
-# TODO: Implement installation.
 
 setup(name='linuxminipy',
-      version=1,
-      description='web.py: makes web apps',
+      version=VERSION,
+      description='Python libraries for LinuxMiniPrograms',
       author='YuZJ',
-      author_email='me@aaronsw.com',
+      author_email='theafamily@126.com',
       maintainer='YuZJ',
       maintainer_email='anandology@gmail.com',
       url='https://github.com/YuZJLab/LinuxMiniPrograms',

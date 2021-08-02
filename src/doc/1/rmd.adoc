@@ -1,0 +1,34 @@
+:toc:
+:author: YU Zhejian [Zhejian.19@intl.zju.edu.cn]
+
+= rmd(1)
+
+== NAME
+
+rmd - YuZJLab RMarkDown Compiler.
+
+== SYNOPSIS
+
+`rmd [filename] [[filename] ...] [OPTIONS]`
+
+== DESCRIPTION
+
+A wrapper which compiles RMarkdown file `[filename]` with `knitr`.
+
+== OPTIONS
+
+include::../include/cmnopt.adoc[]
+
+== COMPATIBILITY
+
+Tested with GNU R version 4.0.4. Not tested with Microsoft Open R.
+
+=== BSD
+
+Tested with all functions supported.
+
+=== Cygwin
+
+The R installation on CYGWin may not be functional.
+
+include::../include/copy.adoc[]

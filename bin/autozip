@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=6.5
+VERSION=6.6
 # ============ Functions ============
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
@@ -122,11 +122,11 @@ t*z)
     # shellcheck disable=SC2154
     [ "${my7z}" != 'ylukh' ] || errh "p7zip NO exist"
     __cklvl 7z
-    # TODO: No implement
+    # T_ODO: No implement
     if [ "${fn}" = "/dev/stdin" ] || ${STDOUT}; then
         errh "Not implemented in 7zip"
     fi
-    # TODO: No implement
+    # T_ODO: No implement
     #if ${STDOUT}; then
     #	"${my7za}" a -aoa -so "${fn}" -mmt=${THREAD} ${LVL} -t7z
     #else
@@ -134,7 +134,7 @@ t*z)
     #fi
     ;;
 "zip")
-    # TODO: No implement
+    # T_ODO: No implement
     if [ "${fn}" = "/dev/stdin" ]; then
         errh "Not implemented in zip"
     fi
@@ -161,11 +161,11 @@ t*z)
 "rar")
     # shellcheck disable=SC2154
     [ "${myrar}" != 'ylukh' ] || errh "rar NO exist"
-    # TODO: No implement
+    # T_ODO: No implement
     if [ "${fn}" = "/dev/stdin" ]; then
         errh "Not implemented in RAR"
     fi
-    # TODO: No implement
+    # T_ODO: No implement
     #if ${STDOUT}; then
     #	"${myrar}" -mt${THREAD} a /dev/stdout "${fn}"
     #else

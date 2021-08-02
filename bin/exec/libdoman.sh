@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=7.5
+VERSION=7.6
 . "${DN}"/../shlib/libinclude.sh
 __include libisopt
 __include libstr
@@ -11,7 +11,7 @@ for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
         "-h" | "--help")
-            yldoc libdoman
+            man libdoman
             builtin exit 0
             ;;
         "-v" | "--version")

@@ -1,5 +1,5 @@
 # VERSION=1.0
-TARGETS = pst.co
+TARGETS = pst.co enigma.co
 
 SOURCES := $(wildcard *.c *.cpp)
 OBJECTS := $(SOURCES:.c=.o)
@@ -11,6 +11,9 @@ LDFLAGS += -lyuzjstd
 all: $(TARGETS)
 
 .PHONY : all
+
+enigma.co: enigma.lo
+	$(LIBTOOL) --tag=CC --mode=link $(LIBTOOL_FLAGS) $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@ $<
 
 pst.co: pst.lo
 	$(LIBTOOL) --tag=CC --mode=link $(LIBTOOL_FLAGS) $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -lpthread -o $@ $<

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-VERSION=1.12
+VERSION=1.13
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 
-. "${DN}"/../etc/path.conf
+. "${DN}"/../etc/linuxminiprograms/path.conf
 . "${DN}"/../shlib/libinclude.sh
 __include libisopt
 __include libstr
@@ -14,7 +14,7 @@ for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
         "-h" | "--help")
-            yldoc pss
+            man pss
             builtin exit 0
             ;;
         "-v" | "--version")
@@ -34,7 +34,7 @@ for opt in "${@}"; do
 done
 psstmp=$(mktemp -t psstmp.XXXXXX)
 pssstmp=$(mktemp -t psstmp.XXXXXX)
-if ! ps --version &>>/dev/null; then
+if ! ps --version &> /dev/null; then
     ps -al &>"${psstmp}"
 elif [[ $(ps --version) == *"Cygwin"* ]]; then
     ps -aeW &>"${psstmp}"

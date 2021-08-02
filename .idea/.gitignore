@@ -8,3 +8,4 @@
 /rGraphicsSettings.xml
 /csv-plugin.xml
 *sonar*
+/dataSources.local.xml

@@ -17,4 +17,4 @@ WARNING: This only makes the system forget this repository. The repository itsel
 
 OPTION: `-f` for force removal without confirmation.
 
-include::include/copy.adoc[]
+include::../include/copy.adoc[]

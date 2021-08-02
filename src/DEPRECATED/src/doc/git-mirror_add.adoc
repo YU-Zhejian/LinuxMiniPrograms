@@ -41,4 +41,4 @@ remote: Compressing objects: 100% (35/35), done.
 remote: Total 49 (delta 28), reused 35 (delta 14), pack-reused 0
 ----
 
-include::include/copy.adoc[]
+include::../include/copy.adoc[]

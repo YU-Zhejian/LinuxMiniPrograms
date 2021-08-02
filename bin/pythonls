@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-VERSION=1.4
-# TODO: docs
+VERSION=1.5
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.conf
+. "${DN}"/../etc/linuxminiprograms/path.conf
 . "${DN}"/../shlib/libinclude.sh
 __include libisopt
 __include libstr
@@ -30,7 +29,7 @@ for dir in "${eachpath[@]}"; do
 done
 
 # shellcheck disable=SC2034
-INPATH="${PYTHONPATH}:$(cat "${tmpf}" | tr '\n' ':')"
+INPATH="${PYTHONPATH:-}:$(cat "${tmpf}" | tr '\n' ':')"
 rm "${tmpf}"
 validate_path "${INPATH}"
 builtin mapfile -t eachpath < <(builtin echo ${valid_path} | tr ':' '\n')
@@ -40,7 +39,7 @@ for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
         "-h" | "--help")
-            yldoc includels
+            man includels
             builtin exit 0
             ;;
         "-v" | "--version")

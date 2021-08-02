@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.6
+VERSION=1.7
 builtin set -eu
 builtin declare -i YLSJSD_MAX_JOB
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../../etc/path.conf
+. "${DN}"/../../etc/linuxminiprograms/path.conf
 . "${DN}"/../../shlib/libinclude.sh
 __include libisopt
 __include libstr
 __include libman
 
 if [ -z "${YLSJSD_MAX_JOB:-}" ]; then
-    YLSJSD_MAX_JOB=$(getcorenumber)
+    YLSJSD_MAX_JOB=$(get_core_number)
 fi
 if [ -z "${YLSJSD_HOME:-}" ]; then
-    YLSJSD_HOME="${DN}"/../../var/ylsjs.d
+    YLSJSD_HOME="${DN}"/../../var/linuxminiprograms/ylsjs.d
 fi
 builtin echo ${$} >>ylsjsd.lock
 infoh "ylsjsd started at $(date)"
@@ -32,7 +32,7 @@ while true; do
     # shellcheck disable=SC2010
     ls -1 2>/dev/null | grep '\.i' | sed 's;.i$;;' | while builtin read ps_name; do
         PID=$(cat ${ps_name}.i | tail -n 1)
-        if ! ps -p ${PID} &>>/dev/null; then
+        if ! ps -p ${PID} &> /dev/null; then
             mv "${ps_name}.i" "${ps_name}.f"
             date +%s >${ps_name}.end
         fi

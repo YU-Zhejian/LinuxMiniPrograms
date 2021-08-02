@@ -26,7 +26,7 @@ def main():
                 sys.exit(0)
         else:
             STDS.append(sysarg)
-    # TODO: lock
+    # T#O#D#O: lock
     my_uuid_table = libgitm.UuidTable()
     my_gitm_log = libgitm.GitmLog()
     for my_url in STDS:

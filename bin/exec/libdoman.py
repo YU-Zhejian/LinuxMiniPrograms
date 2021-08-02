@@ -3,7 +3,7 @@
 '''
 LibDO Manager in Python.
 '''
-from libpy.linuxminipy.libstr import ANSI_YELLOW,ANSI_CLEAR,ANSI_CRAYON
+from linuxminipy.libstr import ANSI_YELLOW,ANSI_CLEAR,ANSI_CRAYON
 import os
 import sys
 from datetime import datetime
@@ -29,7 +29,7 @@ def main():
     for sysarg in sys.argv[1:]:
         if isopt(sysarg):
             if sysarg in ('-h', '--help'):
-                os.system('yldoc libdoman')
+                os.system('man libdoman')
                 sys.exit(0)
             elif sysarg in ('-v', '--version'):
                 print(str(VERSION) + ' in Python, compatible with libdo 2 & 3')

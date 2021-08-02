@@ -19,7 +19,7 @@ WARNING: This program is no longer monitored and updates may not be provided!
 
 == OPTIONS
 
-include::include/cmnopt.adoc[]
+include::../include/cmnopt.adoc[]
 * `-d` To decode instead of encode.
 
 == EXAMPLES
@@ -68,4 +68,4 @@ Error in MSYS2.
 
 enigma
 
-include::include/copy.adoc[]
+include::../include/copy.adoc[]

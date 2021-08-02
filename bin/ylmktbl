@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=4.5
+VERSION=4.6
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.conf
+. "${DN}"/../etc/linuxminiprograms/path.conf
 # shellcheck disable=SC2154
 if [ "${mypython}" != "ylukh" ]; then
     builtin exec "${mypython}" "${DN}"/exec/ylmktbl.py "${@}"

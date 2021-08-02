@@ -29,6 +29,10 @@
       <excludeFolder url="file://$MODULE_DIR$/src/C/build" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/sonarlint" />
       <excludeFolder url="file://$MODULE_DIR$/src/autom4te.cache" />
+      <excludeFolder url="file://$MODULE_DIR$/libpy/build" />
+      <excludeFolder url="file://$MODULE_DIR$/libpy/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/libpy/linuxminipy.egg-info" />
+      <excludeFolder url="file://$MODULE_DIR$/src/C/.vscode" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.9" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

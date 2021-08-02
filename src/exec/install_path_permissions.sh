@@ -1,47 +1,31 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.10
+VERSION=1.11
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")/../../")"
 builtin cd "${DN}"
 . shlib/libinclude.sh
 VAR_install_shinclude=false
-if ! __core_include libstr &>>/dev/null; then
+if ! __core_include libstr &> /dev/null; then
     export SH_INCLUDE_PATH="${SH_INCLUDE_PATH:-}:${PWD}/shlib"
     VAR_install_shinclude=true
 fi
 
 __include libstr
-. etc/path.conf
+__include libman
+. etc/linuxminiprograms/path.conf
 
-__rc_write() {
-    builtin echo "${1}" | tee -a "${HOME}"/.bashrc | tee -a "${HOME}"/.zshrc
-    # TODO: Support SH
-}
-
-#========Install PATH========
-if ! which yldoc &>/dev/null; then
-    __rc_write "export PATH=\"${DN}/bin/:\${PATH:-}\""
-    infoh "Will configure PATH (bin)...${ANSI_GREEN}PASSED"
-fi
-if ! which ylsjsd &>/dev/null; then
-    __rc_write "export PATH=\"${DN}/sbin/:\${PATH:-}\""
-    infoh "Will configure PATH (sbin)...${ANSI_GREEN}PASSED"
-fi
-if ${VAR_install_shinclude}; then
-    __rc_write "export SH_INCLUDE_PATH=\"${DN}/shlib/:\${SH_INCLUDE_PATH:-}\""
-    infoh "Will configure PATH (sbin)...${ANSI_GREEN}PASSED"
-fi
 #========Install PYTHONPATH========
 # shellcheck disable=SC2154
-if [ "${mypython}" != "ylukh" ] && ! builtin echo "from linuxminipy.libylfile import *" | "${mypython}" &>>/dev/null; then
-    __rc_write "export PYTHONPATH=\"${DN}/libpy/:\${PYTHONPATH:-}\""
+if [ "${mypython}" != "ylukh" ] && ! has_python_package linuxminipy "${mypython}"; then
+    if has_python_package setuptools "${mypython}" ;then
+        builtin cd "${DN}"/libpy || exit 1
+        "${mypython}" setup.py install
+        builtin cd .. || exit 1
+    else
+        warnh "setuptools not found! Please install Python libraries located at ${DN}/libpy manually."
+    fi
     infoh "Will configure PYTHONPATH...${ANSI_GREEN}PASSED"
-fi
-#========Install MANPATH========
-if [ -e man/man1 ] && ! man yldoc &>>/dev/null; then
-    __rc_write "export MANPATH=\"${DN}/man/:\${MANPATH:-}\""
-    infoh "Will configure MANPATH...${ANSI_GREEN}PASSED"
 fi
 #========Install Permissions========
 __change_dir_permissions() {

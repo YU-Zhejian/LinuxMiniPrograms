@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=1.5
+VERSION=1.6
 VERBOSE=false
 TOP=false
 PST=false
@@ -13,7 +13,7 @@ for opt in "${UKOPT[@]}"; do
     if isopt "${opt}"; then
         case "${opt}" in
         "-h" | "--help")
-            yldoc ylsjs
+            man ylsjs
             builtin exit 0
             ;;
         "-v" | "--version")

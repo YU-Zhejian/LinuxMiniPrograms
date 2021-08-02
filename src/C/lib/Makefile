@@ -17,7 +17,7 @@ all: $(TARGETS)
 	$(LIBTOOL) --tag=CC --mode=link $(LIBTOOL_FLAGS) $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $<
 
 libyuzjstd.la: yuzjstd_core.lo yuzjstd_str.lo yuzjstd_io.lo
-	$(LIBTOOL) --tag=CC --mode=link $(LIBTOOL_FLAGS) $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+	$(LIBTOOL) --tag=CC --mode=link $(LIBTOOL_FLAGS) $(CC) $(CFLAGS) $(LDFLAGS) -lpcre2-posix -o $@ $^
 
 %.lo: %.c
 	$(LIBTOOL) --tag=CC --mode=compile  $(LIBTOOL_FLAGS) $(CC) $(CFLAGS) $(CPPFLAGS) $< -c -o $@

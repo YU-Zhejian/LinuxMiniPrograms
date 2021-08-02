@@ -1,15 +1,16 @@
 = Readme for `C`
 
-Here stores the source code of all C programs. A `CMakeList` is provided to help you install this program stand-alone.
+Here stores the source code of all LMP programs written in C, and its supporting headers and libraries. A `CMakeList` is provided to help you install this program stand-alone.
 
-// TODO
+WARNING: Before you proceed, please deactivate Conda!
 
-The documentations for shared libraries are listed in `doc` folder.
+== Using Shared Libraries in LinuxMiniProgram
 
+All C programs in LMP uses `libylstd`, a wrapper of multiple system functions.
+
+The documentations for shared libraries are listed in `LMP/src/doc/7/` folder.
 
 == Linting and Testing
-
-The code listed here can be linted using ``
 
 You may install SonarLint in your IDE. SonarLint is open source, free and installable in popular IDEs like VSCode or Intellij IDEA.
 

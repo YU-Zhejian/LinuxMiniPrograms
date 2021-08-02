@@ -1,7 +1,7 @@
-__LIBSTR_VERSION=1.2
+__LIBSTR_VERSION=1.3
 """
 Python version of shlib/libstr, includes common string-output utilities.
-See 'yldoc libstr' for more details.
+See 'man libstr' for more details.
 """
 import os
 import re

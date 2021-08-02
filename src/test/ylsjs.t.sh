@@ -4,10 +4,10 @@ DN="$(readlink -f "$(dirname "${0}")")"
 # shellcheck disable=SC2034
 PROGNAME=ylsjs
 . "${DN}"/00_libtest.sh
-. "${DN}"/../../etc/path.conf
+. "${DN}"/../../etc/linuxminiprograms/path.conf
 . "${DN}"/../../shlib/libinclude.sh
 __include libman
-CORENUM=$((2 * $(getcorenumber)))
+CORENUM=$((2 * $(get_core_number)))
 builtin export YLSJSD_HOME
 YLSJSD_HOME="${PWD}/ylsjs.d"
 __DO ylsjsd stop
