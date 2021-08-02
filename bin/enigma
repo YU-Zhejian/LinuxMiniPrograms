@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.4
+VERSION=1.5
 # TODO: Add C Version
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../shlib/libinclude.sh
 __include libstr
-. "${DN}"/../etc/path.conf
-mkdir -p "${DN}"/../var/enigma.d
+. "${DN}"/../etc/linuxminiprograms/path.conf
+mkdir -p "${DN}"/../var/linuxminiprograms/enigma.d
 for fn in "${DN}"/exec/enigma.co "${DN}"/exec/enigma.co.exe; do
     [ -e "${fn}" ] && builtin exec "${fn}" "${@}"
 done

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=3.9
+VERSION=3.10
 _grep() {
     builtin local regstr
     regstr="${1}"
@@ -23,7 +23,7 @@ for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
         "-h" | "--help")
-            yldoc pathls
+            man pathls
             builtin exit 0
             ;;
         "-v" | "--version")

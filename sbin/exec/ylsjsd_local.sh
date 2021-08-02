@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.6
+VERSION=1.7
 builtin set -eu
 builtin declare -i YLSJSD_MAX_JOB
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../../etc/path.conf
+. "${DN}"/../../etc/linuxminiprograms/path.conf
 . "${DN}"/../../shlib/libinclude.sh
 __include libisopt
 __include libstr
@@ -14,7 +14,7 @@ if [ -z "${YLSJSD_MAX_JOB:-}" ]; then
     YLSJSD_MAX_JOB=$(get_core_number)
 fi
 if [ -z "${YLSJSD_HOME:-}" ]; then
-    YLSJSD_HOME="${DN}"/../../var/ylsjs.d
+    YLSJSD_HOME="${DN}"/../../var/linuxminiprograms/ylsjs.d
 fi
 builtin echo ${$} >>ylsjsd.lock
 infoh "ylsjsd started at $(date)"

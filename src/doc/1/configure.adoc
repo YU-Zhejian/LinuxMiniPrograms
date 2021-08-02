@@ -16,7 +16,7 @@ configure - YuZJLab LinuxMiniPrograms Configuration Script
 Configure YuZJLab LinuxMiniPrograms with options. It will generate:
 
 . `GNUmakefile` for building this program.
-. `etc/path.conf` where paths of the executables used are recorded (See LMP_basis for more information).
+. `etc/linuxminiprograms/path.conf` where paths of the executables used are recorded (See LMP_basis for more information).
 
 == OPTIONS
 
@@ -26,10 +26,9 @@ include::../include/cmnopt.adoc[]
 * `--clear-history` (Re)Install histories in `var`.
 * `--install-doc` Install all documentations, need 'asciidoctor' 'asciidoctor-pdf' (available from Ruby gems) or 'asciidoc' (available from Python pip) and Python 3.
 * `--install-man` Install Groff man to `share/man`, need `asciidoctor`.
-* `--install-usage` Install yldoc usage to `share/doc/usage`, need python 3.
 * `--install-pdf` Install doc in pdf to `share/doc/pdf`, need `asciidoctor-pdf`.
 * `--install-html` Install doc in html to `share/doc/html`, need `asciidoctor` or `asciidoc`.
-* `--skip-path` Do not update `etc/path.conf`.
+* `--skip-path` Do not update `etc/linuxminiprograms/path.conf`.
 
 == EXAMPLES
 
@@ -70,8 +69,8 @@ cat found in /usr/bin/cat, GNU version in GNU/Linux systems
 chmod found in /usr/bin/chmod, GNU version in GNU/Linux systems
 [...]
 lzop found in /usr/bin/lzop
-WARNING: pbz2 still not found. Please configure it manually in /mnt/d/Software/LinuxMiniPrograms/etc/path.conf
-WARNING: pbzip still not found. Please configure it manually in /mnt/d/Software/LinuxMiniPrograms/etc/path.conf
+WARNING: pbz2 still not found. Please configure it manually in /mnt/d/Software/LinuxMiniPrograms/etc/linuxminiprograms/path.conf
+WARNING: pbzip still not found. Please configure it manually in /mnt/d/Software/LinuxMiniPrograms/etc/linuxminiprograms/path.conf
 pigz found in /usr/bin/pigz
 [...]
 make found in /usr/bin/make
@@ -179,7 +178,7 @@ pp:
 	 @-$(MAKE) -C opt permissions
 ----
 
-They all generate `etc/path.conf` as follows:
+They all generate `etc/linuxminiprograms/path.conf` as follows:
 
 [source,bash]
 ----

@@ -29,7 +29,7 @@ def main():
     for sysarg in sys.argv[1:]:
         if isopt(sysarg):
             if sysarg in ('-h', '--help'):
-                os.system('yldoc libdoman')
+                os.system('man libdoman')
                 sys.exit(0)
             elif sysarg in ('-v', '--version'):
                 print(str(VERSION) + ' in Python, compatible with libdo 2 & 3')

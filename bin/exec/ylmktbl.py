@@ -19,7 +19,7 @@ def main():
     for sysarg in sys.argv[1:]:
         if isopt(sysarg):
             if sysarg in ('-h', '--help'):
-                os.system('yldoc ylmktbl')
+                os.system('man ylmktbl')
                 sys.exit(0)
             elif sysarg in ('-v', '--version'):
                 print(str(VERSION) + ' in Python')

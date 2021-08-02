@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
-VERSION=1.5
+VERSION=1.6
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.conf
+. "${DN}"/../etc/linuxminiprograms/path.conf
 . "${DN}"/../shlib/libinclude.sh
 __include libisopt
 __include libstr
 __include libman
-touch "${DN}"/../etc/ylsjsd.conf
-. "${DN}"/../etc/ylsjsd.conf
+touch "${DN}"/../etc/linuxminiprograms/ylsjsd.conf
+. "${DN}"/../etc/linuxminiprograms/ylsjsd.conf
 if [ -z "${YLSJSD_HOME:-}" ]; then
-    warnh "YLSJSD_HOME undefined. Will use ${DN}/../var/ylsjs.d"
-    YLSJSD_HOME="${DN}"/../var/ylsjs.d
+    warnh "YLSJSD_HOME undefined. Will use ${DN}/../var/linuxminiprograms/ylsjs.d"
+    YLSJSD_HOME="${DN}"/../var/linuxminiprograms/ylsjs.d
 fi
 mkdir -p "${YLSJSD_HOME}"
 builtin cd "${YLSJSD_HOME}"
@@ -20,7 +20,7 @@ for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
         "-h" | "--help")
-            yldoc ylsjs
+            man ylsjs
             builtin exit 0
             ;;
         "-v" | "--version")

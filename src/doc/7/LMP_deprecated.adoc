@@ -9,7 +9,7 @@ LMP_deprecated - Deprecated functions of LinuxMiniPrograms
 
 == SYNOPSIS
 
-`yldoc LMP_deprecated`
+`man LMP_deprecated`
 
 == DESCRIPTION
 

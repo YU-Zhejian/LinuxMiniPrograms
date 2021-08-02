@@ -71,7 +71,9 @@ For those who use the second piece of command, please remove those files with `.
 
 ## Help \& Documentation \& Supporting
 
-After installation, you can execute `yldoc -l` to get a complete list of all available documentation and view them by using `yldoc [name]` to access documentations for `[NAME]`. You can also find PDF, HTML, and other documentation formats in the corresponding folder if you enable `--install-doc` flag when executing `configure`.
+// TODO: yldoc
+
+After installation, you can execute `man -l` to get a complete list of all available documentation and view them by using `man [name]` to access documentations for `[NAME]`. You can also find PDF, HTML, and other documentation formats in the corresponding folder if you enable `--install-doc` flag when executing `configure`.
 
 It is recommended to read the `LMP_basis` to know the basic configurations to Linux MiniPrograms. News for the developers are listed in `src/news` in Asciidoc. See `Readme.adoc` in `src/` for further details.
 

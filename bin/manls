@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-VERSION=1.5
+VERSION=1.6
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.conf
+. "${DN}"/../etc/linuxminiprograms/path.conf
 . "${DN}"/../shlib/libinclude.sh
 __include libisopt
 __include libstr
@@ -16,7 +16,7 @@ locallib=$(for dir in \
     $(__addpref 'share/man'); do builtin echo "${dir}"; done | grep -v '*' | tr '\n' ':')
 
 # shellcheck disable=SC2034
-INPATH="$(manpath 2>/dev/null || true):${locallib}:$(cat /usr/local/etc/man.d/*.conf 2>/dev/null | grep -v \# | grep MANPATH | cut -f 2 -d ' ' | tr '\n' ':' || true):${MANPATH:-}"
+INPATH="$(manpath 2>/dev/null || true):${locallib}:$(cat /usr/local/etc/linuxminiprograms/man.d/*.conf 2>/dev/null | grep -v \# | grep MANPATH | cut -f 2 -d ' ' | tr '\n' ':' || true):${MANPATH:-}"
 
 validate_path "${INPATH}"
 # shellcheck disable=SC2154
@@ -27,7 +27,7 @@ for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
         "-h" | "--help")
-            yldoc manls
+            man manls
             builtin exit 0
             ;;
         "-v" | "--version")

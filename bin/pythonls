@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-VERSION=1.4
+VERSION=1.5
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.conf
+. "${DN}"/../etc/linuxminiprograms/path.conf
 . "${DN}"/../shlib/libinclude.sh
 __include libisopt
 __include libstr
@@ -39,7 +39,7 @@ for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
         "-h" | "--help")
-            yldoc includels
+            man includels
             builtin exit 0
             ;;
         "-v" | "--version")

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=6.5
+VERSION=6.6
 # ============ Functions ============
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")/../")"
@@ -208,7 +208,7 @@ else
         __cklvl bgz
         cmd="${mybgzip} -fc -@ ${THREAD} ${LVL}"
         ;;
-        # TODO: No implement
+        # T_ODO: No implement
         #"7z")
         #	if [ "${my7za}" != 'ylukh' ]; then
         #		__cklvl 7z
@@ -216,7 +216,7 @@ else
         #	fi
         #	;;
     "zip")
-        # TODO: No implement
+        # T_ODO: No implement
         #if [ "${my7za}" != 'ylukh' ]; then
         #	__cklvl 7z
         #	cmd_exec="${my7za} a -aoa -si stdout -so -y -mmt=${THREAD} ${LVL} -tzip"
@@ -225,7 +225,7 @@ else
             cmd="${myzip} --verbose ${LVL}"
         fi
         ;;
-    # TODO: No implement
+    # T_ODO: No implement
     #"rar")
     #	if [ "${myrar}" != 'ylukh' ]; then
     #		__cklvl rar

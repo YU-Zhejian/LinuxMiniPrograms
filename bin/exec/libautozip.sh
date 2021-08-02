@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# VERSION=6.7
+# VERSION=6.8
 
-. "${DN}"/../etc/path.conf
+. "${DN}"/../etc/linuxminiprograms/path.conf
 . "${DN}"/../shlib/libinclude.sh
 __include libisopt
 __include libstr
@@ -20,7 +20,7 @@ for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
         "-h" | "--help")
-            yldoc autozip
+            man autozip
             builtin exit 0
             ;;
         "-v" | "--version")

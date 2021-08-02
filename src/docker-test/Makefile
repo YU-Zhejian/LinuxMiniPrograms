@@ -1,6 +1,8 @@
 SOURCES := $(wildcard out/*.Dockerfile)
 RUN_TARGETS := $(foreach fn, $(SOURCES), $(addsuffix .run, $(fn)))
 
+# TODO: Need pandas and setuptools
+
 # Disable implicit rules and variables
 MAKEFLAGS += --no-builtin-rules
 .SUFFIXES:

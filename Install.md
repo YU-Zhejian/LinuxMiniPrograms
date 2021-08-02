@@ -80,7 +80,7 @@ For most programs written in Shell, the following programs will be needed and GN
 
 * Some programs such as `libmktbl` have their Python version (Need Python>=3.5), which is typically faster than those written in Shell script. There are also programs written purely in Python,
   like `libdo-monitor`. During the configuring process of LinuxMiniPrograms, the installer will search for all Python 3 interpreters inside your `${PATH}` variable and locate the newest Python
-  interpreter as the default Python interpreter of the LinuxMiniPrograms. However, you can modify this by editing `etc/path.conf` to specific your own Python interpreter.
+  interpreter as the default Python interpreter of the LinuxMiniPrograms. However, you can modify this by editing `etc/linuxminiprograms/path.conf` to specific your own Python interpreter.
 
 * Some programs such as `pst` have its C version, which is faster than those written in Python. You may need to install GNU Compiler Collection (gcc)>=4.4 (Available from <http://gcc.gnu.org/>) or FreeBSD Clang for FreeBSD\* to build these programs. You also need `libtool` in your PATH (Available from <https://www.gnu.org/software/libtool/>) to provide compatibility.
 

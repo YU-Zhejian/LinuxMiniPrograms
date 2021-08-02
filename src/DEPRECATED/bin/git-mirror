@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-VERSION=1.8
+VERSION=1.9
 DN="$(readlink -f "$(dirname "${0}")")"
 set -ue
 trap '' SIGINT
 touch "${DN}"/../etc/git-mirror.conf
 . "${DN}"/../lib/libisopt
 . "${DN}"/../lib/libstr
-. "${DN}"/../etc/path.conf
+. "${DN}"/../etc/linuxminiprograms/path.conf
 . "${DN}"/../etc/git-mirror.conf
 . "${DN}"/exec/gitm/libgitm.sh
 infoh "YuZJLab Git Mirror Manager"

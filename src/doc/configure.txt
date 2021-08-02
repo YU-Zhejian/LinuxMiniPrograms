@@ -18,10 +18,10 @@ OPTIONS:
 	--install-doc Install all documentations, need 'asciidoctor' 'asciidoctor-pdf' (available from Ruby gems)
 		or 'asciidoc' (available from Python pip) and Python 3.
 	--install-man Install Groff man, need 'asciidoctor'.
-	--install-usage Install yldoc usage, need Python 3.
+	--install-usage Install man usage, need Python 3.
 	--install-pdf Install doc in pdf, need 'asciidoctor-pdf'.
 	--install-html Install doc in html, need 'asciidoctor' or 'asciidoc'.
-	--skip-path Do not update etc/path.conf
+	--skip-path Do not update etc/linuxminiprograms/path.conf
 	-x Enter tracing mode.
 
 	If no opt is given, the default mode will be used.

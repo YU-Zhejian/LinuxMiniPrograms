@@ -110,7 +110,7 @@ def main():
     for sysarg in sys.argv[1:]:
         if isopt(sysarg):
             if sysarg in ('-h', '--help'):
-                os.system('yldoc pathls')
+                os.system('man pathls')
                 sys.exit(0)
             elif sysarg in ('-v', '--version'):
                 print(str(VERSION) + ' in Python')

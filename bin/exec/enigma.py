@@ -70,12 +70,12 @@ class Enigma():
 def main():
     enigmagear = []
     startingstring = ''
-    os.chdir(os.path.abspath(os.path.dirname(sys.argv[0]) + '/../../var/enigma.d/'))
+    os.chdir(os.path.abspath(os.path.dirname(sys.argv[0]) + '/../../var/linuxminiprograms/enigma.d/'))
     decode = False
     for sysarg in sys.argv[1:]:
         if isopt(sysarg):
             if sysarg in ('-h', '--help'):
-                os.system('yldoc b16c')
+                os.system('man b16c')
                 sys.exit(0)
             elif sysarg in ('-v', '--version'):
                 print(str(VERSION) + ' in Python')

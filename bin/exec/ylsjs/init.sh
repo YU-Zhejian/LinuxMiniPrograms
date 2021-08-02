@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-VERSION=1.4
+VERSION=1.5
 NAME="UK"
 for opt in "${UKOPT[@]}"; do
     case "${opt}" in
     "-h" | "--help")
-        yldoc ylsjs
+        man ylsjs
         builtin exit 0
         ;;
     "-v" | "--version")

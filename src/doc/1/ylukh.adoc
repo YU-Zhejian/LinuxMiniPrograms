@@ -17,12 +17,12 @@ This application will generate output like
 
 [source]
 ----
-YuZJLab UnKnown Handler: command not found. Please check /mnt/d/Software/LinuxMiniPrograms/etc/path.conf
+YuZJLab UnKnown Handler: command not found. Please check /mnt/d/Software/LinuxMiniPrograms/etc/linuxminiprograms/path.conf
 ----
 
 and return error 127.
 
-If you see this error, you might execute `configure` again to generate a newer version of `etc/path.conf`, or to check whether they are dependencies unsolved.
+If you see this error, you might execute `configure` again to generate a newer version of `etc/linuxminiprograms/path.conf`, or to check whether they are dependencies unsolved.
 
 == COMPATIBILITY
 
@@ -36,7 +36,7 @@ Tested with all functions supported.
 
 == FILE
 
-`etc/path.conf` The file which locates all binaries.
+`etc/linuxminiprograms/path.conf` The file which locates all binaries.
 
 == SEE ALSO
 

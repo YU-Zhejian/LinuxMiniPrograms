@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-VERSION=1.11
+VERSION=1.12
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
-. "${DN}"/../etc/path.conf
+. "${DN}"/../etc/linuxminiprograms/path.conf
 . "${DN}"/../shlib/libinclude.sh
 __include libisopt
 __include libstr
+warnh "This program is no longer monitored and updates may not be provided"
 infoh "YuZJLab Documentation System"
 infoh "Copyright (C) 2019-2021 YU Zhejian"
 

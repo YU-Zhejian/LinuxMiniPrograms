@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
-VERSION=2.6
+VERSION=2.7
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
-touch "${DN}"/../etc/livechat.conf
-. "${DN}"/../etc/path.conf
+touch "${DN}"/../etc/linuxminiprograms/livechat.conf
+. "${DN}"/../etc/linuxminiprograms/path.conf
 . "${DN}"/../shlib/libinclude.sh
 __include libisopt
 __include libstr
 __include libman
-. "${DN}"/../etc/livechat.conf
+. "${DN}"/../etc/linuxminiprograms/livechat.conf
 if [ -z "${LIVECHAT_HOME:-}" ]; then
-    warnh "LIVECHAT_HOME undefined. Will use ${DN}/../var/livechat.d"
-    LIVECHAT_HOME="${DN}/../var/livechat.d"
+    warnh "LIVECHAT_HOME undefined. Will use ${DN}/../var/linuxminiprograms/livechat.d"
+    LIVECHAT_HOME="${DN}/../var/linuxminiprograms/livechat.d"
 fi
 if [ -z "${LIVECHAT_MAX_JOB:-}" ]; then
     warnh "LIVECHAT_MAX_JOB undefined. Will use 100"
@@ -47,7 +47,7 @@ for opt in "${@}"; do
     if isopt "${opt}"; then
         case "${opt}" in
         "-h" | "--help")
-            yldoc livechat
+            man livechat
             builtin exit 0
             ;;
         "-v" | "--version")

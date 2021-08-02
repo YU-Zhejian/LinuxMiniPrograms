@@ -1,6 +1,6 @@
 # What will be Done
 
-VERSION=1.2
+VERSION=1.3
 
 ## AutoZip series:
 
@@ -64,7 +64,3 @@ VERSION=1.2
 * libdo in Python
 * pydoc
 * `docker-test` in centos, fedora, alpine, debian, arch, manjaro, kali
-
-## Documentation
-
-* libnet

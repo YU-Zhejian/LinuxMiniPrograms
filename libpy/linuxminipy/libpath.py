@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-__LIBPATH_VERSION=2.4
+__LIBPATH_VERSION=2.5
 '''
 Python version of shlib/libpath, includes common utilities to manipulate
 environment variables separated by ':'.
-See 'yldoc libpath' for more details.
+See 'man libpath' for more details.
 '''
 import os
 

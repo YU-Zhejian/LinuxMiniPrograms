@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-VERSION=1.6
+VERSION=1.7
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 # shellcheck disable=SC2034
 WD="$(pwd)"
-. "${DN}"/../etc/path.conf
+. "${DN}"/../etc/linuxminiprograms/path.conf
 . "${DN}"/../shlib/libinclude.sh
 __include libisopt
 __include libstr
@@ -57,7 +57,7 @@ elif [ -f "${DN}"/exec/ylsjs/"${ylcmd}".sh ]; then
     # shellcheck disable=SC1090
     . "${DN}"/exec/ylsjs/"${ylcmd}".sh
 elif [ -z "${ylcmd}" ]; then
-    ${HAVEHELP} && yldoc ylsjs
+    ${HAVEHELP} && man ylsjs
     ${HAVEVER} && builtin echo "${VERSION}"
 else
     errh "subcommand '${ylcmd}' invalid. Use '${0} lscmd' to get a list of available commands"

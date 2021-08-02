@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
-VERSION=1.4
+VERSION=1.5
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../shlib/libinclude.sh
 __include libstr
-. "${DN}"/../etc/path.conf
+. "${DN}"/../etc/linuxminiprograms/path.conf
 for fn in "${DN}"/exec/pst.co "${DN}"/exec/pst.co.exe; do
     if [ -e "${fn}" ]; then
         builtin exec "${fn}" "${@}"
