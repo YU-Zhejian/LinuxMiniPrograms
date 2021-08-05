@@ -53,6 +53,7 @@ VAR_install_pdf=false
 MAKE_TARGETS="pp"
 MAKE_ARGS=""
 PREFIX="${HOME}/usr/local/"
+path_sh="etc/linuxminiprograms/path.conf"
 # ========Read Opt========
 STDS=()
 for opt in "${@}"; do
@@ -70,6 +71,7 @@ for opt in "${@}"; do
             VAR_install_man=true
             VAR_install_html=true
             VAR_install_pdf=true
+            rm -f "${path_sh}"
             ;;
         "--install-doc")
             VAR_install_man=true
@@ -103,7 +105,6 @@ done
 # ========Check========
 infoh "Checking FileSystem..."
 mkdir -p "${PREFIX}" || errh "Installation prefix ${PREFIX} cannot be accessed"
-path_sh="etc/linuxminiprograms/path.conf"
 if [ ! -f "${path_sh}" ]; then
     mkdir -p etc/linuxminiprograms
     touch "${path_sh}"

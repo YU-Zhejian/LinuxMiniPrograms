@@ -95,5 +95,7 @@ install_sbin:
 	$(MKDIR) $(PREFIX)/sbin/
 	$(CP) -uv sbin/* $(PREFIX)/sbin/ >> install_$(TIMESTAMP).log
 
-#uninstall:
+uninstall:
+	# TODO
+	eho "TODO"
 #	bash -c 'cat install.log |  | while read line;do '

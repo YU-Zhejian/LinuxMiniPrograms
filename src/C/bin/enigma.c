@@ -3,7 +3,7 @@
 #include <dirent.h>
 #include <libgen.h>
 
-LOTS_OF_BUGS
+// FIXME: LOTS_OF_BUGS
 
 int DECODE = 0;
 

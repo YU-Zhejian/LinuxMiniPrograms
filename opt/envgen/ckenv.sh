@@ -124,8 +124,8 @@ crontab -l
 __cron_cat
 chkconfig --list # Which service is set to bootable? Used under RedHat-derived Linux systems.
 service --status-all # List all services. Used under Debian-derived systems.
-# TODO: systemctl commands.
-# TODO: SELINUX commands.
+systemctl --all --recursive
+semanage fcontext –l
 
 # ________________________Hardware Info________________________
 free -h # How many memory is available?
@@ -214,7 +214,7 @@ cat /etc/apt/sources.list /etc/apt/sources.list.d/* # AS
 # RedHat-derived sytems.
 yum list # A for old systems.
 dnf list # A
-rpm -qa # TODO
+rpm -qa # I
 cat /etc/yum.repos.d/*.repo # AS
 
 # Arch-derived systems.

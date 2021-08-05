@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
 VERSION=1.5
-# TODO: Add C Version
 builtin set -eu
 DN="$(readlink -f "$(dirname "${0}")")"
 . "${DN}"/../shlib/libinclude.sh

@@ -23,40 +23,66 @@ case ${EXITV} in
 esac
 unset EXITV
 
+
+# File pattern, for debian-based and non-debian-based
+__change_distro_debian(){
+    cat in/"${1}"_minimal.Dockerfile.in \
+    in/run.Dockerfile.in | \
+    sed "s;__REPLACE_DISTRO__;$(builtin echo "${2}");g" | \
+    sed "s;__REPLACE_VERSION__;$(builtin echo "${2}");g" | \
+    sed "s;__MIN_PACKAGES__;$(cat etc/${1}.min.packages | tr '\n' ' ');g" | \
+    sed "s;__REPLACE_CODENAME__;$(builtin echo "${3}");g" | \
+    cat > out/"${1}"_"${2}"_minimal.Dockerfile
+
+    cat in/"${1}"_minimal.Dockerfile.in \
+    in/"${1}"_all.Dockerfile.in \
+    in/run.Dockerfile.in | \
+    sed "s;__REPLACE_DISTRO__;$(builtin echo "${1}");g" | \
+    sed "s;__REPLACE_VERSION__;$(builtin echo "${2}");g" | \
+    sed "s;__REPLACE_CODENAME__;$(builtin echo "${3}");g" | \
+    sed "s;__MIN_PACKAGES__;$(cat etc/${1}.min.packages | tr '\n' ' ');g" | \
+    sed "s;__ADD_PACKAGES__;$(cat etc/${1}.add.packages | tr '\n' ' ');g" | \
+    cat > out/"${1}"_"${2}"_all.Dockerfile
+
+    cat in/"${1}".sources.list.in | \
+    sed "s;__REPLACE_CODENAME__;$(builtin echo "${3}");g" | \
+    cat > out/"${1}"_"${2}".sources.list
+}
+
+__change_distro(){
+    cat in/"${1}"_minimal.Dockerfile.in \
+    in/run.Dockerfile.in | \
+    sed "s;__REPLACE_DISTRO__;$(builtin echo "${1}");g" | \
+    sed "s;__REPLACE_VERSION__;$(builtin echo "${2}");g" | \
+    sed "s;__MIN_PACKAGES__;$(cat etc/${1}.min.packages | tr '\n' ' ');g" | \
+    cat > out/"${1}"_"${2}"_minimal.Dockerfile
+    
+    cat in/"${1}"_minimal.Dockerfile.in \
+    in/"${1}"_all.Dockerfile.in \
+    in/run.Dockerfile.in | \
+    sed "s;__REPLACE_DISTRO__;$(builtin echo "${1}");g" | \
+    sed "s;__REPLACE_VERSION__;$(builtin echo "${2}");g" | \
+    sed "s;__MIN_PACKAGES__;$(cat etc/${1}.min.packages | tr '\n' ' ');g" | \
+    sed "s;__ADD_PACKAGES__;$(cat etc/${1}.add.packages | tr '\n' ' ');g" | \
+    cat > out/"${1}"_"${2}"_minimal.Dockerfile
+}
+
 # Generating Dockerfiles
-cat etc/ubuntu.csv | grep -v '^#' | while builtin read -r line;do
-    builtin mapfile -t CODENAME < <(builtin echo ${line} | tr ',' '\n')
-    cat ubuntu_minimal.Dockerfile.in run.Dockerfile.in | \
-    sed "s;__REPLACE_DISTRO__;ubuntu;g" | \
-    sed "s;__REPLACE_VERSION__;$(builtin echo "${CODENAME[0]}");g" | \
-    sed "s;__MIN_PACKAGES__;$(cat etc/ubuntu.min.packages | tr '\n' ' ');g" | \
-    sed "s;__REPLACE_CODENAME__;$(builtin echo "${CODENAME[1]}");g" > out/ubuntu_"${CODENAME[0]}"_minimal.Dockerfile
-    cat ubuntu_minimal.Dockerfile.in ubuntu_all.Dockerfile.in run.Dockerfile.in | \
-    sed "s;__REPLACE_DISTRO__;ubuntu;g" | \
-    sed "s;__REPLACE_VERSION__;$(builtin echo "${CODENAME[0]}");g" | \
-    sed "s;__REPLACE_CODENAME__;$(builtin echo "${CODENAME[1]}");g" | \
-    sed "s;__MIN_PACKAGES__;$(cat etc/ubuntu.min.packages | tr '\n' ' ');g" | \
-    sed "s;__ADD_PACKAGES__;$(cat etc/ubuntu.add.packages | tr '\n' ' ');g" > out/ubuntu_"${CODENAME[0]}"_all.Dockerfile
+for distro in ubuntu \
+debian
+do
+    cat etc/"${distro}".csv | grep -v '^#' | while builtin read -r line;do
+        builtin mapfile -t CODENAME < <(builtin echo ${line} | tr ',' '\n')
+        __change_distro_debian "${distro}" "${CODENAME[0]}" "${CODENAME[1]}"
+    done
 done
-# TODO: echo error in alpine Linux
-#cat etc/alpine.csv | grep -v '^#' | while builtin read -r line;do
-#    cat alpine_minimal.Dockerfile.in run.Dockerfile.in | \
-#    sed "s;__REPLACE_DISTRO__;alpine;g" | \
-#    sed "s;__REPLACE_VERSION__;$(builtin echo "${line}");g" | \
-#    sed "s;__MIN_PACKAGES__;$(cat etc/alpine.min.packages | tr '\n' ' ');g" > out/alpine_"${line}"_minimal.Dockerfile
-#done
-cat etc/debian.csv | grep -v '^#' | while builtin read -r line;do
-    builtin mapfile -t CODENAME < <(builtin echo ${line} | tr ',' '\n')
-    cat debian_minimal.Dockerfile.in run.Dockerfile.in | \
-    sed "s;__REPLACE_DISTRO__;debian;g" | \
-    sed "s;__REPLACE_VERSION__;$(builtin echo "${CODENAME[0]}");g" | \
-    sed "s;__REPLACE_CODENAME__;$(builtin echo "${CODENAME[1]}");g" | \
-    sed "s;__MIN_PACKAGES__;$(cat etc/debian.min.packages | tr '\n' ' ');g"  > out/debian_"${CODENAME[0]}"_minimal.Dockerfile
+
+for distro in fedora \
+alpine
+do
+    cat etc/"${distro}".csv | grep -v '^#' | while builtin read -r line;do
+        __change_distro "${distro}" "${line}"
+    done
 done
-cat etc/fedora.csv | grep -v '^#' | while builtin read -r line;do
-    cat fedora_minimal.Dockerfile.in run.Dockerfile.in | \
-    sed "s;__REPLACE_DISTRO__;fedora;g" | \
-    sed "s;__REPLACE_VERSION__;$(builtin echo "${line}");g" | \
-    sed "s;__MIN_PACKAGES__;$(cat etc/fedora.min.packages | tr '\n' ' ');g"  > out/fedora_"${line}"_minimal.Dockerfile
-done
+
 exit 0

@@ -1,0 +1,7 @@
+ARG tarname
+ENV tarname ${tarname}
+# Start testing
+CMD git clone -b feature/google https://gitee.com/YuZJLab/LinuxMiniPrograms && \
+    bash /LinuxMiniPrograms/src/docker-test/bin/docker_run.sh || true && \
+    mv LinuxMiniPrograms ${tarname} && \
+    tar -c -v -f ${tarname}.tar ${tarname}

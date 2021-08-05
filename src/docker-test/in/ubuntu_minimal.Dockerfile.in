@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y apt-transport-https ca-certificates apt-utils
 RUN echo 'deb [trusted=yes] https://mirrors.tuna.tsinghua.edu.cn/ubuntu __REPLACE_CODENAME__ main restricted universe multiverse\n\
 deb [trusted=yes] https://mirrors.tuna.tsinghua.edu.cn/ubuntu __REPLACE_CODENAME__-updates main restricted universe multiverse\n\
-deb [trusted=yes] https://mirrors.tuna.tsinghua.edu.cn/ubuntu   __REPLACE_CODENAME__-backports main restricted universe multiverse\n\
+deb [trusted=yes] https://mirrors.tuna.tsinghua.edu.cn/ubuntu __REPLACE_CODENAME__-backports main restricted universe multiverse\n\
 deb [trusted=yes] https://mirrors.tuna.tsinghua.edu.cn/ubuntu __REPLACE_CODENAME__-security main restricted universe multiverse' > /etc/apt/sources.list
 # RUN sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list
 RUN apt-get update && apt-get upgrade -y --no-install-recommends --no-install-suggests

@@ -1,4 +1,4 @@
-SOURCES := $(wildcard out/*.Dockerfile)
+RUN_SOURCES := $(wildcard out/*.Dockerfile)
 RUN_TARGETS := $(foreach fn, $(SOURCES), $(addsuffix .run, $(fn)))
 
 # TODO: Need pandas and setuptools

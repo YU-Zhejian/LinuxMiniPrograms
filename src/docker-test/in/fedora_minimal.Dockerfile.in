@@ -5,5 +5,7 @@ LABEL version="1.0"
 
 RUN dnf update -y
 
+# There's no need to add configuration files; Fedora will automatically detect the fastest configuration.
+
 RUN dnf install -y __MIN_PACKAGES__
 # TODO: Lots of bugs afterwards!
